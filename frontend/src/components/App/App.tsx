@@ -10,9 +10,10 @@ import Sidebar from "../Sidebar/Sidebar";
 function App() {
     return (
         <div className="App">
-            <Sidebar/>
             <Router>
+                <Sidebar/>
                 <Routes>
+                    {/*todo: add next Route elements e.g forum and settings*/}
                     <Route path="/" element={<Dashboard/>}/>
                     <Route path="/my_plants" element={<PlantsView/>}/>
                     <Route path="*" element={<NotFound/>}/>
