@@ -20,7 +20,7 @@ let NavbarEdit = styled(Navbar)`
   & #logo {
     position: relative;
     color: white;
-    padding: 0.4em 0.5em;
+    padding: 0.2em 0.5em;
     font-size: 48px;
     
     &::before, &::after, &>:first-child::before, &>:first-child::after{

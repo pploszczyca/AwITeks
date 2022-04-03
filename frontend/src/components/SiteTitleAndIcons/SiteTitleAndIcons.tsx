@@ -10,17 +10,17 @@ let PageTitle = styled.h1`
 
 function SiteTitleAndIcons() {
     return (
-        <Container fluid style={{ paddingLeft: 0, paddingRight: 0, marginTop: 30, width: "87vw"}}>
+        <Container className="mt-5">
             <Row>
                 <Col xs={10}>
                     <PageTitle>Witaj, XYZ!</PageTitle>
                 </Col>
                 <Col xs={2}>
                     <Row style={{fontSize: 32}}>
-                        <Col xs={3}>
+                        <Col xs={4}>
                             <FontAwesomeIcon icon={faBell} />
                         </Col>
-                        <Col xs={3}>
+                        <Col xs={4}>
                             <FontAwesomeIcon icon={faUser} />
                         </Col>
                     </Row>
