@@ -1,5 +1,5 @@
 import React from "react";
-import {Container, Col, Row} from "react-bootstrap";
+import {Container} from "react-bootstrap";
 import DashboardStats from "../DashboardStats/DashboardStats";
 import DashboardInfo from "../DashboardInfo/DashboardInfo";
 
