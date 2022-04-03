@@ -14,6 +14,10 @@
 * Backend - 5000 - http://localhost:5000
 * Frontend - 3000 - http://localhost:3000
 
+## Branche
+* development - gałąź na której aktualnie pracujemy
+* main - stabilna wersja
+
 ## Uruchomienie projektu
 Należy ściągnąć repozytorium za pomocą jednej z poniższych komend:
 ```bash
