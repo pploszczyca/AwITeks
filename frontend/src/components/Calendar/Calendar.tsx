@@ -44,10 +44,17 @@ let CalendarService = styled.div`
     font-size: 70px;
   }
   
-  & div:last-child{
+  & div:nth-child(2), & div:last-child{
     font-size: 25px;
   }
   
+  & div:nth-child(2){
+    display: flex;
+    
+    & p{
+      width: 150px;
+    }
+  }
 `
 
 class Calendar extends React.Component<{}, {days: any[], weeks: any[], months: string[], displayedDate: Date}>{
@@ -55,23 +62,63 @@ class Calendar extends React.Component<{}, {days: any[], weeks: any[], months: s
         super(props);
         this.state = {
             days: Array.from(Array(7).keys()),
-            weeks: Array.from(Array(5).keys()),
+            weeks: Array.from(Array(6).keys()),
             months: ["Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czerwiec", "Lipiec", "Sierpień", "Wrzesień", "Październik", "Listopad", "Grudzień"],
             displayedDate: new Date()
         }
         this.getActualDay = this.getActualDay.bind(this)
+        this.nextMonth = this.nextMonth.bind(this)
+        this.prevMonth = this.prevMonth.bind(this)
     }
 
     getActualDay(fieldNumber: number, date: Date){
-        let lastDay = new Date(date.getFullYear(), date.getMonth(), 0).getDate()
-        let actualDayNumber = fieldNumber - new Date(date.getFullYear(), date.getMonth(), 1).getDay() + 1;
+        let lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate()
+        let firstDay = new Date(date.getFullYear(), date.getMonth(), 1).getDay()
+        if(firstDay == 0){
+            firstDay = 7; // sunday is 7th day in calendar
+        }
+        let actualDayNumber = fieldNumber - firstDay + 1;
 
-        if(actualDayNumber <= 0 || actualDayNumber >= lastDay){
+
+        console.log(date.getFullYear(), date.getMonth(), 0)
+        console.log(lastDay, actualDayNumber)
+
+        if(actualDayNumber <= 0 || actualDayNumber > lastDay){
             return (<Day/>);
         }
         else {
             return (<Day>{actualDayNumber}</Day>);
         }
+    }
+
+    nextMonth(){
+        let day = 1;
+        let month = this.state.displayedDate.getMonth() + 1;
+        let year = this.state.displayedDate.getFullYear();
+
+        if(month >= 12) {
+            month = 0;
+            year++;
+        }
+
+        this.setState({
+            displayedDate: new Date(year, month, day)
+        })
+    }
+
+    prevMonth(){
+        let day = 1;
+        let month = this.state.displayedDate.getMonth() - 1;
+        let year = this.state.displayedDate.getFullYear();
+
+        if(month < 0) {
+            month = 11;
+            year--;
+        }
+
+        this.setState({
+            displayedDate: new Date(year, month, day)
+        })
     }
 
     render(){
@@ -82,11 +129,11 @@ class Calendar extends React.Component<{}, {days: any[], weeks: any[], months: s
                         <CalendarService>
                             <div>{this.state.displayedDate.getDate()}</div>
                             <div>
-                                <FontAwesomeIcon icon={faArrowLeft} className="px-1"/>
-                                {this.state.months[this.state.displayedDate.getMonth()]}
-                                <FontAwesomeIcon icon={faArrowRight} className="px-1"/>
-                                <br/> {this.state.displayedDate.getFullYear()}
+                                <FontAwesomeIcon icon={faArrowLeft} className="px-1" onClick={() => this.prevMonth()}/>
+                                <p>{this.state.months[this.state.displayedDate.getMonth()]}</p>
+                                <FontAwesomeIcon icon={faArrowRight} className="px-1" onClick={() => this.nextMonth()}/>
                             </div>
+                            <div>{this.state.displayedDate.getFullYear()}</div>
                         </CalendarService>
                     </CalendarCol>
                     <CalendarCol xs={10} >
