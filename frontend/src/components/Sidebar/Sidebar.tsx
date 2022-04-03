@@ -5,7 +5,6 @@ import {Link} from "react-router-dom";
 
 let NavbarEdit = styled(Navbar)`
   height: 100vh;
-  width: 15vw;
   background-color: #023535;
   
   & > *{
@@ -19,36 +18,37 @@ let NavbarEdit = styled(Navbar)`
   }
   
   & #logo {
-    border: 0.2em solid #0FC2C0;
-    padding: 0.4em 0.5em;
     position: relative;
     color: white;
+    padding: 0.4em 0.5em;
     font-size: 48px;
-
-    &::before, &::after {
-      content: '';
-      display: block;
-      position: absolute;
-      background: #023535;
-    }
-
-    &::before {
-      top: -0.3em;
-      bottom: -0.3em;
-      left: 0.5em;
-      right: 0.5em;
-    }
-
-    &::after{
-      left: -0.3em;
-      right: -0.3em;
-      top: 0.5em;
-      bottom: 0.5em;
-    }
     
-    #logo-text {
-      position: relative;
-      z-index: 1;
+    &::before, &::after, &>:first-child::before, &>:first-child::after{
+      position:absolute; 
+      content:' ';
+      width:30px; 
+      height: 30px;
+      border: solid #0FC2C0;
+    }
+    &::before {
+      top:0;
+      left:0;
+      border-width: 0.2em 0 0 0.2em
+    }
+    &::after {
+      top:0;
+      right:0;
+      border-width: 0.2em 0.2em 0 0
+    }
+    &>:first-child:before {
+      bottom:0;
+      right:0;
+      border-width: 0 0.2em 0.2em 0
+    }
+    &>:first-child:after {
+      bottom:0;
+      left:0;
+      border-width: 0 0 0.2em 0.2em
     }
   }
 `
@@ -105,9 +105,7 @@ class Sidebar extends React.Component<{}, { newUrl: string , oldUrl: string}>{
         return (
             <NavbarEdit variant="dark">
                 <Container className="d-flex flex-column">
-                    <h1 id="logo">
-                        <span id="logo-text">awITex</span>
-                    </h1>
+                    <div id="logo"><p>awITex</p></div>
                     <Nav className="me-auto d-flex flex-column" id="menu-options">
                         <Nav.Link as={Link} to="/" className="nav-item" onClick={() => this.updateUrl("/")}>Strona Główna</Nav.Link>
                         <Nav.Link as={Link} to="/my_plants" className="nav-item" onClick={() => this.updateUrl("/my_plants")}>Moje rośliny</Nav.Link>
