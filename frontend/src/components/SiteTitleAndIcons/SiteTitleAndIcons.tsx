@@ -10,7 +10,7 @@ let PageTitle = styled.h1`
 
 function SiteTitleAndIcons() {
     return (
-        <Container fluid style={{ paddingLeft: 0, paddingRight: 0, marginTop: 30, width: "80vw"}}>
+        <Container fluid style={{ paddingLeft: 0, paddingRight: 0, marginTop: 30, width: "87vw"}}>
             <Row>
                 <Col xs={10}>
                     <PageTitle>Witaj, XYZ!</PageTitle>
