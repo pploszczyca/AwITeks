@@ -1,4 +1,4 @@
-function NotFound(){
+function NotFound() {
     return (
         <div>Not found</div>
     );

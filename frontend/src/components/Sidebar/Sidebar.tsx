@@ -88,13 +88,13 @@ class Sidebar extends React.Component<{}, { newUrl: string, oldUrl: string }>{
         let newId: number | undefined = childNumbersMap.get(this.state.newUrl);
         let oldId: number | undefined = childNumbersMap.get(this.state.oldUrl);
 
-        if (newId != undefined) {
+        if (newId !== undefined) {
             let newLink = document.getElementsByClassName("nav-item").item(newId) as HTMLElement;
             if (newLink != null)
                 newLink.style.color = "#0FC2C0";
         }
 
-        if (oldId != undefined) {
+        if (oldId !== undefined) {
             let oldLink = document.getElementsByClassName("nav-item").item(oldId) as HTMLElement;
             if (oldLink != null)
                 oldLink.style.color = "rgba(255,255,255,.55)";
