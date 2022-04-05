@@ -1,7 +1,7 @@
 import React from 'react';
-import {Container, Navbar, Nav} from "react-bootstrap";
+import { Container, Navbar, Nav } from "react-bootstrap";
 import styled from "styled-components";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 let NavbarEdit = styled(Navbar)`
   height: 100vh;
@@ -53,10 +53,10 @@ let NavbarEdit = styled(Navbar)`
   }
 `
 
-class Sidebar extends React.Component<{}, { newUrl: string , oldUrl: string}>{
+class Sidebar extends React.Component<{}, { newUrl: string, oldUrl: string }>{
     constructor(props: any) {
         super(props);
-        this.state = {newUrl: window.location.pathname, oldUrl: ""}
+        this.state = { newUrl: window.location.pathname, oldUrl: "" }
         this.setUsedLinkColor = this.setUsedLinkColor.bind(this);
         this.updateUrl = this.updateUrl.bind(this);
     }
@@ -69,14 +69,14 @@ class Sidebar extends React.Component<{}, { newUrl: string , oldUrl: string}>{
         this.setUsedLinkColor();
     }
 
-    updateUrl(newUrl: string){
+    updateUrl(newUrl: string) {
         this.setState(() => ({
             oldUrl: this.state.newUrl,
             newUrl: newUrl
         }));
     }
-    
-    setUsedLinkColor(){
+
+    setUsedLinkColor() {
         let childNumbersMap = new Map<string, number>([
             ["/", 0],
             ["/my_plants", 1],
@@ -88,20 +88,20 @@ class Sidebar extends React.Component<{}, { newUrl: string , oldUrl: string}>{
         let newId: number | undefined = childNumbersMap.get(this.state.newUrl);
         let oldId: number | undefined = childNumbersMap.get(this.state.oldUrl);
 
-        if(newId != undefined){
+        if (newId != undefined) {
             let newLink = document.getElementsByClassName("nav-item").item(newId) as HTMLElement;
-            if(newLink != null)
+            if (newLink != null)
                 newLink.style.color = "#0FC2C0";
         }
 
-        if(oldId != undefined){
+        if (oldId != undefined) {
             let oldLink = document.getElementsByClassName("nav-item").item(oldId) as HTMLElement;
-            if(oldLink != null)
+            if (oldLink != null)
                 oldLink.style.color = "rgba(255,255,255,.55)";
         }
     }
 
-    render(){
+    render() {
         return (
             <NavbarEdit variant="dark">
                 <Container className="d-flex flex-column">
