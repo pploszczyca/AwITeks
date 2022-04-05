@@ -85,3 +85,18 @@ export const ListContainer = styled.div`
     margin-top: 70px;
     overflow-y: scroll;
 `;
+
+// TODO need to make SiteTitleAndIcons fixed first
+export const SettingsWrapper = styled.div`
+    /* position: relative;
+    height: 20vh;
+    width: 100%; */
+`;
+
+export const SettingsBox = styled.div`
+    /* position: fixed;
+    height: 20vh;
+    width: 100%;
+    z-index: 10000000;
+    background: #FFF; */
+`;
