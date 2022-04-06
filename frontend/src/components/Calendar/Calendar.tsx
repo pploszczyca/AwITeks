@@ -1,8 +1,9 @@
 import React from 'react';
-import {Container, Row, Col} from "react-bootstrap";
+import {Container, Row, Col, ListGroup} from "react-bootstrap";
 import styled from "styled-components";
 import {faArrowLeft, faArrowRight} from '@fortawesome/free-solid-svg-icons'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import Card from "react-bootstrap/Card";
 
 
 let Day = styled.div`
@@ -47,6 +48,9 @@ let CalendarService = styled.div`
   & div:nth-child(2), & div:last-child{
     font-size: 25px;
   }
+  & div:nth-last-child(2){
+    font-size: 25px;
+  }
   
   & div:nth-child(2){
     display: flex;
@@ -56,6 +60,23 @@ let CalendarService = styled.div`
     }
   }
 `
+
+const Button = styled.button`
+  background-color: black;
+  color: white;
+  font-size: 20px;
+  padding: 10px 10px;
+  border-radius: 5px;
+  margin: 0px 0px;
+  cursor: pointer;
+`;
+
+
+function export_calendar() {
+    alert('Export button clicked!');
+}
+
+
 
 class Calendar extends React.Component<{}, {days: any[], weeks: any[], months: string[], displayedDate: Date}>{
     constructor(props: any) {
@@ -78,7 +99,11 @@ class Calendar extends React.Component<{}, {days: any[], weeks: any[], months: s
             firstDay = 7; // sunday is 7th day in calendar
         }
         let actualDayNumber = fieldNumber - firstDay + 1;
-
+        let today = false;
+        let currentDate = new Date();
+        if(actualDayNumber == currentDate.getDate() && date.getMonth() == currentDate.getMonth() && date.getFullYear() == currentDate.getFullYear()){
+            today = true;
+        }
 
         console.log(date.getFullYear(), date.getMonth(), 0)
         console.log(lastDay, actualDayNumber)
@@ -87,7 +112,13 @@ class Calendar extends React.Component<{}, {days: any[], weeks: any[], months: s
             return (<Day/>);
         }
         else {
-            return (<Day>{actualDayNumber}</Day>);
+            // return (<Day>{actualDayNumber}</Day>
+            return (<Day style={{border: today ? '2px solid rgba(245, 40, 255, 1)' : 'none'}}>
+                        {actualDayNumber}<ListGroup style={{width: '9rem', height:'5rem', textAlign: 'left', fontSize: 15 }} variant="flush">
+                            <ListGroup.Item><Card.Link href="#">water plant</Card.Link></ListGroup.Item>
+                            <ListGroup.Item><Card.Link href="#">change soil</Card.Link></ListGroup.Item>
+                        </ListGroup>
+                    </Day>)
         }
     }
 
@@ -124,7 +155,9 @@ class Calendar extends React.Component<{}, {days: any[], weeks: any[], months: s
     render(){
         return (
             <Container>
+                
                 <Row className="m-0 mt-5">
+                
                     <CalendarCol xs={2}>
                         <CalendarService>
                             <div>{this.state.displayedDate.getDate()}</div>
@@ -134,7 +167,16 @@ class Calendar extends React.Component<{}, {days: any[], weeks: any[], months: s
                                 <FontAwesomeIcon icon={faArrowRight} className="px-1" onClick={() => this.nextMonth()}/>
                             </div>
                             <div>{this.state.displayedDate.getFullYear()}</div>
+                            <div>
+                                <br/>
+                                <Button onClick={export_calendar}>
+                                    Export
+                                </Button>
+                            </div>
+                            
+                           
                         </CalendarService>
+                        
                     </CalendarCol>
                     <CalendarCol xs={10} >
                         <Row className="m-0">
@@ -150,14 +192,19 @@ class Calendar extends React.Component<{}, {days: any[], weeks: any[], months: s
                             <Row className="m-0">
                                 {this.state.days.map(day => (
                                     <CalendarCol>
-                                        { this.getActualDay((weekNr*7) + (day + 1), this.state.displayedDate) }
+                                        <Card style={{ width: '10rem' }}>
+                                            { this.getActualDay((weekNr*7) + (day + 1), this.state.displayedDate)}
+                                            
+                                        </Card>
                                     </CalendarCol>
+                                    
                                 ))}
                             </Row>
                         ))}
                     </CalendarCol>
                 </Row>
-
+                
+                
             </Container>
         );
     }
