@@ -18,36 +18,8 @@ public class Species extends AbstractModel<Species> {
         this.fertilizationDose = fertilizationDose;
     }
 
-    public int getId() {
-        return id;
-    }
+    public Species() {
 
-    public String getName() {
-        return name;
-    }
-
-    public int getMaxAge() {
-        return maxAge;
-    }
-
-    public Insolation getNeededInsolation() {
-        return neededInsolation;
-    }
-
-    public int getWaterDose() {
-        return waterDose;
-    }
-
-    public int getWaterRoutine() {
-        return waterRoutine;
-    }
-
-    public int getFertilizationRoutine() {
-        return fertilizationRoutine;
-    }
-
-    public Fertilization getFertilizationDose() {
-        return fertilizationDose;
     }
 
     @Override
