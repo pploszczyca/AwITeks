@@ -1,4 +1,4 @@
-package pl.edu.agh.awiteks_backend;
+package agh.edu.pl.awiteks_backend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,7 +1,7 @@
 package agh.edu.pl.awiteks_backend.api;
 
 import agh.edu.pl.awiteks_backend.models.Species;
-import agh.edu.pl.awiteks_backend.repositories.species.SpeciesRepository;
+import agh.edu.pl.awiteks_backend.repositories.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,39 +9,41 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-public class SpeciesController {
-    private final SpeciesRepository speciesRepository;
+public class SpeciesController extends ModelController<Species> {
 
     @Autowired
-    public SpeciesController(SpeciesRepository speciesRepository) {
-        this.speciesRepository = speciesRepository;
+    public SpeciesController(Repository<Species> speciesRepository) {
+        super(speciesRepository);
     }
 
+    @Override
     @GetMapping(value = "/species", produces = "application/json")
-    public List<Species> getAllSpecies() {
-        return speciesRepository.getAll();
+    public List getAll() {
+        return super.getAll();
     }
 
+    @Override
     @GetMapping(value = "/species/{id}", produces = "application/json")
-    public Optional<Species> getSpecies(@PathVariable int id){
-        return speciesRepository.get(id);
+    public Optional get(@PathVariable int id) {
+        return super.get(id);
     }
 
-    @PostMapping(path="/species")
+    @Override
+    @PostMapping(path = "/species")
     @ResponseBody
-    public String addSpecies(@RequestBody Species species) {
-        speciesRepository.add(species);
-        return "ok";
+    public String add(@RequestBody Species species) {
+        return super.add(species);
     }
 
+    @Override
     @PutMapping(value = "/species", consumes = "application/json")
-    public void updateSpecies(@RequestBody Species species) {
-        speciesRepository.update(species);
+    public void update(@RequestBody Species species) {
+        super.update(species);
     }
 
+    @Override
     @DeleteMapping(value = "/species/{id}")
-    public void deleteSpecies(@PathVariable int id){
-        speciesRepository.remove(id);
+    public void deleteSpecies(@PathVariable int id) {
+        super.deleteSpecies(id);
     }
 }
-
