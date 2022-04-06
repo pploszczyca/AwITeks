@@ -1,4 +1,4 @@
-package agh.edu.pl.awiteks_backend.models;
+package pl.edu.agh.awiteks_backend.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

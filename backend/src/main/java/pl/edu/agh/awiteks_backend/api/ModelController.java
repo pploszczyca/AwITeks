@@ -1,6 +1,6 @@
-package agh.edu.pl.awiteks_backend.api;
+package pl.edu.agh.awiteks_backend.api;
 
-import agh.edu.pl.awiteks_backend.repositories.Repository;
+import pl.edu.agh.awiteks_backend.repositories.Repository;
 
 import java.util.List;
 import java.util.Optional;

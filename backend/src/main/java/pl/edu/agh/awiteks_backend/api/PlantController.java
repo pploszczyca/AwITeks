@@ -1,8 +1,8 @@
-package agh.edu.pl.awiteks_backend.api;
+package pl.edu.agh.awiteks_backend.api;
 
-import agh.edu.pl.awiteks_backend.models.Plant;
-import agh.edu.pl.awiteks_backend.models.User;
-import agh.edu.pl.awiteks_backend.repositories.Repository;
+import pl.edu.agh.awiteks_backend.models.Plant;
+import pl.edu.agh.awiteks_backend.models.User;
+import pl.edu.agh.awiteks_backend.repositories.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

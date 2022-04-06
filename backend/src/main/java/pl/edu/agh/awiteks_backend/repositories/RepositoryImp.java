@@ -1,6 +1,6 @@
-package agh.edu.pl.awiteks_backend.repositories;
+package pl.edu.agh.awiteks_backend.repositories;
 
-import agh.edu.pl.awiteks_backend.models.AbstractModel;
+import pl.edu.agh.awiteks_backend.models.AbstractModel;
 
 import java.util.ArrayList;
 import java.util.List;

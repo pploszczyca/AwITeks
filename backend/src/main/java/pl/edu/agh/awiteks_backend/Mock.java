@@ -1,8 +1,8 @@
-package agh.edu.pl.awiteks_backend;
+package pl.edu.agh.awiteks_backend;
 
-import agh.edu.pl.awiteks_backend.models.*;
-import agh.edu.pl.awiteks_backend.repositories.Repository;
-import agh.edu.pl.awiteks_backend.repositories.RepositoryImp;
+import pl.edu.agh.awiteks_backend.models.*;
+import pl.edu.agh.awiteks_backend.repositories.Repository;
+import pl.edu.agh.awiteks_backend.repositories.RepositoryImp;
 import org.springframework.context.annotation.Bean;
 
 import java.util.ArrayList;
