@@ -163,14 +163,10 @@ class Calendar extends React.Component<{}, {days: any[], weeks: any[], months: s
             today = true;
         }
 
-        console.log(date.getFullYear(), date.getMonth(), 0)
-        console.log(lastDay, actualDayNumber)
-
         if(actualDayNumber <= 0 || actualDayNumber > lastDay){
             return (<Day/>);
         }
         else {
-            // return (<Day>{actualDayNumber}</Day>
             return (<Day className="clickable" onClick = {() => this.showAlerts(actualDayNumber)} style={{border: today ? '3px solid #0FC2C0' : 'none'}}>
                         {actualDayNumber}
                         <div style={{width: '9rem', height:'4rem', textAlign: 'right', fontSize: 11, border: "none"}}>
@@ -233,9 +229,12 @@ class Calendar extends React.Component<{}, {days: any[], weeks: any[], months: s
         })
     }
 
+
+
     render(){
         return (
             <Container>
+                
                 <Row className="m-0 mt-5">
                 
                     <CalendarCol xs={2}>
@@ -307,8 +306,6 @@ class Calendar extends React.Component<{}, {days: any[], weeks: any[], months: s
                         Exit
                     </Button>
                 </Display>
-                
-                
             </Container>
         );
     }
@@ -317,11 +314,4 @@ class Calendar extends React.Component<{}, {days: any[], weeks: any[], months: s
 
 export default Calendar;
 
-
-// toggle
-// z-index
-// position absolute
-
-//zrobic rebase
-//wstaw diva do funkcji
 
