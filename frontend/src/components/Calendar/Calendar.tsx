@@ -4,6 +4,7 @@ import styled from "styled-components";
 import {faArrowLeft, faArrowRight} from '@fortawesome/free-solid-svg-icons'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import Card from "react-bootstrap/Card"
+import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons'
 
 
 let Day = styled.div`
@@ -92,6 +93,15 @@ class Calendar extends React.Component<{}, {days: any[], weeks: any[], months: s
         this.prevMonth = this.prevMonth.bind(this)
     }
 
+    getAlert(text: string, bgColor='#ccff99', iconColor='white'){
+        return(
+            <ListGroup.Item style={{backgroundColor: bgColor}}>
+                <FontAwesomeIcon icon={faCircleExclamation} className="px-1" style={{color: iconColor}}/>
+                <Card.Link style={{textDecoration: 'none'}} href="#">{text}</Card.Link>
+            </ListGroup.Item>
+            )
+    }
+
     getActualDay(fieldNumber: number, date: Date){
         let lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate()
         let firstDay = new Date(date.getFullYear(), date.getMonth(), 1).getDay()
@@ -115,11 +125,8 @@ class Calendar extends React.Component<{}, {days: any[], weeks: any[], months: s
             // return (<Day>{actualDayNumber}</Day>
             return (<Day style={{border: today ? '2px solid rgba(245, 40, 255, 1)' : 'none'}}>
                         {actualDayNumber}<ListGroup style={{width: '9rem', height:'3rem', textAlign: 'left', fontSize: 11 }} variant="flush">
-                            <ListGroup.Item style={{backgroundColor: '#ccff99'}}>
-                                {/* <FontAwesomeIcon icon="fa-solid fa-exclamation" /> */}
-                                <Card.Link href="#">water plant</Card.Link>
-                                </ListGroup.Item>
-                            <ListGroup.Item style={{backgroundColor: '#99ccff'}}><Card.Link href="#">change soil</Card.Link></ListGroup.Item>
+                            {this.getAlert("water plants",'#ccff99',"red")}
+                            {this.getAlert("change soil",'#99ccff',"white")}
                         </ListGroup>
                     </Day>)
         }
