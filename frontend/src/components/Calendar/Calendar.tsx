@@ -3,7 +3,7 @@ import {Container, Row, Col, ListGroup} from "react-bootstrap";
 import styled from "styled-components";
 import {faArrowLeft, faArrowRight} from '@fortawesome/free-solid-svg-icons'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import Card from "react-bootstrap/Card";
+import Card from "react-bootstrap/Card"
 
 
 let Day = styled.div`
@@ -114,9 +114,12 @@ class Calendar extends React.Component<{}, {days: any[], weeks: any[], months: s
         else {
             // return (<Day>{actualDayNumber}</Day>
             return (<Day style={{border: today ? '2px solid rgba(245, 40, 255, 1)' : 'none'}}>
-                        {actualDayNumber}<ListGroup style={{width: '9rem', height:'5rem', textAlign: 'left', fontSize: 15 }} variant="flush">
-                            <ListGroup.Item><Card.Link href="#">water plant</Card.Link></ListGroup.Item>
-                            <ListGroup.Item><Card.Link href="#">change soil</Card.Link></ListGroup.Item>
+                        {actualDayNumber}<ListGroup style={{width: '9rem', height:'3rem', textAlign: 'left', fontSize: 11 }} variant="flush">
+                            <ListGroup.Item style={{backgroundColor: '#ccff99'}}>
+                                {/* <FontAwesomeIcon icon="fa-solid fa-exclamation" /> */}
+                                <Card.Link href="#">water plant</Card.Link>
+                                </ListGroup.Item>
+                            <ListGroup.Item style={{backgroundColor: '#99ccff'}}><Card.Link href="#">change soil</Card.Link></ListGroup.Item>
                         </ListGroup>
                     </Day>)
         }
