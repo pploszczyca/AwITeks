@@ -95,6 +95,10 @@ function export_calendar() {
     alert('Export button clicked!');
 }
 
+function click_alert() {
+    alert('Alert clicked!');
+}
+
 
 class Calendar extends React.Component<{}, {days: any[], weeks: any[], months: string[], displayedDate: Date}>{
     constructor(props: any) {
