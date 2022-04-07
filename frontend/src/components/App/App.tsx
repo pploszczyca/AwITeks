@@ -1,11 +1,11 @@
 import React from 'react';
 import './App.css';
-import {BrowserRouter as Router, Route, Routes} from 'react-router-dom'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import Dashboard from "../Dashboard/Dashboard";
 import NotFound from "../NotFound/NotFound";
 import PlantsView from "../PlantsView/PlantsView";
 import Sidebar from "../Sidebar/Sidebar";
-import {Col, Container, Row} from "react-bootstrap";
+import { Col, Container, Row } from "react-bootstrap";
 import SiteTitleAndIcons from "../SiteTitleAndIcons/SiteTitleAndIcons";
 import Calendar from "../Calendar/Calendar";
 
@@ -16,10 +16,10 @@ function App() {
             <Row>
                 <Router>
                     <Col xs={2}>
-                        <Sidebar/>
+                        <Sidebar />
                     </Col>
                     <Col xs={10}>
-                        <SiteTitleAndIcons/>
+                        <SiteTitleAndIcons />
                         <Routes>
                             {/*todo: add next Route elements e.g forum and settings*/}
                             <Route path="/" element={<Dashboard/>}/>

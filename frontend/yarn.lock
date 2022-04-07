@@ -1182,6 +1182,13 @@
   dependencies:
     "@fortawesome/fontawesome-common-types" "6.1.1"
 
+"@fortawesome/free-regular-svg-icons@^6.1.1":
+  "integrity" "sha512-xXiW7hcpgwmWtndKPOzG+43fPH7ZjxOaoeyooptSztGmJxCAflHZxXNK0GcT0uEsR4jTGQAfGklDZE5NHoBhKg=="
+  "resolved" "https://registry.npmjs.org/@fortawesome/free-regular-svg-icons/-/free-regular-svg-icons-6.1.1.tgz"
+  "version" "6.1.1"
+  dependencies:
+    "@fortawesome/fontawesome-common-types" "6.1.1"
+
 "@fortawesome/free-solid-svg-icons@^6.1.1":
   "integrity" "sha512-0/5exxavOhI/D4Ovm2r3vxNojGZioPwmFrKg0ZUH69Q68uFhFPs6+dhAToh6VEQBntxPRYPuT5Cg1tpNa9JUPg=="
   "resolved" "https://registry.npmjs.org/@fortawesome/free-solid-svg-icons/-/free-solid-svg-icons-6.1.1.tgz"
@@ -5661,6 +5668,19 @@
     "leven" "^3.1.0"
     "pretty-format" "^27.5.1"
 
+"jest-watch-typeahead@^0.6.5":
+  "integrity" "sha512-GIbV6h37/isatMDtqZlA8Q5vC6T3w+5qdvtF+3LIkPc58zEWzbKmTHvlUIp3wvBm400RzrQWcVPcsAJqKWu7XQ=="
+  "resolved" "https://registry.npmjs.org/jest-watch-typeahead/-/jest-watch-typeahead-0.6.5.tgz"
+  "version" "0.6.5"
+  dependencies:
+    "ansi-escapes" "^4.3.1"
+    "chalk" "^4.0.0"
+    "jest-regex-util" "^27.0.0"
+    "jest-watcher" "^27.0.0"
+    "slash" "^3.0.0"
+    "string-length" "^4.0.1"
+    "strip-ansi" "^6.0.0"
+
 "jest-watch-typeahead@^1.0.0":
   "integrity" "sha512-jxoszalAb394WElmiJTFBMzie/RDCF+W7Q29n5LzOPtcoQoHWfdUtHFkbhgf5NwWe8uMOxvKb/g7ea7CshfkTw=="
   "resolved" "https://registry.npmjs.org/jest-watch-typeahead/-/jest-watch-typeahead-1.0.0.tgz"
@@ -5705,7 +5725,7 @@
     "merge-stream" "^2.0.0"
     "supports-color" "^8.0.0"
 
-"jest@^27.0.0", "jest@^27.4.3":
+"jest@^26.0.0 || ^27.0.0", "jest@^27.0.0", "jest@^27.4.3":
   "integrity" "sha512-Yn0mADZB89zTtjkPJEXwrac3LHudkQMR+Paqa8uxJHCBr9agxztUifWCyiYrjhMPBoUVBjyny0I7XH6ozDr7QQ=="
   "resolved" "https://registry.npmjs.org/jest/-/jest-27.5.1.tgz"
   "version" "27.5.1"
