@@ -5,6 +5,7 @@ import {faArrowLeft, faArrowRight} from '@fortawesome/free-solid-svg-icons'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import Card from "react-bootstrap/Card"
 import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons'
+import { Grid } from '@material-ui/core';
 
 
 let Day = styled.div`
@@ -77,6 +78,10 @@ function export_calendar() {
     alert('Export button clicked!');
 }
 
+function click_alert() {
+    alert('Alert clicked!');
+}
+
 
 
 class Calendar extends React.Component<{}, {days: any[], weeks: any[], months: string[], displayedDate: Date}>{
@@ -93,12 +98,12 @@ class Calendar extends React.Component<{}, {days: any[], weeks: any[], months: s
         this.prevMonth = this.prevMonth.bind(this)
     }
 
-    getAlert(text: string, bgColor='#ccff99', iconColor='white'){
+    getAlert(iconColor='red'){
         return(
-            <ListGroup.Item style={{backgroundColor: bgColor}}>
+            <div style={{width: '9rem', height:'1rem', border: "none"}}>
                 <FontAwesomeIcon icon={faCircleExclamation} className="px-1" style={{color: iconColor}}/>
-                <Card.Link style={{textDecoration: 'none'}} href="#">{text}</Card.Link>
-            </ListGroup.Item>
+                <FontAwesomeIcon icon={faCircleExclamation} className="px-1" style={{color: iconColor}}/>
+            </div>
             )
     }
 
@@ -123,11 +128,13 @@ class Calendar extends React.Component<{}, {days: any[], weeks: any[], months: s
         }
         else {
             // return (<Day>{actualDayNumber}</Day>
-            return (<Day style={{border: today ? '2px solid rgba(245, 40, 255, 1)' : 'none'}}>
-                        {actualDayNumber}<ListGroup style={{width: '9rem', height:'3rem', textAlign: 'left', fontSize: 11 }} variant="flush">
-                            {this.getAlert("water plants",'#ccff99',"red")}
-                            {this.getAlert("change soil",'#99ccff',"white")}
-                        </ListGroup>
+            return (<Day onClick = {click_alert} style={{border: today ? '2px solid rgba(245, 40, 255, 1)' : 'none'}}>
+                        {actualDayNumber}
+                        <div style={{width: '9rem', height:'4rem', textAlign: 'right', fontSize: 11, border: "none"}}>
+                            {this.getAlert("red")}
+                            {this.getAlert("yellow")}
+                            {this.getAlert("black")}
+                        </div>
                     </Day>)
         }
     }
