@@ -7,6 +7,7 @@ import PlantsView from "../PlantsView/PlantsView";
 import Sidebar from "../Sidebar/Sidebar";
 import { Col, Container, Row } from "react-bootstrap";
 import SiteTitleAndIcons from "../SiteTitleAndIcons/SiteTitleAndIcons";
+import Calendar from "../Calendar/Calendar";
 
 
 function App() {
@@ -21,9 +22,10 @@ function App() {
                         <SiteTitleAndIcons />
                         <Routes>
                             {/*todo: add next Route elements e.g forum and settings*/}
-                            <Route path="/" element={<Dashboard />} />
-                            <Route path="/my_plants" element={<PlantsView />} />
-                            <Route path="*" element={<NotFound />} />
+                            <Route path="/" element={<Dashboard/>}/>
+                            <Route path="/my_plants" element={<PlantsView/>}/>
+                            <Route path="/calendar" element={<Calendar/>}/>
+                            <Route path="*" element={<NotFound/>}/>
                         </Routes>
                     </Col>
                 </Router>
