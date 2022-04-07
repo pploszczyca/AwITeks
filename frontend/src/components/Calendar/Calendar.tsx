@@ -74,7 +74,7 @@ class Calendar extends React.Component<{}, {days: any[], weeks: any[], months: s
     getActualDay(fieldNumber: number, date: Date){
         let lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate()
         let firstDay = new Date(date.getFullYear(), date.getMonth(), 1).getDay()
-        if(firstDay == 0){
+        if(firstDay === 0){
             firstDay = 7; // sunday is 7th day in calendar
         }
         let actualDayNumber = fieldNumber - firstDay + 1;
