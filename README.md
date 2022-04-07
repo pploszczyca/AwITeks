@@ -30,7 +30,7 @@ git clone git@github.com:pploszczyca/AwITeks.git
 
 ### Uruchomienie backendu
 Należy zaimportować projekt za pomocą IntelIJ-a. W tym celu wykonujemy opcję `Open` i wybieramy folder `backend`. IDE powinno samo zaimportować potrzebne zależności.
-
+W razie problemu należy w settings -> gradle zmienić wersję javy (nie wystarczy zmienić w project structure).
 ### Uruchomienie frontendu
 Wchodzimy do folderu `frontend` i instalujemy potrzebne pakiety:
 ```bash
