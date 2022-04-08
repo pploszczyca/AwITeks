@@ -17,6 +17,7 @@ public class Plant extends AbstractModel<Plant> {
     private Insolation actualInsolation;
     @Schema(required = true)
     private List<Activity> plantActivities;
+    private boolean isFavourite=false;
 
     public Plant(int id, String name, User user, Species spiece, String note, Insolation actualInsolation, List<Activity> plantActivities) {
         super(id, name);
@@ -103,4 +104,8 @@ public class Plant extends AbstractModel<Plant> {
                 .findFirst()
                 .ifPresent(this::removeActivity);
     }
+
+    public boolean isFavourite(){ return isFavourite;}
+
+    public void setFavourite(boolean favourite){this.isFavourite=favourite;}
 }
