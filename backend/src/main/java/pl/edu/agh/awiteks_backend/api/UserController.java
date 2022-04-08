@@ -3,9 +3,11 @@ package pl.edu.agh.awiteks_backend.api;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import pl.edu.agh.awiteks_backend.models.Plant;
 import pl.edu.agh.awiteks_backend.models.User;
 import pl.edu.agh.awiteks_backend.services.UserService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,4 +50,23 @@ public class UserController {
     public void removeUser(@PathVariable int id) {
         userService.remove(id);
     }
+
+    @GetMapping(value = "/users/{id}/plants", produces = "application/json")
+    public List<Plant> getPlants(@PathVariable int id) {
+        var user = userService.get(id);
+        if(user.isPresent())
+            return user.get().getUserPlants();
+        else
+            return new ArrayList<Plant>();
+    }
+
+    @GetMapping(value = "/users/{id}/favPlants", produces = "application/json")
+    public List<Plant> getFavPlants(@PathVariable int id) {
+        var user = userService.get(id);
+        if(user.isPresent())
+            return user.get().getUserPlants().stream().filter(Plant::isFavourite).toList();
+        else
+            return new ArrayList<Plant>();
+    }
+
 }
