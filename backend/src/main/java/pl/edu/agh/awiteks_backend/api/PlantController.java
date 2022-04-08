@@ -34,11 +34,7 @@ public class PlantController extends ModelController<Plant> {
     @PostMapping(path = "/plants/{userId}")
     @ResponseBody
     public String add(@RequestBody Plant plant, @PathVariable int userId) {
-        Optional<User> user = userRepository.get(userId);
-        user.ifPresent(user1 -> {
-            user1.addPlant(plant);
-            plant.setUser(user1);
-        });
+        addPlantToUserList(plant, userId);
         return super.add(plant);
     }
 

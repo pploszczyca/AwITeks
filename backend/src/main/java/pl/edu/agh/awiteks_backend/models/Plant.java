@@ -8,14 +8,16 @@ import java.util.Date;
 public class Plant extends AbstractModel<Plant> {
     private User user;
     private Species spiece;
+    private String note;
     private Insolation actualInsolation;
     private Date lastFertilization;
     private Date lastHydration;
 
-    public Plant(int id, String name, User user, Species spiece, Insolation actualInsolation, Date lastFertilization, Date lastHydration) {
+    public Plant(int id, String name, User user, Species spiece, String note, Insolation actualInsolation, Date lastFertilization, Date lastHydration) {
         super(id, name);
         this.user = user;
         this.spiece = spiece;
+        this.note = note;
         this.actualInsolation = actualInsolation;
         this.lastFertilization = lastFertilization;
         this.lastHydration = lastHydration;
@@ -24,8 +26,8 @@ public class Plant extends AbstractModel<Plant> {
     public Plant() {
     }
 
-    public Plant(int id, String name, User user, Species species, Insolation actualInsolation) {
-        this(id, name, user, species, actualInsolation, new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()));
+    public Plant(int id, String name, User user, Species species, String note, Insolation actualInsolation) {
+        this(id, name, user, species, note, actualInsolation, new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()));
     }
 
     @Override
@@ -35,6 +37,7 @@ public class Plant extends AbstractModel<Plant> {
                 this.name,
                 this.user,
                 this.spiece.copy(),
+                this.note,
                 this.actualInsolation,
                 (Date) this.lastFertilization.clone(),
                 (Date) this.lastHydration.clone()
