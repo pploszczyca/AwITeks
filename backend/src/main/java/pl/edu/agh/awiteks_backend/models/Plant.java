@@ -41,6 +41,14 @@ public class Plant extends AbstractModel<Plant> {
         );
     }
 
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
     public User getUser() {
         return user;
     }

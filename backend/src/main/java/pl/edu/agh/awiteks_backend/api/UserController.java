@@ -43,7 +43,15 @@ public class UserController extends ModelController<User> {
 
     @Override
     @DeleteMapping(value = "/users/{id}")
-    public void deleteSpecies(@PathVariable int id) {
-        super.deleteSpecies(id);
+    public void remove(@PathVariable int id) {
+        removeAllUserPlants(id);
+        super.remove(id);
+    }
+
+    private void removeAllUserPlants(int id) {
+        Optional<User> user = super.get(id);
+        user.ifPresent(presentUser -> presentUser
+                .getUserPlants()
+                .forEach(plant -> plantRepository.remove(plant)));
     }
 }

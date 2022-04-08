@@ -43,7 +43,7 @@ public class SpeciesController extends ModelController<Species> {
 
     @Override
     @DeleteMapping(value = "/species/{id}")
-    public void deleteSpecies(@PathVariable int id) {
-        super.deleteSpecies(id);
+    public void remove(@PathVariable int id) {
+        super.remove(id);
     }
 }

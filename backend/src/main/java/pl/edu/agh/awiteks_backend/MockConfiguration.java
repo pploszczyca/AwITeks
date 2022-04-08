@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @org.springframework.context.annotation.Configuration
-public class Mock {
+public class MockConfiguration {
 
     @Bean
     public Species getMockSpecies() {
@@ -40,6 +40,7 @@ public class Mock {
                 "Kaktusiatko",
                 user,
                 species,
+                " ",
                 Insolation.HIGH
         );
     }
