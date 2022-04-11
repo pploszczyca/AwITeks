@@ -238,7 +238,6 @@ class Calendar extends React.Component<{}, {days: any[], weeks: any[], months: s
     render(){
         return (
             <Container>
-                
                 <Row className="m-0 mt-5">
                 
                     <CalendarCol xs={2}>
