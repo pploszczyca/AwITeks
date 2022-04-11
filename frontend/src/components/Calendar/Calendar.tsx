@@ -1,11 +1,11 @@
 import React from 'react';
 import {Container, Row, Col, ListGroup} from "react-bootstrap";
 import styled from "styled-components";
-import {faArrowLeft, faArrowRight} from '@fortawesome/free-solid-svg-icons'
+import {faArrowLeft, faArrowRight, faDisplay} from '@fortawesome/free-solid-svg-icons'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import Card from "react-bootstrap/Card"
 import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons'
-import { Grid } from '@material-ui/core';
+import { Grid, List } from '@material-ui/core';
 
 
 let Day = styled.div`
@@ -17,15 +17,16 @@ let Day = styled.div`
   font-size: 20px;
   box-shadow: 0 0 7px -3px rgba(0, 0, 0, 1);
 
-  &:hover{
-    background-color: #0FC2C0;
-  }
   &.day-name:hover{
     background-color: white;
   }
   &.day-name{
     height: 2em;
     font-weight: bold;
+  }
+  &.clickable:hover{
+    cursor: pointer;
+    background-color: #0FC2C0;
   }
 `
 
@@ -63,6 +64,22 @@ let CalendarService = styled.div`
   }
 `
 
+let Display = styled.div`
+  &.show{
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    background-color: #0FC000;
+    width: 40%;
+    height: 40%;
+
+
+  }
+  display: none;
+`
+
 const Button = styled.button`
   background-color: black;
   color: white;
@@ -78,11 +95,6 @@ function export_calendar() {
     alert('Export button clicked!');
 }
 
-function click_alert() {
-    alert('Alert clicked!');
-}
-
-
 
 class Calendar extends React.Component<{}, {days: any[], weeks: any[], months: string[], displayedDate: Date}>{
     constructor(props: any) {
@@ -96,6 +108,9 @@ class Calendar extends React.Component<{}, {days: any[], weeks: any[], months: s
         this.getActualDay = this.getActualDay.bind(this)
         this.nextMonth = this.nextMonth.bind(this)
         this.prevMonth = this.prevMonth.bind(this)
+        this.getAlert = this.getAlert.bind(this)
+        this.showAlerts = this.showAlerts.bind(this)
+        this.exitDetails = this.exitDetails.bind(this)
     }
 
     getAlert(iconColor='red'){
@@ -106,6 +121,33 @@ class Calendar extends React.Component<{}, {days: any[], weeks: any[], months: s
             </div>
             )
     }
+
+    showAlerts(dayNum: number){
+        // alert('Alert ' + dayNum + ' clicked!');
+        // this.alerts = true
+        let displayDiv = document.getElementById("display")
+        if(displayDiv !== null){
+            displayDiv.classList.add("show")
+        }
+    }
+
+    exitDetails(){
+        let displayDiv = document.getElementById("display")
+        if(displayDiv !== null){
+            displayDiv.classList.remove("show")
+        }
+    }
+
+    // getAlertInfo(){
+    //     return(
+    //         <List></>
+    //     )
+
+    // }
+
+    // showDetails(dayNum: number){
+
+    // }
 
     getActualDay(fieldNumber: number, date: Date){
         let lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate()
@@ -128,7 +170,7 @@ class Calendar extends React.Component<{}, {days: any[], weeks: any[], months: s
         }
         else {
             // return (<Day>{actualDayNumber}</Day>
-            return (<Day onClick = {click_alert} style={{border: today ? '2px solid rgba(245, 40, 255, 1)' : 'none'}}>
+            return (<Day className="clickable" onClick = {() => this.showAlerts(actualDayNumber)} style={{backgroundColor: today ? '#008f8f' : 'none'}}>
                         {actualDayNumber}
                         <div style={{width: '9rem', height:'4rem', textAlign: 'right', fontSize: 11, border: "none"}}>
                             {this.getAlert("red")}
@@ -172,7 +214,6 @@ class Calendar extends React.Component<{}, {days: any[], weeks: any[], months: s
     render(){
         return (
             <Container>
-                
                 <Row className="m-0 mt-5">
                 
                     <CalendarCol xs={2}>
@@ -220,6 +261,12 @@ class Calendar extends React.Component<{}, {days: any[], weeks: any[], months: s
                         ))}
                     </CalendarCol>
                 </Row>
+                <Display id="display">
+                    Display
+                    <Button onClick={this.exitDetails} style={{bottom: 0, right: 0}}>
+                        Exit
+                    </Button>
+                </Display>
                 
                 
             </Container>
@@ -228,3 +275,12 @@ class Calendar extends React.Component<{}, {days: any[], weeks: any[], months: s
 }
 
 export default Calendar;
+
+
+// toggle
+// z-index
+// position absolute
+
+//zrobic rebase
+//wstaw diva do funkcji
+
