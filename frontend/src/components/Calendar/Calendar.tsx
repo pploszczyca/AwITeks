@@ -95,12 +95,9 @@ function export_calendar() {
     alert('Export button clicked!');
 }
 
-function click_alert() {
-    alert('Alert clicked!');
-}
-
 
 class Calendar extends React.Component<{}, {days: any[], weeks: any[], months: string[], displayedDate: Date}>{
+    clickedDay: number;
     constructor(props: any) {
         super(props);
         this.state = {
@@ -115,20 +112,26 @@ class Calendar extends React.Component<{}, {days: any[], weeks: any[], months: s
         this.getAlert = this.getAlert.bind(this)
         this.showAlerts = this.showAlerts.bind(this)
         this.exitDetails = this.exitDetails.bind(this)
+        this.getAlertInfo = this.getAlertInfo.bind(this)
+        this.getIcon = this.getIcon.bind(this)
+        this.clickedDay = 0;
+    }
+    
+    getIcon(iconColor='red'){
+        return(<FontAwesomeIcon icon={faCircleExclamation} className="px-1" style={{color: iconColor}}/>)
     }
 
     getAlert(iconColor='red'){
         return(
             <div style={{width: '9rem', height:'1rem', border: "none"}}>
-                <FontAwesomeIcon icon={faCircleExclamation} className="px-1" style={{color: iconColor}}/>
-                <FontAwesomeIcon icon={faCircleExclamation} className="px-1" style={{color: iconColor}}/>
+                {this.getIcon(iconColor)}
+                {this.getIcon(iconColor)}
             </div>
             )
     }
 
     showAlerts(dayNum: number){
-        // alert('Alert ' + dayNum + ' clicked!');
-        // this.alerts = true
+        this.clickedDay = dayNum;
         let displayDiv = document.getElementById("display")
         if(displayDiv !== null){
             displayDiv.classList.add("show")
@@ -142,24 +145,18 @@ class Calendar extends React.Component<{}, {days: any[], weeks: any[], months: s
         }
     }
 
-    // getAlertInfo(){
-    //     return(
-    //         <List></>
-    //     )
-
-    // }
-
-    // showDetails(dayNum: number){
-
-    // }
-
     getActualDay(fieldNumber: number, date: Date){
-        let lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate()
         let firstDay = new Date(date.getFullYear(), date.getMonth(), 1).getDay()
         if(firstDay === 0){
             firstDay = 7; // sunday is 7th day in calendar
         }
         let actualDayNumber = fieldNumber - firstDay + 1;
+        return actualDayNumber;
+    }
+
+    getCalendarDay(fieldNumber: number, date: Date){
+        let lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate()
+        let actualDayNumber = this.getActualDay(fieldNumber, date);
         let today = false;
         let currentDate = new Date();
         if(actualDayNumber == currentDate.getDate() && date.getMonth() == currentDate.getMonth() && date.getFullYear() == currentDate.getFullYear()){
@@ -174,7 +171,7 @@ class Calendar extends React.Component<{}, {days: any[], weeks: any[], months: s
         }
         else {
             // return (<Day>{actualDayNumber}</Day>
-            return (<Day className="clickable" onClick = {() => this.showAlerts(actualDayNumber)} style={{backgroundColor: today ? '#008f8f' : 'none'}}>
+            return (<Day className="clickable" onClick = {() => this.showAlerts(actualDayNumber)} style={{border: today ? '3px solid #0FC2C0' : 'none'}}>
                         {actualDayNumber}
                         <div style={{width: '9rem', height:'4rem', textAlign: 'right', fontSize: 11, border: "none"}}>
                             {this.getAlert("red")}
@@ -183,6 +180,27 @@ class Calendar extends React.Component<{}, {days: any[], weeks: any[], months: s
                         </div>
                     </Day>)
         }
+
+    }
+    
+    getAlertInfo(day: number){
+        let dateString = "Alerts for " + day + "." + (this.state.displayedDate.getMonth()+1) + "." + this.state.displayedDate.getFullYear();
+
+        return(
+            <div>
+                <div>
+                    {dateString}
+                </div>
+                <div>
+                    {this.getIcon('red')}
+                    First notification
+                </div>
+                <div>
+                    {this.getIcon('yellow')}
+                    Second notification
+                </div>
+            </div>
+        )
     }
 
     nextMonth(){
@@ -255,7 +273,7 @@ class Calendar extends React.Component<{}, {days: any[], weeks: any[], months: s
                                 {this.state.days.map(day => (
                                     <CalendarCol>
                                         <Card style={{ width: '10rem' }}>
-                                            { this.getActualDay((weekNr*7) + (day + 1), this.state.displayedDate)}
+                                            { this.getCalendarDay((weekNr*7) + (day + 1), this.state.displayedDate)}
                                             
                                         </Card>
                                     </CalendarCol>
@@ -265,9 +283,27 @@ class Calendar extends React.Component<{}, {days: any[], weeks: any[], months: s
                         ))}
                     </CalendarCol>
                 </Row>
+                <Row>
+                    <div style = {{backgroundColor: '#0FC2C0', color: 'white', textAlign:'center'}}>
+                        Legenda:
+                        <div>
+                            {this.getIcon('yellow')}
+                            {" Ważny alert"}
+                        </div>
+                        <div>
+                            {this.getIcon('red')}
+                            {" Ważniejszy alert"}
+                        </div>
+                        <div>
+                            {this.getIcon('black')}
+                            {" Najważniejszy alert"}
+                        </div>
+                        
+                    </div>
+                </Row>
                 <Display id="display">
-                    Display
-                    <Button onClick={this.exitDetails} style={{bottom: 0, right: 0}}>
+                    {this.getAlertInfo(this.clickedDay)}
+                    <Button onClick={this.exitDetails} style={{position: 'absolute', bottom: 0, right: 0}}>
                         Exit
                     </Button>
                 </Display>
@@ -276,6 +312,7 @@ class Calendar extends React.Component<{}, {days: any[], weeks: any[], months: s
             </Container>
         );
     }
+    
 }
 
 export default Calendar;
