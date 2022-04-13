@@ -1,14 +1,17 @@
 package pl.edu.agh.awiteks_backend.models;
 
 public class Species extends AbstractModel<Species> {
+    private static final int NO_CREATOR = -1;
     private int maxAge;
     private Insolation neededInsolation;
     private int waterDose;
     private int waterRoutine;
     private int fertilizationRoutine;
     private Fertilization fertilizationDose;
+    private int creatorId;
 
-    public Species(int id, String name, int maxAge, Insolation neededInsolation, int waterDose, int waterRoutine, int fertilizationRoutine, Fertilization fertilizationDose) {
+    public Species(int id, String name, int maxAge, Insolation neededInsolation, int waterDose,
+                   int waterRoutine, int fertilizationRoutine, Fertilization fertilizationDose, int creatorID) {
         super(id, name);
         this.maxAge = maxAge;
         this.neededInsolation = neededInsolation;
@@ -16,6 +19,12 @@ public class Species extends AbstractModel<Species> {
         this.waterRoutine = waterRoutine;
         this.fertilizationRoutine = fertilizationRoutine;
         this.fertilizationDose = fertilizationDose;
+        this.creatorId = creatorID;
+    }
+
+    public Species(int id, String name, int maxAge, Insolation neededInsolation, int waterDose,
+                   int waterRoutine, int fertilizationRoutine, Fertilization fertilizationDose) {
+        this(id, name, maxAge, neededInsolation, waterDose, waterRoutine, fertilizationRoutine, fertilizationDose, NO_CREATOR);
     }
 
     public Species() {
@@ -33,7 +42,8 @@ public class Species extends AbstractModel<Species> {
                 this.waterDose,
                 this.waterRoutine,
                 this.fertilizationRoutine,
-                this.fertilizationDose
+                this.fertilizationDose,
+                this.creatorId
         );
     }
 
@@ -83,5 +93,13 @@ public class Species extends AbstractModel<Species> {
 
     public void setFertilizationDose(Fertilization fertilizationDose) {
         this.fertilizationDose = fertilizationDose;
+    }
+
+    public int getCreatorId() {
+        return creatorId;
+    }
+
+    public void setCreatorId(int creatorId) {
+        this.creatorId = creatorId;
     }
 }
