@@ -1,19 +1,22 @@
 package pl.edu.agh.awiteks_backend.api;
 
-import pl.edu.agh.awiteks_backend.models.User;
-import pl.edu.agh.awiteks_backend.repositories.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import pl.edu.agh.awiteks_backend.models.Plant;
+import pl.edu.agh.awiteks_backend.models.User;
+import pl.edu.agh.awiteks_backend.repositories.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
 @RestController
 public class UserController extends ModelController<User> {
+    private Repository<Plant> plantRepository;
 
     @Autowired
-    public UserController(Repository<User> userRepository) {
+    public UserController(Repository<User> userRepository, Repository<Plant> plantRepository) {
         super(userRepository);
+        this.plantRepository = plantRepository;
     }
 
     @Override
@@ -43,7 +46,15 @@ public class UserController extends ModelController<User> {
 
     @Override
     @DeleteMapping(value = "/users/{id}")
-    public void deleteSpecies(@PathVariable int id) {
-        super.deleteSpecies(id);
+    public void remove(@PathVariable int id) {
+        removeAllUserPlants(id);
+        super.remove(id);
+    }
+
+    private void removeAllUserPlants(int id) {
+        Optional<User> user = super.get(id);
+        user.ifPresent(presentUser -> presentUser
+                .getUserPlants()
+                .forEach(plant -> plantRepository.remove(plant)));
     }
 }

@@ -34,11 +34,7 @@ public class PlantController extends ModelController<Plant> {
     @PostMapping(path = "/plants/{userId}")
     @ResponseBody
     public String add(@RequestBody Plant plant, @PathVariable int userId) {
-        Optional<User> user = userRepository.get(userId);
-        user.ifPresent(user1 -> {
-            user1.addPlant(plant);
-            plant.setUser(user1);
-        });
+        addPlantToUserList(plant, userId);
         return super.add(plant);
     }
 
@@ -50,7 +46,24 @@ public class PlantController extends ModelController<Plant> {
 
     @Override
     @DeleteMapping(value = "/plants/{id}")
-    public void deleteSpecies(@PathVariable int id) {
-        super.deleteSpecies(id);
+    public void remove(@PathVariable int id) {
+        removePLantFromUserList(id);
+        super.remove(id);
+    }
+
+    private void removePLantFromUserList(int id) {
+        Optional<Plant> plant = super.get(id);
+        plant.ifPresent(presentPlant -> {
+            User user = presentPlant.getUser();
+            user.removePlant(presentPlant);
+        });
+    }
+
+    private void addPlantToUserList(Plant plant, int userId) {
+        Optional<User> user = userRepository.get(userId);
+        user.ifPresent(presentUser -> {
+            presentUser.addPlant(plant);
+            plant.setUser(presentUser);
+        });
     }
 }
