@@ -1,11 +1,9 @@
 import React from 'react';
-import {Container, Row, Col, ListGroup} from "react-bootstrap";
+import {Container, Row, Col} from "react-bootstrap";
 import styled from "styled-components";
-import {faArrowLeft, faArrowRight, faDisplay} from '@fortawesome/free-solid-svg-icons'
+import {faArrowLeft, faArrowRight, faCircleExclamation, faSeedling} from '@fortawesome/free-solid-svg-icons'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import Card from "react-bootstrap/Card"
-import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons'
-import { Grid, List } from '@material-ui/core';
 
 
 let Day = styled.div`
@@ -71,7 +69,7 @@ let Display = styled.div`
     top: 50%;
     left: 50%;
     transform: translate(-50%,-50%);
-    background-color: #0FC000;
+    background-color: #0CABA8;
     width: 40%;
     height: 40%;
 
@@ -95,20 +93,16 @@ function export_calendar() {
     alert('Export button clicked!');
 }
 
-function click_alert() {
-    alert('Alert clicked!');
-}
 
-
-class Calendar extends React.Component<{}, {days: any[], weeks: any[], months: string[], displayedDate: Date}>{
-    clickedDay: number;
+class Calendar extends React.Component<{}, {days: any[], weeks: any[], months: string[], displayedDate: Date, clickedDay: number}>{
     constructor(props: any) {
         super(props);
         this.state = {
             days: Array.from(Array(7).keys()),
             weeks: Array.from(Array(6).keys()),
             months: ["Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czerwiec", "Lipiec", "Sierpień", "Wrzesień", "Październik", "Listopad", "Grudzień"],
-            displayedDate: new Date()
+            displayedDate: new Date(),
+            clickedDay: 0
         }
         this.getActualDay = this.getActualDay.bind(this)
         this.nextMonth = this.nextMonth.bind(this)
@@ -118,7 +112,6 @@ class Calendar extends React.Component<{}, {days: any[], weeks: any[], months: s
         this.exitDetails = this.exitDetails.bind(this)
         this.getAlertInfo = this.getAlertInfo.bind(this)
         this.getIcon = this.getIcon.bind(this)
-        this.clickedDay = 0;
     }
     
     getIcon(iconColor='red'){
@@ -135,7 +128,7 @@ class Calendar extends React.Component<{}, {days: any[], weeks: any[], months: s
     }
 
     showAlerts(dayNum: number){
-        this.clickedDay = dayNum;
+        this.setState({clickedDay: dayNum})
         let displayDiv = document.getElementById("display")
         if(displayDiv !== null){
             displayDiv.classList.add("show")
@@ -163,7 +156,7 @@ class Calendar extends React.Component<{}, {days: any[], weeks: any[], months: s
         let actualDayNumber = this.getActualDay(fieldNumber, date);
         let today = false;
         let currentDate = new Date();
-        if(actualDayNumber == currentDate.getDate() && date.getMonth() == currentDate.getMonth() && date.getFullYear() == currentDate.getFullYear()){
+        if(actualDayNumber === currentDate.getDate() && date.getMonth() === currentDate.getMonth() && date.getFullYear() === currentDate.getFullYear()){
             today = true;
         }
 
@@ -182,23 +175,29 @@ class Calendar extends React.Component<{}, {days: any[], weeks: any[], months: s
         }
 
     }
+
+    createNotification(text: string, iconColor: string, link: string){
+        return(
+            <div>
+                {this.getIcon(iconColor)}
+                {text}
+                <a href={link} >
+                    <FontAwesomeIcon icon={faSeedling} color='green' />
+                </a>
+                
+            </div>
+        )
+    }
     
-    getAlertInfo(day: number){
+    getAlertInfo(){
+        let day = this.state.clickedDay
         let dateString = "Alerts for " + day + "." + (this.state.displayedDate.getMonth()+1) + "." + this.state.displayedDate.getFullYear();
 
         return(
             <div>
-                <div>
-                    {dateString}
-                </div>
-                <div>
-                    {this.getIcon('red')}
-                    First notification
-                </div>
-                <div>
-                    {this.getIcon('yellow')}
-                    Second notification
-                </div>
+                <div>{dateString}</div>
+                {this.createNotification("First notification ",'red',"#")}
+                {this.createNotification("Second notification ",'yellow',"#")}
             </div>
         )
     }
@@ -286,7 +285,7 @@ class Calendar extends React.Component<{}, {days: any[], weeks: any[], months: s
                     </CalendarCol>
                 </Row>
                 <Row>
-                    <div style = {{backgroundColor: '#0FC2C0', color: 'white', textAlign:'center'}}>
+                    <div style = {{backgroundColor: '#0CABA8', color: 'white', textAlign:'center'}}>
                         Legenda:
                         <div>
                             {this.getIcon('yellow')}
@@ -304,7 +303,7 @@ class Calendar extends React.Component<{}, {days: any[], weeks: any[], months: s
                     </div>
                 </Row>
                 <Display id="display">
-                    {this.getAlertInfo(this.clickedDay)}
+                    {this.getAlertInfo()}
                     <Button onClick={this.exitDetails} style={{position: 'absolute', bottom: 0, right: 0}}>
                         Exit
                     </Button>
