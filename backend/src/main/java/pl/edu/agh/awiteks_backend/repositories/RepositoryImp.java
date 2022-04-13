@@ -49,7 +49,9 @@ public class RepositoryImp<T> implements Repository<T> {
 
     @Override
     public void update(T object) {
-        int index = modelList.indexOf(object);
-        modelList.set(index, (AbstractModel<T>) object);
+        AbstractModel<T> model = (AbstractModel<T>) object;
+        this.get(model.getId()).ifPresent(present ->
+                modelList
+                        .set(modelList.indexOf(present), (AbstractModel<T>) object));
     }
 }

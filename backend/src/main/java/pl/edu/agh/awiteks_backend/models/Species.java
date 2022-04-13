@@ -61,7 +61,6 @@ public class Species extends AbstractModel<Species> {
         return fertilizationDose;
     }
 
-
     public void setMaxAge(int maxAge) {
         this.maxAge = maxAge;
     }

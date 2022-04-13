@@ -57,6 +57,4 @@ public class User extends AbstractModel<User> {
     public void setUserPlants(List<Plant> userPlants) {
         this.userPlants = userPlants;
     }
-
-
 }
