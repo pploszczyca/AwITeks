@@ -1,6 +1,7 @@
 package pl.edu.agh.awiteks_backend.api;
 
 import pl.edu.agh.awiteks_backend.models.Plant;
+import pl.edu.agh.awiteks_backend.models.Species;
 import pl.edu.agh.awiteks_backend.models.User;
 import pl.edu.agh.awiteks_backend.repositories.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +13,13 @@ import java.util.Optional;
 @RestController
 public class PlantController extends ModelController<Plant> {
     private final Repository<User> userRepository;
+    private final Repository<Species> speciesRepository;
 
     @Autowired
-    public PlantController(Repository<Plant> modelRepository, Repository<User> userRepository) {
+    public PlantController(Repository<Plant> modelRepository, Repository<User> userRepository, Repository<Species> speciesRepository) {
         super(modelRepository);
         this.userRepository = userRepository;
+        this.speciesRepository = speciesRepository;
     }
 
     @Override
@@ -31,9 +34,10 @@ public class PlantController extends ModelController<Plant> {
         return super.get(id);
     }
 
-    @PostMapping(path = "/plants/{userId}")
+    @PostMapping(path = "/plants/{userId}/{speciesId}")
     @ResponseBody
-    public String add(@RequestBody Plant plant, @PathVariable int userId) {
+    public String add(@RequestBody Plant plant, @PathVariable int userId, @PathVariable int speciesId) {
+        this.speciesRepository.get(speciesId).ifPresent(plant::setSpiece);
         addPlantToUserList(plant, userId);
         return super.add(plant);
     }
