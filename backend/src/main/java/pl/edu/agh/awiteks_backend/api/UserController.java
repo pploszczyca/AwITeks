@@ -11,12 +11,9 @@ import java.util.Optional;
 
 @RestController
 public class UserController extends ModelController<User> {
-    private Repository<Plant> plantRepository;
-
     @Autowired
-    public UserController(Repository<User> userRepository, Repository<Plant> plantRepository) {
+    public UserController(Repository<User> userRepository) {
         super(userRepository);
-        this.plantRepository = plantRepository;
     }
 
     @Override
@@ -47,14 +44,6 @@ public class UserController extends ModelController<User> {
     @Override
     @DeleteMapping(value = "/users/{id}")
     public void remove(@PathVariable int id) {
-        removeAllUserPlants(id);
         super.remove(id);
-    }
-
-    private void removeAllUserPlants(int id) {
-        Optional<User> user = super.get(id);
-        user.ifPresent(presentUser -> presentUser
-                .getUserPlants()
-                .forEach(plant -> plantRepository.remove(plant)));
     }
 }

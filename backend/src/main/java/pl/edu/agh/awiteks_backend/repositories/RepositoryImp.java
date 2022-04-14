@@ -18,28 +18,28 @@ public class RepositoryImp<T> implements Repository<T> {
     }
 
     @Override
-    public void add(T species) {
-        modelList.add((AbstractModel<T>) species);
+    public void add(T object) {
+        modelList.add((AbstractModel<T>) object);
     }
 
     @Override
-    public void remove(T species) {
-        modelList.remove((AbstractModel<T>) species);
+    public void remove(T object) {
+        modelList.remove((AbstractModel<T>) object);
     }
 
     @Override
-    public void remove(int speciesID) {
+    public void remove(int objectID) {
         Optional<AbstractModel<T>> speciesToDelete = modelList
                 .stream()
-                .filter(species -> species.getId() == speciesID)
+                .filter(species -> species.getId() == objectID)
                 .findFirst();
 
         speciesToDelete.ifPresent(species -> modelList.remove(species));
     }
 
     @Override
-    public Optional<T> get(int modelID) {
-        return (Optional<T>) modelList.stream().filter(model -> model.getId() == modelID).findFirst();
+    public Optional<T> get(int objectID) {
+        return (Optional<T>) modelList.stream().filter(model -> model.getId() == objectID).findFirst();
     }
 
     @Override
