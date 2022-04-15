@@ -1,4 +1,3 @@
-import React from 'react';
 import './App.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import Dashboard from "../Dashboard/Dashboard";
@@ -8,6 +7,7 @@ import Sidebar from "../Sidebar/Sidebar";
 import { Col, Container, Row } from "react-bootstrap";
 import SiteTitleAndIcons from "../SiteTitleAndIcons/SiteTitleAndIcons";
 import Calendar from "../Calendar/Calendar";
+import PlantDetailsView from '../PlantDetailsView/PlantDetailsView';
 
 
 
@@ -28,6 +28,7 @@ function App() {
                                 <Route path="/" element={<Dashboard />} />
                                 <Route path="/my_plants" element={<PlantsView />} />
                                 <Route path="/calendar" element={<Calendar />} />
+                                <Route path="/my_plants/:plantId" element={<PlantDetailsView />} />
                                 <Route path="*" element={<NotFound />} />
                             </Routes>
                         </Col>

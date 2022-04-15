@@ -18,10 +18,17 @@ export const Day = styled.div`
 `;
 
 
-export const NotificationWrapper = styled.div`
+export const NotificationWrapperMid = styled.div`
     border: none;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+`;
+
+export const NotificationWrapperRight = styled.div`
+    border: none;
+    position: absolute;
+    top: 0px;
+    right: 3px;
 `;
