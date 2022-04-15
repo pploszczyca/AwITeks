@@ -10,7 +10,7 @@ const PageTitle = styled.h1`
 
 function SiteTitleAndIcons() {
     return (
-        <Container className="mt-5">
+        <Container className="mt-5" >
             <Row>
                 <Col xs={10}>
                     <PageTitle>Witaj, XYZ!</PageTitle>
