@@ -1,12 +1,12 @@
 import React from 'react';
-import {Col, Container, Row} from "react-bootstrap";
+import { Col, Container, Row } from "react-bootstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBell, faCircleUser as faUser } from '@fortawesome/free-solid-svg-icons'
 import styled from "styled-components";
 
-let PageTitle = styled.h1`
+const PageTitle = styled.h1`
   color: #0FC2C0;
-`
+`;
 
 function SiteTitleAndIcons() {
     return (
@@ -16,7 +16,7 @@ function SiteTitleAndIcons() {
                     <PageTitle>Witaj, XYZ!</PageTitle>
                 </Col>
                 <Col xs={2}>
-                    <Row style={{fontSize: 32}}>
+                    <Row style={{ fontSize: 32 }}>
                         <Col xs={4}>
                             <FontAwesomeIcon icon={faBell} />
                         </Col>
