@@ -7,7 +7,7 @@ import { mockPlantSummaries, mockPlantTypes } from "../../utils/mockData";
 import { PlantSummary } from "../../utils/Plant";
 import PlantSummaryCard from "../../PlantSummaryCard/PlantSummaryCard";
 import Dropdown from "../utils/Dropdown";
-
+import {PlantForm} from "../AddPlantForm/PlantForm";
 
 
 const PlantsView: React.FC<{}> = () => {
@@ -15,6 +15,8 @@ const PlantsView: React.FC<{}> = () => {
         // fetch from API
         return mockPlantTypes;
     })
+
+    let [show, setShow] = useState(false);
 
     const [plantSummaryList, updatePlants] = useState(() => {
         return mockPlantSummaries;
@@ -31,6 +33,10 @@ const PlantsView: React.FC<{}> = () => {
 
     const searchInputRef: React.MutableRefObject<HTMLInputElement | null> = useRef(null);
 
+    function updateShowState(newValue: boolean){
+        setShow(newValue);
+    }
+
     return (
         <div style={{ marginTop: 30 }}>
             <SettingsWrapper>
@@ -43,7 +49,7 @@ const PlantsView: React.FC<{}> = () => {
                             </SearchBoxContainer>
                         </Col>
                         <Col md={{ span: 2 }}>
-                            <AddPlantButton>Dodaj roślinę</AddPlantButton>
+                            <AddPlantButton onClick={() => updateShowState(true)}>Dodaj roślinę</AddPlantButton>
                         </Col>
                     </Row>
 
@@ -101,6 +107,8 @@ const PlantsView: React.FC<{}> = () => {
                     </Col>
                 ))}
             </Row>
+
+            <PlantForm show={show} updateState={updateShowState}/>
         </div>
     )
 }
