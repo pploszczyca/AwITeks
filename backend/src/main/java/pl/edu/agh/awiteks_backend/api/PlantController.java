@@ -1,5 +1,6 @@
 package pl.edu.agh.awiteks_backend.api;
 
+import io.swagger.v3.oas.annotations.Operation;
 import pl.edu.agh.awiteks_backend.models.Plant;
 import pl.edu.agh.awiteks_backend.models.Species;
 import pl.edu.agh.awiteks_backend.models.User;
@@ -23,17 +24,20 @@ public class PlantController extends ModelController<Plant> {
     }
 
     @Override
+    @Operation(summary = "Get all plants")
     @GetMapping(value = "/plants", produces = "application/json")
     public List<Plant> getAll() {
         return super.getAll();
     }
 
     @Override
+    @Operation(summary = "Get plant by id")
     @GetMapping(value = "/plants/{id}", produces = "application/json")
     public Optional<Plant> get(@PathVariable int id) {
         return super.get(id);
     }
 
+    @Operation(summary = "Add new plant, assign it to specifier user and specie")
     @PostMapping(path = "/plants/{userId}/{speciesId}")
     @ResponseBody
     public String add(@RequestBody Plant plant, @PathVariable int userId, @PathVariable int speciesId) {
@@ -43,12 +47,14 @@ public class PlantController extends ModelController<Plant> {
     }
 
     @Override
+    @Operation(summary = "Update plant")
     @PutMapping(value = "/plants", consumes = "application/json")
     public void update(@RequestBody Plant plant) {
         super.update(plant);
     }
 
     @Override
+    @Operation(summary = "Delete plant by id")
     @DeleteMapping(value = "/plants/{id}")
     public void remove(@PathVariable int id) {
         removePLantFromUserList(id);
