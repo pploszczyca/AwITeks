@@ -7,7 +7,7 @@ export const SearchBoxContainer = styled.div`
     font-size: 18px;
     box-shadow: 0 0 13px -7px rgba(66, 68, 90, 1);
     border-radius: 25px;
-
+    background-color: white;
     &:first-child {
         padding-left: 12px;
     }

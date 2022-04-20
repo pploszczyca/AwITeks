@@ -8,7 +8,7 @@ export const ContentContainer = styled(Container)`
   max-width: calc(var(--content-width) - 2*var(--content-margin-x))!important;;
   margin: var(--content-margin-y) var(--content-margin-x);
   padding: 0;
-  
+
   @media(max-width: 767px){
     left: 50%!important;
     transform: translateX(-50%)!important;
