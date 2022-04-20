@@ -10,27 +10,31 @@ import SiteTitleAndIcons from "../SiteTitleAndIcons/SiteTitleAndIcons";
 import Calendar from "../Calendar/Calendar";
 
 
+
 function App() {
     return (
-        <Container className="App" fluid style={{ paddingLeft: 0, paddingRight: 0 }}>
-            <Row>
-                <Router>
-                    <Col xs={2}>
-                        <Sidebar />
-                    </Col>
-                    <Col xs={10}>
-                        <SiteTitleAndIcons />
-                        <Routes>
-                            {/*todo: add next Route elements e.g forum and settings*/}
-                            <Route path="/" element={<Dashboard/>}/>
-                            <Route path="/my_plants" element={<PlantsView/>}/>
-                            <Route path="/calendar" element={<Calendar/>}/>
-                            <Route path="*" element={<NotFound/>}/>
-                        </Routes>
-                    </Col>
-                </Router>
-            </Row>
-        </Container>
+        <>
+            <SiteTitleAndIcons />
+
+            <Container fluid>
+                <Row>
+                    <Router>
+                        <Col xs={2}>
+                            <Sidebar />
+                        </Col>
+                        <Col xs={10}>
+                            <Routes>
+                                {/*todo: add next Route elements e.g forum and settings*/}
+                                <Route path="/" element={<Dashboard />} />
+                                <Route path="/my_plants" element={<PlantsView />} />
+                                <Route path="/calendar" element={<Calendar />} />
+                                <Route path="*" element={<NotFound />} />
+                            </Routes>
+                        </Col>
+                    </Router>
+                </Row>
+            </Container>
+        </>
     );
 }
 
