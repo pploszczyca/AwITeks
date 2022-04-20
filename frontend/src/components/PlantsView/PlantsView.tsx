@@ -8,6 +8,7 @@ import { PlantSummary } from "../../utils/Plant";
 import PlantSummaryCard from "../../PlantSummaryCard/PlantSummaryCard";
 import Dropdown from "../utils/Dropdown";
 import {PlantForm} from "../AddPlantForm/PlantForm";
+import {ContentContainer} from "../App/AppStyle";
 
 
 const PlantsView: React.FC<{}> = () => {
@@ -38,26 +39,26 @@ const PlantsView: React.FC<{}> = () => {
     }
 
     return (
-        <div style={{ marginTop: 30 }}>
+        <ContentContainer className="mt-5">
             <SettingsWrapper>
                 <SettingsBox>
-                    <Row mt={4}>
-                        <Col md={{ span: 3 }}>
+                    <Row>
+                        <Col lg={7} sm={12} className="mt-3">
                             <SearchBoxContainer onClick={() => searchInputRef.current?.focus()}>
-                                <FontAwesomeIcon icon={faMagnifyingGlass} />
-                                <SearchBox ref={searchInputRef} type="text" placeholder="wyszukaj roślinę..."></SearchBox>
+                                <FontAwesomeIcon icon={faMagnifyingGlass} fontSize={20}/>
+                                <SearchBox ref={searchInputRef} type="text" placeholder="wyszukaj roślinę..."/>
                             </SearchBoxContainer>
                         </Col>
-                        <Col md={{ span: 2 }}>
+                        <Col lg={5} className="mt-3">
                             <AddPlantButton onClick={() => updateShowState(true)}>Dodaj roślinę</AddPlantButton>
                         </Col>
                     </Row>
 
-                    <Row style={{ marginTop: 20 }}>
-                        <Col md={{ span: 3 }}>
+                    <Row>
+                        <Col lg={7} sm={12} className="mt-3">
                             <Row as={PlantTypesContainer}>
                                 {plantTypes.map((plantType, id) => (
-                                    <Col md={6} key={id}>
+                                    <Col xl={4} lg={6} key={id}>
                                         < Form.Check
                                             inline
                                             label={plantType}
@@ -70,30 +71,31 @@ const PlantsView: React.FC<{}> = () => {
                             </Row>
                         </Col>
 
-                        <Col md={{ span: 2 }} className="mt-auto">
-                            <div style={{ position: "relative" }}>
-                                <Dropdown
-                                    label="Sortuj według"
-                                    style={{
-                                        background: "#008F8C",
-                                        color: "#FFF",
-                                    }}
-                                >
-                                    <DropdownItem>Data dodania</DropdownItem>
-                                    <DropdownItem>Czas posiadania</DropdownItem>
-                                    <DropdownItem>Opcja Trzecia</DropdownItem>
-                                    <DropdownItem>Opcja Czwarta</DropdownItem>
-                                </Dropdown>
-                            </div>
-                        </Col>
-
-                        <Col md={{ span: 2 }} className="mt-auto">
-                            < Form.Check
-                                label="Tylko ulubione"
-                                name="onlyFavourites"
-                                type="checkbox"
-                                id="onlyFavourites"
-                            />
+                        <Col lg={5} className="mt-3">
+                            <Row className="px-3">
+                                < Form.Check
+                                    label="Tylko ulubione"
+                                    name="onlyFavourites"
+                                    type="checkbox"
+                                    id="onlyFavourites"
+                                />
+                            </Row>
+                            <Row>
+                                <div style={{ position: "relative" }}>
+                                    <Dropdown
+                                        label="Sortuj według"
+                                        style={{
+                                            background: "#008F8C",
+                                            color: "#FFF",
+                                        }}
+                                    >
+                                        <DropdownItem>Data dodania</DropdownItem>
+                                        <DropdownItem>Czas posiadania</DropdownItem>
+                                        <DropdownItem>Opcja Trzecia</DropdownItem>
+                                        <DropdownItem>Opcja Czwarta</DropdownItem>
+                                    </Dropdown>
+                                </div>
+                            </Row>
                         </Col>
                     </Row>
                 </SettingsBox>
@@ -102,14 +104,14 @@ const PlantsView: React.FC<{}> = () => {
 
             <Row as={ListContainer}>
                 {plantSummaryList.map(plant => (
-                    <Col key={plant.id} xl={3} lg={6} md={12} style={{ marginBottom: 80 }}>
+                    <Col key={plant.id} xxl={3} xl={4} md={6} sm={12} style={{ marginBottom: 80 }} className="d-flex justify-content-center">
                         <PlantSummaryCard plantSummary={plant} toggleFavourite={toggleFavourite} />
                     </Col>
                 ))}
             </Row>
 
             <PlantForm show={show} updateState={updateShowState}/>
-        </div>
+        </ContentContainer>
     )
 }
 
