@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Row } from "react-bootstrap";
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons'
 import Card from "react-bootstrap/Card"
-import { CalendarCol, CalendarService, ExportButton, DayWrapperCard, DayHeader, Arrow, CalendarContainer, CalendarServiceBottom } from './CalendarStyles';
+import { CalendarCol, CalendarService, ExportButton, DayWrapperCard, DayHeader, Arrow, CalendarServiceBottom } from './CalendarStyles';
 import { DAYS, getTileDate, getTileNotifications, MONTHS, nextMonth, prevMonth, WEEKS } from './utils';
 import { mockCalendarNotifications } from '../../utils/mockData';
 import { CalendarDay } from '../CalendarDay/CalendarDay';
