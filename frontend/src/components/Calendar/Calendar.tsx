@@ -7,6 +7,7 @@ import { DAYS, getTileDate, getTileNotifications, MONTHS, nextMonth, prevMonth, 
 import { mockCalendarNotifications } from '../../utils/mockData';
 import { CalendarDay } from '../CalendarDay/CalendarDay';
 import { CalendarNotification } from '../../utils/CalendarNotification';
+import {ContentContainer} from "../App/AppStyle";
 
 
 type CalendarProps = {
@@ -53,12 +54,12 @@ const Calendar: React.FC<CalendarProps> = ({ plantId, variant = 'big' }) => {
 
 
     return (
-        <CalendarContainer>
+        <ContentContainer>
             <Row className="mt-5">
                 {variant === 'big' ?
-                    (<CalendarCol xs={2}>
+                    (<CalendarCol xxl={3} xl={12}>
                         <CalendarService>
-                            <div>{displayedDate.getDate()}</div>
+                            <div><p>{displayedDate.getDate()}</p></div>
 
                             <div>
                                 <Arrow
@@ -105,7 +106,7 @@ const Calendar: React.FC<CalendarProps> = ({ plantId, variant = 'big' }) => {
                     )
                 }
 
-                <CalendarCol xs={variant === 'big' ? 10 : 12} >
+                <CalendarCol xxl={variant === 'big' ? 9 : 12} >
                     <Row className="m-0">
                         <CalendarCol><DayHeader className="day-name">Pon</DayHeader></CalendarCol>
                         <CalendarCol><DayHeader className="day-name">Wt</DayHeader></CalendarCol>
@@ -128,7 +129,7 @@ const Calendar: React.FC<CalendarProps> = ({ plantId, variant = 'big' }) => {
                     ))}
                 </CalendarCol>
             </Row>
-        </CalendarContainer>
+        </ContentContainer>
     );
 }
 

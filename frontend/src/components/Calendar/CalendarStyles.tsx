@@ -5,6 +5,7 @@ import styled from "styled-components";
 
 export const CalendarCol = styled(Col)`
     padding: 1px;
+    //width: calc(var());
 `;
 
 export const DayWrapperCard = styled(Card)`
@@ -14,7 +15,7 @@ export const DayWrapperCard = styled(Card)`
 
 export const CalendarService = styled.div`
   height: 100%;
-  min-width: 180px;
+  min-width: 210px;
   background-color: #0FC2C0;
   display: flex;
   flex-direction: column;
@@ -25,21 +26,29 @@ export const CalendarService = styled.div`
   color: white;
   
   & div:first-child{
-    font-size: 70px;
+    font-size: 120px;
   }
   
   & div:nth-child(2), & div:last-child{
-    font-size: 25px;
+    font-size: 30px;
   }
   & div:nth-last-child(2){
-    font-size: 25px;
+    font-size: 30px;
   }
   
   & div:nth-child(2){
     display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60px;
+    width: 100%;
+    padding: 0 5px;
+    line-height: 60px;
     
     & p{
-      width: 150px;
+      min-width: 80%;
+      margin: 0;
+      padding: 0 5px;
     }
   }
 `;
@@ -51,7 +60,7 @@ export const CalendarContainer = styled.div`
 
 
 export const Arrow = styled(FontAwesomeIcon)`
-    color: black;
+    color: white;
 
     :hover {
         opacity: 0.7;
@@ -65,14 +74,15 @@ export const ExportButton = styled.button`
   outline: none;
   border: none;
   color: white;
-  font-size: 20px;
-  padding: 10px 40px;
+  font-size: 25px;
+  padding: 10px 0;
   border-radius: 5px;
-  margin: 40px 0px;
-  position: absolute;
+  margin: 40px 0;
+  position: relative;
   bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
+  min-width: 200px;
   :hover {
         opacity: 0.9;
         cursor: pointer;
