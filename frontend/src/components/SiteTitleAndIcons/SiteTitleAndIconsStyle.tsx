@@ -21,4 +21,12 @@ export const FixedContainer = styled.div`
     transform: translateX(-100%);
     padding-right: var(--content-margin-x);
   }
+
+  @media(max-width: 767px){
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90vw!important;
+    max-width: 90vw!important;
+    margin: 0;
+  }
 `
