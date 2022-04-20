@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons'
 import { NotificationItem } from '../../utils/CalendarNotification'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Day, NotificationWrapper } from './CalendarDayStyles';
+import { Day, NotificationWrapperMid, NotificationWrapperRight } from './CalendarDayStyles';
 import { Modal, Button } from 'react-bootstrap';
 import Moment from 'moment';
 import { getSeverityColor, getMaxSeverity, isToday } from './utils';
@@ -12,16 +12,19 @@ type CalendarDayProps = {
     displayedDate: Date;
     tileDate: Date;
     notifications: NotificationItem[];
+    variant: 'big' | 'small';
 };
 
 
-export const CalendarDay: React.FC<CalendarDayProps> = ({ displayedDate, tileDate, notifications }) => {
+export const CalendarDay: React.FC<CalendarDayProps> = ({ displayedDate, tileDate, notifications, variant }) => {
     const [show, setShow] = useState(false);
 
     if (tileDate.getMonth() !== displayedDate.getMonth())
         return (<Day />);
 
     const notificationColor = notifications.length > 0 ? getSeverityColor(getMaxSeverity(notifications)) : 'none';
+
+    const NotificationWrapper = variant === 'big' ? NotificationWrapperMid : NotificationWrapperRight;
 
     return (
         <>

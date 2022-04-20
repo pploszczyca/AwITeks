@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { faHeart as faHeartSolid } from '@fortawesome/free-solid-svg-icons'
 import { faHeart as faHeartRegular } from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -12,13 +13,15 @@ interface PlantSummaryProps {
 };
 
 const PlantSummaryCard: React.FC<PlantSummaryProps> = ({ plantSummary: plant, toggleFavourite }) => {
+    const navigate = useNavigate();
+
     return (
         <Card as={StyledCard} className='text-center'>
             <Card.Img variant="top" src={plant.imgUrl} />
             <Card.Body>
                 <Card.Title>{plant.name}</Card.Title>
                 <Card.Text>
-                    {plant.scientificName}
+                    {plant.speciesName}
                 </Card.Text>
 
                 <Card.Text>
@@ -31,7 +34,7 @@ const PlantSummaryCard: React.FC<PlantSummaryProps> = ({ plantSummary: plant, to
                         />
                     </FavoriteIcon>
                 </Card.Text>
-                <Button variant="primary" >Szczegóły</Button>
+                <Button variant="primary" onClick={() => navigate(`/my_plants/${plant.id}`)}>Szczegóły</Button>
             </Card.Body>
         </Card>
     )

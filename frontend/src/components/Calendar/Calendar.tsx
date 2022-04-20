@@ -2,15 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { Row } from "react-bootstrap";
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons'
 import Card from "react-bootstrap/Card"
-import { CalendarCol, CalendarService, ExportButton, DayWrapperCard, DayHeader, Arrow, CalendarContainer } from './CalendarStyles';
+import { CalendarCol, CalendarService, ExportButton, DayWrapperCard, DayHeader, Arrow, CalendarContainer, CalendarServiceBottom } from './CalendarStyles';
 import { DAYS, getTileDate, getTileNotifications, MONTHS, nextMonth, prevMonth, WEEKS } from './utils';
-import { calendarNotifications } from '../../utils/mockData';
+import { mockCalendarNotifications } from '../../utils/mockData';
 import { CalendarDay } from '../CalendarDay/CalendarDay';
 import { CalendarNotification } from '../../utils/CalendarNotification';
 
 
 type CalendarProps = {
     plantId?: number // if undefined, all plants should be considered
+    variant?: 'small' | 'big'
 };
 
 function exportCalendar() {
@@ -18,7 +19,7 @@ function exportCalendar() {
     console.log("export calendar requested");
 };
 
-const Calendar: React.FC<CalendarProps> = ({ plantId }) => {
+const Calendar: React.FC<CalendarProps> = ({ plantId, variant = 'big' }) => {
     const [displayedDate, setDisplayedDate] = useState(new Date());
     const [notifications, setNotifications] = useState([] as CalendarNotification[]);
 
@@ -27,11 +28,11 @@ const Calendar: React.FC<CalendarProps> = ({ plantId }) => {
     useEffect(() => {
         if (plantId == null) {
             // fetch all for this user from backend (or cache), only for this month
-            setNotifications(calendarNotifications.filter(({ month }) => displayedDate.getMonth() === month));
+            setNotifications(mockCalendarNotifications.filter(({ month }) => displayedDate.getMonth() === month));
         }
         else {
             // fetch only for specific plant, used for calendar on single plant view
-            setNotifications(calendarNotifications.filter(({ month, items }) => displayedDate.getMonth() === month
+            setNotifications(mockCalendarNotifications.filter(({ month, items }) => displayedDate.getMonth() === month
                 && items.find(({ plantId: id }) => id === plantId) != null));
         }
     }, [displayedDate, plantId, /*user*/]);
@@ -46,6 +47,7 @@ const Calendar: React.FC<CalendarProps> = ({ plantId }) => {
             displayedDate={displayedDate}
             notifications={tileNotifications}
             tileDate={tileDate}
+            variant={variant}
         />;
     }
 
@@ -53,40 +55,57 @@ const Calendar: React.FC<CalendarProps> = ({ plantId }) => {
     return (
         <CalendarContainer>
             <Row className="mt-5">
+                {variant === 'big' ?
+                    (<CalendarCol xs={2}>
+                        <CalendarService>
+                            <div>{displayedDate.getDate()}</div>
 
-                <CalendarCol xs={2}>
-                    <CalendarService>
-                        <div>{displayedDate.getDate()}</div>
+                            <div>
+                                <Arrow
+                                    icon={faArrowLeft}
+                                    onClick={() => setDisplayedDate(displayedDate => prevMonth(displayedDate))}
+                                />
 
-                        <div>
+                                <p>{MONTHS[displayedDate.getMonth()]}</p>
+
+                                <Arrow
+                                    icon={faArrowRight}
+                                    onClick={() => setDisplayedDate(displayedDate => nextMonth(displayedDate))}
+                                />
+                            </div>
+
+                            <div>
+                                {displayedDate.getFullYear()}
+                            </div>
+
+                            <div>
+                                <ExportButton onClick={exportCalendar}>
+                                    Export
+                                </ExportButton>
+                            </div>
+
+
+                        </CalendarService>
+                    </CalendarCol>)
+                    :
+                    (
+                        <CalendarServiceBottom>
                             <Arrow
                                 icon={faArrowLeft}
                                 onClick={() => setDisplayedDate(displayedDate => prevMonth(displayedDate))}
                             />
-
-                            <p>{MONTHS[displayedDate.getMonth()]}</p>
-
+                            <div>
+                                {`${displayedDate.getDate()} ${MONTHS[displayedDate.getMonth()]} ${displayedDate.getFullYear()}`}
+                            </div>
                             <Arrow
                                 icon={faArrowRight}
                                 onClick={() => setDisplayedDate(displayedDate => nextMonth(displayedDate))}
                             />
-                        </div>
+                        </CalendarServiceBottom>
+                    )
+                }
 
-                        <div>
-                            {displayedDate.getFullYear()}
-                        </div>
-
-                        <div>
-                            <ExportButton onClick={exportCalendar}>
-                                Export
-                            </ExportButton>
-                        </div>
-
-
-                    </CalendarService>
-                </CalendarCol>
-
-                <CalendarCol xs={10} >
+                <CalendarCol xs={variant === 'big' ? 10 : 12} >
                     <Row className="m-0">
                         <CalendarCol><DayHeader className="day-name">Pon</DayHeader></CalendarCol>
                         <CalendarCol><DayHeader className="day-name">Wt</DayHeader></CalendarCol>
@@ -100,7 +119,7 @@ const Calendar: React.FC<CalendarProps> = ({ plantId }) => {
                         <Row className="m-0" key={weekNr}>
                             {DAYS.map(day => (
                                 <CalendarCol key={`${weekNr}.${day}`}>
-                                    <Card as={DayWrapperCard}>
+                                    <Card as={DayWrapperCard} style={{ minHeight: variant === 'small' ? "5rem" : "" }}>
                                         {buildCalendarDay(weekNr, day)}
                                     </Card>
                                 </CalendarCol>

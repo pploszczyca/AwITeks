@@ -86,3 +86,17 @@ export const DayHeader = styled.div`
   height: 2em;
   font-weight: bold;
 `;
+
+
+export const CalendarServiceBottom = styled.div`
+    width: 100%;
+    box-shadow: 0 0 7px -3px rgba(0, 0, 0, 1);
+    font-size: 120%;
+    background-color: #0FC2C0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    color: white;
+`;
