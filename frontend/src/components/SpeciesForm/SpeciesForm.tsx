@@ -1,9 +1,7 @@
 import React, {useState} from 'react';
 import {Button, Col, Container, Modal, Row} from "react-bootstrap";
 import {Formik, Form, Field, ErrorMessage, FormikValues} from 'formik';
-import {mockPlantTypes} from "../../utils/mockData";
 import {NotificationSeverity} from "../../utils/CalendarNotification";
-import Moment from 'moment';
 
 
 type SpeciesFormProps = {
