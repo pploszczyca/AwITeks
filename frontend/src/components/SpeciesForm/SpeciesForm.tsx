@@ -36,7 +36,7 @@ export const SpeciesForm: React.FC<SpeciesFormProps> = ({show, updateState}) => 
                     validate={values => {
                         const errors: any = {};
                         if (!values.name) errors.name = 'Wymagane';
-                        if(values.maxAge == 0) errors.maxAge = 'Wartość powinna być dodatnia';
+                        if(values.maxAge === 0) errors.maxAge = 'Wartość powinna być dodatnia';
                         return errors;
                     }}
                     onSubmit={(values, { setSubmitting }) => {
