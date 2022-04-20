@@ -12,14 +12,14 @@ let InfoElement = styled.div`
 
 function DashboardInfo() {
     return (
-        <Row className="mt-4">
-            <Col>
+        <Row className="d-flex justify-content-center mt-3">
+            <Col xxl={4} sm={6} xs={12} className="mt-2">
                 <InfoElement>Przegapione akcje</InfoElement>
             </Col>
-            <Col>
+            <Col xxl={4} sm={6} xs={12} className="mt-2">
                 <InfoElement>Nadchodzące akcje</InfoElement>
             </Col>
-            <Col>
+            <Col xxl={4} sm={6} xs={12} className="mt-2">
                 <InfoElement>Wiadomości</InfoElement>
             </Col>
         </Row>
