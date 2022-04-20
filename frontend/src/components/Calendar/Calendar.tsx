@@ -54,7 +54,7 @@ const Calendar: React.FC<CalendarProps> = ({ plantId, variant = 'big' }) => {
 
 
     return (
-        <ContentContainer>
+        <ContentContainer style={variant === 'small' ? {position: "relative", left: 0} : {position: "absolute"}}>
             <Row className="mt-5">
                 {variant === 'big' ?
                     (<CalendarCol xxl={3} xl={12}>
