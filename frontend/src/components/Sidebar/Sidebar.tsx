@@ -1,21 +1,9 @@
 import React from 'react';
 import { Container, Nav } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import { NavbarEdit } from './SidebarStyles';
-import styled from "styled-components";
+import { NavbarEdit, MobileNavbar } from './SidebarStyles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHouse, faCalendarDays, faSeedling, faComments } from '@fortawesome/free-solid-svg-icons'
-
-const MobileNavbar = styled.div`
-  background-color: #023535;
-  width: 100vw;
-  height: 100px;
-  position: fixed;
-  top: 100%;
-  left: 0;
-  transform: translateY(-50%);
-  z-index: 3;
-`
 
 const Sidebar: React.FC<{}> = () => {
     useNavigate(); // rerenders components on url change

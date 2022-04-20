@@ -54,3 +54,14 @@ export const NavbarEdit = styled(Navbar)`
     }
   }
 `;
+
+export const MobileNavbar = styled.div`
+  background-color: #023535;
+  width: 100vw;
+  height: 100px;
+  position: fixed;
+  top: 100%;
+  left: 0;
+  transform: translateY(-50%);
+  z-index: 3;
+`
