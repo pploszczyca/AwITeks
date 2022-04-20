@@ -3,7 +3,7 @@ import { Navbar } from "react-bootstrap";
 
 export const NavbarEdit = styled(Navbar)`
   height: 100vh;
-  width: 280px;
+  width: var(--sidebar-width);
   background-color: #023535;
   position: fixed;
   top: 0;
