@@ -15,7 +15,7 @@ export const StyledCard = styled.div`
 `;
 
 
-export const FavoriteIcon = styled.div`
+export const FavoriteIcon = styled.span`
     width: fit-content;
     margin: auto;
     &:hover {

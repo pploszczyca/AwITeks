@@ -84,6 +84,13 @@ export const DropdownItem = styled.div`
 export const ListContainer = styled.div`
     margin-top: 70px;
     overflow-y: scroll;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    -ms-overflow-style: none;  
+    scrollbar-width: none;
 `;
 
 // TODO need to make SiteTitleAndIcons fixed first

@@ -32,7 +32,7 @@ const PlantsView: React.FC<{}> = () => {
     const searchInputRef: React.MutableRefObject<HTMLInputElement | null> = useRef(null);
 
     return (
-        <div style={{ marginLeft: 30, marginTop: 30 }}>
+        <div style={{ marginTop: 30 }}>
             <SettingsWrapper>
                 <SettingsBox>
                     <Row mt={4}>
