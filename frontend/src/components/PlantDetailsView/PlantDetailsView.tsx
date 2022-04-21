@@ -31,12 +31,12 @@ const PlantDetailsView: React.FC<{}> = (props) => {
                                 <TitleSeparator />
 
                                 <Card.Text>
-                                    <div>Średnia długość życia gautnku: {plant.species.maxAge}</div>
-                                    <div>Wymagane nasłonecznienie: {plant.species.neededInsolation}</div>
-                                    <div>Częstotliwość podlewania: {plant.species.waterRoutine} / tydzień</div>
-                                    <div>Zalecana ilość wody: {plant.species.waterDose}l</div>
-                                    <div>Częstotliwość nawożenia: {plant.species.fertilizationRoutine} / miesiąc</div>
-                                    <div>Intensywność nawożenia: {plant.species.fertilizationDose}</div>
+                                    <span className="d-block">Średnia długość życia gautnku: {plant.species.maxAge}</span>
+                                    <span className="d-block">Wymagane nasłonecznienie: {plant.species.neededInsolation}</span>
+                                    <span className="d-block">Częstotliwość podlewania: {plant.species.waterRoutine} / tydzień</span>
+                                    <span className="d-block">Zalecana ilość wody: {plant.species.waterDose}l</span>
+                                    <span className="d-block">Częstotliwość nawożenia: {plant.species.fertilizationRoutine} / miesiąc</span>
+                                    <span className="d-block">Intensywność nawożenia: {plant.species.fertilizationDose}</span>
                                 </Card.Text>
 
                             </Card.Body>
@@ -49,9 +49,9 @@ const PlantDetailsView: React.FC<{}> = (props) => {
                                 <Card.Title style={{ fontSize: 26 }}>Stan rośliny</Card.Title>
                                 <TitleSeparator />
                                 <Card.Text>
-                                    <div>Obecny pozion nasłonecznienia: {plant.actualInsolation}</div>
-                                    <div>Data ostatniego podlania: 24.01.2022</div>
-                                    <div>Data ostatnieno nawożenia: 26.12.2021</div>
+                                    <span className="d-block">Obecny pozion nasłonecznienia: {plant.actualInsolation}</span>
+                                    <span className="d-block">Data ostatniego podlania: 24.01.2022</span>
+                                    <span className="d-block">Data ostatnieno nawożenia: 26.12.2021</span>
                                 </Card.Text>
                             </Card.Body>
                         </Card>
