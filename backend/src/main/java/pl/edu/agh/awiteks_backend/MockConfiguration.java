@@ -4,6 +4,8 @@ import pl.edu.agh.awiteks_backend.models.*;
 import pl.edu.agh.awiteks_backend.repositories.Repository;
 import pl.edu.agh.awiteks_backend.repositories.RepositoryImp;
 import org.springframework.context.annotation.Bean;
+import pl.edu.agh.awiteks_backend.repositories.SpeciesRepository;
+import pl.edu.agh.awiteks_backend.repositories.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,18 +48,18 @@ public class MockConfiguration {
     }
 
     @Bean
-    public Repository<Species> getSpeciesRepository(Species species) {
-        List<Species> speciesList = new ArrayList<>();
+    public Repository<Species> getSpeciesRepository(Species species, Repository<Plant> plantRepository) {
+        List<AbstractModel<Species>> speciesList = new ArrayList<>();
         speciesList.add(species);
 
-        return new RepositoryImp(speciesList);
+        return new SpeciesRepository(speciesList, plantRepository);
     }
 
     @Bean
-    public Repository<User> getUserRepository(User user) {
-        List<User> userList = new ArrayList<>();
+    public Repository<User> getUserRepository(Repository<Species> speciesRepository, Repository<Plant> plantRepository, User user) {
+        List<AbstractModel<User>> userList = new ArrayList<>();
         userList.add(user);
-        return new RepositoryImp(userList);
+        return new UserRepository(userList, speciesRepository, plantRepository);
     }
 
     @Bean
@@ -68,5 +70,3 @@ public class MockConfiguration {
         return new RepositoryImp(plantList);
     }
 }
-
-
