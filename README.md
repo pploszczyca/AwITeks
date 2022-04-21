@@ -52,7 +52,7 @@ npm test
 Do projektu backendowego został podpięty [springdoc](https://springdoc.org/#Introduction). Po uruchomieniu backendu dokumentacja znajduje się pod linkiem: http://localhost:5000/swagger-ui/index.html.
 
 ## Definition of done:
-  - Ma działać (kompilować się, nie rzucać błędami)
-	- Spełnia kryteria akceptacyjne
-	- Przeszło przez Code Review (poprawki zostały zaakceptowane)
-	- Zostało dołączone do gałęzi develop (merge)
+- Ma działać (kompilować się, nie rzucać błędami)
+- Spełnia kryteria akceptacyjne
+- Przeszło przez Code Review (poprawki zostały zaakceptowane)
+- Zostało dołączone do gałęzi develop (merge)
