@@ -3,11 +3,11 @@ import styled from "styled-components";
 
 export const SearchBoxContainer = styled.div`
     height: 100%;
-    width: 100%;
+    //width: 100%;
     font-size: 18px;
-    box-shadow: 0px 0px 13px -7px rgba(66, 68, 90, 1);
+    box-shadow: 0 0 13px -7px rgba(66, 68, 90, 1);
     border-radius: 25px;
-
+    background-color: white;
     &:first-child {
         padding-left: 12px;
     }
@@ -21,7 +21,8 @@ export const SearchBoxContainer = styled.div`
 export const SearchBox = styled.input`
     border: none;
     outline: none;
-    height: 100%;
+    height: 44px;
+    width: calc(100% - 40px); // 40px == 2 * 20px (20px = faMagnifyingGlass font size)
     margin-left: 4px;
 `;
 
@@ -74,7 +75,7 @@ export const DropdownItem = styled.div`
     color: #FFF;
     padding: 4px;
     border-top: 1px solid black;
-
+    width: 100%;
     &:hover {
         opacity: 0.9;
         cursor: pointer;

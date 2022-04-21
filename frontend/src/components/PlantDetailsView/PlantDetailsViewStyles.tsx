@@ -3,8 +3,9 @@ import styled from "styled-components";
 export const InfoWrapper = styled.div`
     border: none;
     border-radius: 10px;
-    box-shadow: 0px 0px 23px -7px rgba(66, 68, 90, 1);
+    box-shadow: 0 0 23px -7px rgba(66, 68, 90, 1);
     font-size: 20px;
+    margin-top: 20px;
 
     & > div {
         padding: 10px;
@@ -27,8 +28,9 @@ export const DetailsWrapper = styled.div`
     border: none;
     border-radius: 10px;
     box-shadow: 0px 0px 23px -7px rgba(66, 68, 90, 1);
-    margin-right: 40px;
+    //margin-right: 40px;
     font-size: 20px;
+    margin-top: 20px;
 
     & img {
         border-top-left-radius: 10px;

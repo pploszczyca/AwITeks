@@ -91,7 +91,7 @@ export const PlantForm: React.FC<PlantFormProps> = ({plantId, show, updateState,
                                             <label>Gatunek:</label><br/>
                                             <Field className="form-control" as="select" name="species">
                                                 {plantTypes.map((plantType, id) => (
-                                                    <option value={plantType}>{plantType}</option>
+                                                    <option key={plantType + id} value={plantType}>{plantType}</option>
                                                 ))}
                                             </Field>
                                             <ErrorMessage name="species" component="div">

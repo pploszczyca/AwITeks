@@ -1,47 +1,25 @@
 import React from 'react';
 import {Col, Row} from "react-bootstrap";
-import styled from "styled-components";
-
-let StatsCard = styled.div`
-  text-align: center;
-  color: black;
-  background-color: #0CABA8;
-  font-size: 18px;
-  height: 20vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  
-  & > p{
-    margin: 0;
-  }
-  
-  & .stat{
-    color: white;
-    font-size: 50px;
-  }
-`
-
+import {StatsCard} from "./DashboardStatsStyle";
 
 function DashboardStats() {
     return (
-        <Row>
-            <Col>
+        <Row className="d-flex justify-content-center">
+            <Col xxl={4} sm={6} xs={12} className="mt-2">
                 <StatsCard>
                     <p className="card-title">Liczba dodanych roślin</p>
                     <p className="stat">7</p>
                     <br/>
                 </StatsCard>
             </Col>
-            <Col>
+            <Col xxl={4} sm={6} xs={12} className="mt-2">
                 <StatsCard>
                     <p className="card-title">Liczba zadbanych roślin</p>
                     <p className="stat">6</p>
                     <p className="details"> Gratulacje! <br/> Twoje rośliny wyglądają na zadbane.</p>
                 </StatsCard>
             </Col>
-            <Col>
+            <Col xxl={4} sm={6} xs={12} className="mt-2">
                 <StatsCard>
                     <p className="card-title">Liczba zaniedbanych roślin</p>
                     <p className="stat">1</p>

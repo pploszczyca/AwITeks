@@ -25,7 +25,10 @@ const DropdownToggle = styled.button`
 const DropdownContainer = styled.div`
     position: absolute;
     z-index: 1000;
-    min-width: 180px;
+    //min-width: 180px;
+    width: 90%;
+    left: 50%;
+    transform: translateX(-50%);
     overflow: visible;
     text-align: center;
     background-color: #FFF;

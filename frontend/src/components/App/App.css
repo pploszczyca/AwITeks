@@ -1,0 +1,16 @@
+*{
+    --sidebar-width: 280px;
+    --content-margin-x: 20px;
+    --content-margin-y: 5px;
+    --content-width: calc(100vw - var(--sidebar-width) - 2*var(--content-margin-x));
+}
+
+body{
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    background: url("https://images.unsplash.com/photo-1483794344563-d27a8d18014e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80") no-repeat center center fixed;
+    background-size: cover;
+    overflow-x: hidden;
+}
+

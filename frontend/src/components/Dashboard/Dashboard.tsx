@@ -1,15 +1,15 @@
 import React from "react";
-import { Container } from "react-bootstrap";
 import DashboardStats from "../DashboardStats/DashboardStats";
 import DashboardInfo from "../DashboardInfo/DashboardInfo";
+import {ContentContainer} from "../App/AppStyle"
 
 
 function Dashboard() {
     return (
-        <Container className="mt-4">
+        <ContentContainer className="mt-4">
             <DashboardStats />
             <DashboardInfo />
-        </Container>
+        </ContentContainer>
     )
 }
 
