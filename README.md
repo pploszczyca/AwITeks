@@ -3,6 +3,7 @@
 ### Backend
 * Java 17
 * [Spring Boot 2.6.5](https://spring.io/projects/spring-boot)
+* [springdoc-openapi](https://springdoc.org/#Introduction)
 
 ### Frontend
 * [React](https://pl.reactjs.org/)
@@ -46,3 +47,6 @@ npm start
 ```
 npm test
 ```
+
+## Dokumetacja API
+Do projektu backendowego został podpięty [springdoc](https://springdoc.org/#Introduction). Po uruchomieniu backendu dokumentacja znajduje się pod linkiem: http://localhost:5000/swagger-ui/index.html.
