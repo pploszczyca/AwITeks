@@ -28,7 +28,6 @@ public class Species extends AbstractModel<Species> {
     }
 
     public Species() {
-
     }
 
     @Override

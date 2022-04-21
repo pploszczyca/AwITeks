@@ -2,7 +2,9 @@ package pl.edu.agh.awiteks_backend.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @JsonIgnoreProperties({"user"})
 public class Plant extends AbstractModel<Plant> {
@@ -10,24 +12,22 @@ public class Plant extends AbstractModel<Plant> {
     private Species spiece;
     private String note;
     private Insolation actualInsolation;
-    private Date lastFertilization;
-    private Date lastHydration;
+    private List<Activity> plantActivities;
 
-    public Plant(int id, String name, User user, Species spiece, String note, Insolation actualInsolation, Date lastFertilization, Date lastHydration) {
+    public Plant(int id, String name, User user, Species spiece, String note, Insolation actualInsolation, List<Activity> plantActivities) {
         super(id, name);
         this.user = user;
         this.spiece = spiece;
         this.note = note;
         this.actualInsolation = actualInsolation;
-        this.lastFertilization = lastFertilization;
-        this.lastHydration = lastHydration;
+        this.plantActivities = plantActivities;
+    }
+
+    public Plant(int id, String name, User user, Species spiece, String note, Insolation actualInsolation) {
+        this(id, name, user, spiece, note, actualInsolation, new ArrayList<>());
     }
 
     public Plant() {
-    }
-
-    public Plant(int id, String name, User user, Species species, String note, Insolation actualInsolation) {
-        this(id, name, user, species, note, actualInsolation, new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()));
     }
 
     @Override
@@ -39,8 +39,7 @@ public class Plant extends AbstractModel<Plant> {
                 this.spiece.copy(),
                 this.note,
                 this.actualInsolation,
-                (Date) this.lastFertilization.clone(),
-                (Date) this.lastHydration.clone()
+                this.plantActivities.stream().map(Activity::copy).toList()
         );
     }
 
@@ -64,14 +63,6 @@ public class Plant extends AbstractModel<Plant> {
         return actualInsolation;
     }
 
-    public Date getLastFertilization() {
-        return lastFertilization;
-    }
-
-    public Date getLastHydration() {
-        return lastHydration;
-    }
-
     public void setUser(User user) {
         this.user = user;
     }
@@ -84,11 +75,28 @@ public class Plant extends AbstractModel<Plant> {
         this.actualInsolation = actualInsolation;
     }
 
-    public void setLastFertilization(Date lastFertilization) {
-        this.lastFertilization = lastFertilization;
+    public List<Activity> getPlantActivities() {
+        return plantActivities;
     }
 
-    public void setLastHydration(Date lastHydration) {
-        this.lastHydration = lastHydration;
+    public void setPlantActivities(List<Activity> plantActivities) {
+        this.plantActivities = plantActivities;
+    }
+
+    public void addActivity(Activity activity){
+        plantActivities.add(activity);
+        activity.setPlant(this);
+    }
+
+    public void removeActivity(Activity activity){
+        plantActivities.remove(activity);
+    }
+
+    public void removeActivity(int activityId) {
+        plantActivities
+                .stream()
+                .filter(activity -> activity.getId() == activityId)
+                .findFirst()
+                .ifPresent(this::removeActivity);
     }
 }
