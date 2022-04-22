@@ -1,6 +1,7 @@
 package pl.edu.agh.awiteks_backend.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -8,10 +9,15 @@ import java.util.List;
 
 @JsonIgnoreProperties({"user"})
 public class Plant extends AbstractModel<Plant> {
+    @Schema(required = true)
     private User user;
+    @Schema(required = true)
     private Species spiece;
+    @Schema(required = true)
     private String note;
+    @Schema(required = true)
     private Insolation actualInsolation;
+    @Schema(required = true)
     private List<Activity> plantActivities;
 
     public Plant(int id, String name, User user, Species spiece, String note, Insolation actualInsolation, List<Activity> plantActivities) {

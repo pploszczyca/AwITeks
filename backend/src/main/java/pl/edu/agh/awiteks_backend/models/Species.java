@@ -1,13 +1,22 @@
 package pl.edu.agh.awiteks_backend.models;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 public class Species extends AbstractModel<Species> {
     private static final int NO_CREATOR = -1;
+    @Schema(required = true)
     private int maxAge;
+    @Schema(required = true)
     private Insolation neededInsolation;
+    @Schema(required = true)
     private int waterDose;
+    @Schema(required = true)
     private int waterRoutine;
+    @Schema(required = true)
     private int fertilizationRoutine;
+    @Schema(required = true)
     private Fertilization fertilizationDose;
+    @Schema(required = true)
     private int creatorId;
 
     public Species(int id, String name, int maxAge, Insolation neededInsolation, int waterDose,

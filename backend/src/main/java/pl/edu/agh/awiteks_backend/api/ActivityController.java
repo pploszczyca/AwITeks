@@ -18,14 +18,14 @@ public class ActivityController {
         this.plantRepository = plantRepository;
     }
 
-    @Operation(summary = "Add new activity to plant")
+    @Operation(summary = "Add new activity to plant", operationId = "addActivity")
     @PostMapping("/activity/{plantID}")
     public void add(@RequestBody Activity activity, @PathVariable int plantID) {
         Optional<Plant> plant = plantRepository.get(plantID);
         plant.ifPresent(plant1 -> plant1.addActivity(activity));
     }
 
-    @Operation(summary = "Delete activity")
+    @Operation(summary = "Delete activity", operationId = "removeActivity")
     @DeleteMapping("/activity/{plantId}/{activityId}")
     public void remove(@PathVariable int plantId, @PathVariable int activityId) {
         plantRepository.get(plantId).ifPresent(plant -> plant.removeActivity(activityId));
