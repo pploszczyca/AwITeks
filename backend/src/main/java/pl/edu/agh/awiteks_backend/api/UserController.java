@@ -18,21 +18,21 @@ public class UserController extends ModelController<User> {
     }
 
     @Override
-    @Operation(summary = "Get all users")
+    @Operation(summary = "Get all users", operationId = "getAllUsers")
     @GetMapping(value = "/users", produces = "application/json")
     public List getAll() {
         return super.getAll();
     }
 
     @Override
-    @Operation(summary = "Get user by id")
+    @Operation(summary = "Get user by id", operationId = "getUser")
     @GetMapping(value = "/users/{id}", produces = "application/json")
     public Optional get(@PathVariable int id) {
         return super.get(id);
     }
 
     @Override
-    @Operation(summary = "Add new user")
+    @Operation(summary = "Add new user", operationId = "addUser")
     @PostMapping(path = "/users")
     @ResponseBody
     public String add(@RequestBody User user) {
@@ -40,14 +40,14 @@ public class UserController extends ModelController<User> {
     }
 
     @Override
-    @Operation(summary = "Update user")
+    @Operation(summary = "Update user", operationId = "updateUser")
     @PutMapping(value = "/users", consumes = "application/json")
     public void update(@RequestBody User user) {
         super.update(user);
     }
 
     @Override
-    @Operation(summary = "Delete user by id")
+    @Operation(summary = "Delete user by id", operationId = "removeUser")
     @DeleteMapping(value = "/users/{id}")
     public void remove(@PathVariable int id) {
         super.remove(id);

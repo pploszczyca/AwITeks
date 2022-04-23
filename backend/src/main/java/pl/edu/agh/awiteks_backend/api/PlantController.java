@@ -24,20 +24,20 @@ public class PlantController extends ModelController<Plant> {
     }
 
     @Override
-    @Operation(summary = "Get all plants")
+    @Operation(summary = "Get all plants", operationId = "getAllPlants")
     @GetMapping(value = "/plants", produces = "application/json")
     public List<Plant> getAll() {
         return super.getAll();
     }
 
     @Override
-    @Operation(summary = "Get plant by id")
+    @Operation(summary = "Get plant by id", operationId = "getPlant")
     @GetMapping(value = "/plants/{id}", produces = "application/json")
     public Optional<Plant> get(@PathVariable int id) {
         return super.get(id);
     }
 
-    @Operation(summary = "Add new plant, assign it to specifier user and specie")
+    @Operation(summary = "Add new plant, assign it to specifier user and specie", operationId = "addPlant")
     @PostMapping(path = "/plants/{userId}/{speciesId}")
     @ResponseBody
     public String add(@RequestBody Plant plant, @PathVariable int userId, @PathVariable int speciesId) {
@@ -47,14 +47,14 @@ public class PlantController extends ModelController<Plant> {
     }
 
     @Override
-    @Operation(summary = "Update plant")
+    @Operation(summary = "Update plant", operationId = "updatePlant")
     @PutMapping(value = "/plants", consumes = "application/json")
     public void update(@RequestBody Plant plant) {
         super.update(plant);
     }
 
     @Override
-    @Operation(summary = "Delete plant by id")
+    @Operation(summary = "Delete plant by id", operationId = "removePlant")
     @DeleteMapping(value = "/plants/{id}")
     public void remove(@PathVariable int id) {
         removePLantFromUserList(id);

@@ -1,15 +1,20 @@
 package pl.edu.agh.awiteks_backend.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Date;
 import java.util.Objects;
 
 @JsonIgnoreProperties({"plant"})
 public class Activity {
+    @Schema(required = true)
     private int id;
+    @Schema(required = true)
     private Plant plant;
+    @Schema(required = true)
     private ActivityType activityType;
+    @Schema(required = true)
     private Date date;
 
 

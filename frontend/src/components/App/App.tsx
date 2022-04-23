@@ -8,12 +8,13 @@ import { Col, Container, Row } from "react-bootstrap";
 import SiteTitleAndIcons from "../SiteTitleAndIcons/SiteTitleAndIcons";
 import Calendar from "../Calendar/Calendar";
 import PlantDetailsView from '../PlantDetailsView/PlantDetailsView';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
-
+const queryClient = new QueryClient();
 
 function App() {
     return (
-        <>
+        <QueryClientProvider client={queryClient}>
             <SiteTitleAndIcons />
 
             <Container fluid>
@@ -35,7 +36,7 @@ function App() {
                     </Router>
                 </Row>
             </Container>
-        </>
+        </QueryClientProvider>
     );
 }
 

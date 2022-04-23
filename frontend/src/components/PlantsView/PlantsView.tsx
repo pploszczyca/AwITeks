@@ -7,15 +7,36 @@ import { mockPlantSummaries, mockPlantTypes } from "../../utils/mockData";
 import { PlantSummary } from "../../utils/Plant";
 import PlantSummaryCard from "../../PlantSummaryCard/PlantSummaryCard";
 import Dropdown from "../utils/Dropdown";
-import {PlantForm} from "../AddPlantForm/PlantForm";
-import {ContentContainer} from "../App/AppStyle";
+import { PlantForm } from "../AddPlantForm/PlantForm";
+import { ContentContainer } from "../App/AppStyle";
+import { getApis } from "../../api/initializeApis";
 
 
 const PlantsView: React.FC<{}> = () => {
     const [plantTypes,] = useState(() => {
         // fetch from API
         return mockPlantTypes;
-    })
+    });
+
+
+    // example usage ************************************************
+    async function testPlants() {
+        try {
+            const plantsRequest = await getApis().plantsApi.getAllPlants();
+            console.log(plantsRequest);
+            const plants = plantsRequest.data;
+            console.log(plants);
+            // autocompletion works
+            plants.forEach(plant => console.log(plant.name));
+        } catch (err) {
+            // throws error on failure, handle it here
+            console.log('brrrrrrrrrrrrrrrr is server running???');
+            console.log(err);
+        }
+    }
+
+    testPlants();
+    // **************************************************************
 
     let [show, setShow] = useState(false);
 
@@ -34,7 +55,7 @@ const PlantsView: React.FC<{}> = () => {
 
     const searchInputRef: React.MutableRefObject<HTMLInputElement | null> = useRef(null);
 
-    function updateShowState(newValue: boolean){
+    function updateShowState(newValue: boolean) {
         setShow(newValue);
     }
 
@@ -45,8 +66,8 @@ const PlantsView: React.FC<{}> = () => {
                     <Row>
                         <Col lg={7} sm={12} className="mt-3">
                             <SearchBoxContainer onClick={() => searchInputRef.current?.focus()}>
-                                <FontAwesomeIcon icon={faMagnifyingGlass} fontSize={20}/>
-                                <SearchBox ref={searchInputRef} type="text" placeholder="wyszukaj roślinę..."/>
+                                <FontAwesomeIcon icon={faMagnifyingGlass} fontSize={20} />
+                                <SearchBox ref={searchInputRef} type="text" placeholder="wyszukaj roślinę..." />
                             </SearchBoxContainer>
                         </Col>
                         <Col lg={5} className="mt-3">
@@ -110,7 +131,7 @@ const PlantsView: React.FC<{}> = () => {
                 ))}
             </Row>
 
-            <PlantForm show={show} updateState={updateShowState}/>
+            <PlantForm show={show} updateState={updateShowState} />
         </ContentContainer>
     )
 }

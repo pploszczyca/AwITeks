@@ -1,9 +1,12 @@
 package pl.edu.agh.awiteks_backend.models;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class User extends AbstractModel<User> {
+    @Schema(required = true)
     private List<Plant> userPlants;
 
     public User(int id, String name, List<Plant> userPlants) {

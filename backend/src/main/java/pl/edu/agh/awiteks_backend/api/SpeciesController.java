@@ -18,21 +18,21 @@ public class SpeciesController extends ModelController<Species> {
     }
 
     @Override
-    @Operation(summary = "Get all species")
+    @Operation(summary = "Get all species", operationId = "getAllSpecies")
     @GetMapping(value = "/species", produces = "application/json")
     public List getAll() {
         return super.getAll();
     }
 
     @Override
-    @Operation(summary = "Get specific specie by id")
+    @Operation(summary = "Get specific specie by id", operationId = "getSpecie")
     @GetMapping(value = "/species/{id}", produces = "application/json")
     public Optional get(@PathVariable int id) {
         return super.get(id);
     }
 
     @Override
-    @Operation(summary = "Add new specie")
+    @Operation(summary = "Add new specie", operationId = "addSpecie")
     @PostMapping(path = "/species")
     @ResponseBody
     public String add(@RequestBody Species species) {
@@ -40,14 +40,14 @@ public class SpeciesController extends ModelController<Species> {
     }
 
     @Override
-    @Operation(summary = "Update specie")
+    @Operation(summary = "Update specie", operationId = "updateSpecie")
     @PutMapping(value = "/species", consumes = "application/json")
     public void update(@RequestBody Species species) {
         super.update(species);
     }
 
     @Override
-    @Operation(summary = "Delete specie by id")
+    @Operation(summary = "Delete specie by id", operationId = "removeSpecie")
     @DeleteMapping(value = "/species/{id}")
     public void remove(@PathVariable int id) {
         super.remove(id);
