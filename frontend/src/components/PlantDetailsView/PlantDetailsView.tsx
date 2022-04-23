@@ -3,15 +3,15 @@ import { Button, Card, Col, Row } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom'
 import { mockPlants } from '../../utils/mockData';
 import Calendar from '../Calendar/Calendar';
-import { DetailsWrapper, InfoWrapper, TitleSeparator } from './PlantDetailsViewStyles';
+import { DetailsWrapper, InfoWrapper, TitleSeparator, RequirementsButton } from './PlantDetailsViewStyles';
 import { ContentContainer } from "../App/AppStyle";
 
 
-function edit_plant(){}
+function editPlant(){}
 
-function add_note(){}
+function addNote(){}
 
-function personal_requirements(){}
+function personalRequirements(){}
 
 const PlantDetailsView: React.FC<{}> = (props) => {
     const { plantId } = useParams();
@@ -73,15 +73,15 @@ const PlantDetailsView: React.FC<{}> = (props) => {
                                     <span className="d-block">Intensywność nawożenia: {plant.species.fertilizationDose}</span>
                                 </Card.Text>
                                 <div style={{ flexDirection:"row"}}>
-                                        <Button onClick = {() => edit_plant()} style={{justifyContent:'space-between', marginRight: 10}}>
+                                        <RequirementsButton onClick = {() => editPlant()}>
                                             Edytuj roślinę
-                                        </Button>
-                                        <Button onClick = {() => add_note()} style={{justifyContent:'space-between', marginRight: 10}}>
+                                        </RequirementsButton>
+                                        <RequirementsButton onClick = {() => addNote()}>
                                             Dodaj notatkę
-                                        </Button>
-                                        <Button onClick = {() => personal_requirements()} style={{justifyContent:'space-between', marginRight: 10}}>
+                                        </RequirementsButton>
+                                        <RequirementsButton onClick = {() => personalRequirements()}>
                                             Własne wymagania
-                                        </Button>
+                                        </RequirementsButton>
                                 </div>
 
                             </Card.Body>
