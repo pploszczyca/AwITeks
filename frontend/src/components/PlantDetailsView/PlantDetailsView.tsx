@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, Card, Col, Row } from 'react-bootstrap';
+import { Card, Col, Row } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom'
 import { mockPlants } from '../../utils/mockData';
 import Calendar from '../Calendar/Calendar';
