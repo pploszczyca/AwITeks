@@ -13,7 +13,6 @@ public class Plant extends AbstractModel<Plant> {
     private User user;
     @Schema(required = true)
     private Species spiece;
-    @Schema(required = true)
     private String note;
     @Schema(required = true)
     private Insolation actualInsolation;

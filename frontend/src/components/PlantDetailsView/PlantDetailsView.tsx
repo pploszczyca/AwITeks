@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { mockPlants } from '../../utils/mockData';
 import Calendar from '../Calendar/Calendar';
 import { DetailsWrapper, InfoWrapper, TitleSeparator } from './PlantDetailsViewStyles';
-import {ContentContainer} from "../App/AppStyle";
+import { ContentContainer } from "../App/AppStyle";
 
 const PlantDetailsView: React.FC<{}> = (props) => {
     const { plantId } = useParams();

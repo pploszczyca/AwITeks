@@ -45,7 +45,7 @@ export interface Plant {
      * @type {string}
      * @memberof Plant
      */
-    'note': string;
+    'note'?: string;
     /**
      * 
      * @type {string}
