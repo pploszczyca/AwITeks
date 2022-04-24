@@ -1,3 +1,4 @@
+import { Button } from "react-bootstrap";
 import styled from "styled-components";
 
 export const InfoWrapper = styled.div`
@@ -37,4 +38,8 @@ export const DetailsWrapper = styled.div`
         border-top-right-radius: 10px;
         border-bottom: 1px solid rgba(0, 0, 0, 0.4);
     }
+`;
+
+export const RequirementsButton = styled(Button)`
+    margin-right: 10px;
 `;
