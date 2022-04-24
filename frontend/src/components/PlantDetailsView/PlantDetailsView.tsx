@@ -9,8 +9,6 @@ import {PlantForm} from "../AddPlantForm/PlantForm";
 import {Notes} from "../Notes/Notes";
 
 
-function personalRequirements(){}
-
 function deletePlant(){}
 
 const PlantDetailsView: React.FC<{}> = (props) => {
@@ -64,7 +62,7 @@ const PlantDetailsView: React.FC<{}> = (props) => {
                         </Card>
                         <Card as={DetailsWrapper}>
                             <Card.Body>
-                                <Card.Title style={{ fontSize: 26 }}>Wymagania podstawowe</Card.Title>
+                                <Card.Title style={{ fontSize: 26 }}>Wymagania</Card.Title>
                                 <TitleSeparator />
 
                                 <Card.Text>
@@ -75,12 +73,9 @@ const PlantDetailsView: React.FC<{}> = (props) => {
                                     <span className="d-block">Intensywność nawożenia: {plant.species.fertilizationDose}</span>
                                 </Card.Text>
 
-                                <div className="d-flex justify-content-center flex-column flex-sm-row">
+                                <div className="d-flex justify-content-center">
                                     <RequirementsButton className="mb-1" onClick = {() => setShowNoteForm(true)}>
                                         Notatki
-                                    </RequirementsButton>
-                                    <RequirementsButton className="mb-1" onClick = {() => personalRequirements()}>
-                                        Własne wymagania
                                     </RequirementsButton>
                                 </div>
 
