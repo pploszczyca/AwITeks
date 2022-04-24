@@ -1,15 +1,14 @@
-package pl.edu.agh.awiteks_backend.api;
+package pl.edu.agh.awiteks_backend.services;
 
 import pl.edu.agh.awiteks_backend.repositories.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
-
-public abstract class ModelController<T> {
+public abstract class ModelService<T> {
     private final Repository<T> modelRepository;
 
-    public ModelController(Repository<T> modelRepository) {
+    public ModelService(Repository<T> modelRepository) {
         this.modelRepository = modelRepository;
     }
 
@@ -21,9 +20,8 @@ public abstract class ModelController<T> {
         return modelRepository.get(id);
     }
 
-    public String add(T object) {
+    public void add(T object) {
         modelRepository.add(object);
-        return "ok";
     }
 
     public void update(T object) {
@@ -34,4 +32,3 @@ public abstract class ModelController<T> {
         modelRepository.remove(id);
     }
 }
-

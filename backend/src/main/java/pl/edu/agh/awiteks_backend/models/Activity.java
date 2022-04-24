@@ -18,9 +18,9 @@ public class Activity {
     private Date date;
 
 
-    public Activity(int id, Plant plant,ActivityType activityType, Date date) {
+    public Activity(int id, Plant plant, ActivityType activityType, Date date) {
         this.id = id;
-        this.plant=plant;
+        this.plant = plant;
         this.activityType = activityType;
         this.date = date;
     }

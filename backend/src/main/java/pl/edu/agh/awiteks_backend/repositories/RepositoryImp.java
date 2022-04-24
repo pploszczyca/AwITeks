@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@org.springframework.stereotype.Repository
 public class RepositoryImp<T> implements Repository<T> {
     private final List<AbstractModel<T>> modelList;
 

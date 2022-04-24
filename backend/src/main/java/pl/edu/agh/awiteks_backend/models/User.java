@@ -30,11 +30,6 @@ public class User extends AbstractModel<User> {
         userPlants.remove(plant);
     }
 
-    public void editPlant(Plant plant) {
-        int index = userPlants.indexOf(plant);
-        userPlants.set(index, plant);
-    }
-
     public int getId() {
         return id;
     }
