@@ -5,9 +5,8 @@ import { mockPlants } from '../../utils/mockData';
 import Calendar from '../Calendar/Calendar';
 import { DetailsWrapper, InfoWrapper, TitleSeparator, RequirementsButton } from './PlantDetailsViewStyles';
 import { ContentContainer } from "../App/AppStyle";
+import {NotesForm} from "../NotesForm/NotesForm";
 
-
-function showNotes(){}
 
 function personalRequirements(){}
 
@@ -18,6 +17,7 @@ function deletePlant(){}
 const PlantDetailsView: React.FC<{}> = (props) => {
     const { plantId } = useParams();
     const navigate = useNavigate();
+    const [showNoteForm, setShowNoteForm] = useState(false);
 
     if (plantId == null) {
         navigate("/my_plants");
@@ -75,7 +75,7 @@ const PlantDetailsView: React.FC<{}> = (props) => {
                                     <span className="d-block">Intensywność nawożenia: {plant.species.fertilizationDose}</span>
                                 </Card.Text>
                                 <div style={{ flexDirection:"row"}}>
-                                        <RequirementsButton onClick = {() => showNotes()}>
+                                        <RequirementsButton onClick = {() => setShowNoteForm(true)}>
                                             Notatki
                                         </RequirementsButton>
                                         <RequirementsButton onClick = {() => personalRequirements()}>
@@ -89,16 +89,14 @@ const PlantDetailsView: React.FC<{}> = (props) => {
                             <Card.Body>
                                 <Card.Title style={{ fontSize: 26 }}>Zarządzanie rośliną</Card.Title>
                                 <TitleSeparator />
-                                <Card.Text>
-                                    <div style={{ flexDirection:"row"}} className="mt-4 mb-3">
-                                        <RequirementsButton onClick = {() => editPlant()}>
-                                            Edytuj roślinę
-                                        </RequirementsButton>
-                                        <RequirementsButton variant="danger" onClick = {() => deletePlant()}>
-                                            Usuń roślinę
-                                        </RequirementsButton>
-                                    </div>
-                                </Card.Text>
+                                <div style={{ flexDirection:"row"}} className="mt-4 mb-3">
+                                    <RequirementsButton onClick = {() => editPlant()}>
+                                        Edytuj roślinę
+                                    </RequirementsButton>
+                                    <RequirementsButton variant="danger" onClick = {() => deletePlant()}>
+                                        Usuń roślinę
+                                    </RequirementsButton>
+                                </div>
                             </Card.Body>
                         </Card>
                     </Col>
@@ -107,6 +105,7 @@ const PlantDetailsView: React.FC<{}> = (props) => {
                     <Calendar plantId={+plantId!} variant='small' />
                 </Row>
             </ContentContainer >
+            <NotesForm showNoteForm={showNoteForm} showNoteFormSetter={setShowNoteForm} plant={plant}/>
         </>
     )
 }
