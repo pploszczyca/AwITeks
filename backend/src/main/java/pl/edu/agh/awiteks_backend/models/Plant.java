@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @JsonIgnoreProperties({"user"})
@@ -88,12 +87,12 @@ public class Plant extends AbstractModel<Plant> {
         this.plantActivities = plantActivities;
     }
 
-    public void addActivity(Activity activity){
+    public void addActivity(Activity activity) {
         plantActivities.add(activity);
         activity.setPlant(this);
     }
 
-    public void removeActivity(Activity activity){
+    public void removeActivity(Activity activity) {
         plantActivities.remove(activity);
     }
 

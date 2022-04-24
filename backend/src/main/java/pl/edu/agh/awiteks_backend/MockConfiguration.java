@@ -1,11 +1,9 @@
 package pl.edu.agh.awiteks_backend;
 
+import org.springframework.context.annotation.Bean;
 import pl.edu.agh.awiteks_backend.models.*;
 import pl.edu.agh.awiteks_backend.repositories.Repository;
 import pl.edu.agh.awiteks_backend.repositories.RepositoryImp;
-import org.springframework.context.annotation.Bean;
-import pl.edu.agh.awiteks_backend.repositories.SpeciesRepository;
-import pl.edu.agh.awiteks_backend.repositories.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,25 +46,25 @@ public class MockConfiguration {
     }
 
     @Bean
-    public Repository<Species> getSpeciesRepository(Species species, Repository<Plant> plantRepository) {
+    public Repository<Species> getSpeciesRepository(Species species) {
         List<AbstractModel<Species>> speciesList = new ArrayList<>();
         speciesList.add(species);
 
-        return new SpeciesRepository(speciesList, plantRepository);
+        return new RepositoryImp<>(speciesList);
     }
 
     @Bean
-    public Repository<User> getUserRepository(Repository<Species> speciesRepository, Repository<Plant> plantRepository, User user) {
+    public Repository<User> getUserRepository(User user) {
         List<AbstractModel<User>> userList = new ArrayList<>();
         userList.add(user);
-        return new UserRepository(userList, speciesRepository, plantRepository);
+        return new RepositoryImp<>(userList);
     }
 
     @Bean
     public Repository<Plant> getPlantRepository(Plant plant) {
-        List<Plant> plantList = new ArrayList<>();
+        List<AbstractModel<Plant>> plantList = new ArrayList<>();
         plantList.add(plant);
 
-        return new RepositoryImp(plantList);
+        return new RepositoryImp<>(plantList);
     }
 }

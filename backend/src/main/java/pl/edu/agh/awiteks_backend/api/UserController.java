@@ -3,53 +3,49 @@ package pl.edu.agh.awiteks_backend.api;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import pl.edu.agh.awiteks_backend.models.Plant;
 import pl.edu.agh.awiteks_backend.models.User;
-import pl.edu.agh.awiteks_backend.repositories.Repository;
+import pl.edu.agh.awiteks_backend.services.UserService;
 
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-public class UserController extends ModelController<User> {
+@RequestMapping("/users")
+public class UserController {
+    private final UserService userService;
+
     @Autowired
-    public UserController(Repository<User> userRepository) {
-        super(userRepository);
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
-    @Override
     @Operation(summary = "Get all users", operationId = "getAllUsers")
-    @GetMapping(value = "/users", produces = "application/json")
-    public List getAll() {
-        return super.getAll();
+    @GetMapping(produces = "application/json")
+    public List<User> getAllUsers() {
+        return userService.getAll();
     }
 
-    @Override
     @Operation(summary = "Get user by id", operationId = "getUser")
-    @GetMapping(value = "/users/{id}", produces = "application/json")
-    public Optional get(@PathVariable int id) {
-        return super.get(id);
+    @GetMapping(value = "/{id}", produces = "application/json")
+    public Optional<User> getUser(@PathVariable int id) {
+        return userService.get(id);
     }
 
-    @Override
     @Operation(summary = "Add new user", operationId = "addUser")
-    @PostMapping(path = "/users")
-    @ResponseBody
-    public String add(@RequestBody User user) {
-        return super.add(user);
+    @PostMapping()
+    public void addUser(@RequestBody User user) {
+        userService.add(user);
     }
 
-    @Override
     @Operation(summary = "Update user", operationId = "updateUser")
-    @PutMapping(value = "/users", consumes = "application/json")
-    public void update(@RequestBody User user) {
-        super.update(user);
+    @PutMapping(consumes = "application/json")
+    public void updateUser(@RequestBody User user) {
+        userService.update(user);
     }
 
-    @Override
     @Operation(summary = "Delete user by id", operationId = "removeUser")
-    @DeleteMapping(value = "/users/{id}")
-    public void remove(@PathVariable int id) {
-        super.remove(id);
+    @DeleteMapping(value = "/{id}")
+    public void removeUser(@PathVariable int id) {
+        userService.remove(id);
     }
 }
