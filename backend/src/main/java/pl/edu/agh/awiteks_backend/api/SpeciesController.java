@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@RequestMapping("/species")
 public class SpeciesController {
     private final SpeciesService speciesService;
 
@@ -19,32 +20,32 @@ public class SpeciesController {
     }
 
     @Operation(summary = "Get all species", operationId = "getAllSpecies")
-    @GetMapping(value = "/species", produces = "application/json")
+    @GetMapping(produces = "application/json")
     public List<Species> getAllSpecies() {
         return speciesService.getAll();
     }
 
     @Operation(summary = "Get specific specie by id", operationId = "getSpecie")
-    @GetMapping(value = "/species/{id}", produces = "application/json")
+    @GetMapping(value = "/{id}", produces = "application/json")
     public Optional<Species> getSpecie(@PathVariable int id) {
         return speciesService.get(id);
     }
 
     @Operation(summary = "Add new specie", operationId = "addSpecie")
-    @PostMapping(path = "/species")
+    @PostMapping()
     @ResponseBody
     public void addSpecie(@RequestBody Species species) {
         speciesService.add(species);
     }
 
     @Operation(summary = "Update specie", operationId = "updateSpecie")
-    @PutMapping(value = "/species", consumes = "application/json")
+    @PutMapping(consumes = "application/json")
     public void updateSpecie(@RequestBody Species species) {
         speciesService.update(species);
     }
 
     @Operation(summary = "Delete specie by id", operationId = "removeSpecie")
-    @DeleteMapping(value = "/species/{id}")
+    @DeleteMapping(value = "/{id}")
     public void remove(@PathVariable int id) {
         speciesService.remove(id);
     }
