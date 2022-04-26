@@ -8,6 +8,8 @@ import pl.edu.agh.awiteks_backend.repositories.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,6 +48,18 @@ public class PlantController extends ModelController<Plant> {
         return super.add(plant);
     }
 
+
+    @Operation(summary = "Get photo URL of plant")
+    @GetMapping(path = "/plants/{id}/URL")
+    public String getURL(@PathVariable int id){
+        Optional<Plant> plantOptional = super.get(id);
+        if(plantOptional.isPresent()){
+            return plantOptional.get().getPictureURL();
+        }else{
+            return "https://tatamariusz.pl/hans-christian-andersen-polny-kwiatek/#iLightbox[gallery3623]/0";
+        }
+    }
+
     @Override
     @Operation(summary = "Update plant")
     @PutMapping(value = "/plants", consumes = "application/json")
@@ -57,7 +71,7 @@ public class PlantController extends ModelController<Plant> {
     @Operation(summary = "Delete plant by id")
     @DeleteMapping(value = "/plants/{id}")
     public void remove(@PathVariable int id) {
-        removePLantFromUserList(id);
+        removePlantFromUserList(id);
         super.remove(id);
     }
 

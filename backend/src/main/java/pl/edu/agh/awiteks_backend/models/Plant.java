@@ -12,7 +12,9 @@ public class Plant extends AbstractModel<Plant> {
     private Species species;
     private String note;
     private Insolation actualInsolation;
+    private boolean isFavourite;
     private List<Activity> plantActivities;
+    private String pictureURL;
 
     public Plant(int id, String name, User user, Species species, String note, Insolation actualInsolation, List<Activity> plantActivities, boolean isFavourite) {
         super(id, name);
@@ -21,7 +23,23 @@ public class Plant extends AbstractModel<Plant> {
         this.note = note;
         this.actualInsolation = actualInsolation;
         this.plantActivities = plantActivities;
+        this.isFavourite = isFavourite;
     }
+
+    public Plant(int id, String name, User user,Species species, String pictureURL, boolean isFavourite){
+        super(id, name);
+        this.user = user;
+        this.species = species;
+        this.isFavourite = isFavourite;
+        this.pictureURL = pictureURL;
+    }
+
+    
+    public Plant(int id, String name, User user, Species species, String note, Insolation actualInsolation, List<Activity> plantActivities, String pictureURL) {
+       this(id, name, user, species, note, actualInsolation, plantActivities, false);
+        this.pictureURL = pictureURL;
+    }
+
 
     public Plant(int id, String name, User user, Species species, String note, Insolation actualInsolation) {
         this(id, name, user, species, note, actualInsolation, new ArrayList<>(), false);
@@ -39,8 +57,17 @@ public class Plant extends AbstractModel<Plant> {
                 this.species.copy(),
                 this.note,
                 this.actualInsolation,
-                this.plantActivities.stream().map(Activity::copy).toList()
+                this.plantActivities.stream().map(Activity::copy).toList(),
+                this.isFavourite
         );
+    }
+
+    public boolean getIsFavourite(){
+        return this.isFavourite;
+    }
+
+    public void setIsFavourite(boolean isFavourite){
+        this.isFavourite = isFavourite;
     }
 
     public String getNote() {

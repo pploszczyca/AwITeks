@@ -12,6 +12,7 @@ import pl.edu.agh.awiteks_backend.repositories.Repository;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 public class UserController extends ModelController<User> {
@@ -54,5 +55,16 @@ public class UserController extends ModelController<User> {
     @DeleteMapping(value = "/users/{id}")
     public void remove(@PathVariable int id) {
         super.remove(id);
+    }
+
+    @Operation(summary = "Get all plants summary")
+    @GetMapping(value="/user/{id}/plants")
+    public List getAllPlantsSummary(@PathVariable int id){
+        Optional<User> user =  this.get(id);
+        return user.<List>map(value -> value
+                .getUserPlants()
+                .stream()
+                .map(PlantMapper::plantToPlantSummary)
+                .collect(Collectors.toList())).orElseGet(() -> Collections.singletonList(PlantSummary.builder().id(-1).name("luka").speciesName("luka").speciesName("luka").isFavourite(false).imgUrl("https://tatamariusz.pl/hans-christian-andersen-polny-kwiatek/#iLightbox[gallery3623]/0").build()));
     }
 }
