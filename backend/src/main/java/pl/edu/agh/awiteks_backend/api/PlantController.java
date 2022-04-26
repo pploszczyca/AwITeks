@@ -41,7 +41,7 @@ public class PlantController extends ModelController<Plant> {
     @PostMapping(path = "/plants/{userId}/{speciesId}")
     @ResponseBody
     public String add(@RequestBody Plant plant, @PathVariable int userId, @PathVariable int speciesId) {
-        this.speciesRepository.get(speciesId).ifPresent(plant::setSpiece);
+        this.speciesRepository.get(speciesId).ifPresent(plant::setSpecies);
         addPlantToUserList(plant, userId);
         return super.add(plant);
     }
@@ -61,7 +61,7 @@ public class PlantController extends ModelController<Plant> {
         super.remove(id);
     }
 
-    private void removePLantFromUserList(int id) {
+    private void removePlantFromUserList(int id) {
         Optional<Plant> plant = super.get(id);
         plant.ifPresent(presentPlant -> {
             User user = presentPlant.getUser();

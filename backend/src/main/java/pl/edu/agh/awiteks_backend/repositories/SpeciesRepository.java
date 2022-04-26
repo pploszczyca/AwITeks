@@ -30,7 +30,7 @@ public class SpeciesRepository extends RepositoryImp<Species> {
         return plantRepository
                 .getAll()
                 .stream()
-                .anyMatch(plant1 -> plant1.getSpiece().getId() == speciesID);
+                .anyMatch(plant1 -> plant1.getSpecies().getId() == speciesID);
     }
 
 }

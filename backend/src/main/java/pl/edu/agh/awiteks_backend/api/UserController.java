@@ -3,10 +3,13 @@ package pl.edu.agh.awiteks_backend.api;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import pl.edu.agh.awiteks_backend.mappers.PlantMapper;
 import pl.edu.agh.awiteks_backend.models.Plant;
+import pl.edu.agh.awiteks_backend.models.PlantSummary;
 import pl.edu.agh.awiteks_backend.models.User;
 import pl.edu.agh.awiteks_backend.repositories.Repository;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 

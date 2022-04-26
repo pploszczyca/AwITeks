@@ -2,29 +2,29 @@ package pl.edu.agh.awiteks_backend.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.net.URL;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @JsonIgnoreProperties({"user"})
 public class Plant extends AbstractModel<Plant> {
     private User user;
-    private Species spiece;
+    private Species species;
     private String note;
     private Insolation actualInsolation;
     private List<Activity> plantActivities;
 
-    public Plant(int id, String name, User user, Species spiece, String note, Insolation actualInsolation, List<Activity> plantActivities) {
+    public Plant(int id, String name, User user, Species species, String note, Insolation actualInsolation, List<Activity> plantActivities, boolean isFavourite) {
         super(id, name);
         this.user = user;
-        this.spiece = spiece;
+        this.species = species;
         this.note = note;
         this.actualInsolation = actualInsolation;
         this.plantActivities = plantActivities;
     }
 
-    public Plant(int id, String name, User user, Species spiece, String note, Insolation actualInsolation) {
-        this(id, name, user, spiece, note, actualInsolation, new ArrayList<>());
+    public Plant(int id, String name, User user, Species species, String note, Insolation actualInsolation) {
+        this(id, name, user, species, note, actualInsolation, new ArrayList<>(), false);
     }
 
     public Plant() {
@@ -36,7 +36,7 @@ public class Plant extends AbstractModel<Plant> {
                 this.id,
                 this.name,
                 this.user,
-                this.spiece.copy(),
+                this.species.copy(),
                 this.note,
                 this.actualInsolation,
                 this.plantActivities.stream().map(Activity::copy).toList()
@@ -55,8 +55,8 @@ public class Plant extends AbstractModel<Plant> {
         return user;
     }
 
-    public Species getSpiece() {
-        return spiece;
+    public Species getSpecies() {
+        return species;
     }
 
     public Insolation getActualInsolation() {
@@ -67,8 +67,8 @@ public class Plant extends AbstractModel<Plant> {
         this.user = user;
     }
 
-    public void setSpiece(Species spiece) {
-        this.spiece = spiece;
+    public void setSpecies(Species species) {
+        this.species = species;
     }
 
     public void setActualInsolation(Insolation actualInsolation) {
@@ -81,6 +81,14 @@ public class Plant extends AbstractModel<Plant> {
 
     public void setPlantActivities(List<Activity> plantActivities) {
         this.plantActivities = plantActivities;
+    }
+
+    public String getPictureURL() {
+        return pictureURL;
+    }
+
+    public void setPictureURL(String pictureURL) {
+        this.pictureURL = pictureURL;
     }
 
     public void addActivity(Activity activity){
