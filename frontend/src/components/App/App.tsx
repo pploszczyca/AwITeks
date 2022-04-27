@@ -15,11 +15,10 @@ const queryClient = new QueryClient();
 function App() {
     return (
         <QueryClientProvider client={queryClient}>
-            <SiteTitleAndIcons />
-
             <Container fluid>
                 <Row>
                     <Router>
+                        <SiteTitleAndIcons />
                         <Col xs={2}>
                             <Sidebar />
                         </Col>
