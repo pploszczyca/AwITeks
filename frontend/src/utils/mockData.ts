@@ -163,6 +163,29 @@ export const mockPlants: Plant[] = [
             waterDose: 1,
             waterRoutine: 1
         },
+        lastWatering: new Date(),
+        lastFertilization: new Date(),
         note: "Cactus Jack Records is a record label founded by American rapper and singer Travis Scott. The label's current acts include Scott, Sheck Wes, Don Toliver, Luxury Tax, SoFaygo, Chase B, and WondaGurl. The label also has their own publishing division, Cactus Jack Publishing. "
+    },
+    {
+        actualInsolation: Insolation.HIGH,
+        id: 0,
+        imgUrl: "",
+        isFavourite: false,
+        name: "",
+        species: {
+            id: 0,
+            name: "",
+            fertilizationDose: Fertilization.MEDIUM,
+            fertilizationRoutine: 0,
+            maxAge: 0,
+            neededInsolation: Insolation.MEDIUM,
+            waterDose: 0,
+            waterRoutine: 0
+        },
+        lastWatering: new Date(),
+        lastFertilization: new Date(),
+        note: ""
+
     }
 ];

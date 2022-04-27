@@ -5,19 +5,17 @@ import { mockPlants } from '../../utils/mockData';
 import Calendar from '../Calendar/Calendar';
 import { DetailsWrapper, InfoWrapper, TitleSeparator, RequirementsButton } from './PlantDetailsViewStyles';
 import { ContentContainer } from "../App/AppStyle";
+import {PlantForm} from "../AddPlantForm/PlantForm";
+import {Notes} from "../Notes/Notes";
 
-
-function showNotes(){}
-
-function personalRequirements(){}
-
-function editPlant(){}
 
 function deletePlant(){}
 
 const PlantDetailsView: React.FC<{}> = (props) => {
     const { plantId } = useParams();
     const navigate = useNavigate();
+    const [showNoteForm, setShowNoteForm] = useState(false);
+    const [showEditPlantForm, setShowEditPlantForm] = useState(false);
 
     if (plantId == null) {
         navigate("/my_plants");
@@ -64,7 +62,7 @@ const PlantDetailsView: React.FC<{}> = (props) => {
                         </Card>
                         <Card as={DetailsWrapper}>
                             <Card.Body>
-                                <Card.Title style={{ fontSize: 26 }}>Wymagania podstawowe</Card.Title>
+                                <Card.Title style={{ fontSize: 26 }}>Wymagania</Card.Title>
                                 <TitleSeparator />
 
                                 <Card.Text>
@@ -74,13 +72,11 @@ const PlantDetailsView: React.FC<{}> = (props) => {
                                     <span className="d-block">Częstotliwość nawożenia: {plant.species.fertilizationRoutine} / miesiąc</span>
                                     <span className="d-block">Intensywność nawożenia: {plant.species.fertilizationDose}</span>
                                 </Card.Text>
-                                <div style={{ flexDirection:"row"}}>
-                                        <RequirementsButton onClick = {() => showNotes()}>
-                                            Notatki
-                                        </RequirementsButton>
-                                        <RequirementsButton onClick = {() => personalRequirements()}>
-                                            Własne wymagania
-                                        </RequirementsButton>
+
+                                <div className="d-flex justify-content-center">
+                                    <RequirementsButton className="mb-1" onClick = {() => setShowNoteForm(true)}>
+                                        Notatki
+                                    </RequirementsButton>
                                 </div>
 
                             </Card.Body>
@@ -89,16 +85,14 @@ const PlantDetailsView: React.FC<{}> = (props) => {
                             <Card.Body>
                                 <Card.Title style={{ fontSize: 26 }}>Zarządzanie rośliną</Card.Title>
                                 <TitleSeparator />
-                                <Card.Text>
-                                    <div style={{ flexDirection:"row"}} className="mt-4 mb-3">
-                                        <RequirementsButton onClick = {() => editPlant()}>
-                                            Edytuj roślinę
-                                        </RequirementsButton>
-                                        <RequirementsButton variant="danger" onClick = {() => deletePlant()}>
-                                            Usuń roślinę
-                                        </RequirementsButton>
-                                    </div>
-                                </Card.Text>
+                                <div className="d-flex justify-content-center flex-column flex-sm-row">
+                                    <RequirementsButton className="mb-1" onClick = {() => setShowEditPlantForm(true)}>
+                                        Edytuj roślinę
+                                    </RequirementsButton>
+                                    <RequirementsButton className="mb-1" variant="danger" onClick = {() => deletePlant()}>
+                                        Usuń roślinę
+                                    </RequirementsButton>
+                                </div>
                             </Card.Body>
                         </Card>
                     </Col>
@@ -107,6 +101,8 @@ const PlantDetailsView: React.FC<{}> = (props) => {
                     <Calendar plantId={+plantId!} variant='small' />
                 </Row>
             </ContentContainer >
+            <Notes showNoteForm={showNoteForm} showNoteFormSetter={setShowNoteForm} plant={plant}/>
+            <PlantForm show={showEditPlantForm} updateState={setShowEditPlantForm} formTitle={`Edycja rośliny: ${plant.name}`} plantId={plant.id}/>
         </>
     )
 }

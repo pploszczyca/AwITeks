@@ -33,6 +33,8 @@ export interface Plant {
     actualInsolation: Insolation;
     isFavourite: boolean;
     imgUrl: string;
+    lastWatering: Date;
+    lastFertilization: Date;
 }
 
 
