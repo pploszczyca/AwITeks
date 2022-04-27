@@ -7,11 +7,13 @@ import { DetailsWrapper, InfoWrapper, TitleSeparator, RequirementsButton } from 
 import { ContentContainer } from "../App/AppStyle";
 
 
-function editPlant(){}
-
-function addNote(){}
+function showNotes(){}
 
 function personalRequirements(){}
+
+function editPlant(){}
+
+function deletePlant(){}
 
 const PlantDetailsView: React.FC<{}> = (props) => {
     const { plantId } = useParams();
@@ -40,7 +42,7 @@ const PlantDetailsView: React.FC<{}> = (props) => {
                                 <Card.Text>
                                     <span className="d-block">Nazwa rośliny: {plant.name}</span>
                                     <span className="d-block">Gatunek: {plant.species.name}</span>
-                                    <span className="d-block">Średnia długość życia gautnku: {plant.species.maxAge}</span>
+                                    <span className="d-block">Średnia długość życia gatunku: {plant.species.maxAge}</span>
                                 </Card.Text>
 
                             </Card.Body>
@@ -73,17 +75,30 @@ const PlantDetailsView: React.FC<{}> = (props) => {
                                     <span className="d-block">Intensywność nawożenia: {plant.species.fertilizationDose}</span>
                                 </Card.Text>
                                 <div style={{ flexDirection:"row"}}>
-                                        <RequirementsButton onClick = {() => editPlant()}>
-                                            Edytuj roślinę
-                                        </RequirementsButton>
-                                        <RequirementsButton onClick = {() => addNote()}>
-                                            Dodaj notatkę
+                                        <RequirementsButton onClick = {() => showNotes()}>
+                                            Notatki
                                         </RequirementsButton>
                                         <RequirementsButton onClick = {() => personalRequirements()}>
                                             Własne wymagania
                                         </RequirementsButton>
                                 </div>
 
+                            </Card.Body>
+                        </Card>
+                        <Card as={DetailsWrapper}>
+                            <Card.Body>
+                                <Card.Title style={{ fontSize: 26 }}>Zarządzanie rośliną</Card.Title>
+                                <TitleSeparator />
+                                <Card.Text>
+                                    <div style={{ flexDirection:"row"}} className="mt-4 mb-3">
+                                        <RequirementsButton onClick = {() => editPlant()}>
+                                            Edytuj roślinę
+                                        </RequirementsButton>
+                                        <RequirementsButton variant="danger" onClick = {() => deletePlant()}>
+                                            Usuń roślinę
+                                        </RequirementsButton>
+                                    </div>
+                                </Card.Text>
                             </Card.Body>
                         </Card>
                     </Col>
