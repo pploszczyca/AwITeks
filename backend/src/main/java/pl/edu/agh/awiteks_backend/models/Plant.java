@@ -18,6 +18,7 @@ public class Plant extends AbstractModel<Plant> {
     @Schema(required = true)
     private List<Activity> plantActivities;
 
+    private String url;
     public Plant(int id, String name, User user, Species spiece, String note, Insolation actualInsolation, List<Activity> plantActivities) {
         super(id, name);
         this.user = user;
@@ -29,6 +30,16 @@ public class Plant extends AbstractModel<Plant> {
 
     public Plant(int id, String name, User user, Species spiece, String note, Insolation actualInsolation) {
         this(id, name, user, spiece, note, actualInsolation, new ArrayList<>());
+    }
+
+    public Plant(int id, String name, User user, Species spiece, String note, Insolation actualInsolation, List<Activity> plantActivities, String url) {
+        super(id, name);
+        this.user = user;
+        this.spiece = spiece;
+        this.note = note;
+        this.actualInsolation = actualInsolation;
+        this.plantActivities = plantActivities;
+        this.url = url;
     }
 
     public Plant() {
@@ -92,6 +103,13 @@ public class Plant extends AbstractModel<Plant> {
         activity.setPlant(this);
     }
 
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
     public void removeActivity(Activity activity) {
         plantActivities.remove(activity);
     }
