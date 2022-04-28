@@ -83,8 +83,8 @@ public class MockConfiguration {
 
         //  public Plant(int id, String name, User user, Species spiece, String note, Insolation actualInsolation)
         Plant plant1 = new Plant(0, "My Kaktus", user, speciesRepository.get(1).get(), "Simple Kaktus note", Insolation.HIGH, url);
-        Activity activity1 = new Activity(0, plant1, ActivityType.FERTILISATION, "2022-04-22");
-        Activity activity11 = new Activity(1, plant1, ActivityType.WATERING, "2022-04-28");
+        Activity activity1 = new Activity(0, plant1, ActivityType.FERTILISATION, "2022-05-22");
+        Activity activity11 = new Activity(1, plant1, ActivityType.WATERING, "2022-05-28");
         Activity activity111 = new Activity(1, plant1, ActivityType.WATERING, "2022-05-04");
 
         Plant plant2 = new Plant(1, "My Fiołek", user, speciesRepository.get(2).get(), "Simple Fiołek note", Insolation.LOW, url);
