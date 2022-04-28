@@ -3,6 +3,7 @@
 ### Backend
 * Java 17
 * [Spring Boot 2.6.5](https://spring.io/projects/spring-boot)
+* [springdoc-openapi](https://springdoc.org/#Introduction)
 
 ### Frontend
 * [React](https://pl.reactjs.org/)
@@ -13,6 +14,10 @@
 ## Porty
 * Backend - 5000 - http://localhost:5000
 * Frontend - 3000 - http://localhost:3000
+
+## Branche
+* development - gałąź na której aktualnie pracujemy
+* main - stabilna wersja
 
 ## Uruchomienie projektu
 Należy ściągnąć repozytorium za pomocą jednej z poniższych komend:
@@ -26,7 +31,7 @@ git clone git@github.com:pploszczyca/AwITeks.git
 
 ### Uruchomienie backendu
 Należy zaimportować projekt za pomocą IntelIJ-a. W tym celu wykonujemy opcję `Open` i wybieramy folder `backend`. IDE powinno samo zaimportować potrzebne zależności.
-
+W razie problemu należy w settings -> gradle zmienić wersję javy (nie wystarczy zmienić w project structure).
 ### Uruchomienie frontendu
 Wchodzimy do folderu `frontend` i instalujemy potrzebne pakiety:
 ```bash
@@ -42,3 +47,12 @@ npm start
 ```
 npm test
 ```
+
+## Dokumetacja API
+Do projektu backendowego został podpięty [springdoc](https://springdoc.org/#Introduction). Po uruchomieniu backendu dokumentacja znajduje się pod linkiem: http://localhost:5000/swagger-ui/index.html.
+
+## Definition of done:
+- Ma działać (kompilować się, nie rzucać błędami)
+- Spełnia kryteria akceptacyjne
+- Przeszło przez Code Review (poprawki zostały zaakceptowane)
+- Zostało dołączone do gałęzi develop (merge)
