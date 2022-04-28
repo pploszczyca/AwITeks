@@ -67,6 +67,7 @@ public class Plant extends AbstractModel<Plant> {
                 this.note,
                 this.actualInsolation,
                 this.plantActivities.stream().map(Activity::copy).toList(),
+                this.isFavourite,
                 this.url
         );
     }

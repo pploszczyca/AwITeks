@@ -33,6 +33,16 @@ public class PlantService extends ModelService<Plant> {
         super.remove(id);
     }
 
+    public void changeFavourite(int plantId){
+        this.get(plantId).ifPresent(
+                plant -> {
+                    System.out.println(plant.isFavourite());
+                    plant.setFavourite(!plant.isFavourite());
+                    update(plant);
+                }
+        );
+    }
+
     private void addPlantToUserList(Plant plant, int userId) {
         userRepository
                 .get(userId)

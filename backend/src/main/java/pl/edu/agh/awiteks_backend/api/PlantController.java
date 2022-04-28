@@ -41,6 +41,14 @@ public class PlantController {
         plantService.add(plant, userId, speciesId);
     }
 
+    @Operation(summary = "Changing Favourite flag in plant", operationId = "changePlantFavourite")
+    @PutMapping(path = "/{plantId}/changeState")
+    @ResponseBody
+    public void changePlantFavourite(@PathVariable int plantId) {
+        plantService.changeFavourite(plantId);
+    }
+
+
     @Operation(summary = "Update plant", operationId = "updatePlant")
     @PutMapping(consumes = "application/json")
     public void updatePlant(@RequestBody Plant plant) {

@@ -83,24 +83,25 @@ public class MockConfiguration {
 
         //  public Plant(int id, String name, User user, Species spiece, String note, Insolation actualInsolation)
         Plant plant1 = new Plant(0, "My Kaktus", user, speciesRepository.get(1).get(), "Simple Kaktus note", Insolation.HIGH, url);
-        Activity activity1 = new Activity(0, plant1, ActivityType.FERTILISATION, "2000-12-13");
-        Activity activity11 = new Activity(1, plant1, ActivityType.WATERING, "2000-12-13");
+        Activity activity1 = new Activity(0, plant1, ActivityType.FERTILISATION, "2022-04-22");
+        Activity activity11 = new Activity(1, plant1, ActivityType.WATERING, "2022-04-28");
+        Activity activity111 = new Activity(1, plant1, ActivityType.WATERING, "2022-05-04");
 
         Plant plant2 = new Plant(1, "My Fiołek", user, speciesRepository.get(2).get(), "Simple Fiołek note", Insolation.LOW, url);
-        Activity activity2 = new Activity(2, plant2, ActivityType.FERTILISATION, "2000-12-13");
+        Activity activity2 = new Activity(2, plant2, ActivityType.FERTILISATION, "2022-04-22");
         Activity activity22 = new Activity(3, plant2, ActivityType.WATERING, "2000-12-13");
 
         Plant plant3 = new Plant(2, "My Storczyk", user, speciesRepository.get(3).get(), "Simple Storczyk note", Insolation.HIGH, url);
-        Activity activity3 = new Activity(4, plant2, ActivityType.FERTILISATION, "2000-12-13");
-        Activity activity33 = new Activity(5, plant2, ActivityType.WATERING, "2000-12-13");
+        Activity activity3 = new Activity(4, plant2, ActivityType.FERTILISATION, "2022-04-28");
+        Activity activity33 = new Activity(5, plant2, ActivityType.WATERING, "2022-04-28");
 
         Plant plant4 = new Plant(3, "My Bazylia", user, speciesRepository.get(4).get(), "Simple Bazylia note", Insolation.HIGH, "eh");
-        Activity activity4 = new Activity(6, plant2, ActivityType.FERTILISATION, "2000-12-13");
-        Activity activity44 = new Activity(7, plant2, ActivityType.WATERING,"2000-12-13");
+        Activity activity4 = new Activity(6, plant2, ActivityType.FERTILISATION, "2022-04-28");
+        Activity activity44 = new Activity(7, plant2, ActivityType.WATERING,"2022-04-29");
 
         Plant plant5 = new Plant(4, "My Mięta", user, speciesRepository.get(5).get(), "Simple Mięta note", Insolation.HIGH, true, url);
-        Activity activity5 = new Activity(8, plant2, ActivityType.FERTILISATION, "2000-12-13");
-        Activity activity55 = new Activity(9, plant2, ActivityType.WATERING, "2000-12-13");
+        Activity activity5 = new Activity(8, plant2, ActivityType.FERTILISATION, "2022-04-28");
+        Activity activity55 = new Activity(9, plant2, ActivityType.WATERING, "2022-04-27");
 
         List<AbstractModel<Plant>> plantList = new ArrayList<>();
         plantList.add(plant1);
@@ -111,6 +112,7 @@ public class MockConfiguration {
 
         plant1.addActivity(activity1);
         plant1.addActivity(activity11);
+        plant1.addActivity(activity111);
 
         plant2.addActivity(activity2);
         plant2.addActivity(activity22);
