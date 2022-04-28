@@ -9,7 +9,7 @@ import { CalendarDay } from '../CalendarDay/CalendarDay';
 import {CalendarNotification, NotificationSeverity} from '../../utils/CalendarNotification';
 import {ContentContainer} from "../App/AppStyle";
 import {getApis} from "../../api/initializeApis";
-import {Activity, Plant, Species} from "../../api";
+import {Plant} from "../../api";
 
 
 type CalendarProps = {
@@ -25,20 +25,6 @@ function exportCalendar() {
 const Calendar: React.FC<CalendarProps> = ({ plantId, variant = 'big' }) => {
     const [displayedDate, setDisplayedDate] = useState(new Date());
     const [notifications, setNotifications] = useState([] as CalendarNotification[]);
-
-    // const [user] = use...
-
-    // useEffect(() => {
-    //     if (plantId == null) {
-    //         // fetch all for this user from backend (or cache), only for this month
-    //         setNotifications(mockCalendarNotifications.filter(({ month }) => displayedDate.getMonth() === month));
-    //     }
-    //     else {
-    //         // fetch only for specific plant, used for calendar on single plant view
-    //         setNotifications(mockCalendarNotifications.filter(({ month, items }) => displayedDate.getMonth() === month
-    //             && items.find(({ plantId: id }) => id === plantId) != null));
-    //     }
-    // }, [displayedDate, plantId, /*user*/]);
 
     useEffect(() => {
         const getPlants = async () => {
@@ -70,7 +56,6 @@ const Calendar: React.FC<CalendarProps> = ({ plantId, variant = 'big' }) => {
                     console.log(plant)
                     return plant.plantActivities.map(activity => {
                         const date = new Date(activity.date)
-                        console.log(activity)
 
                         return {
                             day: date.getDate(),
@@ -86,11 +71,11 @@ const Calendar: React.FC<CalendarProps> = ({ plantId, variant = 'big' }) => {
                         }
                     })
                 }).flat()
-                console.log(notificationsList)
+
                 setNotifications(notificationsList);
 
             } catch (err) {
-                console.log('brrrrrrrrrrrrrrrr is server running???');
+                console.log('Server error:');
                 console.log(err);
             }
         }

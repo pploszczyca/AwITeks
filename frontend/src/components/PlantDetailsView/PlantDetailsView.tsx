@@ -27,11 +27,10 @@ const PlantDetailsView: React.FC<{}> = (props) => {
             try {
                 const plantRequest = await getApis().plantsApi.getPlant(parseInt(plantId!));
                 const plant: Plant = plantRequest.data as Plant;
-                // console.log(plant)
                 updatePlant(plant)
 
             } catch (err) {
-                console.log('brrrrrrrrrrrrrrrr is server running???');
+                console.log('Server error:');
                 console.log(err);
             }
         }
@@ -44,7 +43,7 @@ const PlantDetailsView: React.FC<{}> = (props) => {
             getApis().plantsApi.removePlant(parseInt(plantId!));
             navigate("/my_plants");
         } catch (err) {
-            console.log('brrrrrrrrrrrrrrrr is server running???');
+            console.log('Server error:');
             console.log(err);
         }
     }

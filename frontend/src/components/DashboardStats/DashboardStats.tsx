@@ -17,9 +17,12 @@ function DashboardStats() {
                 const plants: Plant[] = plantRequest.data as Plant[];
                 setNoPlants(plants.length)
 
+                const neglectedPlants = plants.filter(plant => plant.plantActivities.filter(activity => new Date(activity.date).getTime() < new Date().getTime()).length > 0)
+                setNoNeglectedPlants(neglectedPlants.length)
+                setNoWellGroomedPlants(plants.length - neglectedPlants.length)
 
             } catch (err) {
-                console.log('brrrrrrrrrrrrrrrr is server running???');
+                console.log('Server error:');
                 console.log(err);
             }
         }
@@ -39,14 +42,14 @@ function DashboardStats() {
             <Col xxl={4} sm={6} xs={12} className="mt-2">
                 <StatsCard>
                     <p className="card-title">Liczba zadbanych roślin</p>
-                    <p className="stat">6</p>
+                    <p className="stat">{noWellGroomedPlants}</p>
                     <p className="details"> Gratulacje! <br/> Twoje rośliny wyglądają na zadbane.</p>
                 </StatsCard>
             </Col>
             <Col xxl={4} sm={6} xs={12} className="mt-2">
                 <StatsCard>
                     <p className="card-title">Liczba zaniedbanych roślin</p>
-                    <p className="stat">1</p>
+                    <p className="stat">{noNeglectedPlants}</p>
                     <p className="details">Musisz lepiej dbać o niektóre rośliny.</p>
                 </StatsCard>
             </Col>

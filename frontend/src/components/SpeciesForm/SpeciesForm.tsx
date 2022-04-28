@@ -33,7 +33,7 @@ export const SpeciesForm: React.FC<SpeciesFormProps> = ({show, updateState}) => 
             getApis().speciesApi.addSpecie(specie);
             updateState(false)
         } catch (err) {
-            console.log('brrrrrrrrrrrrrrrr is server running???');
+            console.log('Server error:');
             console.log(err);
         }
         setSubmitting(false);

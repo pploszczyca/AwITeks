@@ -29,12 +29,11 @@ const PlantsView: React.FC<{}> = () => {
             try {
                 const speciesRequest = await getApis().speciesApi.getAllSpecies();
                 const species: Species[] = speciesRequest.data as Species[];
-                // console.log(species)
                 setPlantTypes(species)
 
                 const plantRequest = await getApis().plantsApi.getAllPlants();
                 const plants: Plant[] = plantRequest.data as Plant[];
-                // console.log(plants)
+
                 const mappedPlants: PlantSummary[] = plants.map((plant: Plant, id: number)=> ({
                     id: plant.id!,
                     name: plant.name,
@@ -45,7 +44,7 @@ const PlantsView: React.FC<{}> = () => {
                 updatePlants(mappedPlants)
                 
             } catch (err) {
-                console.log('brrrrrrrrrrrrrrrr is server running???');
+                console.log('Server error:');
                 console.log(err);
             }
         }

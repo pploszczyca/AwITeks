@@ -54,10 +54,7 @@ export const PlantForm: React.FC<PlantFormProps> = ({plantId, show, updateState,
             try {
                 const speciesRequest = await getApis().speciesApi.getAllSpecies();
                 const species: Species[] = speciesRequest.data as Species[];
-                // console.log(species)
                 setSpeciesList(species)
-
-                console.log(plantId)
 
                 if(plantId !== undefined && plantId !== -1){
                     const plantRequest = await getApis().plantsApi.getPlant(plantId);
@@ -67,7 +64,7 @@ export const PlantForm: React.FC<PlantFormProps> = ({plantId, show, updateState,
                 }
 
             } catch (err) {
-                console.log('brrrrrrrrrrrrrrrr is server running???');
+                console.log('Server error:');
                 console.log(err);
             }
         }
@@ -100,7 +97,7 @@ export const PlantForm: React.FC<PlantFormProps> = ({plantId, show, updateState,
             getApis().plantsApi.addPlant(0, values.species, plant);
             updateState(false);
         } catch (err) {
-            console.log('brrrrrrrrrrrrrrrr is server running???');
+            console.log('Server error:');
             console.log(err);
         }
 
