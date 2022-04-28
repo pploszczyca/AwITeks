@@ -26,7 +26,7 @@ function displayPhoto(){
 
 export const PlantForm: React.FC<PlantFormProps> = ({plantId, show, updateState, formTitle= "Dodaj nową roślinę"}) => {
     let [showSpeciesForm, setShowSpeciesForm] = useState(false);
-    const [plantTypes, setPlantTypes] = useState<Species[]>([]);
+    const [speciesList, setSpeciesList] = useState<Species[]>([]);
     const [insolationLevels, ] = useState(() => {
         return NotificationSeverity;
     })
@@ -55,9 +55,11 @@ export const PlantForm: React.FC<PlantFormProps> = ({plantId, show, updateState,
                 const speciesRequest = await getApis().speciesApi.getAllSpecies();
                 const species: Species[] = speciesRequest.data as Species[];
                 // console.log(species)
-                setPlantTypes(species)
+                setSpeciesList(species)
 
-                if(plantId !== undefined){
+                console.log(plantId)
+
+                if(plantId !== undefined && plantId !== -1){
                     const plantRequest = await getApis().plantsApi.getPlant(plantId);
                     const plant: Plant = plantRequest.data as Plant;
 
@@ -71,7 +73,7 @@ export const PlantForm: React.FC<PlantFormProps> = ({plantId, show, updateState,
         }
 
         getSpeciesAndPlant();
-    }, [])
+    }, [showSpeciesForm])
 
 
     function updateShowSpeciesFormState(newValue: boolean){
@@ -82,6 +84,7 @@ export const PlantForm: React.FC<PlantFormProps> = ({plantId, show, updateState,
     function addToDatabase(values: FormikValues, setSubmitting: any) {
         try {
             const plant: Plant = {
+                id: Math.floor(Math.random() * (99999) + 1790),
                 name: values.userPlantName,
                 actualInsolation: values.insolationLevel,
                 note: values.note,
@@ -129,7 +132,7 @@ export const PlantForm: React.FC<PlantFormProps> = ({plantId, show, updateState,
                             {
                                 userPlantName: plant.name,
                                 photo: '', //plant.imgUrl,
-                                species: '',
+                                species: speciesList[0] == undefined ? 0: speciesList[0].id,
                                 lastWatering: getDate(plant, "WATERING"),
                                 insolationLevel: plant.actualInsolation,
                                 lastFertilization: getDate(plant, "FERTILISATION"),
@@ -185,8 +188,8 @@ export const PlantForm: React.FC<PlantFormProps> = ({plantId, show, updateState,
                                         <Col className="form-group mt-3" xl={8} md={6} sm={12}>
                                             <label>Gatunek:</label><br/>
                                             <Field className="form-control" as="select" name="species">
-                                                {plantTypes.map((plantName: Species, id) => (
-                                                    <option key={id} value={plantName.id}>{plantName.name}</option>
+                                                {speciesList.map((specie: Species, id) => (
+                                                    <option key={id} value={specie.id}>{specie.name}</option>
                                                 ))}
                                             </Field>
                                             <ErrorMessage name="species" component="div">

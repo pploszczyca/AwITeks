@@ -73,9 +73,9 @@ const Calendar: React.FC<CalendarProps> = ({ plantId, variant = 'big' }) => {
                         console.log(activity)
 
                         return {
-                            day: date.getDay(),
+                            day: date.getDate(),
                             month: date.getMonth(),
-                            year: date.getMonth(),
+                            year: date.getFullYear(),
                             items: [
                                 {
                                     notificationId: activity.id!,

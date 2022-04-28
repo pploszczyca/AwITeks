@@ -127,7 +127,7 @@ const PlantDetailsView: React.FC<{}> = (props) => {
                 </Row>
             </ContentContainer >
             <Notes showNoteForm={showNoteForm} showNoteFormSetter={setShowNoteForm} plant={plant!}/>
-            <PlantForm show={showEditPlantForm} updateState={setShowEditPlantForm} formTitle={`Edycja rośliny: ${plant.name}`} plantId={plant.id}/>
+            <PlantForm show={showEditPlantForm} updateState={setShowEditPlantForm} formTitle={`Edycja rośliny: ${plant.name}`} plantId={parseInt(plantId!)}/>
         </>
     )
 }

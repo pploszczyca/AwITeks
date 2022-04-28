@@ -51,7 +51,7 @@ const PlantsView: React.FC<{}> = () => {
         }
 
         getSpeciesAndPlants();
-    }, [])
+    }, [show])
     
 
     function toggleFavourite(plant: PlantSummary) {

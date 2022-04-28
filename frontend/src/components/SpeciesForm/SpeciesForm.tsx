@@ -19,6 +19,7 @@ export const SpeciesForm: React.FC<SpeciesFormProps> = ({show, updateState}) => 
     function addToDatabase(values: FormikValues, setSubmitting: any){
         try {
             const specie: Species = {
+                id: Math.floor(Math.random() * (99999) + 1790),
                 creatorId: 0,
                 fertilizationDose: values.fertilizationDose,
                 fertilizationRoutine: values.fertilizationRoutine,
@@ -30,6 +31,7 @@ export const SpeciesForm: React.FC<SpeciesFormProps> = ({show, updateState}) => 
             }
 
             getApis().speciesApi.addSpecie(specie);
+            updateState(false)
         } catch (err) {
             console.log('brrrrrrrrrrrrrrrr is server running???');
             console.log(err);
