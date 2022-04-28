@@ -3,6 +3,7 @@ package pl.edu.agh.awiteks_backend.models;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
@@ -15,10 +16,10 @@ public class Activity {
     @Schema(required = true)
     private ActivityType activityType;
     @Schema(required = true)
-    private Date date;
+    private String date;
 
 
-    public Activity(int id, Plant plant, ActivityType activityType, Date date) {
+    public Activity(int id, Plant plant, ActivityType activityType, String date) {
         this.id = id;
         this.plant = plant;
         this.activityType = activityType;
@@ -37,11 +38,11 @@ public class Activity {
         this.activityType = activityType;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -50,7 +51,7 @@ public class Activity {
                 id,
                 plant,
                 activityType,
-                (Date) date.clone());
+                date);
     }
 
     public int getId() {

@@ -2,6 +2,8 @@ import React, {useState} from 'react';
 import {Button, Col, Container, Modal, Row} from "react-bootstrap";
 import {Formik, Form, Field, ErrorMessage, FormikValues} from 'formik';
 import {NotificationSeverity} from "../../utils/CalendarNotification";
+import {Species} from "../../api";
+import {getApis} from "../../api/initializeApis";
 
 
 type SpeciesFormProps = {
@@ -15,8 +17,25 @@ export const SpeciesForm: React.FC<SpeciesFormProps> = ({show, updateState}) => 
     })
 
     function addToDatabase(values: FormikValues, setSubmitting: any){
-        // todo
-        alert(JSON.stringify(values, null, 2));
+        try {
+            const specie: Species = {
+                id: Math.floor(Math.random() * (99999) + 1790),
+                creatorId: 0,
+                fertilizationDose: values.fertilizationDose,
+                fertilizationRoutine: values.fertilizationRoutine,
+                maxAge: values.maxAge,
+                name: values.name,
+                neededInsolation: values.neededInsolation,
+                waterDose: values.waterDose,
+                waterRoutine: values.waterRoutine
+            }
+
+            getApis().speciesApi.addSpecie(specie);
+            updateState(false)
+        } catch (err) {
+            console.log('Server error:');
+            console.log(err);
+        }
         setSubmitting(false);
     }
 
@@ -30,8 +49,8 @@ export const SpeciesForm: React.FC<SpeciesFormProps> = ({show, updateState}) => 
             <Modal.Body>
                 <Formik
                     initialValues={{
-                        name: '', maxAge: 0, neededInsolation: '', waterDose: 0, waterRoutine: 1,
-                        fertilizationRoutine: 1, fertilizationDose: ''
+                        name: '', maxAge: 0, neededInsolation: "LOW", waterDose: 0, waterRoutine: 1,
+                        fertilizationRoutine: 1, fertilizationDose: "LOW"
                     }}
                     validate={values => {
                         const errors: any = {};

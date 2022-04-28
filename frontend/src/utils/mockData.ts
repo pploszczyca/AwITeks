@@ -1,5 +1,6 @@
 import { CalendarNotification, NotificationSeverity } from "./CalendarNotification";
 import { Fertilization, Insolation, Plant, PlantSummary } from "./Plant";
+import {Plant as BackPlant} from "../api"
 
 export const mockPlantSummaries: PlantSummary[] = [
     {
@@ -167,6 +168,10 @@ export const mockPlants: Plant[] = [
         lastFertilization: new Date(),
         note: "Cactus Jack Records is a record label founded by American rapper and singer Travis Scott. The label's current acts include Scott, Sheck Wes, Don Toliver, Luxury Tax, SoFaygo, Chase B, and WondaGurl. The label also has their own publishing division, Cactus Jack Publishing. "
     },
+
+    /*
+    do not remove
+     */
     {
         actualInsolation: Insolation.HIGH,
         id: 0,
@@ -186,6 +191,37 @@ export const mockPlants: Plant[] = [
         lastWatering: new Date(),
         lastFertilization: new Date(),
         note: ""
-
     }
 ];
+
+export const emptyPlant: BackPlant = {
+    id: -1,
+    name: "",
+    spiece: {
+        id: 1,
+        name: "",
+        maxAge: 20,
+        neededInsolation: "HIGH",
+        waterDose: 1,
+        waterRoutine: 1,
+        fertilizationRoutine: 7,
+        fertilizationDose: "LOW",
+        creatorId: -1
+    },
+    note: "",
+    actualInsolation: "HIGH",
+    plantActivities: [
+        {
+            id: 0,
+            activityType: "FERTILISATION",
+            date: "2022-06-22T22:00:00.000+00:00"
+        },
+        {
+            id: 1,
+            activityType: "WATERING",
+            date: "2022-06-22T22:00:00.000+00:00"
+        }
+    ],
+    // url: "https://netscroll.pl/wp-content/uploads/2021/10/CactusToy1.jpg",
+    // favourite: false
+}

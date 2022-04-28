@@ -1,10 +1,12 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button, Col, Container, Modal, Row} from "react-bootstrap";
 import {Formik, Form, Field, ErrorMessage, FormikValues} from 'formik';
-import {mockPlants, mockPlantTypes} from "../../utils/mockData";
+import {emptyPlant} from "../../utils/mockData";
 import {NotificationSeverity} from "../../utils/CalendarNotification";
 import {SpeciesForm} from "../SpeciesForm/SpeciesForm";
 import Moment from "moment";
+import {getApis} from "../../api/initializeApis";
+import {ActivityActivityTypeEnum, Plant, Species} from "../../api";
 
 
 type PlantFormProps = {
@@ -14,41 +16,88 @@ type PlantFormProps = {
     formTitle?: string
 };
 
-function displayPhoto(){
-    let img = document.getElementById('plantPhoto')!;
-    let input: HTMLInputElement = document.getElementById('photoInput')! as HTMLInputElement;
 
-    img.setAttribute("src", (window.URL ? URL : webkitURL).createObjectURL(input.files![0]));
-}
+// function displayPhoto(){
+//     let img = document.getElementById('plantPhoto')!;
+//     let input: HTMLInputElement = document.getElementById('photoInput')! as HTMLInputElement;
+//
+//     img.setAttribute("src", (window.URL ? URL : webkitURL).createObjectURL(input.files![0]));
+// }
+//
+//
 
 export const PlantForm: React.FC<PlantFormProps> = ({plantId, show, updateState, formTitle= "Dodaj nową roślinę"}) => {
     let [showSpeciesForm, setShowSpeciesForm] = useState(false);
-
-    const [plantTypes,] = useState(() => {
-        // fetch from API
-        return mockPlantTypes;
-    })
-
+    const [speciesList, setSpeciesList] = useState<Species[]>([]);
     const [insolationLevels, ] = useState(() => {
         return NotificationSeverity;
     })
 
-    const [plant] = useState(() => {
-        if(plantId !== undefined){
-            return mockPlants.find(plant => plant.id === +(plantId!)) || mockPlants[0];
+    const [plant, updatePlant] = useState<Plant>(emptyPlant);
+
+    useEffect(() => {
+        const getSpeciesAndPlant = async () => {
+            try {
+                const speciesRequest = await getApis().speciesApi.getAllSpecies();
+                const species: Species[] = speciesRequest.data as Species[];
+                setSpeciesList(species)
+
+                if(plantId !== undefined && plantId !== -1){
+                    const plantRequest = await getApis().plantsApi.getPlant(plantId);
+                    const plant: Plant = plantRequest.data as Plant;
+
+                    updatePlant(plant)
+                }
+
+            } catch (err) {
+                console.log('Server error:');
+                console.log(err);
+            }
         }
-        return mockPlants[1]
-    });
+
+        getSpeciesAndPlant();
+    }, [showSpeciesForm, plantId])
+
 
     function updateShowSpeciesFormState(newValue: boolean){
         setShowSpeciesForm(newValue);
         updateState(!newValue);
     }
 
-    function addToDatabase(values: FormikValues, setSubmitting: any){
-        // todo
-        alert(JSON.stringify(values, null, 2));
+    function addToDatabase(values: FormikValues, setSubmitting: any) {
+        try {
+            const plant: Plant = {
+                id: Math.floor(Math.random() * (99999) + 1790),
+                name: values.userPlantName,
+                actualInsolation: values.insolationLevel,
+                note: values.note,
+                plantActivities: [{
+                    activityType: ActivityActivityTypeEnum.Watering,
+                    date: values.lastWatering
+                }, {
+                    activityType: ActivityActivityTypeEnum.Fertilisation,
+                    date: values.lastFertilization
+                }]
+                //,url: values.photo
+            }
+            getApis().plantsApi.addPlant(0, values.species, plant);
+            updateState(false);
+        } catch (err) {
+            console.log('Server error:');
+            console.log(err);
+        }
+
         setSubmitting(false);
+    }
+
+    function getDate(plant: Plant, type: string){
+        const dates = plant.plantActivities.filter(a => a.activityType === type)
+
+        if(dates !== undefined && dates !== null){
+            return  Moment(new Date(dates.slice(-1)[0].date)).format("yyyy-MM-DD");
+        }
+
+        return Moment(new Date()).format("yyyy-MM-DD");
     }
 
     return(
@@ -63,19 +112,17 @@ export const PlantForm: React.FC<PlantFormProps> = ({plantId, show, updateState,
                     <Formik
                         initialValues={
                             {
-                                scientificPlantName: plant.species.name,
                                 userPlantName: plant.name,
-                                photo: plant.imgUrl,
-                                species: '',
-                                lastWatering: Moment(plant.lastWatering).format("yyyy-MM-DD"),
+                                photo: '', //plant.imgUrl,
+                                species: speciesList[0] === undefined ? 0: speciesList[0].id,
+                                lastWatering: getDate(plant, "WATERING"),
                                 insolationLevel: plant.actualInsolation,
-                                lastFertilization: Moment(plant.lastFertilization).format("yyyy-MM-DD"),
+                                lastFertilization: getDate(plant, "FERTILISATION"),
                                 note: plant.note
                             }
                         }
                         validate={values => {
                             const errors: any = {};
-                            if(!values.scientificPlantName) errors.scientificPlantName = "Wymagane";
                             if(!values.userPlantName) errors.userPlantName = 'Wymagane';
                             if(!values.photo) errors.photo = 'Wymagane';
                             return errors;
@@ -89,13 +136,6 @@ export const PlantForm: React.FC<PlantFormProps> = ({plantId, show, updateState,
                                 <Container>
                                     <Row>
                                         <Col className="form-group mt-3" xl={4} md={6} sm={12}>
-                                            <label>Nazwa naukowa rośliny:</label><br/>
-                                            <Field className="form-control" type="text" name="scientificPlantName" />
-                                            <ErrorMessage name="scientificPlantName" component="div">
-                                                { msg => <div style={{ color: 'red' }}>{msg}</div> }
-                                            </ErrorMessage>
-                                        </Col>
-                                        <Col className="form-group mt-3" xl={4} md={6} sm={12}>
                                             <label>Twoja nazwa rośliny:</label><br/>
                                             <Field className="form-control" type="text" name="userPlantName" />
                                             <ErrorMessage name="userPlantName" component="div">
@@ -104,30 +144,34 @@ export const PlantForm: React.FC<PlantFormProps> = ({plantId, show, updateState,
                                         </Col>
                                         <Col className="form-group mt-3" xl={4} md={12}>
                                             <label>Zdjęcie:</label><br/>
-                                            {plant.imgUrl === '' ?
-                                                (   <>
-                                                        <Field className="form-control" type="file" name="photo" accept="image/png, image/jpeg"/>
-                                                        <ErrorMessage name="photo" component="div">
-                                                            { msg => <div style={{ color: 'red' }}>{msg}</div> }
-                                                        </ErrorMessage>
-                                                    </>
-                                                )
-                                                :
-                                                (
-                                                    <>
-                                                        <div className="d-flex gap-1 align-items-center">
-                                                            <img id="plantPhoto" src={plant.imgUrl} alt="" width={64} height={64}/>
-                                                            <Field id="photoInput" className="form-control" type="file"  accept="image/png, image/jpeg" name="edit-photo" onChange={() => displayPhoto()}/>
-                                                        </div>
-                                                    </>
-                                                )
-                                            }
+                                            {/*{plant.imgUrl === '' ?*/}
+                                            {/*    (   <>*/}
+                                            {/*            <Field className="form-control" type="file" name="photo" accept="image/png, image/jpeg"/>*/}
+                                            {/*            <ErrorMessage name="photo" component="div">*/}
+                                            {/*                { msg => <div style={{ color: 'red' }}>{msg}</div> }*/}
+                                            {/*            </ErrorMessage>*/}
+                                            {/*        </>*/}
+                                            {/*    )*/}
+                                            {/*    :*/}
+                                            {/*    (*/}
+                                            {/*        <>*/}
+                                            {/*            <div className="d-flex gap-1 align-items-center">*/}
+                                            {/*                <img id="plantPhoto" src={plant.imgUrl} alt="" width={64} height={64}/>*/}
+                                            {/*                <Field id="photoInput" className="form-control" type="file"  accept="image/png, image/jpeg" name="edit-photo" onChange={() => displayPhoto()}/>*/}
+                                            {/*            </div>*/}
+                                            {/*        </>*/}
+                                            {/*    )*/}
+                                            {/*}*/}
+                                            <Field className="form-control" type="text" name="photo"/>
+                                            <ErrorMessage name="photo" component="div">
+                                                { msg => <div style={{ color: 'red' }}>{msg}</div> }
+                                            </ErrorMessage>
                                         </Col>
                                         <Col className="form-group mt-3" xl={8} md={6} sm={12}>
                                             <label>Gatunek:</label><br/>
                                             <Field className="form-control" as="select" name="species">
-                                                {plantTypes.map((plantType, id) => (
-                                                    <option key={plantType + id} value={plantType}>{plantType}</option>
+                                                {speciesList.map((specie: Species, id) => (
+                                                    <option key={id} value={specie.id}>{specie.name}</option>
                                                 ))}
                                             </Field>
                                             <ErrorMessage name="species" component="div">

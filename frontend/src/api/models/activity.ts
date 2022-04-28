@@ -25,7 +25,7 @@ export interface Activity {
      * @type {number}
      * @memberof Activity
      */
-    'id': number;
+    'id'?: number;
     /**
      * 
      * @type {string}

@@ -4,10 +4,11 @@ import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons'
 import Card from "react-bootstrap/Card"
 import { CalendarCol, CalendarService, ExportButton, DayWrapperCard, DayHeader, Arrow, CalendarServiceBottom } from './CalendarStyles';
 import { DAYS, getTileDate, getTileNotifications, MONTHS, nextMonth, prevMonth, WEEKS } from './utils';
-import { mockCalendarNotifications } from '../../utils/mockData';
 import { CalendarDay } from '../CalendarDay/CalendarDay';
-import { CalendarNotification } from '../../utils/CalendarNotification';
+import {CalendarNotification, NotificationSeverity} from '../../utils/CalendarNotification';
 import {ContentContainer} from "../App/AppStyle";
+import {getApis} from "../../api/initializeApis";
+import {Plant} from "../../api";
 
 
 type CalendarProps = {
@@ -24,19 +25,54 @@ const Calendar: React.FC<CalendarProps> = ({ plantId, variant = 'big' }) => {
     const [displayedDate, setDisplayedDate] = useState(new Date());
     const [notifications, setNotifications] = useState([] as CalendarNotification[]);
 
-    // const [user] = use...
-
     useEffect(() => {
-        if (plantId == null) {
-            // fetch all for this user from backend (or cache), only for this month
-            setNotifications(mockCalendarNotifications.filter(({ month }) => displayedDate.getMonth() === month));
+        const getPlants = async () => {
+            try {
+                const plantsRequest = await getApis().plantsApi.getAllPlants();
+                const plants: Plant[] = plantsRequest.data as Plant[];
+
+                const calculateSeverity = (date: Date) => {
+                    const currentDate = new Date()
+                    const difference_in_days = (date.getTime() - currentDate.getTime()) / (1000 * 3600 * 24);
+
+                    if (difference_in_days >= 3) {
+                        return NotificationSeverity.LOW
+                    } else if (difference_in_days <= 3 && difference_in_days >= 0) {
+                        return NotificationSeverity.MEDIUM
+                    } else {
+                        return NotificationSeverity.HIGH
+                    }
+                }
+
+                let notificationsList: CalendarNotification[] = plants.filter(plant => plantId === undefined || plant.id === plantId).map(plant => {
+                    return plant.plantActivities.map(activity => {
+                        const date = new Date(activity.date)
+
+                        return {
+                            day: date.getDate(),
+                            month: date.getMonth(),
+                            year: date.getFullYear(),
+                            items: [
+                                {
+                                    notificationId: activity.id!,
+                                    plantId: plant.id!,
+                                    severity: calculateSeverity(date)
+                                }
+                            ]
+                        }
+                    })
+                }).flat()
+
+                setNotifications(notificationsList);
+
+            } catch (err) {
+                console.log('Server error:');
+                console.log(err);
+            }
         }
-        else {
-            // fetch only for specific plant, used for calendar on single plant view
-            setNotifications(mockCalendarNotifications.filter(({ month, items }) => displayedDate.getMonth() === month
-                && items.find(({ plantId: id }) => id === plantId) != null));
-        }
-    }, [displayedDate, plantId, /*user*/]);
+
+        getPlants();
+    }, [plantId])
 
 
 

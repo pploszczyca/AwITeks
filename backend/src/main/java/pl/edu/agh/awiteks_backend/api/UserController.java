@@ -3,11 +3,15 @@ package pl.edu.agh.awiteks_backend.api;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import pl.edu.agh.awiteks_backend.mappers.PlantMapper;
+import pl.edu.agh.awiteks_backend.models.PlantSummary;
 import pl.edu.agh.awiteks_backend.models.User;
 import pl.edu.agh.awiteks_backend.services.UserService;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/users")
@@ -47,5 +51,16 @@ public class UserController {
     @DeleteMapping(value = "/{id}")
     public void removeUser(@PathVariable int id) {
         userService.remove(id);
+    }
+
+    @Operation(summary = "Get all plants summary")
+    @GetMapping(value="/{id}/plants")
+    public List getAllPlantsSummary(@PathVariable int id){
+        Optional<User> user = this.userService.get(id);
+        return user.<List>map(value -> value
+                .getUserPlants()
+                .stream()
+                .map(PlantMapper::plantToPlantSummary)
+                .collect(Collectors.toList())).orElseGet(() -> Collections.singletonList(PlantSummary.builder().id(-1).name("luka").speciesName("luka").speciesName("luka").isFavourite(false).imgUrl("https://tatamariusz.pl/hans-christian-andersen-polny-kwiatek/#iLightbox[gallery3623]/0").build()));
     }
 }
