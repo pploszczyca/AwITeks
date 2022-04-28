@@ -27,7 +27,7 @@ const PlantDetailsView: React.FC<{}> = (props) => {
             try {
                 const plantRequest = await getApis().plantsApi.getPlant(parseInt(plantId!));
                 const plant: Plant = plantRequest.data as Plant;
-                console.log(plant)
+                // console.log(plant)
                 updatePlant(plant)
 
             } catch (err) {

@@ -18,7 +18,6 @@ export const SpeciesForm: React.FC<SpeciesFormProps> = ({show, updateState}) => 
 
     function addToDatabase(values: FormikValues, setSubmitting: any){
         try {
-
             const specie: Species = {
                 creatorId: 0,
                 fertilizationDose: values.fertilizationDose,
@@ -29,6 +28,7 @@ export const SpeciesForm: React.FC<SpeciesFormProps> = ({show, updateState}) => 
                 waterDose: values.waterDose,
                 waterRoutine: values.waterRoutine
             }
+
             getApis().speciesApi.addSpecie(specie);
         } catch (err) {
             console.log('brrrrrrrrrrrrrrrr is server running???');
@@ -47,8 +47,8 @@ export const SpeciesForm: React.FC<SpeciesFormProps> = ({show, updateState}) => 
             <Modal.Body>
                 <Formik
                     initialValues={{
-                        name: '', maxAge: 0, neededInsolation: '', waterDose: 0, waterRoutine: 1,
-                        fertilizationRoutine: 1, fertilizationDose: ''
+                        name: '', maxAge: 0, neededInsolation: "LOW", waterDose: 0, waterRoutine: 1,
+                        fertilizationRoutine: 1, fertilizationDose: "LOW"
                     }}
                     validate={values => {
                         const errors: any = {};

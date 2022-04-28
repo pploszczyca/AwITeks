@@ -195,11 +195,11 @@ export const mockPlants: Plant[] = [
 ];
 
 export const emptyPlant: BackPlant = {
-    id: 0,
-    name: "My Kaktus",
+    id: -1,
+    name: "",
     spiece: {
         id: 1,
-        name: "Kaktus",
+        name: "",
         maxAge: 20,
         neededInsolation: "HIGH",
         waterDose: 1,
@@ -208,18 +208,18 @@ export const emptyPlant: BackPlant = {
         fertilizationDose: "LOW",
         creatorId: -1
     },
-    note: "Simple Kaktus note",
+    note: "",
     actualInsolation: "HIGH",
     plantActivities: [
         {
             id: 0,
             activityType: "FERTILISATION",
-            date: "1918-06-22T22:00:00.000+00:00"
+            date: "2022-06-22T22:00:00.000+00:00"
         },
         {
             id: 1,
             activityType: "WATERING",
-            date: "1918-06-22T22:00:00.000+00:00"
+            date: "2022-06-22T22:00:00.000+00:00"
         }
     ],
     // url: "https://netscroll.pl/wp-content/uploads/2021/10/CactusToy1.jpg",

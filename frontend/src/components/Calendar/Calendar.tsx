@@ -51,11 +51,15 @@ const Calendar: React.FC<CalendarProps> = ({ plantId, variant = 'big' }) => {
 
                 const calculateSeverity = (date: Date) => {
                     const currentDate = new Date()
+                    const difference_in_days = (date.getTime() - currentDate.getTime()) / (1000 * 3600 * 24);
 
-                    if (currentDate < date) {
+
+                    if (difference_in_days >= 3) {
                         return NotificationSeverity.LOW
-                    } else if (currentDate === date) {
-                        return No
+                    } else if (difference_in_days <= 3 && difference_in_days >= 0) {
+                        return NotificationSeverity.MEDIUM
+                    } else {
+                        return NotificationSeverity.HIGH
                     }
                 }
 
@@ -63,8 +67,10 @@ const Calendar: React.FC<CalendarProps> = ({ plantId, variant = 'big' }) => {
                 //     plants.filter(plant => plant.id == plantId)[0].plantActivities.filter(compareDate)
 
                 let notificationsList: CalendarNotification[] = plants.filter(plant => plantId === undefined || plant.id == plantId).map(plant => {
+                    console.log(plant)
                     return plant.plantActivities.map(activity => {
                         const date = new Date(activity.date)
+                        console.log(activity)
 
                         return {
                             day: date.getDay(),
@@ -74,12 +80,14 @@ const Calendar: React.FC<CalendarProps> = ({ plantId, variant = 'big' }) => {
                                 {
                                     notificationId: activity.id!,
                                     plantId: plant.id!,
-                                    severity: NotificationSeverity.LOW
+                                    severity: calculateSeverity(date)
                                 }
                             ]
                         }
                     })
                 }).flat()
+                console.log(notificationsList)
+                setNotifications(notificationsList);
 
             } catch (err) {
                 console.log('brrrrrrrrrrrrrrrr is server running???');

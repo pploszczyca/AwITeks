@@ -7,7 +7,6 @@ import {SpeciesForm} from "../SpeciesForm/SpeciesForm";
 import Moment from "moment";
 import {getApis} from "../../api/initializeApis";
 import {ActivityActivityTypeEnum, Plant, Species} from "../../api";
-import {PlantSummary} from "../../utils/Plant";
 
 
 type PlantFormProps = {
@@ -61,6 +60,7 @@ export const PlantForm: React.FC<PlantFormProps> = ({plantId, show, updateState,
                 if(plantId !== undefined){
                     const plantRequest = await getApis().plantsApi.getPlant(plantId);
                     const plant: Plant = plantRequest.data as Plant;
+
                     updatePlant(plant)
                 }
 
@@ -94,7 +94,8 @@ export const PlantForm: React.FC<PlantFormProps> = ({plantId, show, updateState,
                 }]
                 //,url: values.photo
             }
-            getApis().plantsApi.addPlant(0, values.species.id, plant);
+            getApis().plantsApi.addPlant(0, values.species, plant);
+            updateState(false);
         } catch (err) {
             console.log('brrrrrrrrrrrrrrrr is server running???');
             console.log(err);
@@ -107,7 +108,7 @@ export const PlantForm: React.FC<PlantFormProps> = ({plantId, show, updateState,
         const dates = plant.plantActivities.filter(a => a.activityType === type)
 
         if(dates !== undefined && dates !== null){
-            console.log(dates.slice(-1))
+            // console.log(dates.slice(-1))
             return  Moment(new Date(dates.slice(-1)[0].date)).format("yyyy-MM-DD");
         }
 
@@ -177,7 +178,7 @@ export const PlantForm: React.FC<PlantFormProps> = ({plantId, show, updateState,
                                             {/*    )*/}
                                             {/*}*/}
                                             <Field className="form-control" type="text" name="photo"/>
-                                            <ErrorMessage name="userPlantName" component="div">
+                                            <ErrorMessage name="photo" component="div">
                                                 { msg => <div style={{ color: 'red' }}>{msg}</div> }
                                             </ErrorMessage>
                                         </Col>
