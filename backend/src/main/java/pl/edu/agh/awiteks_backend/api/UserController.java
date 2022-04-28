@@ -51,6 +51,7 @@ public class UserController {
         userService.remove(id);
     }
 
+    @Operation(summary = "Get all user plants", operationId = "getUserPlants")
     @GetMapping(value = "/users/{id}/plants", produces = "application/json")
     public List<Plant> getPlants(@PathVariable int id) {
         var user = userService.get(id);
@@ -60,6 +61,7 @@ public class UserController {
             return new ArrayList<Plant>();
     }
 
+    @Operation(summary = "Get all favourite user plants", operationId = "getFavouriteUserPlants")
     @GetMapping(value = "/users/{id}/favPlants", produces = "application/json")
     public List<Plant> getFavPlants(@PathVariable int id) {
         var user = userService.get(id);

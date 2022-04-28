@@ -19,17 +19,18 @@ public class Plant extends AbstractModel<Plant> {
     private List<Activity> plantActivities;
     private boolean isFavourite=false;
 
-    public Plant(int id, String name, User user, Species spiece, String note, Insolation actualInsolation, List<Activity> plantActivities) {
+    public Plant(int id, String name, User user, Species spiece, String note, Insolation actualInsolation, boolean isFavourite, List<Activity> plantActivities) {
         super(id, name);
         this.user = user;
         this.spiece = spiece;
         this.note = note;
         this.actualInsolation = actualInsolation;
+        this.isFavourite = isFavourite;
         this.plantActivities = plantActivities;
     }
 
     public Plant(int id, String name, User user, Species spiece, String note, Insolation actualInsolation) {
-        this(id, name, user, spiece, note, actualInsolation, new ArrayList<>());
+        this(id, name, user, spiece, note, actualInsolation, false, new ArrayList<>());
     }
 
     public Plant() {
@@ -44,6 +45,7 @@ public class Plant extends AbstractModel<Plant> {
                 this.spiece.copy(),
                 this.note,
                 this.actualInsolation,
+                this.isFavourite,
                 this.plantActivities.stream().map(Activity::copy).toList()
         );
     }
