@@ -2,6 +2,8 @@ package pl.edu.agh.awiteks_backend.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,19 +18,40 @@ public class Plant extends AbstractModel<Plant> {
     @Schema(required = true)
     private Insolation actualInsolation;
     @Schema(required = true)
-    private List<Activity> plantActivities;
+    private List<Activity> plantActivities = new ArrayList<>();
+    private boolean isFavourite = false;
 
-    public Plant(int id, String name, User user, Species spiece, String note, Insolation actualInsolation, List<Activity> plantActivities) {
+    @Autowired
+    private String url;
+
+    public Plant(int id, String name, User user, Species spiece, String note, Insolation actualInsolation, List<Activity> plantActivities, boolean isFavourite, String url) {
         super(id, name);
         this.user = user;
         this.spiece = spiece;
         this.note = note;
         this.actualInsolation = actualInsolation;
         this.plantActivities = plantActivities;
+        this.isFavourite = isFavourite;
+        this.url = url;
     }
 
-    public Plant(int id, String name, User user, Species spiece, String note, Insolation actualInsolation) {
-        this(id, name, user, spiece, note, actualInsolation, new ArrayList<>());
+    public Plant(int id, String name, User user, Species spiece, String note, Insolation actualInsolation, boolean isFavourite, String url) {
+        this(id, name, user, spiece, note, actualInsolation, new ArrayList<>(), isFavourite, url);
+    }
+
+    public Plant(int id, String name, User user, Species spiece, String note, Insolation actualInsolation, String url) {
+        this(id, name, user, spiece, note, actualInsolation, new ArrayList<>(), false, url);
+    }
+
+
+    public Plant(int id, String name, User user, Species spiece, String note, Insolation actualInsolation, List<Activity> plantActivities, String url) {
+        super(id, name);
+        this.user = user;
+        this.spiece = spiece;
+        this.note = note;
+        this.actualInsolation = actualInsolation;
+        this.plantActivities = plantActivities;
+        this.url = url;
     }
 
     public Plant() {
@@ -43,7 +66,8 @@ public class Plant extends AbstractModel<Plant> {
                 this.spiece.copy(),
                 this.note,
                 this.actualInsolation,
-                this.plantActivities.stream().map(Activity::copy).toList()
+                this.plantActivities.stream().map(Activity::copy).toList(),
+                this.url
         );
     }
 
@@ -92,6 +116,21 @@ public class Plant extends AbstractModel<Plant> {
         activity.setPlant(this);
     }
 
+    public boolean isFavourite() {
+        return isFavourite;
+    }
+
+    public void setFavourite(boolean favourite) {
+        isFavourite = favourite;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
     public void removeActivity(Activity activity) {
         plantActivities.remove(activity);
     }
@@ -103,4 +142,5 @@ public class Plant extends AbstractModel<Plant> {
                 .findFirst()
                 .ifPresent(this::removeActivity);
     }
+
 }
