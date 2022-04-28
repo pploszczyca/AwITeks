@@ -2,6 +2,8 @@ import React, {useState} from 'react';
 import {Button, Col, Container, Modal, Row} from "react-bootstrap";
 import {Formik, Form, Field, ErrorMessage, FormikValues} from 'formik';
 import {NotificationSeverity} from "../../utils/CalendarNotification";
+import {ActivityActivityTypeEnum, Plant, Species} from "../../api";
+import {getApis} from "../../api/initializeApis";
 
 
 type SpeciesFormProps = {
@@ -15,8 +17,23 @@ export const SpeciesForm: React.FC<SpeciesFormProps> = ({show, updateState}) => 
     })
 
     function addToDatabase(values: FormikValues, setSubmitting: any){
-        // todo
-        alert(JSON.stringify(values, null, 2));
+        try {
+
+            const specie: Species = {
+                creatorId: 0,
+                fertilizationDose: values.fertilizationDose,
+                fertilizationRoutine: values.fertilizationRoutine,
+                maxAge: values.maxAge,
+                name: values.name,
+                neededInsolation: values.neededInsolation,
+                waterDose: values.waterDose,
+                waterRoutine: values.waterRoutine
+            }
+            getApis().speciesApi.addSpecie(specie);
+        } catch (err) {
+            console.log('brrrrrrrrrrrrrrrr is server running???');
+            console.log(err);
+        }
         setSubmitting(false);
     }
 

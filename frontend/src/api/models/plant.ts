@@ -27,7 +27,7 @@ export interface Plant {
      * @type {number}
      * @memberof Plant
      */
-    'id': number;
+    'id'?: number;
     /**
      * 
      * @type {string}
@@ -39,7 +39,7 @@ export interface Plant {
      * @type {Species}
      * @memberof Plant
      */
-    'spiece': Species;
+    'spiece'?: Species;
     /**
      * 
      * @type {string}

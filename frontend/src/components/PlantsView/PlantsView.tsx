@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, {useEffect, useRef, useState} from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 import { Row, Col, Form } from "react-bootstrap";
@@ -10,39 +10,49 @@ import Dropdown from "../utils/Dropdown";
 import { PlantForm } from "../AddPlantForm/PlantForm";
 import { ContentContainer } from "../App/AppStyle";
 import { getApis } from "../../api/initializeApis";
+import {Plant, Species} from "../../api";
 
 
 const PlantsView: React.FC<{}> = () => {
-    const [plantTypes,] = useState(() => {
-        // fetch from API
-        return mockPlantTypes;
-    });
-
-
-    // example usage ************************************************
-    async function testPlants() {
-        try {
-            const plantsRequest = await getApis().plantsApi.getAllPlants();
-            console.log(plantsRequest);
-            const plants = plantsRequest.data;
-            console.log(plants);
-            // autocompletion works
-            plants.forEach(plant => console.log(plant.name));
-        } catch (err) {
-            // throws error on failure, handle it here
-            console.log('brrrrrrrrrrrrrrrr is server running???');
-            console.log(err);
-        }
-    }
-
-    testPlants();
-    // **************************************************************
-
+    // const [plantTypes,] = useState(() => {
+    //     // fetch from API
+    //     return mockPlantTypes;
+    // });
+    const [plantTypes, setPlantTypes] = useState<Species[]>([]);
+    const [plantSummaryList, updatePlants] = useState<PlantSummary[]>([]);
     let [show, setShow] = useState(false);
+    //TODO obecnie pobierana jest lista List<Plant>, a mamy wystawiony endpoint do List<PlantSummary>
+    // żeby dostać się do PlantSummary należy wykorzystać usera
 
-    const [plantSummaryList, updatePlants] = useState(() => {
-        return mockPlantSummaries;
-    });
+    useEffect(() => {
+        const getSpeciesAndPlants = async () => {
+            try {
+                const speciesRequest = await getApis().speciesApi.getAllSpecies();
+                const species: Species[] = speciesRequest.data as Species[];
+                // console.log(species)
+                setPlantTypes(species)
+
+                const plantRequest = await getApis().plantsApi.getAllPlants();
+                const plants: Plant[] = plantRequest.data as Plant[];
+                // console.log(plants)
+                const mappedPlants: PlantSummary[] = plants.map((plant: Plant, id: number)=> ({
+                    id: plant.id!,
+                    name: plant.name,
+                    speciesName: plant!.spiece!.name,
+                    isFavourite: false,
+                    imgUrl: "https://netscroll.pl/wp-content/uploads/2021/10/CactusToy1.jpg"
+                }))
+                updatePlants(mappedPlants)
+                
+            } catch (err) {
+                console.log('brrrrrrrrrrrrrrrr is server running???');
+                console.log(err);
+            }
+        }
+
+        getSpeciesAndPlants();
+    }, [])
+    
 
     function toggleFavourite(plant: PlantSummary) {
         updatePlants(plantSummaryList => {
@@ -82,7 +92,7 @@ const PlantsView: React.FC<{}> = () => {
                                     <Col xl={4} lg={6} key={id}>
                                         < Form.Check
                                             inline
-                                            label={plantType}
+                                            label={plantType.name}
                                             name="plantTypes"
                                             type="checkbox"
                                             id={`plantTypeCheckbox_${id}`}

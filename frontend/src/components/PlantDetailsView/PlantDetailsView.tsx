@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, {useEffect, useState} from 'react'
 import { Card, Col, Row } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom'
 import { mockPlants } from '../../utils/mockData';
@@ -7,6 +7,9 @@ import { DetailsWrapper, InfoWrapper, TitleSeparator, RequirementsButton } from 
 import { ContentContainer } from "../App/AppStyle";
 import {PlantForm} from "../AddPlantForm/PlantForm";
 import {Notes} from "../Notes/Notes";
+import {PlantSummary} from "../../utils/Plant";
+import {Plant, Species} from "../../api";
+import {getApis} from "../../api/initializeApis";
 
 
 function deletePlant(){}
@@ -21,10 +24,27 @@ const PlantDetailsView: React.FC<{}> = (props) => {
         navigate("/my_plants");
     }
 
-    const [plant] = useState(() => {
-        return mockPlants.find(plant => plant.id === +(plantId!)) || mockPlants[0];
-    });
+    // const [plant] = useState(() => {
+    //     return mockPlants.find(plant => plant.id === +(plantId!)) || mockPlants[0];
+    // });
 
+    const [plant, updatePlant] = useState<Plant>({} as Plant);
+    useEffect(() => {
+        const getPlant = async () => {
+            try {
+                const plantRequest = await getApis().plantsApi.getPlant(parseInt(plantId!));
+                const plant: Plant = plantRequest.data as Plant;
+                console.log(plant)
+                updatePlant(plant)
+
+            } catch (err) {
+                console.log('brrrrrrrrrrrrrrrr is server running???');
+                console.log(err);
+            }
+        }
+
+        getPlant();
+    }, [])
 
     return (
         <>
@@ -32,20 +52,21 @@ const PlantDetailsView: React.FC<{}> = (props) => {
                 <Row>
                     <Col xxl={6}>
                         <Card as={DetailsWrapper}>
-                            <Card.Img variant="top" src={plant.imgUrl} />
+                            {/*todo: jak już będzie poprawiony Plant to zamienić na plant.url*/}
+                            <Card.Img variant="top" src="https://netscroll.pl/wp-content/uploads/2021/10/CactusToy1.jpg" />
                             <Card.Body>
                                 <Card.Title style={{ fontSize: 26 }}>Informacje ogólne</Card.Title>
                                 <TitleSeparator />
 
                                 <Card.Text>
-                                    <span className="d-block">Nazwa rośliny: {plant.name}</span>
-                                    <span className="d-block">Gatunek: {plant.species.name}</span>
-                                    <span className="d-block">Średnia długość życia gatunku: {plant.species.maxAge}</span>
+                                    <span className="d-block">Nazwa rośliny: {plant!.name}</span>
+                                    <span className="d-block">Gatunek: {plant!.spiece!.name}</span>
+                                    <span className="d-block">Średnia długość życia gatunku: {plant!.spiece!.maxAge}</span>
                                 </Card.Text>
 
                             </Card.Body>
                         </Card>
-                        
+
                     </Col>
 
                     <Col xxl={6}>
@@ -66,11 +87,11 @@ const PlantDetailsView: React.FC<{}> = (props) => {
                                 <TitleSeparator />
 
                                 <Card.Text>
-                                    <span className="d-block">Wymagane nasłonecznienie: {plant.species.neededInsolation}</span>
-                                    <span className="d-block">Częstotliwość podlewania: {plant.species.waterRoutine} / tydzień</span>
-                                    <span className="d-block">Zalecana ilość wody: {plant.species.waterDose}l</span>
-                                    <span className="d-block">Częstotliwość nawożenia: {plant.species.fertilizationRoutine} / miesiąc</span>
-                                    <span className="d-block">Intensywność nawożenia: {plant.species.fertilizationDose}</span>
+                                    <span className="d-block">Wymagane nasłonecznienie: {plant!.spiece!.neededInsolation}</span>
+                                    <span className="d-block">Częstotliwość podlewania: {plant!.spiece!.waterRoutine} / tydzień</span>
+                                    <span className="d-block">Zalecana ilość wody: {plant!.spiece!.waterDose}l</span>
+                                    <span className="d-block">Częstotliwość nawożenia: {plant!.spiece!.fertilizationRoutine} / miesiąc</span>
+                                    <span className="d-block">Intensywność nawożenia: {plant!.spiece!.fertilizationDose}</span>
                                 </Card.Text>
 
                                 <div className="d-flex justify-content-center">
@@ -101,7 +122,7 @@ const PlantDetailsView: React.FC<{}> = (props) => {
                     <Calendar plantId={+plantId!} variant='small' />
                 </Row>
             </ContentContainer >
-            <Notes showNoteForm={showNoteForm} showNoteFormSetter={setShowNoteForm} plant={plant}/>
+            <Notes showNoteForm={showNoteForm} showNoteFormSetter={setShowNoteForm} plant={plant!}/>
             <PlantForm show={showEditPlantForm} updateState={setShowEditPlantForm} formTitle={`Edycja rośliny: ${plant.name}`} plantId={plant.id}/>
         </>
     )

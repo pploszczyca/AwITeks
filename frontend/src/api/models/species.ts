@@ -25,7 +25,7 @@ export interface Species {
      * @type {number}
      * @memberof Species
      */
-    'id': number;
+    'id'?: number;
     /**
      * 
      * @type {string}
@@ -43,7 +43,7 @@ export interface Species {
      * @type {string}
      * @memberof Species
      */
-    'neededInsolation': SpeciesNeededInsolationEnum;
+    'neededInsolation': "LOW" | "MEDIUM" | "HIGH";
     /**
      * 
      * @type {number}
@@ -67,7 +67,7 @@ export interface Species {
      * @type {string}
      * @memberof Species
      */
-    'fertilizationDose': SpeciesFertilizationDoseEnum;
+    'fertilizationDose': "LOW" | "MEDIUM" | "HIGH";
     /**
      * 
      * @type {number}
