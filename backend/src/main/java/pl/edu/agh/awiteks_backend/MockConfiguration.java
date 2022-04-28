@@ -1,11 +1,13 @@
 package pl.edu.agh.awiteks_backend;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Lazy;
 import pl.edu.agh.awiteks_backend.models.*;
 import pl.edu.agh.awiteks_backend.repositories.Repository;
 import pl.edu.agh.awiteks_backend.repositories.RepositoryImp;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @org.springframework.context.annotation.Configuration
@@ -26,19 +28,24 @@ public class MockConfiguration {
     }
 
     @Bean
-    public User getMocUser() {
+    public User getMocUser(Plant plant) {
+        List list = new ArrayList();
+        list.add(plant);
         return new User(
                 0,
-                "Jan Kowalski"
+                "Jan Kowalski",
+                list
         );
     }
 
     @Bean
-    public Plant getMockPlant(User user, Species species) {
+    public Plant getMockPlant( Species species) {
         return new Plant(
                 1,
                 "Kaktusiatko",
-                user,
+                new User(
+                        0,
+                        "Jan Kowalski"),
                 species,
                 " ",
                 Insolation.HIGH

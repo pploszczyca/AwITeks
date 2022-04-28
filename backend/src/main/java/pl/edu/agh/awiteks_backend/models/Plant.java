@@ -2,6 +2,7 @@ package pl.edu.agh.awiteks_backend.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
+import org.springframework.context.annotation.Lazy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +17,7 @@ public class Plant extends AbstractModel<Plant> {
     @Schema(required = true)
     private Insolation actualInsolation;
     @Schema(required = true)
-    private List<Activity> plantActivities;
+    private List<Activity> plantActivities = new ArrayList<>();
 
     private String url;
     public Plant(int id, String name, User user, Species spiece, String note, Insolation actualInsolation, List<Activity> plantActivities) {
@@ -121,4 +122,5 @@ public class Plant extends AbstractModel<Plant> {
                 .findFirst()
                 .ifPresent(this::removeActivity);
     }
+
 }
