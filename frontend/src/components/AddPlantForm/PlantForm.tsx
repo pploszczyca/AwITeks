@@ -23,6 +23,8 @@ type PlantFormProps = {
 //
 //     img.setAttribute("src", (window.URL ? URL : webkitURL).createObjectURL(input.files![0]));
 // }
+//
+//
 
 export const PlantForm: React.FC<PlantFormProps> = ({plantId, show, updateState, formTitle= "Dodaj nową roślinę"}) => {
     let [showSpeciesForm, setShowSpeciesForm] = useState(false);
