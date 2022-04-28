@@ -6,8 +6,10 @@ import { CalendarCol, CalendarService, ExportButton, DayWrapperCard, DayHeader, 
 import { DAYS, getTileDate, getTileNotifications, MONTHS, nextMonth, prevMonth, WEEKS } from './utils';
 import { mockCalendarNotifications } from '../../utils/mockData';
 import { CalendarDay } from '../CalendarDay/CalendarDay';
-import { CalendarNotification } from '../../utils/CalendarNotification';
+import {CalendarNotification, NotificationSeverity} from '../../utils/CalendarNotification';
 import {ContentContainer} from "../App/AppStyle";
+import {getApis} from "../../api/initializeApis";
+import {Activity, Plant, Species} from "../../api";
 
 
 type CalendarProps = {
@@ -26,17 +28,67 @@ const Calendar: React.FC<CalendarProps> = ({ plantId, variant = 'big' }) => {
 
     // const [user] = use...
 
+    // useEffect(() => {
+    //     if (plantId == null) {
+    //         // fetch all for this user from backend (or cache), only for this month
+    //         setNotifications(mockCalendarNotifications.filter(({ month }) => displayedDate.getMonth() === month));
+    //     }
+    //     else {
+    //         // fetch only for specific plant, used for calendar on single plant view
+    //         setNotifications(mockCalendarNotifications.filter(({ month, items }) => displayedDate.getMonth() === month
+    //             && items.find(({ plantId: id }) => id === plantId) != null));
+    //     }
+    // }, [displayedDate, plantId, /*user*/]);
+
     useEffect(() => {
-        if (plantId == null) {
-            // fetch all for this user from backend (or cache), only for this month
-            setNotifications(mockCalendarNotifications.filter(({ month }) => displayedDate.getMonth() === month));
+        const getPlants = async () => {
+            try {
+                const plantsRequest = await getApis().plantsApi.getAllPlants();
+                const plants: Plant[] = plantsRequest.data as Plant[];
+                // let activities: Activity[] = plants.map(plant => plant.plantActivities).flat()
+
+                const compareDate = (activity: any) => new Date(activity.date).getMonth() === displayedDate.getMonth()
+
+                const calculateSeverity = (date: Date) => {
+                    const currentDate = new Date()
+
+                    if (currentDate < date) {
+                        return NotificationSeverity.LOW
+                    } else if (currentDate === date) {
+                        return No
+                    }
+                }
+
+                // activities = plantId == null ? activities.filter(compareDate) :
+                //     plants.filter(plant => plant.id == plantId)[0].plantActivities.filter(compareDate)
+
+                let notificationsList: CalendarNotification[] = plants.filter(plant => plantId === undefined || plant.id == plantId).map(plant => {
+                    return plant.plantActivities.map(activity => {
+                        const date = new Date(activity.date)
+
+                        return {
+                            day: date.getDay(),
+                            month: date.getMonth(),
+                            year: date.getMonth(),
+                            items: [
+                                {
+                                    notificationId: activity.id!,
+                                    plantId: plant.id!,
+                                    severity: NotificationSeverity.LOW
+                                }
+                            ]
+                        }
+                    })
+                }).flat()
+
+            } catch (err) {
+                console.log('brrrrrrrrrrrrrrrr is server running???');
+                console.log(err);
+            }
         }
-        else {
-            // fetch only for specific plant, used for calendar on single plant view
-            setNotifications(mockCalendarNotifications.filter(({ month, items }) => displayedDate.getMonth() === month
-                && items.find(({ plantId: id }) => id === plantId) != null));
-        }
-    }, [displayedDate, plantId, /*user*/]);
+
+        getPlants();
+    }, [])
 
 
 

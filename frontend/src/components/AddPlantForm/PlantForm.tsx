@@ -1,12 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import {Button, Col, Container, Modal, Row} from "react-bootstrap";
 import {Formik, Form, Field, ErrorMessage, FormikValues} from 'formik';
-import {mockPlants} from "../../utils/mockData";
+import {emptyPlant, mockPlants} from "../../utils/mockData";
 import {NotificationSeverity} from "../../utils/CalendarNotification";
 import {SpeciesForm} from "../SpeciesForm/SpeciesForm";
 import Moment from "moment";
 import {getApis} from "../../api/initializeApis";
 import {ActivityActivityTypeEnum, Plant, Species} from "../../api";
+import {PlantSummary} from "../../utils/Plant";
 
 
 type PlantFormProps = {
@@ -27,35 +28,51 @@ function displayPhoto(){
 export const PlantForm: React.FC<PlantFormProps> = ({plantId, show, updateState, formTitle= "Dodaj nową roślinę"}) => {
     let [showSpeciesForm, setShowSpeciesForm] = useState(false);
     const [plantTypes, setPlantTypes] = useState<Species[]>([]);
+    const [insolationLevels, ] = useState(() => {
+        return NotificationSeverity;
+    })
 
+    const [plant, updatePlant] = useState<Plant>(emptyPlant);
+
+    // useEffect(() => {
+    //     const getSpecies = async () => {
+    //         try {
+    //             const speciesRequest = await getApis().speciesApi.getAllSpecies();
+    //             const species: Species[] = speciesRequest.data as Species[];
+    //             console.log(species)
+    //
+    //             setPlantTypes(species)
+    //         } catch (err) {
+    //             console.log('brrrrrrrrrrrrrrrr is server running???');
+    //             console.log(err);
+    //         }
+    //     }
+    //
+    //     getSpecies();
+    // }, [])
     useEffect(() => {
-        const getSpecies = async () => {
+        const getSpeciesAndPlant = async () => {
             try {
                 const speciesRequest = await getApis().speciesApi.getAllSpecies();
                 const species: Species[] = speciesRequest.data as Species[];
-                console.log(species)
-
+                // console.log(species)
                 setPlantTypes(species)
+
+                if(plantId !== undefined){
+                    const plantRequest = await getApis().plantsApi.getPlant(plantId);
+                    const plant: Plant = plantRequest.data as Plant;
+                    updatePlant(plant)
+                }
+
             } catch (err) {
                 console.log('brrrrrrrrrrrrrrrr is server running???');
                 console.log(err);
             }
         }
 
-        getSpecies();
+        getSpeciesAndPlant();
     }, [])
 
-
-    const [insolationLevels, ] = useState(() => {
-        return NotificationSeverity;
-    })
-
-    const [plant] = useState(() => {
-        if(plantId !== undefined){
-            return mockPlants.find(plant => plant.id === +(plantId!)) || mockPlants[0];
-        }
-        return mockPlants[1]
-    });
 
     function updateShowSpeciesFormState(newValue: boolean){
         setShowSpeciesForm(newValue);
@@ -64,7 +81,6 @@ export const PlantForm: React.FC<PlantFormProps> = ({plantId, show, updateState,
 
     function addToDatabase(values: FormikValues, setSubmitting: any) {
         try {
-
             const plant: Plant = {
                 name: values.userPlantName,
                 actualInsolation: values.insolationLevel,
@@ -87,6 +103,17 @@ export const PlantForm: React.FC<PlantFormProps> = ({plantId, show, updateState,
         setSubmitting(false);
     }
 
+    function getDate(plant: Plant, type: string){
+        const dates = plant.plantActivities.filter(a => a.activityType === type)
+
+        if(dates !== undefined && dates !== null){
+            console.log(dates.slice(-1))
+            return  Moment(new Date(dates.slice(-1)[0].date)).format("yyyy-MM-DD");
+        }
+
+        return Moment(new Date()).format("yyyy-MM-DD");
+    }
+
     return(
         <>
             <Modal show={show} onHide={() => updateState(false)} animation={false} size="xl">
@@ -100,11 +127,11 @@ export const PlantForm: React.FC<PlantFormProps> = ({plantId, show, updateState,
                         initialValues={
                             {
                                 userPlantName: plant.name,
-                                photo: plant.imgUrl,
+                                photo: '', //plant.imgUrl,
                                 species: '',
-                                lastWatering: Moment(plant.lastWatering).format("yyyy-MM-DD"),
+                                lastWatering: getDate(plant, "WATERING"),
                                 insolationLevel: plant.actualInsolation,
-                                lastFertilization: Moment(plant.lastFertilization).format("yyyy-MM-DD"),
+                                lastFertilization: getDate(plant, "FERTILISATION"),
                                 note: plant.note
                             }
                         }

@@ -1,18 +1,15 @@
 import React, {useEffect, useState} from 'react'
 import { Card, Col, Row } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom'
-import { mockPlants } from '../../utils/mockData';
+import {emptyPlant} from '../../utils/mockData';
 import Calendar from '../Calendar/Calendar';
 import { DetailsWrapper, InfoWrapper, TitleSeparator, RequirementsButton } from './PlantDetailsViewStyles';
 import { ContentContainer } from "../App/AppStyle";
 import {PlantForm} from "../AddPlantForm/PlantForm";
-import {Notes} from "../Notes/Notes";
-import {PlantSummary} from "../../utils/Plant";
-import {Plant, Species} from "../../api";
+import {Plant} from "../../api";
 import {getApis} from "../../api/initializeApis";
+import {Notes} from "../Notes/Notes";
 
-
-function deletePlant(){}
 
 const PlantDetailsView: React.FC<{}> = (props) => {
     const { plantId } = useParams();
@@ -24,11 +21,7 @@ const PlantDetailsView: React.FC<{}> = (props) => {
         navigate("/my_plants");
     }
 
-    // const [plant] = useState(() => {
-    //     return mockPlants.find(plant => plant.id === +(plantId!)) || mockPlants[0];
-    // });
-
-    const [plant, updatePlant] = useState<Plant>({} as Plant);
+    const [plant, updatePlant] = useState<Plant>(emptyPlant);
     useEffect(() => {
         const getPlant = async () => {
             try {
@@ -45,6 +38,17 @@ const PlantDetailsView: React.FC<{}> = (props) => {
 
         getPlant();
     }, [])
+
+    function deletePlant(){
+        try {
+            getApis().plantsApi.removePlant(parseInt(plantId!));
+            navigate("/my_plants");
+        } catch (err) {
+            console.log('brrrrrrrrrrrrrrrr is server running???');
+            console.log(err);
+        }
+    }
+
 
     return (
         <>

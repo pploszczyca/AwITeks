@@ -1,5 +1,6 @@
 import { CalendarNotification, NotificationSeverity } from "./CalendarNotification";
 import { Fertilization, Insolation, Plant, PlantSummary } from "./Plant";
+import {Plant as BackPlant} from "../api"
 
 export const mockPlantSummaries: PlantSummary[] = [
     {
@@ -190,7 +191,37 @@ export const mockPlants: Plant[] = [
         lastWatering: new Date(),
         lastFertilization: new Date(),
         note: ""
-
     }
 ];
 
+export const emptyPlant: BackPlant = {
+    id: 0,
+    name: "My Kaktus",
+    spiece: {
+        id: 1,
+        name: "Kaktus",
+        maxAge: 20,
+        neededInsolation: "HIGH",
+        waterDose: 1,
+        waterRoutine: 1,
+        fertilizationRoutine: 7,
+        fertilizationDose: "LOW",
+        creatorId: -1
+    },
+    note: "Simple Kaktus note",
+    actualInsolation: "HIGH",
+    plantActivities: [
+        {
+            id: 0,
+            activityType: "FERTILISATION",
+            date: "1918-06-22T22:00:00.000+00:00"
+        },
+        {
+            id: 1,
+            activityType: "WATERING",
+            date: "1918-06-22T22:00:00.000+00:00"
+        }
+    ],
+    // url: "https://netscroll.pl/wp-content/uploads/2021/10/CactusToy1.jpg",
+    // favourite: false
+}
