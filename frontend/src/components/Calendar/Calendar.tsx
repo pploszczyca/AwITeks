@@ -4,7 +4,6 @@ import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons'
 import Card from "react-bootstrap/Card"
 import { CalendarCol, CalendarService, ExportButton, DayWrapperCard, DayHeader, Arrow, CalendarServiceBottom } from './CalendarStyles';
 import { DAYS, getTileDate, getTileNotifications, MONTHS, nextMonth, prevMonth, WEEKS } from './utils';
-import { mockCalendarNotifications } from '../../utils/mockData';
 import { CalendarDay } from '../CalendarDay/CalendarDay';
 import {CalendarNotification, NotificationSeverity} from '../../utils/CalendarNotification';
 import {ContentContainer} from "../App/AppStyle";
@@ -31,14 +30,10 @@ const Calendar: React.FC<CalendarProps> = ({ plantId, variant = 'big' }) => {
             try {
                 const plantsRequest = await getApis().plantsApi.getAllPlants();
                 const plants: Plant[] = plantsRequest.data as Plant[];
-                // let activities: Activity[] = plants.map(plant => plant.plantActivities).flat()
-
-                const compareDate = (activity: any) => new Date(activity.date).getMonth() === displayedDate.getMonth()
 
                 const calculateSeverity = (date: Date) => {
                     const currentDate = new Date()
                     const difference_in_days = (date.getTime() - currentDate.getTime()) / (1000 * 3600 * 24);
-
 
                     if (difference_in_days >= 3) {
                         return NotificationSeverity.LOW
@@ -49,11 +44,7 @@ const Calendar: React.FC<CalendarProps> = ({ plantId, variant = 'big' }) => {
                     }
                 }
 
-                // activities = plantId == null ? activities.filter(compareDate) :
-                //     plants.filter(plant => plant.id == plantId)[0].plantActivities.filter(compareDate)
-
-                let notificationsList: CalendarNotification[] = plants.filter(plant => plantId === undefined || plant.id == plantId).map(plant => {
-                    console.log(plant)
+                let notificationsList: CalendarNotification[] = plants.filter(plant => plantId === undefined || plant.id === plantId).map(plant => {
                     return plant.plantActivities.map(activity => {
                         const date = new Date(activity.date)
 
@@ -81,7 +72,7 @@ const Calendar: React.FC<CalendarProps> = ({ plantId, variant = 'big' }) => {
         }
 
         getPlants();
-    }, [])
+    }, [plantId])
 
 
 

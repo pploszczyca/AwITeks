@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 import { Row, Col, Form } from "react-bootstrap";
 import { SearchBoxContainer, SearchBox, AddPlantButton, PlantTypesContainer, DropdownItem, ListContainer, SettingsWrapper, SettingsBox } from './PlantsViewStyles';
-import { mockPlantSummaries, mockPlantTypes } from "../../utils/mockData";
 import { PlantSummary } from "../../utils/Plant";
 import PlantSummaryCard from "../../PlantSummaryCard/PlantSummaryCard";
 import Dropdown from "../utils/Dropdown";
@@ -14,10 +13,6 @@ import {Plant, Species} from "../../api";
 
 
 const PlantsView: React.FC<{}> = () => {
-    // const [plantTypes,] = useState(() => {
-    //     // fetch from API
-    //     return mockPlantTypes;
-    // });
     const [plantTypes, setPlantTypes] = useState<Species[]>([]);
     const [plantSummaryList, updatePlants] = useState<PlantSummary[]>([]);
     let [show, setShow] = useState(false);

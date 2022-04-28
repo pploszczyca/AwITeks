@@ -2,8 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Col, Row} from "react-bootstrap";
 import {StatsCard} from "./DashboardStatsStyle";
 import {getApis} from "../../api/initializeApis";
-import {Plant, Species} from "../../api";
-import {PlantSummary} from "../../utils/Plant";
+import {Plant} from "../../api";
 
 function DashboardStats() {
     const [noPlants, setNoPlants] = useState(0);

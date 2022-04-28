@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Button, Col, Container, Modal, Row} from "react-bootstrap";
 import {Formik, Form, Field, ErrorMessage, FormikValues} from 'formik';
 import {NotificationSeverity} from "../../utils/CalendarNotification";
-import {ActivityActivityTypeEnum, Plant, Species} from "../../api";
+import {Species} from "../../api";
 import {getApis} from "../../api/initializeApis";
 
 

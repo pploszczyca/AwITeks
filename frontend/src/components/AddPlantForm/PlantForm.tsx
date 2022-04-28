@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Button, Col, Container, Modal, Row} from "react-bootstrap";
 import {Formik, Form, Field, ErrorMessage, FormikValues} from 'formik';
-import {emptyPlant, mockPlants} from "../../utils/mockData";
+import {emptyPlant} from "../../utils/mockData";
 import {NotificationSeverity} from "../../utils/CalendarNotification";
 import {SpeciesForm} from "../SpeciesForm/SpeciesForm";
 import Moment from "moment";
@@ -17,12 +17,12 @@ type PlantFormProps = {
 };
 
 
-function displayPhoto(){
-    let img = document.getElementById('plantPhoto')!;
-    let input: HTMLInputElement = document.getElementById('photoInput')! as HTMLInputElement;
-
-    img.setAttribute("src", (window.URL ? URL : webkitURL).createObjectURL(input.files![0]));
-}
+// function displayPhoto(){
+//     let img = document.getElementById('plantPhoto')!;
+//     let input: HTMLInputElement = document.getElementById('photoInput')! as HTMLInputElement;
+//
+//     img.setAttribute("src", (window.URL ? URL : webkitURL).createObjectURL(input.files![0]));
+// }
 
 export const PlantForm: React.FC<PlantFormProps> = ({plantId, show, updateState, formTitle= "Dodaj nową roślinę"}) => {
     let [showSpeciesForm, setShowSpeciesForm] = useState(false);
@@ -33,22 +33,6 @@ export const PlantForm: React.FC<PlantFormProps> = ({plantId, show, updateState,
 
     const [plant, updatePlant] = useState<Plant>(emptyPlant);
 
-    // useEffect(() => {
-    //     const getSpecies = async () => {
-    //         try {
-    //             const speciesRequest = await getApis().speciesApi.getAllSpecies();
-    //             const species: Species[] = speciesRequest.data as Species[];
-    //             console.log(species)
-    //
-    //             setPlantTypes(species)
-    //         } catch (err) {
-    //             console.log('brrrrrrrrrrrrrrrr is server running???');
-    //             console.log(err);
-    //         }
-    //     }
-    //
-    //     getSpecies();
-    // }, [])
     useEffect(() => {
         const getSpeciesAndPlant = async () => {
             try {
@@ -70,7 +54,7 @@ export const PlantForm: React.FC<PlantFormProps> = ({plantId, show, updateState,
         }
 
         getSpeciesAndPlant();
-    }, [showSpeciesForm])
+    }, [showSpeciesForm, plantId])
 
 
     function updateShowSpeciesFormState(newValue: boolean){
@@ -108,7 +92,6 @@ export const PlantForm: React.FC<PlantFormProps> = ({plantId, show, updateState,
         const dates = plant.plantActivities.filter(a => a.activityType === type)
 
         if(dates !== undefined && dates !== null){
-            // console.log(dates.slice(-1))
             return  Moment(new Date(dates.slice(-1)[0].date)).format("yyyy-MM-DD");
         }
 
@@ -129,7 +112,7 @@ export const PlantForm: React.FC<PlantFormProps> = ({plantId, show, updateState,
                             {
                                 userPlantName: plant.name,
                                 photo: '', //plant.imgUrl,
-                                species: speciesList[0] == undefined ? 0: speciesList[0].id,
+                                species: speciesList[0] === undefined ? 0: speciesList[0].id,
                                 lastWatering: getDate(plant, "WATERING"),
                                 insolationLevel: plant.actualInsolation,
                                 lastFertilization: getDate(plant, "FERTILISATION"),

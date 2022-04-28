@@ -36,7 +36,7 @@ const PlantDetailsView: React.FC<{}> = (props) => {
         }
 
         getPlant();
-    }, [])
+    }, [plantId])
 
     function deletePlant(){
         try {
