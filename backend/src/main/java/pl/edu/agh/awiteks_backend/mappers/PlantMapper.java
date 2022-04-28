@@ -5,6 +5,6 @@ import pl.edu.agh.awiteks_backend.models.PlantSummary;
 
 public class PlantMapper {
     public static PlantSummary plantToPlantSummary(Plant plant){
-        return PlantSummary.builder().id(plant.getId()).name(plant.getName()).speciesName(plant.getSpecies().getName()).isFavourite(plant.getIsFavourite()).imgUrl(plant.getPictureURL()).build();
+        return PlantSummary.builder().id(plant.getId()).name(plant.getName()).speciesName(plant.getSpiece().getName()).imgUrl(plant.getUrl()).build();
     }
 }

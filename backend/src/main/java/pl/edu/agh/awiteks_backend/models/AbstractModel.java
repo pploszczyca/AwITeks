@@ -1,7 +1,11 @@
 package pl.edu.agh.awiteks_backend.models;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 public abstract class AbstractModel<T> {
+    @Schema(required = true)
     protected int id;
+    @Schema(required = true)
     protected String name;
 
     public AbstractModel(int id, String name) {

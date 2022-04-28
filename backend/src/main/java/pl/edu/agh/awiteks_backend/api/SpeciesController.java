@@ -1,55 +1,52 @@
 package pl.edu.agh.awiteks_backend.api;
 
 import io.swagger.v3.oas.annotations.Operation;
-import pl.edu.agh.awiteks_backend.models.Species;
-import pl.edu.agh.awiteks_backend.repositories.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import pl.edu.agh.awiteks_backend.models.Species;
+import pl.edu.agh.awiteks_backend.services.SpeciesService;
 
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-public class SpeciesController extends ModelController<Species> {
+@RequestMapping("/species")
+public class SpeciesController {
+    private final SpeciesService speciesService;
 
     @Autowired
-    public SpeciesController(Repository<Species> speciesRepository) {
-        super(speciesRepository);
+    public SpeciesController(SpeciesService speciesService) {
+        this.speciesService = speciesService;
     }
 
-    @Override
-    @Operation(summary = "Get all species")
-    @GetMapping(value = "/species", produces = "application/json")
-    public List getAll() {
-        return super.getAll();
+    @Operation(summary = "Get all species", operationId = "getAllSpecies")
+    @GetMapping(produces = "application/json")
+    public List<Species> getAllSpecies() {
+        return speciesService.getAll();
     }
 
-    @Override
-    @Operation(summary = "Get specific specie by id")
-    @GetMapping(value = "/species/{id}", produces = "application/json")
-    public Optional get(@PathVariable int id) {
-        return super.get(id);
+    @Operation(summary = "Get specific specie by id", operationId = "getSpecie")
+    @GetMapping(value = "/{id}", produces = "application/json")
+    public Optional<Species> getSpecie(@PathVariable int id) {
+        return speciesService.get(id);
     }
 
-    @Override
-    @Operation(summary = "Add new specie")
-    @PostMapping(path = "/species")
+    @Operation(summary = "Add new specie", operationId = "addSpecie")
+    @PostMapping()
     @ResponseBody
-    public String add(@RequestBody Species species) {
-        return super.add(species);
+    public void addSpecie(@RequestBody Species species) {
+        speciesService.add(species);
     }
 
-    @Override
-    @Operation(summary = "Update specie")
-    @PutMapping(value = "/species", consumes = "application/json")
-    public void update(@RequestBody Species species) {
-        super.update(species);
+    @Operation(summary = "Update specie", operationId = "updateSpecie")
+    @PutMapping(consumes = "application/json")
+    public void updateSpecie(@RequestBody Species species) {
+        speciesService.update(species);
     }
 
-    @Override
-    @Operation(summary = "Delete specie by id")
-    @DeleteMapping(value = "/species/{id}")
+    @Operation(summary = "Delete specie by id", operationId = "removeSpecie")
+    @DeleteMapping(value = "/{id}")
     public void remove(@PathVariable int id) {
-        super.remove(id);
+        speciesService.remove(id);
     }
 }

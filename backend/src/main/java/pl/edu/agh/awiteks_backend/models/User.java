@@ -1,12 +1,16 @@
 package pl.edu.agh.awiteks_backend.models;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+import org.springframework.context.annotation.Lazy;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class User extends AbstractModel<User> {
+    @Schema(required = true)
     private List<Plant> userPlants;
 
-    public User(int id, String name, List<Plant> userPlants) {
+    public User(int id, String name,   @Lazy List<Plant> userPlants) {
         super(id, name);
         this.userPlants = userPlants;
     }
@@ -25,11 +29,6 @@ public class User extends AbstractModel<User> {
 
     public void removePlant(Plant plant) {
         userPlants.remove(plant);
-    }
-
-    public void editPlant(Plant plant) {
-        int index = userPlants.indexOf(plant);
-        userPlants.set(index, plant);
     }
 
     public int getId() {

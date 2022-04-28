@@ -3,8 +3,15 @@ import { Card, Col, Row } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom'
 import { mockPlants } from '../../utils/mockData';
 import Calendar from '../Calendar/Calendar';
-import { DetailsWrapper, InfoWrapper, TitleSeparator } from './PlantDetailsViewStyles';
-import {ContentContainer} from "../App/AppStyle";
+import { DetailsWrapper, InfoWrapper, TitleSeparator, RequirementsButton } from './PlantDetailsViewStyles';
+import { ContentContainer } from "../App/AppStyle";
+
+
+function editPlant(){}
+
+function addNote(){}
+
+function personalRequirements(){}
 
 const PlantDetailsView: React.FC<{}> = (props) => {
     const { plantId } = useParams();
@@ -31,16 +38,14 @@ const PlantDetailsView: React.FC<{}> = (props) => {
                                 <TitleSeparator />
 
                                 <Card.Text>
+                                    <span className="d-block">Nazwa rośliny: {plant.name}</span>
+                                    <span className="d-block">Gatunek: {plant.species.name}</span>
                                     <span className="d-block">Średnia długość życia gautnku: {plant.species.maxAge}</span>
-                                    <span className="d-block">Wymagane nasłonecznienie: {plant.species.neededInsolation}</span>
-                                    <span className="d-block">Częstotliwość podlewania: {plant.species.waterRoutine} / tydzień</span>
-                                    <span className="d-block">Zalecana ilość wody: {plant.species.waterDose}l</span>
-                                    <span className="d-block">Częstotliwość nawożenia: {plant.species.fertilizationRoutine} / miesiąc</span>
-                                    <span className="d-block">Intensywność nawożenia: {plant.species.fertilizationDose}</span>
                                 </Card.Text>
 
                             </Card.Body>
                         </Card>
+                        
                     </Col>
 
                     <Col xxl={6}>
@@ -53,6 +58,32 @@ const PlantDetailsView: React.FC<{}> = (props) => {
                                     <span className="d-block">Data ostatniego podlania: 24.01.2022</span>
                                     <span className="d-block">Data ostatnieno nawożenia: 26.12.2021</span>
                                 </Card.Text>
+                            </Card.Body>
+                        </Card>
+                        <Card as={DetailsWrapper}>
+                            <Card.Body>
+                                <Card.Title style={{ fontSize: 26 }}>Wymagania podstawowe</Card.Title>
+                                <TitleSeparator />
+
+                                <Card.Text>
+                                    <span className="d-block">Wymagane nasłonecznienie: {plant.species.neededInsolation}</span>
+                                    <span className="d-block">Częstotliwość podlewania: {plant.species.waterRoutine} / tydzień</span>
+                                    <span className="d-block">Zalecana ilość wody: {plant.species.waterDose}l</span>
+                                    <span className="d-block">Częstotliwość nawożenia: {plant.species.fertilizationRoutine} / miesiąc</span>
+                                    <span className="d-block">Intensywność nawożenia: {plant.species.fertilizationDose}</span>
+                                </Card.Text>
+                                <div style={{ flexDirection:"row"}}>
+                                        <RequirementsButton onClick = {() => editPlant()}>
+                                            Edytuj roślinę
+                                        </RequirementsButton>
+                                        <RequirementsButton onClick = {() => addNote()}>
+                                            Dodaj notatkę
+                                        </RequirementsButton>
+                                        <RequirementsButton onClick = {() => personalRequirements()}>
+                                            Własne wymagania
+                                        </RequirementsButton>
+                                </div>
+
                             </Card.Body>
                         </Card>
                     </Col>

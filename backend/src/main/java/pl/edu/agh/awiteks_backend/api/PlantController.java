@@ -1,93 +1,66 @@
 package pl.edu.agh.awiteks_backend.api;
 
 import io.swagger.v3.oas.annotations.Operation;
-import pl.edu.agh.awiteks_backend.models.Plant;
-import pl.edu.agh.awiteks_backend.models.Species;
-import pl.edu.agh.awiteks_backend.models.User;
-import pl.edu.agh.awiteks_backend.repositories.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import pl.edu.agh.awiteks_backend.models.Plant;
+import pl.edu.agh.awiteks_backend.models.User;
+import pl.edu.agh.awiteks_backend.services.PlantService;
+import pl.edu.agh.awiteks_backend.services.UserService;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-public class PlantController extends ModelController<Plant> {
-    private final Repository<User> userRepository;
-    private final Repository<Species> speciesRepository;
-
+@RequestMapping("/plants")
+public class PlantController {
+    private final PlantService plantService;
+    private final UserService userService;
     @Autowired
-    public PlantController(Repository<Plant> modelRepository, Repository<User> userRepository, Repository<Species> speciesRepository) {
-        super(modelRepository);
-        this.userRepository = userRepository;
-        this.speciesRepository = speciesRepository;
+    public PlantController(PlantService plantService, UserService userService) {
+        this.plantService = plantService;
+        this.userService = userService;
     }
 
-    @Override
-    @Operation(summary = "Get all plants")
-    @GetMapping(value = "/plants", produces = "application/json")
-    public List<Plant> getAll() {
-        return super.getAll();
+    @Operation(summary = "Get all plants", operationId = "getAllPlants")
+    @GetMapping(produces = "application/json")
+    public List<Plant> getAllPlants() {
+        return plantService.getAll();
     }
 
-    @Override
-    @Operation(summary = "Get plant by id")
-    @GetMapping(value = "/plants/{id}", produces = "application/json")
-    public Optional<Plant> get(@PathVariable int id) {
-        return super.get(id);
+    @Operation(summary = "Get plant by id", operationId = "getPlant")
+    @GetMapping(value = "/{id}", produces = "application/json")
+    public Optional<Plant> getPlant(@PathVariable int id) {
+        return plantService.get(id);
     }
 
-    @Operation(summary = "Add new plant, assign it to specifier user and specie")
-    @PostMapping(path = "/plants/{userId}/{speciesId}")
+    @Operation(summary = "Add new plant, assign it to specifier user and specie", operationId = "addPlant")
+    @PostMapping(path = "/{userId}/{speciesId}")
     @ResponseBody
-    public String add(@RequestBody Plant plant, @PathVariable int userId, @PathVariable int speciesId) {
-        this.speciesRepository.get(speciesId).ifPresent(plant::setSpecies);
-        addPlantToUserList(plant, userId);
-        return super.add(plant);
+    public void addPlant(@RequestBody Plant plant, @PathVariable int userId, @PathVariable int speciesId) {
+        plantService.add(plant, userId, speciesId);
     }
 
+    @Operation(summary = "Update plant", operationId = "updatePlant")
+    @PutMapping(consumes = "application/json")
+    public void updatePlant(@RequestBody Plant plant) {
+        plantService.update(plant);
+    }
+
+    @Operation(summary = "Delete plant by id", operationId = "removePlant")
+    @DeleteMapping(value = "/{id}")
+    public void removePlant(@PathVariable int id) {
+        plantService.remove(id);
+    }
 
     @Operation(summary = "Get photo URL of plant")
     @GetMapping(path = "/plants/{id}/URL")
     public String getURL(@PathVariable int id){
-        Optional<Plant> plantOptional = super.get(id);
+        Optional<Plant> plantOptional = plantService.get(id);
         if(plantOptional.isPresent()){
-            return plantOptional.get().getPictureURL();
+            return plantOptional.get().getUrl();
         }else{
             return "https://tatamariusz.pl/hans-christian-andersen-polny-kwiatek/#iLightbox[gallery3623]/0";
         }
-    }
-
-    @Override
-    @Operation(summary = "Update plant")
-    @PutMapping(value = "/plants", consumes = "application/json")
-    public void update(@RequestBody Plant plant) {
-        super.update(plant);
-    }
-
-    @Override
-    @Operation(summary = "Delete plant by id")
-    @DeleteMapping(value = "/plants/{id}")
-    public void remove(@PathVariable int id) {
-        removePlantFromUserList(id);
-        super.remove(id);
-    }
-
-    private void removePlantFromUserList(int id) {
-        Optional<Plant> plant = super.get(id);
-        plant.ifPresent(presentPlant -> {
-            User user = presentPlant.getUser();
-            user.removePlant(presentPlant);
-        });
-    }
-
-    private void addPlantToUserList(Plant plant, int userId) {
-        Optional<User> user = userRepository.get(userId);
-        user.ifPresent(presentUser -> {
-            presentUser.addPlant(plant);
-            plant.setUser(presentUser);
-        });
     }
 }
