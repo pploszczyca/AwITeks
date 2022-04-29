@@ -59,4 +59,5 @@ Do projektu backendowego został podpięty [springdoc](https://springdoc.org/#In
 
 ## Wykres spalania:
 [link](https://docs.google.com/spreadsheets/d/1tHKVENLM-GykhG75kQ3YZRpPJ57ifT13/edit?usp=sharing&ouid=105439589476939159664&rtpof=true&sd=true)
+
 Zadaniem Scrum Mastera jest, aby wykres był uzupełniany co tydzień według logów z Jiry.
