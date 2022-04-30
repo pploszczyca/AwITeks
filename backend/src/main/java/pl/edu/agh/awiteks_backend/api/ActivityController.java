@@ -18,13 +18,13 @@ public class ActivityController {
 
     @Operation(summary = "Add new activity to plant", operationId = "addActivity")
     @PostMapping("/{plantID}")
-    public void add(@RequestBody Activity activity, @PathVariable int plantID) {
+    public void addActivity(@RequestBody Activity activity, @PathVariable int plantID) {
         activityService.add(activity, plantID);
     }
 
     @Operation(summary = "Delete activity", operationId = "removeActivity")
     @DeleteMapping("/{plantId}/{activityId}")
-    public void remove(@PathVariable int plantId, @PathVariable int activityId) {
+    public void removeActivity(@PathVariable int plantId, @PathVariable int activityId) {
         activityService.remove(plantId, activityId);
     }
 

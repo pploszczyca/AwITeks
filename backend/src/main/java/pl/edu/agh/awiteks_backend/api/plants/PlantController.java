@@ -36,8 +36,8 @@ public class PlantController {
     @Operation(summary = "Add new plant, assign it to specifier user and specie", operationId = "addPlant")
     @PostMapping(path = "/{userId}/{speciesId}")
     @ResponseBody
-    public void addPlant(@RequestBody Plant plant, @PathVariable int userId, @PathVariable int speciesId) {
-        plantService.add(plant, userId, speciesId);
+    public Plant addPlant(@RequestBody AddPlantRequestBody plant, @PathVariable int userId, @PathVariable int speciesId) {
+        return plantService.addPlant(plant, userId, speciesId);
     }
 
     @Operation(summary = "Changing Favourite flag in plant", operationId = "changePlantFavourite")
@@ -82,5 +82,4 @@ public class PlantController {
     public PlantsStats getPlantsStats(@PathVariable int id) {
         return plantService.getPlantsStats(id);
     }
-
 }

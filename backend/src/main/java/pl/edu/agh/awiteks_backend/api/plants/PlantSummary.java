@@ -1,37 +1,10 @@
 package pl.edu.agh.awiteks_backend.api.plants;
 
-public class PlantSummary {
-    private final Integer id;
-    private final String name;
-    private final String speciesName;
-    private final Boolean isFavourite;
-    private final String imgUrl;
+import io.swagger.v3.oas.annotations.media.Schema;
 
-    public PlantSummary(Integer id, String name, String speciesName, Boolean isFavourite, String imgUrl) {
-        this.id = id;
-        this.name = name;
-        this.speciesName = speciesName;
-        this.isFavourite = isFavourite;
-        this.imgUrl = imgUrl;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getSpeciesName() {
-        return speciesName;
-    }
-
-    public Boolean getFavourite() {
-        return isFavourite;
-    }
-
-    public String getImgUrl() {
-        return imgUrl;
-    }
-}
+public record PlantSummary(@Schema(required = true) Integer id,
+                           @Schema(required = true) String name,
+                           @Schema(required = true) String speciesName,
+                           @Schema(required = true) Boolean isFavourite,
+                           @Schema(required = true) String imgUrl
+) {}
