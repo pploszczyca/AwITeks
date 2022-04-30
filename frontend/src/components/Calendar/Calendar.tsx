@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Row } from "react-bootstrap";
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons'
 import Card from "react-bootstrap/Card"
 import { CalendarCol, CalendarService, ExportButton, DayWrapperCard, DayHeader, Arrow, CalendarServiceBottom } from './CalendarStyles';
-import { DAYS, getTileDate, getTileNotifications, MONTHS, nextMonth, prevMonth, WEEKS } from './utils';
+import { calculateSeverity, DAYS, getTileDate, getTileNotifications, MONTHS, nextMonth, prevMonth, WEEKS } from './utils';
 import { CalendarDay } from '../CalendarDay/CalendarDay';
-import {CalendarNotification, NotificationSeverity} from '../../utils/CalendarNotification';
-import {ContentContainer} from "../App/AppStyle";
-import {getApis} from "../../api/initializeApis";
-import {Plant} from "../../api";
+import { ContentContainer } from "../App/AppStyle";
+import { getApis } from "../../api/initializeApis";
+import { useQuery } from 'react-query';
+import Loader from '../Loader/Loader';
 
 
 type CalendarProps = {
@@ -23,62 +23,37 @@ function exportCalendar() {
 
 const Calendar: React.FC<CalendarProps> = ({ plantId, variant = 'big' }) => {
     const [displayedDate, setDisplayedDate] = useState(new Date());
-    const [notifications, setNotifications] = useState([] as CalendarNotification[]);
 
-    useEffect(() => {
-        const getPlants = async () => {
-            try {
-                const plantsRequest = await getApis().plantsApi.getAllPlants();
-                const plants: Plant[] = plantsRequest.data as Plant[];
+    // TODO this will have to be rewritten once backend is fixed
+    const { data: notifications, isLoading } = useQuery(['plants', 'notifications'], async () => {
+        const plantsRequest = await getApis().plantsApi.getAllPlants();
+        const plants = plantsRequest.data;
 
-                const calculateSeverity = (date: Date) => {
-                    const currentDate = new Date()
-                    const difference_in_days = (date.getTime() - currentDate.getTime()) / (1000 * 3600 * 24);
+        return plants.filter(plant => plantId === undefined || plant.id === plantId).map(plant => {
+            return plant.plantActivities.map(activity => {
+                const date = new Date(activity.date)
 
-                    if (difference_in_days >= 3) {
-                        return NotificationSeverity.LOW
-                    } else if (difference_in_days <= 3 && difference_in_days >= 0) {
-                        return NotificationSeverity.MEDIUM
-                    } else {
-                        return NotificationSeverity.HIGH
-                    }
-                }
-
-                let notificationsList: CalendarNotification[] = plants.filter(plant => plantId === undefined || plant.id === plantId).map(plant => {
-                    return plant.plantActivities.map(activity => {
-                        const date = new Date(activity.date)
-
-                        return {
-                            day: date.getDate(),
-                            month: date.getMonth(),
-                            year: date.getFullYear(),
-                            items: [
-                                {
-                                    notificationId: activity.id!,
-                                    plantId: plant.id!,
-                                    severity: calculateSeverity(date)
-                                }
-                            ]
+                return {
+                    day: date.getDate(),
+                    month: date.getMonth(),
+                    year: date.getFullYear(),
+                    items: [
+                        {
+                            notificationId: activity.id!,
+                            plantId: plant.id!,
+                            severity: calculateSeverity(date)
                         }
-                    })
-                }).flat()
-
-                setNotifications(notificationsList);
-
-            } catch (err) {
-                console.log('Server error:');
-                console.log(err);
-            }
-        }
-
-        getPlants();
-    }, [plantId])
+                    ]
+                }
+            })
+        }).flat()
+    });
 
 
 
     function buildCalendarDay(weekNr: number, day: number) {
         const tileDate = getTileDate(weekNr * 7 + day + 1, displayedDate);
-        const tileNotifications = getTileNotifications(tileDate, notifications);
+        const tileNotifications = getTileNotifications(tileDate, notifications!);
 
         return <CalendarDay
             displayedDate={displayedDate}
@@ -88,9 +63,13 @@ const Calendar: React.FC<CalendarProps> = ({ plantId, variant = 'big' }) => {
         />;
     }
 
+    if (isLoading) {
+        return <Loader></Loader>;
+    }
+
 
     return (
-        <ContentContainer style={variant === 'small' ? {position: "relative", left: 0} : {position: "absolute"}}>
+        <ContentContainer style={variant === 'small' ? { position: "relative", left: 0 } : { position: "absolute" }}>
             <Row className="mt-5">
                 {variant === 'big' ?
                     (<CalendarCol xxl={3} xl={12}>

@@ -1,53 +1,55 @@
-import React, {useEffect, useState} from 'react'
+import React, { useState } from 'react'
 import { Card, Col, Row } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom'
-import {emptyPlant} from '../../utils/mockData';
 import Calendar from '../Calendar/Calendar';
 import { DetailsWrapper, InfoWrapper, TitleSeparator, RequirementsButton } from './PlantDetailsViewStyles';
 import { ContentContainer } from "../App/AppStyle";
-import {PlantForm} from "../AddPlantForm/PlantForm";
-import {Plant} from "../../api";
-import {getApis} from "../../api/initializeApis";
-import {Notes} from "../Notes/Notes";
+import { getApis } from "../../api/initializeApis";
+import { Notes } from "../Notes/Notes";
+import { useMutation, useQuery, useQueryClient } from 'react-query';
+import Loader from '../Loader/Loader';
+import { EditPlantForm } from '../EditPlantForm/EditPlantForm';
 
 
 const PlantDetailsView: React.FC<{}> = (props) => {
-    const { plantId } = useParams();
     const navigate = useNavigate();
+    const queryClient = useQueryClient();
+    const { plantId } = useParams();
     const [showNoteForm, setShowNoteForm] = useState(false);
     const [showEditPlantForm, setShowEditPlantForm] = useState(false);
 
     if (plantId == null) {
-        navigate("/my_plants");
+        navigate('/my-plants');
     }
 
-    const [plant, updatePlant] = useState<Plant>(emptyPlant);
-    useEffect(() => {
-        const getPlant = async () => {
-            try {
-                const plantRequest = await getApis().plantsApi.getPlant(parseInt(plantId!));
-                const plant: Plant = plantRequest.data as Plant;
-                updatePlant(plant)
-
-            } catch (err) {
-                console.log('Server error:');
-                console.log(err);
-            }
+    const { data: plantResp, isLoading } = useQuery(['plants', plantId], async () => getApis().plantsApi.getPlant(+plantId!))
+    const deletePlantMutation = useMutation(async () => {
+        await getApis().plantsApi.removePlant(+plantId!);
+        // TODO trigger toast with successful deletion info
+        navigate('/my-plants');
+    }, {
+        onSuccess: () => {
+            queryClient.invalidateQueries(['plants', plantId]);
         }
+    });
 
-        getPlant();
-    }, [plantId])
-
-    function deletePlant(){
-        try {
-            getApis().plantsApi.removePlant(parseInt(plantId!));
-            navigate("/my_plants");
-        } catch (err) {
-            console.log('Server error:');
-            console.log(err);
-        }
+    if (isLoading) {
+        return <Loader></Loader>;
     }
 
+    if (deletePlantMutation.isLoading) {
+        return (
+            <>
+                <div>Removing plant...</div>
+                <Loader></Loader>
+            </>
+        )
+    }
+
+    const plant = plantResp!.data;
+    if (plant == null) {
+        navigate('/my-plants');
+    }
 
     return (
         <>
@@ -55,16 +57,15 @@ const PlantDetailsView: React.FC<{}> = (props) => {
                 <Row>
                     <Col xxl={6}>
                         <Card as={DetailsWrapper}>
-                            {/*todo: jak już będzie poprawiony Plant to zamienić na plant.url*/}
-                            <Card.Img variant="top" src="https://netscroll.pl/wp-content/uploads/2021/10/CactusToy1.jpg" />
+                            <Card.Img variant="top" src={plant.url} />
                             <Card.Body>
                                 <Card.Title style={{ fontSize: 26 }}>Informacje ogólne</Card.Title>
                                 <TitleSeparator />
 
                                 <Card.Text>
-                                    <span className="d-block">Nazwa rośliny: {plant!.name}</span>
-                                    <span className="d-block">Gatunek: {plant!.spiece!.name}</span>
-                                    <span className="d-block">Średnia długość życia gatunku: {plant!.spiece!.maxAge}</span>
+                                    <span className="d-block">Nazwa rośliny: {plant.name}</span>
+                                    <span className="d-block">Gatunek: {plant.spiece.name}</span>
+                                    <span className="d-block">Średnia długość życia gatunku: {plant.spiece.maxAge}</span>
                                 </Card.Text>
 
                             </Card.Body>
@@ -90,15 +91,18 @@ const PlantDetailsView: React.FC<{}> = (props) => {
                                 <TitleSeparator />
 
                                 <Card.Text>
-                                    <span className="d-block">Wymagane nasłonecznienie: {plant!.spiece!.neededInsolation}</span>
-                                    <span className="d-block">Częstotliwość podlewania: {plant!.spiece!.waterRoutine} / tydzień</span>
-                                    <span className="d-block">Zalecana ilość wody: {plant!.spiece!.waterDose}l</span>
-                                    <span className="d-block">Częstotliwość nawożenia: {plant!.spiece!.fertilizationRoutine} / miesiąc</span>
-                                    <span className="d-block">Intensywność nawożenia: {plant!.spiece!.fertilizationDose}</span>
+                                    <span className="d-block">Wymagane nasłonecznienie: {plant.spiece.neededInsolation}</span>
+                                    <span className="d-block">Częstotliwość podlewania: {plant.spiece.waterRoutine} / tydzień</span>
+                                    <span className="d-block">Zalecana ilość wody: {plant.spiece.waterDose}l</span>
+                                    <span className="d-block">Częstotliwość nawożenia: {plant.spiece.fertilizationRoutine} / miesiąc</span>
+                                    <span className="d-block">Intensywność nawożenia: {plant.spiece.fertilizationDose}</span>
                                 </Card.Text>
 
                                 <div className="d-flex justify-content-center">
-                                    <RequirementsButton className="mb-1" onClick = {() => setShowNoteForm(true)}>
+                                    <RequirementsButton
+                                        className="mb-1"
+                                        onClick={() => setShowNoteForm(true)}
+                                    >
                                         Notatki
                                     </RequirementsButton>
                                 </div>
@@ -110,10 +114,18 @@ const PlantDetailsView: React.FC<{}> = (props) => {
                                 <Card.Title style={{ fontSize: 26 }}>Zarządzanie rośliną</Card.Title>
                                 <TitleSeparator />
                                 <div className="d-flex justify-content-center flex-column flex-sm-row">
-                                    <RequirementsButton className="mb-1" onClick = {() => setShowEditPlantForm(true)}>
+                                    <RequirementsButton
+                                        className="mb-1"
+                                        onClick={() => setShowEditPlantForm(true)}
+                                    >
                                         Edytuj roślinę
                                     </RequirementsButton>
-                                    <RequirementsButton className="mb-1" variant="danger" onClick = {() => deletePlant()}>
+
+                                    <RequirementsButton
+                                        className="mb-1"
+                                        variant="danger"
+                                        onClick={() => deletePlantMutation.mutate()}
+                                    >
                                         Usuń roślinę
                                     </RequirementsButton>
                                 </div>
@@ -125,8 +137,18 @@ const PlantDetailsView: React.FC<{}> = (props) => {
                     <Calendar plantId={+plantId!} variant='small' />
                 </Row>
             </ContentContainer >
-            <Notes showNoteForm={showNoteForm} showNoteFormSetter={setShowNoteForm} plant={plant!}/>
-            <PlantForm show={showEditPlantForm} updateState={setShowEditPlantForm} formTitle={`Edycja rośliny: ${plant.name}`} plantId={parseInt(plantId!)}/>
+
+            <Notes
+                showNoteForm={showNoteForm}
+                hide={() => setShowNoteForm(false)}
+                plant={plant}
+            />
+
+            <EditPlantForm
+                show={showEditPlantForm}
+                setShowPlantForm={setShowEditPlantForm}
+                plant={plant}
+            />
         </>
     )
 }

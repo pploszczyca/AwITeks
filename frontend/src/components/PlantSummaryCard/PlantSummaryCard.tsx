@@ -1,11 +1,11 @@
 import { useNavigate } from "react-router-dom";
-import { faHeart as faHeartSolid } from '@fortawesome/free-solid-svg-icons'
-import { faHeart as faHeartRegular } from '@fortawesome/free-regular-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React from 'react'
-import { Card, Button } from 'react-bootstrap'
-import { FavoriteIcon, StyledCard } from './PlantSummaryCardStyles'
-import { PlantSummary } from '../utils/Plant'
+import { faHeart as faHeartSolid } from '@fortawesome/free-solid-svg-icons';
+import { faHeart as faHeartRegular } from '@fortawesome/free-regular-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React from 'react';
+import { Card, Button } from 'react-bootstrap';
+import { FavoriteIcon, StyledCard } from './PlantSummaryCardStyles';
+import { PlantSummary } from "../../api/models/plant-summary";
 
 interface PlantSummaryProps {
     plantSummary: PlantSummary;
@@ -34,7 +34,7 @@ const PlantSummaryCard: React.FC<PlantSummaryProps> = ({ plantSummary: plant, to
                         />
                     </FavoriteIcon>
                 </Card.Text>
-                <Button variant="primary" onClick={() => navigate(`/my_plants/${plant.id}`)}>Szczegóły</Button>
+                <Button variant="primary" onClick={() => navigate(`/my-plants/${plant.id}`)}>Szczegóły</Button>
             </Card.Body>
         </Card>
     )
