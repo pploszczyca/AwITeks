@@ -1,10 +1,9 @@
-package pl.edu.agh.awiteks_backend.api;
+package pl.edu.agh.awiteks_backend.api.plants;
 
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.agh.awiteks_backend.models.Plant;
-import pl.edu.agh.awiteks_backend.models.User;
 import pl.edu.agh.awiteks_backend.services.PlantService;
 import pl.edu.agh.awiteks_backend.services.UserService;
 
@@ -71,4 +70,17 @@ public class PlantController {
             return "https://tatamariusz.pl/hans-christian-andersen-polny-kwiatek/#iLightbox[gallery3623]/0";
         }
     }
+
+    @Operation(summary = "Get all plants summary")
+    @GetMapping(value="/user/{id}/summary")
+    public List<PlantSummary> getAllPlantsSummary(@PathVariable int id){
+        return plantService.getPlantSummaries(id);
+    }
+
+    @Operation(summary = "Get plant stats")
+    @GetMapping(value = "/user/{id}/stats")
+    public PlantsStats getPlantsStats(@PathVariable int id) {
+        return plantService.getPlantsStats(id);
+    }
+
 }

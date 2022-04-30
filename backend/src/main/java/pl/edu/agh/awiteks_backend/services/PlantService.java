@@ -2,10 +2,16 @@ package pl.edu.agh.awiteks_backend.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.edu.agh.awiteks_backend.api.plants.PlantSummary;
+import pl.edu.agh.awiteks_backend.api.plants.PlantsStats;
+import pl.edu.agh.awiteks_backend.mappers.PlantMapper;
 import pl.edu.agh.awiteks_backend.models.Plant;
 import pl.edu.agh.awiteks_backend.models.Species;
 import pl.edu.agh.awiteks_backend.models.User;
 import pl.edu.agh.awiteks_backend.repositories.Repository;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PlantService extends ModelService<Plant> {
@@ -58,5 +64,26 @@ public class PlantService extends ModelService<Plant> {
                         .getUser()
                         .removePlant(presentPlant)
         );
+    }
+
+    private List<Plant> getUsersPlants(int userId) {
+        // TODO maybe create custom exception
+        return userRepository.get(userId)
+                .map(User::getUserPlants)
+                .orElseThrow(() -> new IllegalArgumentException("no such user"));
+    }
+
+    public List<PlantSummary> getPlantSummaries(int userId) {
+        return getUsersPlants(userId).stream()
+                .map(PlantMapper::plantToPlantSummary)
+                .collect(Collectors.toList());
+    }
+
+    public PlantsStats getPlantsStats(int userId) {
+        // TODO move frontend logic to compute these stats here
+        // TODO we can either aggregate this or compute every time
+        List<Plant> userPlants = getUsersPlants(userId);
+
+        return new PlantsStats(userPlants.size(), 5, 5);
     }
 }
