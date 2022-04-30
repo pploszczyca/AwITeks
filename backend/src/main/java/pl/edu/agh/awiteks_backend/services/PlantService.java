@@ -32,9 +32,9 @@ public class PlantService extends ModelService<Plant> {
         this.speciesRepository = speciesRepository;
     }
 
-    public Plant addPlant(AddPlantRequestBody addPlantRequestBody, int userId, int speciesId) {
+    public Plant addPlant(AddPlantRequestBody addPlantRequestBody, int userId) {
         // TODO custom exceptions, rewrite this once DB is ready
-        var spiece = speciesRepository.get(speciesId).orElseThrow();
+        var spiece = speciesRepository.get(addPlantRequestBody.speciesId()).orElseThrow();
         var user = userRepository.get(userId).orElseThrow();
 
         var plant = new Plant(

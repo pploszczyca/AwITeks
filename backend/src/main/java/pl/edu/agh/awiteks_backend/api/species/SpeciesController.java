@@ -1,4 +1,4 @@
-package pl.edu.agh.awiteks_backend.api;
+package pl.edu.agh.awiteks_backend.api.species;
 
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,34 +19,35 @@ public class SpeciesController {
         this.speciesService = speciesService;
     }
 
-    @Operation(summary = "Get all species", operationId = "getAllSpecies")
+    @Operation(summary = "Get all species")
     @GetMapping(produces = "application/json")
     public List<Species> getAllSpecies() {
         return speciesService.getAll();
     }
 
-    @Operation(summary = "Get specific specie by id", operationId = "getSpecie")
+    @Operation(summary = "Get specific specie by id")
     @GetMapping(value = "/{id}", produces = "application/json")
-    public Optional<Species> getSpecie(@PathVariable int id) {
+    public Optional<Species> getSpecies(@PathVariable int id) {
         return speciesService.get(id);
     }
 
-    @Operation(summary = "Add new specie", operationId = "addSpecie")
-    @PostMapping()
+    @Operation(summary = "Add new species")
+    @PostMapping
     @ResponseBody
-    public void addSpecie(@RequestBody Species species) {
-        speciesService.add(species);
+    public Species addSpecies(@RequestBody AddSpeciesRequestBody species) {
+        // TODO get creatorID from JWT
+        return speciesService.addSpecies(species, 0);
     }
 
-    @Operation(summary = "Update specie", operationId = "updateSpecie")
+    @Operation(summary = "Update specie")
     @PutMapping(consumes = "application/json")
-    public void updateSpecie(@RequestBody Species species) {
+    public void updateSpecies(@RequestBody Species species) {
         speciesService.update(species);
     }
 
-    @Operation(summary = "Delete specie by id", operationId = "removeSpecie")
+    @Operation(summary = "Delete specie by id")
     @DeleteMapping(value = "/{id}")
-    public void remove(@PathVariable int id) {
+    public void removeSpecies(@PathVariable int id) {
         speciesService.remove(id);
     }
 }
