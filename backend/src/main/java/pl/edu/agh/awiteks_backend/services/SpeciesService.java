@@ -3,16 +3,20 @@ package pl.edu.agh.awiteks_backend.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.edu.agh.awiteks_backend.api.species.AddSpeciesRequestBody;
-import pl.edu.agh.awiteks_backend.models.Plant;
 import pl.edu.agh.awiteks_backend.models.Species;
-import pl.edu.agh.awiteks_backend.repositories.Repository;
+import pl.edu.agh.awiteks_backend.repositories.PlantRepository;
+import pl.edu.agh.awiteks_backend.repositories.SpeciesRepository;
+
+import java.util.ArrayList;
+import java.util.Objects;
+import java.util.stream.StreamSupport;
 
 @Service
 public class SpeciesService extends ModelService<Species> {
-    private final Repository<Plant> plantRepository;
+    private final PlantRepository plantRepository;
 
     @Autowired
-    public SpeciesService(Repository<Species> speciesRepository, Repository<Plant> plantRepository) {
+    public SpeciesService(SpeciesRepository speciesRepository, PlantRepository plantRepository) {
         super(speciesRepository);
         this.plantRepository = plantRepository;
     }
@@ -32,7 +36,6 @@ public class SpeciesService extends ModelService<Species> {
 
     public Species addSpecies(AddSpeciesRequestBody addSpeciesRequestBody, int creatorId) {
         var species = new Species(
-                (int)(Math.random() * 99999 + 1790), // xD
                 addSpeciesRequestBody.name(),
                 addSpeciesRequestBody.maxAge(),
                 addSpeciesRequestBody.neededInsolation(),
@@ -40,27 +43,26 @@ public class SpeciesService extends ModelService<Species> {
                 addSpeciesRequestBody.waterRoutine(),
                 addSpeciesRequestBody.fertilizationRoutine(),
                 addSpeciesRequestBody.fertilizationDose(),
-                creatorId);
+                creatorId,
+                new ArrayList<>());
 
         add(species);
         return species;
     }
 
     private boolean checkIfPlantExist(int speciesID) {
-        return plantRepository
-                .getAll()
-                .stream()
+        return StreamSupport
+                .stream(plantRepository.findAll().spliterator(), false)
                 .anyMatch(plant -> plant.getSpiece().getId() == speciesID);
     }
 
     private void updateSpeciesInPlant(Species species) {
-        plantRepository
-                .getAll()
-                .stream()
-                .filter(plant -> plant.getSpiece().getId() == species.getId())
+        StreamSupport
+                .stream(plantRepository.findAll().spliterator(), false)
+                .filter(plant -> Objects.equals(plant.getSpiece().getId(), species.getId()))
                 .forEach(plant -> {
                     plant.setSpiece(species);
-                    plantRepository.update(plant);
+                    plantRepository.save(plant);
                 });
     }
 }

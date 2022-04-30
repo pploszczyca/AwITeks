@@ -2,19 +2,21 @@ package pl.edu.agh.awiteks_backend.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.edu.agh.awiteks_backend.models.Plant;
-import pl.edu.agh.awiteks_backend.models.Species;
 import pl.edu.agh.awiteks_backend.models.User;
-import pl.edu.agh.awiteks_backend.repositories.Repository;
+import pl.edu.agh.awiteks_backend.repositories.PlantRepository;
+import pl.edu.agh.awiteks_backend.repositories.SpeciesRepository;
+import pl.edu.agh.awiteks_backend.repositories.UserRepository;
+
+import java.util.stream.StreamSupport;
 
 @Service
 public class UserService extends ModelService<User> {
 
-    private final Repository<Species> speciesRepository;
-    private final Repository<Plant> plantRepository;
+    private final SpeciesRepository speciesRepository;
+    private final PlantRepository plantRepository;
 
     @Autowired
-    public UserService(Repository<User> modelRepository, Repository<Species> speciesRepository, Repository<Plant> plantRepository) {
+    public UserService(UserRepository modelRepository, SpeciesRepository speciesRepository, PlantRepository plantRepository) {
         super(modelRepository);
         this.speciesRepository = speciesRepository;
         this.plantRepository = plantRepository;
@@ -29,16 +31,13 @@ public class UserService extends ModelService<User> {
 
     private void removeAllUserPlants(int id) {
         super.get(id)
-                .ifPresent(presentUser -> presentUser
-                        .getUserPlants()
-                        .forEach(plantRepository::remove));
+                .ifPresent(presentUser -> plantRepository.deleteAll(presentUser.getUserPlants()));
     }
 
     private void removeAllUserSpecies(int id) {
-        speciesRepository
-                .getAll()
-                .stream()
+        StreamSupport.stream(speciesRepository
+                        .findAll().spliterator(), false)
                 .filter(species -> species.getCreatorId() == id)
-                .forEach(speciesRepository::remove);
+                .forEach(speciesRepository::delete);
     }
 }
