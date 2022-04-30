@@ -1,12 +1,10 @@
-package pl.edu.agh.awiteks_backend.api;
+package pl.edu.agh.awiteks_backend.api.plants;
 
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.agh.awiteks_backend.models.Plant;
-import pl.edu.agh.awiteks_backend.models.User;
 import pl.edu.agh.awiteks_backend.services.PlantService;
-import pl.edu.agh.awiteks_backend.services.UserService;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,47 +13,46 @@ import java.util.Optional;
 @RequestMapping("/plants")
 public class PlantController {
     private final PlantService plantService;
-    private final UserService userService;
     @Autowired
-    public PlantController(PlantService plantService, UserService userService) {
+    public PlantController(PlantService plantService) {
         this.plantService = plantService;
-        this.userService = userService;
     }
 
-    @Operation(summary = "Get all plants", operationId = "getAllPlants")
+    @Operation(summary = "Get all plants")
     @GetMapping(produces = "application/json")
     public List<Plant> getAllPlants() {
         return plantService.getAll();
     }
 
-    @Operation(summary = "Get plant by id", operationId = "getPlant")
+    @Operation(summary = "Get plant by id")
     @GetMapping(value = "/{id}", produces = "application/json")
     public Optional<Plant> getPlant(@PathVariable int id) {
         return plantService.get(id);
     }
 
-    @Operation(summary = "Add new plant, assign it to specifier user and specie", operationId = "addPlant")
-    @PostMapping(path = "/{userId}/{speciesId}")
+    @Operation(summary = "Add new plant, assign it to specifier user and specie")
+    @PostMapping
     @ResponseBody
-    public void addPlant(@RequestBody Plant plant, @PathVariable int userId, @PathVariable int speciesId) {
-        plantService.add(plant, userId, speciesId);
+    public Plant addPlant(@RequestBody AddPlantRequestBody plant) {
+        // TODO creatorID from JWT
+        return plantService.addPlant(plant, 0);
     }
 
-    @Operation(summary = "Changing Favourite flag in plant", operationId = "changePlantFavourite")
-    @PutMapping(path = "/{plantId}/changeState")
+    @Operation(summary = "Changing Favourite flag in plant")
+    @PutMapping(path = "/{plantId}/toggle-favourite")
     @ResponseBody
-    public void changePlantFavourite(@PathVariable int plantId) {
+    public void togglePlantFavourite(@PathVariable int plantId) {
         plantService.changeFavourite(plantId);
     }
 
 
-    @Operation(summary = "Update plant", operationId = "updatePlant")
+    @Operation(summary = "Update plant")
     @PutMapping(consumes = "application/json")
     public void updatePlant(@RequestBody Plant plant) {
         plantService.update(plant);
     }
 
-    @Operation(summary = "Delete plant by id", operationId = "removePlant")
+    @Operation(summary = "Delete plant by id")
     @DeleteMapping(value = "/{id}")
     public void removePlant(@PathVariable int id) {
         plantService.remove(id);
@@ -70,5 +67,19 @@ public class PlantController {
         }else{
             return "https://tatamariusz.pl/hans-christian-andersen-polny-kwiatek/#iLightbox[gallery3623]/0";
         }
+    }
+
+    @Operation(summary = "Get all plants summary")
+    @GetMapping(value="/user/summary")
+    public List<PlantSummary> getAllPlantsSummary(){
+        // TODO user ID from JWT
+        return plantService.getPlantSummaries(0);
+    }
+
+    @Operation(summary = "Get plant stats")
+    @GetMapping(value = "/user/stats")
+    public PlantsStats getPlantsStats() {
+        // TODO user ID from JWT
+        return plantService.getPlantsStats(0);
     }
 }

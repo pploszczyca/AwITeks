@@ -19,9 +19,11 @@ public class Plant extends AbstractModel<Plant> {
     private Insolation actualInsolation;
     @Schema(required = true)
     private List<Activity> plantActivities = new ArrayList<>();
+    @Schema(required = true)
     private boolean isFavourite = false;
 
     @Autowired
+    @Schema(required = true)
     private String url;
 
     public Plant(int id, String name, User user, Species spiece, String note, Insolation actualInsolation, List<Activity> plantActivities, boolean isFavourite, String url) {

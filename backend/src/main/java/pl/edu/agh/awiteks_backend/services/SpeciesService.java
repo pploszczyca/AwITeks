@@ -2,6 +2,7 @@ package pl.edu.agh.awiteks_backend.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.edu.agh.awiteks_backend.api.species.AddSpeciesRequestBody;
 import pl.edu.agh.awiteks_backend.models.Plant;
 import pl.edu.agh.awiteks_backend.models.Species;
 import pl.edu.agh.awiteks_backend.repositories.Repository;
@@ -27,6 +28,22 @@ public class SpeciesService extends ModelService<Species> {
     public void update(Species object) {
         super.update(object);
         updateSpeciesInPlant(object);
+    }
+
+    public Species addSpecies(AddSpeciesRequestBody addSpeciesRequestBody, int creatorId) {
+        var species = new Species(
+                (int)(Math.random() * 99999 + 1790), // xD
+                addSpeciesRequestBody.name(),
+                addSpeciesRequestBody.maxAge(),
+                addSpeciesRequestBody.neededInsolation(),
+                addSpeciesRequestBody.waterDose(),
+                addSpeciesRequestBody.waterRoutine(),
+                addSpeciesRequestBody.fertilizationRoutine(),
+                addSpeciesRequestBody.fertilizationDose(),
+                creatorId);
+
+        add(species);
+        return species;
     }
 
     private boolean checkIfPlantExist(int speciesID) {
