@@ -13,6 +13,8 @@ public class ForumPost {
     private User author;
     @Schema(required = true)
     private ForumThread thread;
+    @Schema(required = true)
+    private String date;
 
     public ForumPost(int id, User author, ForumThread thread, String content) {
         this.id = id;
@@ -54,5 +56,13 @@ public class ForumPost {
 
     public void setContent(String newContent) {
         this.content = newContent;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }
