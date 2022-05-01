@@ -30,7 +30,7 @@ function SiteTitleAndIcons() {
     }, [location]);
 
     return (
-        <FixedContainer className="mt-5">
+        <FixedContainer className="mt-5" style={{display: window.location.pathname === '/login-and-registration' ? 'none': 'block'}}>
             <PageTitle>{title}</PageTitle>
             <div className="icons d-flex gap-4">
                 <FontAwesomeIcon icon={faBell} fontSize={32} className="icon" />
