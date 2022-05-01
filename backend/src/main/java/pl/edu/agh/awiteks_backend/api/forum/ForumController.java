@@ -3,6 +3,7 @@ package pl.edu.agh.awiteks_backend.api.forum;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import pl.edu.agh.awiteks_backend.models.ForumPost;
 import pl.edu.agh.awiteks_backend.models.ForumThread;
 import pl.edu.agh.awiteks_backend.services.ForumService;
 
@@ -20,7 +21,7 @@ public class ForumController {
     }
 
     @Operation(summary = "Get all forum threads")
-    @GetMapping()
+    @GetMapping(produces = "application/json")
     public List<ForumThread> getAllThreads() {
         return forumService.getAllThreads();
     }
@@ -36,6 +37,21 @@ public class ForumController {
     @ResponseBody
     public ForumThread addThread(@RequestBody AddThreadRequestBody thread) {
         // TODO creatorID from JWT
-        return forumService.addThread(thread, 0);
+        final int authorId = 0;
+        return forumService.addThread(thread, authorId);
+    }
+
+    @Operation(summary = "Add post to thread")
+    @PostMapping(value = "/{threadId}")
+    public ForumPost addPostToThread(@RequestBody AddPostRequestBody postRequestBody, @PathVariable int threadId) {
+        // TODO creatorID from JWT
+        final int authorId = 0;
+        return forumService.addPostToThread(threadId, postRequestBody, authorId);
+    }
+
+    @Operation(summary = "Get all posts for given thread")
+    @GetMapping(value = "/{threadId}/posts")
+    public List<ForumPost> getPostsFromThread(@PathVariable int threadId){
+        return forumService.getPostsFromThread(threadId);
     }
 }
