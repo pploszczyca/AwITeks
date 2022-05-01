@@ -1,7 +1,7 @@
 import React from "react";
 import {Col, Nav, Row, Tab} from "react-bootstrap";
 import LoginPage from "./LoginPage/LoginPage";
-import {Content, PillItem} from "./LoginAndRegistrationStyle";
+import {Content, PillItem} from "./styles/LoginAndRegistrationStyle";
 import RegistrationPage from "./RegistrationPage/RegistrationPage";
 
 const LoginAndRegistrationPage: React.FC<{}> = () => {

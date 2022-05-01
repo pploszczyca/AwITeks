@@ -1,7 +1,8 @@
 import React from "react";
 import {ErrorMessage, Formik, Field} from "formik";
 import {Button, Col, Form, Row, Spinner} from "react-bootstrap";
-import {FormContainer} from "../FormStyle";
+import {FormContainer} from "../styles/FormStyle";
+import {validateEmail} from "../validators";
 
 const LoginPage: React.FC<{}> = () => {
     return (
@@ -9,7 +10,7 @@ const LoginPage: React.FC<{}> = () => {
             initialValues={{email: '', password: ''}}
             validate={values => {
                 const errors: any = {};
-                if (!values.email) errors.email = 'Wymagane';
+                errors.email = validateEmail(values.email);
                 if (!values.password) errors.password = 'Wymagane';
                 return errors;
             }}

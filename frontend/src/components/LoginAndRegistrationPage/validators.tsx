@@ -14,10 +14,24 @@ export const validatePassword = (values: string) => {
 
 export const validateConfirmPassword = (pass: any, value: any) => {
     let error = "";
-    if (pass && value) {
+    if (!value) {
+        error = "Wymagane";
+    } else if (pass && value) {
         if (pass !== value) {
             error = "Brak zgodności, hasło niepoprawne z podanym wyżej.";
         }
     }
     return error;
 };
+
+export const validateEmail = (email: string) => {
+    const regexEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    let error = "";
+
+    if(!email){
+        error = "Wymagane";
+    } else if (!regexEmail.test(email)){
+        error = "Podaj poprawny adres email.";
+    }
+    return error;
+}

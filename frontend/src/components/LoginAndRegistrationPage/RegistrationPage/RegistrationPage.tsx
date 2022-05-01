@@ -1,8 +1,8 @@
 import React from "react";
 import {ErrorMessage, Formik, Field} from "formik";
 import {Button, Col, Container, Form, Row, Spinner} from "react-bootstrap";
-import {validateConfirmPassword, validatePassword} from "./validators";
-import {FormContainer} from "../FormStyle";
+import {validateConfirmPassword, validateEmail, validatePassword} from "../validators";
+import {FormContainer} from "../styles/FormStyle";
 
 const RegistrationPage: React.FC<{}> = () => {
     return (
@@ -12,7 +12,7 @@ const RegistrationPage: React.FC<{}> = () => {
                 const errors: any = {};
                 if (!values.name) errors.name = 'Wymagane';
                 if (!values.username) errors.username = 'Wymagane';
-                if (!values.email) errors.email = 'Wymagane';
+                errors.email = validateEmail(values.email);
                 errors.password = validatePassword(values.password);
                 errors.repeatPassword = validateConfirmPassword(values.password, values.repeatPassword);
                 return errors;
