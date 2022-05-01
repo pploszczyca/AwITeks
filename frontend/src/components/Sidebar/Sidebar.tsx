@@ -3,7 +3,7 @@ import { Container, Nav } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { NavbarEdit, MobileNavbar } from './SidebarStyles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faHouse, faCalendarDays, faSeedling, faComments } from '@fortawesome/free-solid-svg-icons'
+import { faHouse, faCalendarDays, faSeedling, faComments, faGear } from '@fortawesome/free-solid-svg-icons'
 
 
 function buildNavLink(to: string, mobile: boolean, content: any) {
@@ -24,7 +24,7 @@ const PATHS = {
     '/my-plants': ['Moje rośliny', faSeedling],
     '/calendar': ['Kalendarz', faCalendarDays],
     '/forum': ['Forum', faComments],
-    '/settings': ['Ustawienia', faHouse], // TODO correct icon
+    '/settings': ['Ustawienia', faGear],
 };
 
 const Sidebar: React.FC<{}> = () => {

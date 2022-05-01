@@ -9,6 +9,8 @@ import { Notes } from "../Notes/Notes";
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import Loader from '../Loader/Loader';
 import { EditPlantForm } from '../EditPlantForm/EditPlantForm';
+import { toast } from 'react-toastify';
+import { fertilizationToString, insolationToString } from '../../utils/util';
 
 
 const PlantDetailsView: React.FC<{}> = (props) => {
@@ -25,25 +27,17 @@ const PlantDetailsView: React.FC<{}> = (props) => {
     const { data: plantResp, isLoading } = useQuery(['plants', plantId], async () => getApis().plantsApi.getPlant(+plantId!))
     const deletePlantMutation = useMutation(async () => {
         await getApis().plantsApi.removePlant(+plantId!);
-        // TODO trigger toast with successful deletion info
+        toast.success("Usunięto roślinę");
         navigate('/my-plants');
     }, {
         onSuccess: () => {
             queryClient.invalidateQueries(['plants', plantId]);
+            queryClient.invalidateQueries(['plants-summary', plantId]);
         }
     });
 
-    if (isLoading) {
-        return <Loader></Loader>;
-    }
-
-    if (deletePlantMutation.isLoading) {
-        return (
-            <>
-                <div>Removing plant...</div>
-                <Loader></Loader>
-            </>
-        )
+    if (isLoading || deletePlantMutation.isLoading) {
+        return <Loader />;
     }
 
     const plant = plantResp!.data;
@@ -79,7 +73,7 @@ const PlantDetailsView: React.FC<{}> = (props) => {
                                 <Card.Title style={{ fontSize: 26 }}>Stan rośliny</Card.Title>
                                 <TitleSeparator />
                                 <Card.Text>
-                                    <span className="d-block">Obecny pozion nasłonecznienia: {plant.actualInsolation}</span>
+                                    <span className="d-block">Obecny pozion nasłonecznienia: {insolationToString(plant.actualInsolation)}</span>
                                     <span className="d-block">Data ostatniego podlania: 24.01.2022</span>
                                     <span className="d-block">Data ostatnieno nawożenia: 26.12.2021</span>
                                 </Card.Text>
@@ -91,11 +85,11 @@ const PlantDetailsView: React.FC<{}> = (props) => {
                                 <TitleSeparator />
 
                                 <Card.Text>
-                                    <span className="d-block">Wymagane nasłonecznienie: {plant.spiece.neededInsolation}</span>
+                                    <span className="d-block">Wymagane nasłonecznienie: {insolationToString(plant.spiece.neededInsolation)}</span>
                                     <span className="d-block">Częstotliwość podlewania: {plant.spiece.waterRoutine} / tydzień</span>
                                     <span className="d-block">Zalecana ilość wody: {plant.spiece.waterDose}l</span>
                                     <span className="d-block">Częstotliwość nawożenia: {plant.spiece.fertilizationRoutine} / miesiąc</span>
-                                    <span className="d-block">Intensywność nawożenia: {plant.spiece.fertilizationDose}</span>
+                                    <span className="d-block">Intensywność nawożenia: {fertilizationToString(plant.spiece.fertilizationDose)}</span>
                                 </Card.Text>
 
                                 <div className="d-flex justify-content-center">
@@ -125,6 +119,7 @@ const PlantDetailsView: React.FC<{}> = (props) => {
                                         className="mb-1"
                                         variant="danger"
                                         onClick={() => deletePlantMutation.mutate()}
+                                        isDisabled={deletePlantMutation.isLoading}
                                     >
                                         Usuń roślinę
                                     </RequirementsButton>

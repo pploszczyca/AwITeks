@@ -26,6 +26,7 @@ export const EditPlantForm: React.FC<EditPlantFormProps> = ({ show, setShowPlant
         {
             onSuccess: (plant) => {
                 queryClient.setQueryData(['plants', plant.data?.id], plant.data);
+                queryClient.invalidateQueries(['plants-summary', plant.data?.id]);
             }
         });
 

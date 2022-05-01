@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Col, Container, Modal, Row } from "react-bootstrap";
+import { Button, Col, Container, Modal, Row, Spinner } from "react-bootstrap";
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { getApis } from "../../api/initializeApis";
 import { AddPlantRequestBody } from "../../api";
@@ -7,6 +7,7 @@ import { useQuery } from 'react-query';
 import Loader from '../Loader/Loader';
 import { SpeciesForm } from '../SpeciesForm/SpeciesForm';
 import { toast } from 'react-toastify';
+import { insolationToString } from '../../utils/util';
 
 
 type PlantFormProps = {
@@ -27,7 +28,7 @@ export const PlantForm: React.FC<PlantFormProps> =
         const { data: speciesList, isLoading } = useQuery('species', () => getApis().speciesApi.getAllSpecies().then(resp => resp.data));
 
         if (isLoading) {
-            return <Loader></Loader>;
+            return <Loader />;
         }
 
         const toggleSpeciesForm = () => {
@@ -145,9 +146,9 @@ export const PlantForm: React.FC<PlantFormProps> =
                                             <Col className="form-group mt-3" xl={4} md={12}>
                                                 <label>Poziom nasłonecznienia:</label>
                                                 <Field className="form-control" as="select" name="insolation">
-                                                    <option value="LOW">niskie</option>
-                                                    <option value="MEDIUM">średnie</option>
-                                                    <option value="HIGH">wysokie</option>
+                                                    <option value="LOW">{insolationToString("LOW")}</option>
+                                                    <option value="MEDIUM">{insolationToString("MEDIUM")}</option>
+                                                    <option value="HIGH">{insolationToString("HIGH")}</option>
                                                 </Field>
                                                 <ErrorMessage name="insolationLevel" component="div">
                                                     {msg => <div style={{ color: 'red' }}>{msg}</div>}
@@ -165,13 +166,22 @@ export const PlantForm: React.FC<PlantFormProps> =
 
                                         <Row className="mt-4 d-flex justify-content-center">
                                             <Col sm={12} className="d-flex justify-content-center mb-2">
-                                                <Button variant="success" type="submit" disabled={isSubmitting}>
-                                                    {acceptBtnText}
+                                                <Button variant="success" type="submit" disabled={isSubmitting} style={{ minWidth: 80 }}>
+                                                    {isSubmitting ?
+                                                        <Spinner
+                                                            as="span"
+                                                            animation="border"
+                                                            size="sm"
+                                                            role="status"
+                                                        />
+                                                        :
+                                                        <span>{acceptBtnText}</span>
+                                                    }
                                                 </Button>
                                             </Col>
 
                                             <Col sm={12} className="d-flex justify-content-center">
-                                                <Button variant="danger" onClick={hide}>
+                                                <Button variant="danger" onClick={hide} >
                                                     Anuluj
                                                 </Button>
                                             </Col>

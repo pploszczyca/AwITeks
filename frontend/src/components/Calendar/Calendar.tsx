@@ -64,7 +64,7 @@ const Calendar: React.FC<CalendarProps> = ({ plantId, variant = 'big' }) => {
     }
 
     if (isLoading) {
-        return <Loader></Loader>;
+        return <Loader />;
     }
 
 

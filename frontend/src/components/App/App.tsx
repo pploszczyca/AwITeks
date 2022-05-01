@@ -25,7 +25,7 @@ function App() {
                         <Col xs={2}>
                             <Sidebar />
                         </Col>
-                        <Col xs={10}>
+                        <Col xs={10} style={{ height: "80vh" }}>
                             <Routes>
                                 <Route path="/" element={<Dashboard />} />
                                 <Route path="/my-plants" element={<PlantsView />} />
@@ -41,7 +41,7 @@ function App() {
 
             <ToastContainer
                 position="bottom-right"
-                autoClose={3000}
+                autoClose={2000}
                 hideProgressBar={false}
                 newestOnTop={false}
                 closeOnClick

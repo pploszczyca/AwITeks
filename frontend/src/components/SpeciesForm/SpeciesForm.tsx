@@ -5,6 +5,7 @@ import { AddSpeciesRequestBody, Species } from "../../api";
 import { getApis } from "../../api/initializeApis";
 import { useMutation, useQueryClient } from 'react-query';
 import { toast } from 'react-toastify';
+import { fertilizationToString, insolationToString } from '../../utils/util';
 
 
 type SpeciesFormProps = {
@@ -98,9 +99,9 @@ export const SpeciesForm: React.FC<SpeciesFormProps> = ({ show, hide }) => {
                                     <Col className="form-group mt-3" xl={6} md={12}>
                                         <label>Ilość potrzebnej ziemi w jednym nawożeniu:</label><br />
                                         <Field className="form-control" as="select" name="fertilizationDose">
-                                            <option value="LOW">niski</option>
-                                            <option value="MEDIUM">średni</option>
-                                            <option value="HIGH">wysoki</option>
+                                            <option value="LOW">{fertilizationToString("LOW")}</option>
+                                            <option value="MEDIUM">{fertilizationToString("MEDIUM")}</option>
+                                            <option value="HIGH">{fertilizationToString("HIGH")}</option>
                                         </Field>
                                         <ErrorMessage name="fertilizationDose" component="div">
                                             {msg => <div style={{ color: 'red' }}>{msg}</div>}
@@ -118,9 +119,9 @@ export const SpeciesForm: React.FC<SpeciesFormProps> = ({ show, hide }) => {
                                     <Col className="form-group mt-3" xl={12}>
                                         <label>Potrzebny poziom nasłonecznienia:</label>
                                         <Field className="form-control" as="select" name="neededInsolation">
-                                            <option value="LOW">niski</option>
-                                            <option value="MEDIUM">średni</option>
-                                            <option value="HIGH">wysoki</option>
+                                            <option value="LOW">{insolationToString("LOW")}</option>
+                                            <option value="MEDIUM">{insolationToString("MEDIUM")}</option>
+                                            <option value="HIGH">{insolationToString("HIGH")}</option>
                                         </Field>
                                         <ErrorMessage name="neededInsolation" component="div">
                                             {msg => <div style={{ color: 'red' }}>{msg}</div>}

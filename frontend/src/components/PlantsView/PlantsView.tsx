@@ -7,7 +7,7 @@ import PlantSummaryCard from "../PlantSummaryCard/PlantSummaryCard";
 import Dropdown from "../utils/Dropdown";
 import { ContentContainer } from "../App/AppStyle";
 import { getApis } from "../../api/initializeApis";
-import { useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import Loader from "../Loader/Loader";
 import { PlantSummary } from "../../api/models/plant-summary";
 import { AddPlantForm } from "../AddPlantForm/AddPlantForm";
@@ -16,21 +16,28 @@ import { AddPlantForm } from "../AddPlantForm/AddPlantForm";
 
 const PlantsView: React.FC<{}> = () => {
     const [isAddPlantFormVisible, setAddPlantFormVisible] = useState(false);
+    const queryClient = useQueryClient();
     const searchInputRef: React.MutableRefObject<HTMLInputElement | null> = useRef(null);
 
     const { data: speciesList, isLoading: speciesLoading } = useQuery('species', () => getApis().speciesApi
         .getAllSpecies().then(resp => resp.data));
 
-    const { data: plantSummaryList, isLoading: plantsLoading } = useQuery('plants', () => getApis().plantsApi
+    const { data: plantSummaryList, isLoading: plantsLoading } = useQuery(['plants-summary'], () => getApis().plantsApi
         .getAllPlantsSummary().then(resp => resp.data));
 
+    const toggleFavourite = useMutation((plantSummary: PlantSummary) => {
+        plantSummary.isFavourite = !plantSummary.isFavourite;
+        return getApis().plantsApi.togglePlantFavourite(plantSummary.id);
+    }, {
+        onSuccess: (_, plantSummary) => {
+            queryClient.setQueryData(['plants-summary', plantSummary.id], plantSummary);
+        }
+    });
+
     if (speciesLoading || plantsLoading) {
-        return <Loader></Loader>
+        return <Loader />;
     }
 
-    function toggleFavourite(plant: PlantSummary) {
-
-    }
 
     return (
         <ContentContainer className="mt-5">
@@ -104,7 +111,7 @@ const PlantsView: React.FC<{}> = () => {
                         style={{ marginBottom: 80 }}
                         className="d-flex justify-content-center"
                     >
-                        <PlantSummaryCard plantSummary={plant} toggleFavourite={toggleFavourite} />
+                        <PlantSummaryCard plantSummary={plant} toggleFavourite={toggleFavourite.mutate} />
                     </Col>
                 ))}
             </Row>

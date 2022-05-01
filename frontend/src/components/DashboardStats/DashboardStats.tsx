@@ -6,10 +6,10 @@ import { useQuery } from 'react-query';
 import Loader from '../Loader/Loader';
 
 const DashboardStats: React.FC<{}> = () => {
-    const { data: plantsStatsResp, isLoading } = useQuery(['plants', 'stats'], getApis().plantsApi.getPlantsStats);
+    const { data: plantsStatsResp, isLoading } = useQuery(['plants-summary', 'stats'], getApis().plantsApi.getPlantsStats);
 
     if (isLoading) {
-        return <Loader></Loader>;
+        return <Loader />;
     }
 
     const plantsStats = plantsStatsResp!.data;
