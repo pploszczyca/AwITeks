@@ -1,6 +1,6 @@
 import React from "react";
 import {ErrorMessage, Formik, Field} from "formik";
-import {Button, Col, Container, Form, Row, Spinner} from "react-bootstrap";
+import {Button, Col, Form, Row, Spinner} from "react-bootstrap";
 import {validateConfirmPassword, validateEmail, validatePassword} from "../validators";
 import {FormContainer} from "../styles/FormStyle";
 

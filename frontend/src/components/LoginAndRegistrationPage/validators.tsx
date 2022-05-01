@@ -25,7 +25,7 @@ export const validateConfirmPassword = (pass: any, value: any) => {
 };
 
 export const validateEmail = (email: string) => {
-    const regexEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    const regexEmail = /^\w+([-]?\w+)*@\w+([-]?\w+)*(\.\w{2,3})+$/;
     let error = "";
 
     if(!email){
