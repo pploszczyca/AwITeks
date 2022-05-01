@@ -23,7 +23,7 @@ export const initializeApis = () => {
         speciesApi: new SpeciesControllerApi(configuration),
         activityApi: new ActivityControllerApi(configuration),
         userApi: new UserControllerApi(configuration)
-    }
+    };
 };
 
 initializeApis();
@@ -32,7 +32,6 @@ export const getApis = (): Apis => {
     if (!apis) {
         initializeApis();
     }
-
     return apis!;
 }
 
