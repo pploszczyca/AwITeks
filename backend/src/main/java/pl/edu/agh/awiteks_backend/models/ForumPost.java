@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @JsonIgnoreProperties({"user", "thread"})
-public class ForumPost extends AbstractModel<ForumPost> {
+public class ForumPost {
+    @Schema(required = true)
+    private Integer id;
     @Schema(required = true)
     private String content;
     @Schema(required = true)
@@ -13,7 +15,7 @@ public class ForumPost extends AbstractModel<ForumPost> {
     private ForumThread thread;
 
     public ForumPost(int id, User author, ForumThread thread, String content) {
-        super(id, "");
+        this.id = id;
         this.author = author;
         this.thread = thread;
         this.content = content;
@@ -22,22 +24,35 @@ public class ForumPost extends AbstractModel<ForumPost> {
     public ForumPost() {
     }
 
-    @Override
-    public ForumPost copy() {
-        return new ForumPost(this.id, this.author, this.thread, this.content);
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public User getAuthor() {
         return author;
     }
 
-    public ForumThread getThread(){return thread;}
+    public void setAuthor(User newAuthor) {
+        this.author = newAuthor;
+    }
 
-    public String getContent(){
+    public ForumThread getThread() {
+        return thread;
+    }
+
+    public void setThread(ForumThread thread) {
+        this.thread = thread;
+    }
+
+    public String getContent() {
         return content;
     }
 
-    public void setContent(String newContent){
+    public void setContent(String newContent) {
         this.content = newContent;
     }
 }
