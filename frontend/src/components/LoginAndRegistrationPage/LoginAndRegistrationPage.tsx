@@ -2,6 +2,7 @@ import React from "react";
 import {Col, Nav, Row, Tab} from "react-bootstrap";
 import LoginPage from "./LoginPage/LoginPage";
 import {Content, PillItem} from "./LoginAndRegistrationStyle";
+import RegistrationPage from "./RegistrationPage/RegistrationPage";
 
 const LoginAndRegistrationPage: React.FC<{}> = () => {
     return (
@@ -31,7 +32,7 @@ const LoginAndRegistrationPage: React.FC<{}> = () => {
                                     <LoginPage/>
                                 </Tab.Pane>
                                 <Tab.Pane eventKey="registration">
-                                    hello
+                                    <RegistrationPage/>
                                 </Tab.Pane>
                             </Tab.Content>
                         </Row>

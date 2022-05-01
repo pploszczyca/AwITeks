@@ -1,26 +1,48 @@
 import React from "react";
 import {ErrorMessage, Formik, Field} from "formik";
-import {Button, Col, Form, Row, Spinner} from "react-bootstrap";
+import {Button, Col, Container, Form, Row, Spinner} from "react-bootstrap";
+import {validateConfirmPassword, validatePassword} from "./validators";
 import {FormContainer} from "../FormStyle";
 
-const LoginPage: React.FC<{}> = () => {
+const RegistrationPage: React.FC<{}> = () => {
     return (
         <Formik
-            initialValues={{email: '', password: ''}}
+            initialValues={{name: '', username: '', email: '', password: '', repeatPassword: ''}}
             validate={values => {
                 const errors: any = {};
+                if (!values.name) errors.name = 'Wymagane';
+                if (!values.username) errors.username = 'Wymagane';
                 if (!values.email) errors.email = 'Wymagane';
-                if (!values.password) errors.password = 'Wymagane';
+                errors.password = validatePassword(values.password);
+                errors.repeatPassword = validateConfirmPassword(values.password, values.repeatPassword);
                 return errors;
             }}
             onSubmit={async (values, { setSubmitting }) => {
-                // todo: login system
+                // todo: register system
                 setSubmitting(false);
             }}
         >
             {({ isSubmitting }) => (
                 <Form>
                     <FormContainer className="mt-2 p-5">
+                        <Row className='justify-content-center'>
+                            <Col className="form-group mt-3" lg={6} sm={12}>
+                                <label>Imię</label><br />
+                                <Field className="form-control" type="text" name="name" id='name'/>
+                                <ErrorMessage name="name" component="div">
+                                    {msg => <div style={{ color: 'red' }}>{msg}</div>}
+                                </ErrorMessage>
+                            </Col>
+                        </Row>
+                        <Row className='justify-content-center'>
+                            <Col className="form-group mt-3" lg={6} sm={12}>
+                                <label>Nazwa użytkownika</label><br />
+                                <Field className="form-control" type="text" name="username" id='username'/>
+                                <ErrorMessage name="username" component="div">
+                                    {msg => <div style={{ color: 'red' }}>{msg}</div>}
+                                </ErrorMessage>
+                            </Col>
+                        </Row>
                         <Row className='justify-content-center'>
                             <Col className="form-group mt-3" lg={6} sm={12}>
                                 <label>Email</label><br />
@@ -39,6 +61,15 @@ const LoginPage: React.FC<{}> = () => {
                                 </ErrorMessage>
                             </Col>
                         </Row>
+                        <Row className='justify-content-center'>
+                            <Col className="form-group mt-3" lg={6} sm={12}>
+                                <label>Powtórz hasło</label><br />
+                                <Field className="form-control" type="password" name="repeatPassword" id='repeatPassword'/>
+                                <ErrorMessage name="repeatPassword" component="div">
+                                    {msg => <div style={{ color: 'red' }}>{msg}</div>}
+                                </ErrorMessage>
+                            </Col>
+                        </Row>
 
                         <Row className="mt-4 d-flex justify-content-center">
                             <Col sm={12} className="d-flex justify-content-center mb-2">
@@ -51,7 +82,7 @@ const LoginPage: React.FC<{}> = () => {
                                             role="status"
                                         />
                                         :
-                                        <span>Zaloguj</span>
+                                        <span>Zarejestruj</span>
                                     }
                                 </Button>
                             </Col>
@@ -63,4 +94,4 @@ const LoginPage: React.FC<{}> = () => {
     );
 };
 
-export default LoginPage;
+export default RegistrationPage;
