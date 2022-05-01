@@ -107,4 +107,10 @@ public class PlantService extends ModelService<Plant> {
 
         return new PlantsStats(userPlants.size(), 5, 5);
     }
+
+    public Plant updatePlant(AddPlantRequestBody addPlantRequestBody, int plantId, int userId) {
+        // TODO assert that the plant belongs to that user
+        // TODO update plant based on the request data (overwrite all)
+        return get(plantId).orElseThrow();
+    }
 }

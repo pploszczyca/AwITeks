@@ -17,34 +17,38 @@
 /**
  * 
  * @export
- * @interface Activity
+ * @interface PlantSummary
  */
-export interface Activity {
+export interface PlantSummary {
     /**
      * 
      * @type {number}
-     * @memberof Activity
+     * @memberof PlantSummary
      */
     'id': number;
     /**
      * 
      * @type {string}
-     * @memberof Activity
+     * @memberof PlantSummary
      */
-    'activityType': ActivityActivityTypeEnum;
+    'name': string;
     /**
      * 
      * @type {string}
-     * @memberof Activity
+     * @memberof PlantSummary
      */
-    'date': string;
+    'speciesName': string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PlantSummary
+     */
+    'isFavourite': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof PlantSummary
+     */
+    'imgUrl': string;
 }
-
-export const ActivityActivityTypeEnum = {
-    Watering: 'WATERING',
-    Fertilisation: 'FERTILISATION'
-} as const;
-
-export type ActivityActivityTypeEnum = typeof ActivityActivityTypeEnum[keyof typeof ActivityActivityTypeEnum];
-
 

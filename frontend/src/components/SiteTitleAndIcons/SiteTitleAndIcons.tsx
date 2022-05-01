@@ -1,22 +1,22 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBell, faCircleUser as faUser } from '@fortawesome/free-solid-svg-icons'
-import {FixedContainer, PageTitle} from "./SiteTitleAndIconsStyle";
-import {useLocation} from "react-router-dom";
+import { FixedContainer, PageTitle } from "./SiteTitleAndIconsStyle";
+import { useLocation } from "react-router-dom";
 
 const titlesMap: Map<string, string> = new Map<string, string>([
     ["/", "Witaj, XYZ"],
-    ["/my_plants", "Lista roślin"],
+    ["/my-plants", "Lista roślin"],
     ["/calendar", "Kalendarz"],
     ["/forum", "Forum"],
     ["/settings", "Ustawienia"],
 ])
 
-function getTitle(path: string){
-    if(titlesMap.has(path)){
+function getTitle(path: string) {
+    if (titlesMap.has(path)) {
         return titlesMap.get(path)
     }
-    else if(path.startsWith("/my_plants/")){
+    else if (path.startsWith("/my-plants/")) {
         return "Szczegóły rośliny";
     }
 }

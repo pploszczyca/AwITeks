@@ -1,10 +1,12 @@
-package pl.edu.agh.awiteks_backend.api;
+package pl.edu.agh.awiteks_backend.api.activities;
 
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.agh.awiteks_backend.models.Activity;
 import pl.edu.agh.awiteks_backend.services.ActivityService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/activity")
