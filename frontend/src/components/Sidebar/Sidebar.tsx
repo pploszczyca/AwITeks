@@ -31,7 +31,7 @@ const Sidebar: React.FC<{}> = () => {
     useNavigate(); // rerenders components on url change
 
     return (
-        <>
+        <div style={{display: window.location.pathname === '/login-and-registration' ? 'none': 'block'}}>
             <NavbarEdit variant="dark" className="d-md-block d-none">
                 <Container className="d-flex flex-column">
                     <div id="logo"><p>awITex</p></div>
@@ -45,7 +45,7 @@ const Sidebar: React.FC<{}> = () => {
                     {Object.entries(PATHS).map(([to, [_, icon]]) => buildNavLink(to, true, icon))}
                 </Nav>
             </MobileNavbar>
-        </>
+        </div>
 
     );
 }
