@@ -18,6 +18,6 @@ jobs:
           java-version: '17'
           distribution: 'adopt'
       - name: Build Gradle Project
-        run: ./gradlew build
+        run: ./gradlew build --no-daemon -x test
       - name: Test Gradle Project
         run: ./gradlew test
