@@ -1,67 +1,43 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, { useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { Row, Col, Form } from "react-bootstrap";
 import { SearchBoxContainer, SearchBox, AddPlantButton, PlantTypesContainer, DropdownItem, ListContainer, SettingsWrapper, SettingsBox } from './PlantsViewStyles';
-import { PlantSummary } from "../../utils/Plant";
-import PlantSummaryCard from "../../PlantSummaryCard/PlantSummaryCard";
+import PlantSummaryCard from "../PlantSummaryCard/PlantSummaryCard";
 import Dropdown from "../utils/Dropdown";
-import { PlantForm } from "../AddPlantForm/PlantForm";
 import { ContentContainer } from "../App/AppStyle";
 import { getApis } from "../../api/initializeApis";
-import {Plant, Species} from "../../api";
+import { useMutation, useQuery, useQueryClient } from "react-query";
+import Loader from "../Loader/Loader";
+import { PlantSummary } from "../../api/models/plant-summary";
+import { AddPlantForm } from "../AddPlantForm/AddPlantForm";
+
 
 
 const PlantsView: React.FC<{}> = () => {
-    const [plantTypes, setPlantTypes] = useState<Species[]>([]);
-    const [plantSummaryList, updatePlants] = useState<PlantSummary[]>([]);
-    let [show, setShow] = useState(false);
-    //TODO obecnie pobierana jest lista List<Plant>, a mamy wystawiony endpoint do List<PlantSummary>
-    // żeby dostać się do PlantSummary należy wykorzystać usera
-
-    useEffect(() => {
-        const getSpeciesAndPlants = async () => {
-            try {
-                const speciesRequest = await getApis().speciesApi.getAllSpecies();
-                const species: Species[] = speciesRequest.data as Species[];
-                setPlantTypes(species)
-
-                const plantRequest = await getApis().plantsApi.getAllPlants();
-                const plants: Plant[] = plantRequest.data as Plant[];
-
-                const mappedPlants: PlantSummary[] = plants.map((plant: Plant, id: number)=> ({
-                    id: plant.id!,
-                    name: plant.name,
-                    speciesName: plant!.spiece!.name,
-                    isFavourite: false,
-                    imgUrl: "https://netscroll.pl/wp-content/uploads/2021/10/CactusToy1.jpg"
-                }))
-                updatePlants(mappedPlants)
-                
-            } catch (err) {
-                console.log('Server error:');
-                console.log(err);
-            }
-        }
-
-        getSpeciesAndPlants();
-    }, [show])
-    
-
-    function toggleFavourite(plant: PlantSummary) {
-        updatePlants(plantSummaryList => {
-            return [...plantSummaryList.filter(plantSummary => plantSummary.id !== plant.id), {
-                ...plant,
-                isFavourite: !plant.isFavourite
-            }].sort((p1, p2) => p1.id - p2.id); // for testing only
-        });
-    }
-
+    const [isAddPlantFormVisible, setAddPlantFormVisible] = useState(false);
+    const queryClient = useQueryClient();
     const searchInputRef: React.MutableRefObject<HTMLInputElement | null> = useRef(null);
 
-    function updateShowState(newValue: boolean) {
-        setShow(newValue);
+    const { data: speciesList, isLoading: speciesLoading } = useQuery('species', () => getApis().speciesApi
+        .getAllSpecies().then(resp => resp.data));
+
+    const { data: plantSummaryList, isLoading: plantsLoading } = useQuery(['plants-summary'], () => getApis().plantsApi
+        .getAllPlantsSummary().then(resp => resp.data));
+
+    const toggleFavourite = useMutation((plantSummary: PlantSummary) => {
+        plantSummary.isFavourite = !plantSummary.isFavourite;
+        return getApis().plantsApi.togglePlantFavourite(plantSummary.id);
+    }, {
+        onSuccess: (_, plantSummary) => {
+            queryClient.setQueryData(['plants-summary', plantSummary.id], plantSummary);
+        }
+    });
+
+    if (speciesLoading || plantsLoading) {
+        return <Loader />;
     }
+
 
     return (
         <ContentContainer className="mt-5">
@@ -75,21 +51,21 @@ const PlantsView: React.FC<{}> = () => {
                             </SearchBoxContainer>
                         </Col>
                         <Col lg={5} className="mt-3">
-                            <AddPlantButton onClick={() => updateShowState(true)}>Dodaj roślinę</AddPlantButton>
+                            <AddPlantButton onClick={() => setAddPlantFormVisible(true)}>Dodaj roślinę</AddPlantButton>
                         </Col>
                     </Row>
 
                     <Row>
                         <Col lg={7} sm={12} className="mt-3">
                             <Row as={PlantTypesContainer}>
-                                {plantTypes.map((plantType, id) => (
-                                    <Col xl={4} lg={6} key={id}>
+                                {speciesList!.map(species => (
+                                    <Col xl={4} lg={6} key={species.id}>
                                         < Form.Check
                                             inline
-                                            label={plantType.name}
+                                            label={species.name}
                                             name="plantTypes"
                                             type="checkbox"
-                                            id={`plantTypeCheckbox_${id}`}
+                                            id={`plantTypeCheckbox_${species.id}`}
                                         />
                                     </Col>
                                 ))}
@@ -128,14 +104,22 @@ const PlantsView: React.FC<{}> = () => {
 
 
             <Row as={ListContainer}>
-                {plantSummaryList.map(plant => (
-                    <Col key={plant.id} xxl={3} xl={4} md={6} sm={12} style={{ marginBottom: 80 }} className="d-flex justify-content-center">
-                        <PlantSummaryCard plantSummary={plant} toggleFavourite={toggleFavourite} />
+                {plantSummaryList!.map(plant => (
+                    <Col
+                        key={plant.id}
+                        xxl={3} xl={4} md={6} sm={12}
+                        style={{ marginBottom: 80 }}
+                        className="d-flex justify-content-center"
+                    >
+                        <PlantSummaryCard plantSummary={plant} toggleFavourite={toggleFavourite.mutate} />
                     </Col>
                 ))}
             </Row>
 
-            <PlantForm show={show} updateState={updateShowState} />
+            <AddPlantForm
+                show={isAddPlantFormVisible}
+                setShowPlantForm={setAddPlantFormVisible}
+            />
         </ContentContainer>
     )
 }

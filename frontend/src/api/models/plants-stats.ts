@@ -17,34 +17,26 @@
 /**
  * 
  * @export
- * @interface Activity
+ * @interface PlantsStats
  */
-export interface Activity {
+export interface PlantsStats {
     /**
      * 
      * @type {number}
-     * @memberof Activity
+     * @memberof PlantsStats
      */
-    'id': number;
+    'totalPlants': number;
     /**
      * 
-     * @type {string}
-     * @memberof Activity
+     * @type {number}
+     * @memberof PlantsStats
      */
-    'activityType': ActivityActivityTypeEnum;
+    'neglectedPlants': number;
     /**
      * 
-     * @type {string}
-     * @memberof Activity
+     * @type {number}
+     * @memberof PlantsStats
      */
-    'date': string;
+    'wellGroomedPlants': number;
 }
-
-export const ActivityActivityTypeEnum = {
-    Watering: 'WATERING',
-    Fertilisation: 'FERTILISATION'
-} as const;
-
-export type ActivityActivityTypeEnum = typeof ActivityActivityTypeEnum[keyof typeof ActivityActivityTypeEnum];
-
 

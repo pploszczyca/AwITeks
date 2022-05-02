@@ -1,4 +1,5 @@
 import './App.css';
+import 'react-toastify/dist/ReactToastify.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import Dashboard from "../Dashboard/Dashboard";
 import NotFound from "../NotFound/NotFound";
@@ -9,6 +10,9 @@ import SiteTitleAndIcons from "../SiteTitleAndIcons/SiteTitleAndIcons";
 import Calendar from "../Calendar/Calendar";
 import PlantDetailsView from '../PlantDetailsView/PlantDetailsView';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { ToastContainer } from 'react-toastify';
+import LoginAndRegistrationPage from "../LoginAndRegistrationPage/LoginAndRegistrationPage";
+
 
 const queryClient = new QueryClient();
 
@@ -22,19 +26,32 @@ function App() {
                         <Col xs={2}>
                             <Sidebar />
                         </Col>
-                        <Col xs={10}>
+                        <Col xs={10} style={{ height: "80vh", width: "100vw" }}>
                             <Routes>
-                                {/*todo: add next Route elements e.g forum and settings*/}
+                                <Route path="/login-and-registration" element={ <LoginAndRegistrationPage/> }/>
                                 <Route path="/" element={<Dashboard />} />
-                                <Route path="/my_plants" element={<PlantsView />} />
+                                <Route path="/my-plants" element={<PlantsView />} />
                                 <Route path="/calendar" element={<Calendar />} />
-                                <Route path="/my_plants/:plantId" element={<PlantDetailsView />} />
+                                <Route path="/my-plants/:plantId" element={<PlantDetailsView />} />
                                 <Route path="*" element={<NotFound />} />
                             </Routes>
+
                         </Col>
                     </Router>
                 </Row>
             </Container>
+
+            <ToastContainer
+                position="bottom-right"
+                autoClose={2000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+            />
         </QueryClientProvider>
     );
 }

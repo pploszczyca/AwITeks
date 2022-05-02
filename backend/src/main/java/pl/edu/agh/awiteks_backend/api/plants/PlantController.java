@@ -48,9 +48,10 @@ public class PlantController {
 
 
     @Operation(summary = "Update plant")
-    @PutMapping(consumes = "application/json")
-    public void updatePlant(@RequestBody Plant plant) {
-        plantService.update(plant);
+    @PutMapping(path = "/{plantId}", consumes = "application/json")
+    public Plant updatePlant(@RequestBody AddPlantRequestBody plantRequestBody, @PathVariable int plantId) {
+        // TODO userId from JWT
+        return plantService.updatePlant(plantRequestBody, plantId, 0);
     }
 
     @Operation(summary = "Delete plant by id")

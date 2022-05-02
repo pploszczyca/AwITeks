@@ -1,4 +1,4 @@
-import { CalendarNotification, NotificationItem } from "../../utils/CalendarNotification";
+import { CalendarNotification, NotificationItem, NotificationSeverity } from "../../utils/CalendarNotification";
 
 export const DAYS = Array.from(Array(7).keys());
 export const WEEKS = Array.from(Array(6).keys());
@@ -51,4 +51,17 @@ export function getTileNotifications(tileDate: Date, notifications: CalendarNoti
             day === tileDate.getDate() && month === tileDate.getMonth() && year === tileDate.getFullYear());
 
     return tileNotifications == null ? [] : tileNotifications!.items;
+}
+
+export function calculateSeverity(date: Date) {
+    const currentDate = new Date()
+    const differenceInDays = (date.getTime() - currentDate.getTime()) / (1000 * 3600 * 24);
+
+    if (differenceInDays >= 3) {
+        return NotificationSeverity.LOW
+    } else if (differenceInDays <= 3 && differenceInDays >= 0) {
+        return NotificationSeverity.MEDIUM
+    } else {
+        return NotificationSeverity.HIGH
+    }
 }
