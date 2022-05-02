@@ -8,7 +8,7 @@ const LoginAndRegistrationPage: React.FC<{}> = () => {
     return (
         <Content>
             <Row>
-                <Col lg={5} className='text-center d-flex justify-content-center flex-column'>
+                <Col lg={5} id='welcome-text' className='text-center d-flex justify-content-center flex-column'>
                     <h1>Witaj w najlepszej aplikacji do monitorowania stanu roślin.</h1>
                     <h4>Dołącz do nas i powierz nam swoje rośliny.</h4>
                 </Col>

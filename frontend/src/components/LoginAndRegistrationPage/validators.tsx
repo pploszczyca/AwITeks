@@ -18,7 +18,7 @@ export const validateConfirmPassword = (pass: any, value: any) => {
         error = "Wymagane";
     } else if (pass && value) {
         if (pass !== value) {
-            error = "Brak zgodności, hasło niepoprawne z podanym wyżej.";
+            error = "Hasła się różnią.";
         }
     }
     return error;

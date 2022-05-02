@@ -7,10 +7,9 @@ import {FormContainer} from "../styles/FormStyle";
 const RegistrationPage: React.FC<{}> = () => {
     return (
         <Formik
-            initialValues={{name: '', username: '', email: '', password: '', repeatPassword: ''}}
+            initialValues={{username: '', email: '', password: '', repeatPassword: ''}}
             validate={values => {
                 const errors: any = {};
-                if (!values.name) errors.name = 'Wymagane';
                 if (!values.username) errors.username = 'Wymagane';
                 errors.email = validateEmail(values.email);
                 errors.password = validatePassword(values.password);
@@ -25,15 +24,6 @@ const RegistrationPage: React.FC<{}> = () => {
             {({ isSubmitting }) => (
                 <Form>
                     <FormContainer className="mt-2 p-5">
-                        <Row className='justify-content-center'>
-                            <Col className="form-group mt-3" lg={6} sm={12}>
-                                <label>Imię</label><br />
-                                <Field className="form-control" type="text" name="name" id='name'/>
-                                <ErrorMessage name="name" component="div">
-                                    {msg => <div style={{ color: 'red' }}>{msg}</div>}
-                                </ErrorMessage>
-                            </Col>
-                        </Row>
                         <Row className='justify-content-center'>
                             <Col className="form-group mt-3" lg={6} sm={12}>
                                 <label>Nazwa użytkownika</label><br />
