@@ -6,19 +6,25 @@ import pl.edu.agh.awiteks_backend.api.species.AddSpeciesRequestBody;
 import pl.edu.agh.awiteks_backend.models.Species;
 import pl.edu.agh.awiteks_backend.repositories.PlantRepository;
 import pl.edu.agh.awiteks_backend.repositories.SpeciesRepository;
+import pl.edu.agh.awiteks_backend.utilities.ListUtilities;
+import pl.edu.agh.awiteks_backend.utilities.StreamUtilities;
 
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.stream.StreamSupport;
 
 @Service
 public class SpeciesService extends ModelService<Species> {
     private final PlantRepository plantRepository;
+    private final StreamUtilities streamUtilities;
 
     @Autowired
-    public SpeciesService(SpeciesRepository speciesRepository, PlantRepository plantRepository) {
-        super(speciesRepository);
+    public SpeciesService(SpeciesRepository speciesRepository,
+                          PlantRepository plantRepository,
+                          ListUtilities listUtilities,
+                          StreamUtilities streamUtilities) {
+        super(speciesRepository, listUtilities);
         this.plantRepository = plantRepository;
+        this.streamUtilities = streamUtilities;
     }
 
     @Override
@@ -51,14 +57,14 @@ public class SpeciesService extends ModelService<Species> {
     }
 
     private boolean checkIfPlantExist(int speciesID) {
-        return StreamSupport
-                .stream(plantRepository.findAll().spliterator(), false)
+        return streamUtilities
+                .asStream(plantRepository.findAll())
                 .anyMatch(plant -> plant.getSpiece().getId() == speciesID);
     }
 
     private void updateSpeciesInPlant(Species species) {
-        StreamSupport
-                .stream(plantRepository.findAll().spliterator(), false)
+        streamUtilities
+                .asStream(plantRepository.findAll())
                 .filter(plant -> Objects.equals(plant.getSpiece().getId(), species.getId()))
                 .forEach(plant -> {
                     plant.setSpiece(species);

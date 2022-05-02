@@ -6,20 +6,25 @@ import pl.edu.agh.awiteks_backend.models.User;
 import pl.edu.agh.awiteks_backend.repositories.PlantRepository;
 import pl.edu.agh.awiteks_backend.repositories.SpeciesRepository;
 import pl.edu.agh.awiteks_backend.repositories.UserRepository;
-
-import java.util.stream.StreamSupport;
+import pl.edu.agh.awiteks_backend.utilities.ListUtilities;
+import pl.edu.agh.awiteks_backend.utilities.StreamUtilities;
 
 @Service
 public class UserService extends ModelService<User> {
 
     private final SpeciesRepository speciesRepository;
     private final PlantRepository plantRepository;
+    private final StreamUtilities streamUtilities;
 
     @Autowired
-    public UserService(UserRepository modelRepository, SpeciesRepository speciesRepository, PlantRepository plantRepository) {
-        super(modelRepository);
+    public UserService(UserRepository modelRepository,
+                       SpeciesRepository speciesRepository,
+                       PlantRepository plantRepository,
+                       ListUtilities listUtilities, StreamUtilities streamUtilities) {
+        super(modelRepository, listUtilities);
         this.speciesRepository = speciesRepository;
         this.plantRepository = plantRepository;
+        this.streamUtilities = streamUtilities;
     }
 
     @Override
@@ -35,8 +40,8 @@ public class UserService extends ModelService<User> {
     }
 
     private void removeAllUserSpecies(int id) {
-        StreamSupport.stream(speciesRepository
-                        .findAll().spliterator(), false)
+        streamUtilities
+                .asStream(speciesRepository.findAll())
                 .filter(species -> species.getCreatorId() == id)
                 .forEach(speciesRepository::delete);
     }

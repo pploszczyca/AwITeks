@@ -1,21 +1,22 @@
 package pl.edu.agh.awiteks_backend.services;
 
 import org.springframework.data.repository.CrudRepository;
+import pl.edu.agh.awiteks_backend.utilities.ListUtilities;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 public abstract class ModelService<T> {
     private final CrudRepository<T, Integer> modelRepository;
+    private final ListUtilities listUtilities;
 
-    public ModelService(CrudRepository<T, Integer> modelRepository) {
+    public ModelService(CrudRepository<T, Integer> modelRepository, ListUtilities listUtilities) {
         this.modelRepository = modelRepository;
+        this.listUtilities = listUtilities;
     }
 
     public List<T> getAll() {
-        return iterableToList(modelRepository.findAll());
+        return listUtilities.iterableToList(modelRepository.findAll());
     }
 
     public Optional<T> get(int id) {
@@ -32,11 +33,5 @@ public abstract class ModelService<T> {
 
     public void remove(int id) {
         modelRepository.deleteById(id);
-    }
-
-    public static <T> List<T> iterableToList(final Iterable<T> iterable) {
-        return StreamSupport
-                .stream(iterable.spliterator(), false)
-                .collect(Collectors.toList());
     }
 }

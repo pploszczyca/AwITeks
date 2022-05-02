@@ -11,6 +11,7 @@ import pl.edu.agh.awiteks_backend.models.User;
 import pl.edu.agh.awiteks_backend.repositories.PlantRepository;
 import pl.edu.agh.awiteks_backend.repositories.SpeciesRepository;
 import pl.edu.agh.awiteks_backend.repositories.UserRepository;
+import pl.edu.agh.awiteks_backend.utilities.ListUtilities;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -26,9 +27,10 @@ public class PlantService extends ModelService<Plant> {
     @Autowired
     public PlantService(PlantRepository modelRepository,
                         UserRepository userRepository,
-                        SpeciesRepository speciesRepository
+                        SpeciesRepository speciesRepository,
+                        ListUtilities listUtilities
     ) {
-        super(modelRepository);
+        super(modelRepository, listUtilities);
         this.userRepository = userRepository;
         this.speciesRepository = speciesRepository;
     }
@@ -63,7 +65,6 @@ public class PlantService extends ModelService<Plant> {
     public void changeFavourite(int plantId) {
         this.get(plantId).ifPresent(
                 plant -> {
-                    System.out.println(plant.isFavourite());
                     plant.setFavourite(!plant.isFavourite());
                     update(plant);
                 }
