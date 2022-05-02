@@ -28,8 +28,8 @@ function App() {
                         </Col>
                         <Col xs={10} style={{ height: "80vh", width: "100vw" }}>
                             <Routes>
-                                <Route path="/login-and-registration" element={ <LoginAndRegistrationPage/> }/>
-                                <Route path="/" element={<Dashboard />} />
+                                <Route path="/home" element={ <LoginAndRegistrationPage/> }/>
+                                <Route path="/dashboard" element={<Dashboard />} />
                                 <Route path="/my-plants" element={<PlantsView />} />
                                 <Route path="/calendar" element={<Calendar />} />
                                 <Route path="/my-plants/:plantId" element={<PlantDetailsView />} />

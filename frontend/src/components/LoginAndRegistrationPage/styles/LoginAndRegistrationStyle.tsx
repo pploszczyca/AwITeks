@@ -31,7 +31,8 @@ export const Content = styled.div`
   & h1{
     font-size: 48px;
   }
-
+   
+  
   @media(max-width: 992px){
     margin-top: 100px;
     & h1{
