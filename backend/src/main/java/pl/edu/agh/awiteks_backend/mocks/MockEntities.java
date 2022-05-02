@@ -1,7 +1,7 @@
-package pl.edu.agh.awiteks_backend;
+package pl.edu.agh.awiteks_backend.mocks;
 
-@org.springframework.context.annotation.Configuration
-public class MockConfiguration {
+public class MockEntities {
+// TODO: Add mock entities automatically after running database
 
 //    @Bean
 //    public String getUrl() {

@@ -14,6 +14,7 @@
 ## Porty
 * Backend - 5000 - http://localhost:5000
 * Frontend - 3000 - http://localhost:3000
+* Baza danych - 3306
 
 ## Branche
 * development - gałąź na której aktualnie pracujemy
@@ -32,6 +33,13 @@ git clone git@github.com:pploszczyca/AwITeks.git
 ### Uruchomienie backendu
 Należy zaimportować projekt za pomocą IntelIJ-a. W tym celu wykonujemy opcję `Open` i wybieramy folder `backend`. IDE powinno samo zaimportować potrzebne zależności.
 W razie problemu należy w settings -> gradle zmienić wersję javy (nie wystarczy zmienić w project structure).
+
+### Uruchomienie bazy danych
+Na ten moment zalecane jest uruchomienie bazy MySQL lokalnie na swoim komputerze za pomocą Dockera
+```
+$ docker run -p 3306:3306 -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:latest
+```
+
 ### Uruchomienie frontendu
 Wchodzimy do folderu `frontend` i instalujemy potrzebne pakiety:
 ```bash
