@@ -3,18 +3,26 @@ package pl.edu.agh.awiteks_backend.models;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+@Entity
+@Table(name = "forum_thread")
 @JsonIgnoreProperties({"user"})
 public class ForumThread {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Schema(required = true)
     private Integer id;
     @Schema(required = true)
     private String title;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
     @Schema(required = true)
     private User creator;
+    @OneToMany(mappedBy = "thread", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @Schema(required = true)
     private List<ForumPost> forumPosts;
 

@@ -17,14 +17,26 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @Schema(required = true)
     private List<Plant> userPlants;
+    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @Schema(required = true)
+    private List<ForumPost> forumPostList;
+    @OneToMany(mappedBy = "creator", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @Schema(required = true)
+    private List<ForumThread> forumThreadList;
 
-    public User(String name, @Lazy List<Plant> userPlants) {
+    public User(
+            String name,
+            @Lazy List<Plant> userPlants,
+            @Lazy List<ForumPost> forumPostList,
+            @Lazy List<ForumThread> forumThreadList) {
         this.name = name;
         this.userPlants = userPlants;
+        this.forumPostList = forumPostList;
+        this.forumThreadList = forumThreadList;
     }
 
     public User(String name) {
-        this(name, new ArrayList<>());
+        this(name, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
     }
 
     public User() {
@@ -62,5 +74,21 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<ForumPost> getForumPostList() {
+        return forumPostList;
+    }
+
+    public void setForumPostList(List<ForumPost> forumPostList) {
+        this.forumPostList = forumPostList;
+    }
+
+    public List<ForumThread> getForumThreadList() {
+        return forumThreadList;
+    }
+
+    public void setForumThreadList(List<ForumThread> forumThreadList) {
+        this.forumThreadList = forumThreadList;
     }
 }
