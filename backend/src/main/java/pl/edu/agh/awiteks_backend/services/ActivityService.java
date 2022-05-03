@@ -27,7 +27,6 @@ public class ActivityService extends ModelService<Activity> {
                     presentPlant.addActivity(activity);
                     activity.setPlant(presentPlant);
                     plantRepository.save(presentPlant);
-                    this.add(activity);
                 });
     }
 
