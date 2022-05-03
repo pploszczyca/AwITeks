@@ -5,10 +5,14 @@ import org.springframework.context.annotation.Lazy;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class User extends AbstractModel<User> {
     @Schema(required = true)
     private List<Plant> userPlants;
+
+    @Schema(required = false)
+    private List<ForumThread> followedThreads;
 
     public User(int id, String name,   @Lazy List<Plant> userPlants) {
         super(id, name);
@@ -39,6 +43,17 @@ public class User extends AbstractModel<User> {
         return name;
     }
 
+    public List<ForumThread> getFollowedThreads() {
+        return followedThreads;
+    }
+
+    public void setFollowedThreads(List<ForumThread> followedThreads) {
+        this.followedThreads = followedThreads;
+    }
+
+    public void addFollowedThread(ForumThread thread){
+        this.followedThreads.add(thread);
+    }
 
     @Override
     public User copy() {
@@ -55,5 +70,9 @@ public class User extends AbstractModel<User> {
 
     public void setUserPlants(List<Plant> userPlants) {
         this.userPlants = userPlants;
+    }
+
+    public boolean isFollowing(ForumThread thread) {
+        return followedThreads.contains(thread);
     }
 }

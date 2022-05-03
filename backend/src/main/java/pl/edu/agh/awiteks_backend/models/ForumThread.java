@@ -3,12 +3,12 @@ package pl.edu.agh.awiteks_backend.models;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 @JsonIgnoreProperties({"user"})
-public class ForumThread {
+public class ForumThread extends AbstractModel<ForumThread>{
     @Schema(required = true)
     private Integer id;
     @Schema(required = true)
@@ -17,6 +17,9 @@ public class ForumThread {
     private User creator;
     @Schema(required = true)
     private List<ForumPost> forumPosts;
+
+    @Schema(required = false)
+    private final LocalDateTime creationTime = LocalDateTime.now();
 
     public ForumThread(Integer id, String name, User user) {
         this.id = id;
@@ -34,8 +37,13 @@ public class ForumThread {
     public ForumThread() {
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
+    }
+
+    @Override
+    public ForumThread copy() {
+        return null;
     }
 
     public void setId(Integer id) {
@@ -68,5 +76,13 @@ public class ForumThread {
 
     public void addForumPost(ForumPost post) {
         this.forumPosts.add(post);
+    }
+
+    public LocalDateTime getCreationTime() {
+        return creationTime;
+    }
+
+    public Integer getPostsCount(){
+        return forumPosts.size();
     }
 }
