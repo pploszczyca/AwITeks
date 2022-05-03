@@ -4,6 +4,8 @@
 * Java 17
 * [Spring Boot 2.6.5](https://spring.io/projects/spring-boot)
 * [springdoc-openapi](https://springdoc.org/#Introduction)
+* MySQL
+  * [MySQL - docker image](https://hub.docker.com/_/mysql)
 
 ### Frontend
 * [React](https://pl.reactjs.org/)
@@ -31,10 +33,20 @@ git clone git@github.com:pploszczyca/AwITeks.git
 ```
 
 ### Uruchomienie backendu
+#### Uruchomienie za pomocą dockera-compose
+W folderze `backend` został dodany plik `docker-compose.yml` pozwalający uruchomić backend wraz z lokalną bazą danych. Żeby to zrobić, to po wejściu do wcześniej wspomnianego folderu, wpisujemy następującą komendę w terminalu:
+```
+$ docker-compose up
+```
+Jeżeli chcemy wymusić ponowne zbudowanie projektu, wpisujemy:
+```
+$ docker-compose up --build
+```
+#### Uruchomienie za pomocą IntelliJ
 Należy zaimportować projekt za pomocą IntelIJ-a. W tym celu wykonujemy opcję `Open` i wybieramy folder `backend`. IDE powinno samo zaimportować potrzebne zależności.
 W razie problemu należy w settings -> gradle zmienić wersję javy (nie wystarczy zmienić w project structure).
 
-### Uruchomienie bazy danych
+#### Samodzielne uruchomienie bazy danych
 Na ten moment zalecane jest uruchomienie bazy MySQL lokalnie na swoim komputerze za pomocą Dockera
 ```
 $ docker run -p 3306:3306 -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:latest
