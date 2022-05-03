@@ -5,7 +5,7 @@ import { FixedContainer, PageTitle } from "./SiteTitleAndIconsStyle";
 import { useLocation } from "react-router-dom";
 
 const titlesMap: Map<string, string> = new Map<string, string>([
-    ["/", "Witaj, XYZ"],
+    ["/dashboard", "Witaj, XYZ"],
     ["/my-plants", "Lista roślin"],
     ["/calendar", "Kalendarz"],
     ["/forum", "Forum"],
@@ -30,9 +30,9 @@ function SiteTitleAndIcons() {
     }, [location]);
 
     return (
-        <FixedContainer className="mt-5">
+        <FixedContainer className="mt-5 d-flex" style={{display: window.location.pathname === '/home' ? 'none': 'flex'}}>
             <PageTitle>{title}</PageTitle>
-            <div className="icons d-flex gap-4">
+            <div className="icons gap-4" style={{display: window.location.pathname === '/home' ? 'none': 'flex'}}>
                 <FontAwesomeIcon icon={faBell} fontSize={32} className="icon" />
                 <FontAwesomeIcon icon={faUser} fontSize={32} className="icon" />
             </div>

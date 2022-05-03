@@ -11,6 +11,7 @@ import Calendar from "../Calendar/Calendar";
 import PlantDetailsView from '../PlantDetailsView/PlantDetailsView';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ToastContainer } from 'react-toastify';
+import LoginAndRegistrationPage from "../LoginAndRegistrationPage/LoginAndRegistrationPage";
 
 
 const queryClient = new QueryClient();
@@ -25,9 +26,10 @@ function App() {
                         <Col xs={2}>
                             <Sidebar />
                         </Col>
-                        <Col xs={10} style={{ height: "80vh" }}>
+                        <Col xs={10} style={{ height: "80vh", width: "100vw" }}>
                             <Routes>
-                                <Route path="/" element={<Dashboard />} />
+                                <Route path="/home" element={ <LoginAndRegistrationPage/> }/>
+                                <Route path="/dashboard" element={<Dashboard />} />
                                 <Route path="/my-plants" element={<PlantsView />} />
                                 <Route path="/calendar" element={<Calendar />} />
                                 <Route path="/my-plants/:plantId" element={<PlantDetailsView />} />
