@@ -51,12 +51,15 @@ public class ForumService extends ModelService<ForumThread> {
         final boolean favThreadsOnly = favOnly.equals("true");
         final boolean ownThreadsOnly = ownOnly.equals("true");
         var requester = userRepository.get(userId);
-        return this.getAll().stream().filter(thread -> favThreadsOnly && requester.isPresent() && requester.get().isFollowing(thread)).
-                filter(thread -> ownThreadsOnly && thread.getCreator().getId() == userId).map(ForumMapper::mapForumThreadToForumThreadSummary).collect(Collectors.toList());
+        return this.getAll()
+                .stream()
+                .filter(thread -> favThreadsOnly && requester.isPresent() && requester.get().isFollowing(thread))
+                .filter(thread -> ownThreadsOnly && thread.getCreator().getId() == userId)
+                .map(ForumMapper::mapForumThreadToForumThreadSummary).collect(Collectors.toList());
     }
 
     public List<ForumThreadSummary> getThreadsWithMatchingName(String searchKey) {
-        return this.getAll().stream().filter(thread -> thread.getTitle().contains(searchKey)).map(ForumMapper::mapForumThreadToForumThreadSummary).collect(Collectors.toList());
+        return this.getAll().stream().filter(thread -> thread.getName().contains(searchKey)).map(ForumMapper::mapForumThreadToForumThreadSummary).collect(Collectors.toList());
     }
 
     public ForumPost addPostToThread(Integer threadId, AddPostRequestBody postRequestBody, Integer authorId) {

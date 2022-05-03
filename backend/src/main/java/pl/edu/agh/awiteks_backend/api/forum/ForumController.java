@@ -26,7 +26,7 @@ public class ForumController {
                                                   @RequestParam(name = "ownOnly", defaultValue = "false") String ownOnly) {
         // TODO creatorID from JWT
         final int userId = 0;
-        return forumService.getAllThreads(favOnly, ownOnly, userId);
+        return forumService.getAllThreads();
     }
 
     @Operation(summary = "Get thread by id")

@@ -7,12 +7,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@JsonIgnoreProperties({"user"})
+@JsonIgnoreProperties({"creator"})
 public class ForumThread extends AbstractModel<ForumThread>{
-    @Schema(required = true)
-    private Integer id;
-    @Schema(required = true)
-    private String title;
     @Schema(required = true)
     private User creator;
     @Schema(required = true)
@@ -22,14 +18,13 @@ public class ForumThread extends AbstractModel<ForumThread>{
     private final LocalDateTime creationTime = LocalDateTime.now();
 
     public ForumThread(Integer id, String name, User user) {
-        this.id = id;
+        super(id, name);
         this.creator = user;
         this.forumPosts = new ArrayList<>();
     }
 
     public ForumThread(Integer id, String title, User user, List<ForumPost> forumPosts) {
-        this.id = id;
-        this.title = title;
+        super(id, title);
         this.creator = user;
         this.forumPosts = forumPosts;
     }
@@ -48,14 +43,6 @@ public class ForumThread extends AbstractModel<ForumThread>{
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public User getCreator() {
