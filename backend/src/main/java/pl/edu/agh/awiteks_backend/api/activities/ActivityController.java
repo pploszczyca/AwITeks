@@ -21,12 +21,14 @@ public class ActivityController {
     @Operation(summary = "Add new activity to plant")
     @PostMapping("/{plantID}")
     public void addActivity(@RequestBody Activity activity, @PathVariable int plantID) {
+        // TODO validate ownership
         activityService.add(activity, plantID);
     }
 
     @Operation(summary = "Delete activity")
     @DeleteMapping("/{plantId}/{activityId}")
     public void removeActivity(@PathVariable int plantId, @PathVariable int activityId) {
+        // TODO validate ownership
         activityService.remove(plantId, activityId);
     }
 
