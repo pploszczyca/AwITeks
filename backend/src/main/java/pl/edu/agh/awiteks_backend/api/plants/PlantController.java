@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.agh.awiteks_backend.models.Plant;
+import pl.edu.agh.awiteks_backend.security.jwt.JwtAccessToken;
 import pl.edu.agh.awiteks_backend.services.PlantService;
 
 import java.util.List;
@@ -51,7 +52,7 @@ public class PlantController {
     @PutMapping(path = "/{plantId}", consumes = "application/json")
     public Plant updatePlant(@RequestBody AddPlantRequestBody plantRequestBody, @PathVariable int plantId) {
         // TODO userId from JWT
-        return plantService.updatePlant(plantRequestBody, plantId, 0);
+        return plantService.updatePlant(plantRequestBody, plantId, 1);
     }
 
     @Operation(summary = "Delete plant by id")
@@ -72,16 +73,16 @@ public class PlantController {
     }
 
     @Operation(summary = "Get all plants summary")
-    @GetMapping(value = "/user/summary")
-    public List<PlantSummary> getAllPlantsSummary() {
+    @GetMapping(value="/user/summary")
+    public List<PlantSummary> getAllPlantsSummary(JwtAccessToken accessToken){
         // TODO user ID from JWT
-        return plantService.getPlantSummaries(0);
+        return plantService.getPlantSummaries(accessToken.getUserId());
     }
 
     @Operation(summary = "Get plant stats")
     @GetMapping(value = "/user/stats")
     public PlantsStats getPlantsStats() {
         // TODO user ID from JWT
-        return plantService.getPlantsStats(0);
+        return plantService.getPlantsStats(1);
     }
 }

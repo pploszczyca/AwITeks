@@ -36,7 +36,7 @@ public class SpeciesController {
     @ResponseBody
     public Species addSpecies(@RequestBody AddSpeciesRequestBody species) {
         // TODO get creatorID from JWT
-        return speciesService.addSpecies(species, 0);
+        return speciesService.addSpecies(species, 1);
     }
 
     @Operation(summary = "Update specie")

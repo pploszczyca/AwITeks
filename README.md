@@ -22,6 +22,8 @@
 * development - gałąź na której aktualnie pracujemy
 * main - stabilna wersja
 
+---
+
 ## Uruchomienie projektu
 Należy ściągnąć repozytorium za pomocą jednej z poniższych komend:
 ```bash
@@ -31,6 +33,8 @@ lub
 ```bash
 git clone git@github.com:pploszczyca/AwITeks.git
 ```
+
+---
 
 ### Uruchomienie backendu
 #### Uruchomienie za pomocą dockera-compose
@@ -52,6 +56,13 @@ Na ten moment zalecane jest uruchomienie bazy MySQL lokalnie na swoim komputerze
 $ docker run -p 3306:3306 -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:latest
 ```
 
+### Testowanie endpointów poza frontem
+- wysyłamy requesta na `/auth/login` z danymi istniejącego użytkownika
+- zapisujemy zwrócony `accessToken`
+- do kolejnych zapytań dodajemy nagłówek: `Authorization: Bearer <accessToken>`
+
+--- 
+
 ### Uruchomienie frontendu
 Wchodzimy do folderu `frontend` i instalujemy potrzebne pakiety:
 ```bash
@@ -67,6 +78,8 @@ npm start
 ```
 npm test
 ```
+
+---
 
 ## Dokumetacja API
 Do projektu backendowego został podpięty [springdoc](https://springdoc.org/#Introduction). Po uruchomieniu backendu dokumentacja znajduje się pod linkiem: http://localhost:5000/swagger-ui/index.html.
