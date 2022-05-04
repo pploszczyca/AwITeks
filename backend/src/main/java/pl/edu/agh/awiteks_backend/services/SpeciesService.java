@@ -3,18 +3,28 @@ package pl.edu.agh.awiteks_backend.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.edu.agh.awiteks_backend.api.species.AddSpeciesRequestBody;
-import pl.edu.agh.awiteks_backend.models.Plant;
 import pl.edu.agh.awiteks_backend.models.Species;
-import pl.edu.agh.awiteks_backend.repositories.Repository;
+import pl.edu.agh.awiteks_backend.repositories.PlantRepository;
+import pl.edu.agh.awiteks_backend.repositories.SpeciesRepository;
+import pl.edu.agh.awiteks_backend.utilities.ListUtilities;
+import pl.edu.agh.awiteks_backend.utilities.StreamUtilities;
+
+import java.util.ArrayList;
+import java.util.Objects;
 
 @Service
 public class SpeciesService extends ModelService<Species> {
-    private final Repository<Plant> plantRepository;
+    private final PlantRepository plantRepository;
+    private final StreamUtilities streamUtilities;
 
     @Autowired
-    public SpeciesService(Repository<Species> speciesRepository, Repository<Plant> plantRepository) {
-        super(speciesRepository);
+    public SpeciesService(SpeciesRepository speciesRepository,
+                          PlantRepository plantRepository,
+                          ListUtilities listUtilities,
+                          StreamUtilities streamUtilities) {
+        super(speciesRepository, listUtilities);
         this.plantRepository = plantRepository;
+        this.streamUtilities = streamUtilities;
     }
 
     @Override
@@ -32,7 +42,6 @@ public class SpeciesService extends ModelService<Species> {
 
     public Species addSpecies(AddSpeciesRequestBody addSpeciesRequestBody, int creatorId) {
         var species = new Species(
-                (int)(Math.random() * 99999 + 1790), // xD
                 addSpeciesRequestBody.name(),
                 addSpeciesRequestBody.maxAge(),
                 addSpeciesRequestBody.neededInsolation(),
@@ -40,27 +49,26 @@ public class SpeciesService extends ModelService<Species> {
                 addSpeciesRequestBody.waterRoutine(),
                 addSpeciesRequestBody.fertilizationRoutine(),
                 addSpeciesRequestBody.fertilizationDose(),
-                creatorId);
+                creatorId,
+                new ArrayList<>());
 
         add(species);
         return species;
     }
 
     private boolean checkIfPlantExist(int speciesID) {
-        return plantRepository
-                .getAll()
-                .stream()
+        return streamUtilities
+                .asStream(plantRepository.findAll())
                 .anyMatch(plant -> plant.getSpiece().getId() == speciesID);
     }
 
     private void updateSpeciesInPlant(Species species) {
-        plantRepository
-                .getAll()
-                .stream()
-                .filter(plant -> plant.getSpiece().getId() == species.getId())
+        streamUtilities
+                .asStream(plantRepository.findAll())
+                .filter(plant -> Objects.equals(plant.getSpiece().getId(), species.getId()))
                 .forEach(plant -> {
                     plant.setSpiece(species);
-                    plantRepository.update(plant);
+                    plantRepository.save(plant);
                 });
     }
 }

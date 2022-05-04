@@ -3,20 +3,31 @@ package pl.edu.agh.awiteks_backend.models;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name = "plants")
 @JsonIgnoreProperties({"user"})
-public class Plant extends AbstractModel<Plant> {
+public class Plant {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    private String name;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
     @Schema(required = true)
     private User user;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "species_id", nullable = false)
     @Schema(required = true)
     private Species spiece;
     private String note;
     @Schema(required = true)
     private Insolation actualInsolation;
+    @OneToMany(mappedBy = "plant", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @Schema(required = true)
     private List<Activity> plantActivities = new ArrayList<>();
     @Schema(required = true)
@@ -26,8 +37,8 @@ public class Plant extends AbstractModel<Plant> {
     @Schema(required = true)
     private String url;
 
-    public Plant(int id, String name, User user, Species spiece, String note, Insolation actualInsolation, List<Activity> plantActivities, boolean isFavourite, String url) {
-        super(id, name);
+    public Plant(String name, User user, Species spiece, String note, Insolation actualInsolation, List<Activity> plantActivities, boolean isFavourite, String url) {
+        this.name = name;
         this.user = user;
         this.spiece = spiece;
         this.note = note;
@@ -37,41 +48,11 @@ public class Plant extends AbstractModel<Plant> {
         this.url = url;
     }
 
-    public Plant(int id, String name, User user, Species spiece, String note, Insolation actualInsolation, boolean isFavourite, String url) {
-        this(id, name, user, spiece, note, actualInsolation, new ArrayList<>(), isFavourite, url);
-    }
-
-    public Plant(int id, String name, User user, Species spiece, String note, Insolation actualInsolation, String url) {
-        this(id, name, user, spiece, note, actualInsolation, new ArrayList<>(), false, url);
-    }
-
-
-    public Plant(int id, String name, User user, Species spiece, String note, Insolation actualInsolation, List<Activity> plantActivities, String url) {
-        super(id, name);
-        this.user = user;
-        this.spiece = spiece;
-        this.note = note;
-        this.actualInsolation = actualInsolation;
-        this.plantActivities = plantActivities;
-        this.url = url;
+    public Plant(String name, User user, Species spiece, String note, Insolation actualInsolation, boolean isFavourite, String url) {
+        this(name, user, spiece, note, actualInsolation, new ArrayList<>(), isFavourite, url);
     }
 
     public Plant() {
-    }
-
-    @Override
-    public Plant copy() {
-        return new Plant(
-                this.id,
-                this.name,
-                this.user,
-                this.spiece.copy(),
-                this.note,
-                this.actualInsolation,
-                this.plantActivities.stream().map(Activity::copy).toList(),
-                this.isFavourite,
-                this.url
-        );
     }
 
     public String getNote() {
@@ -134,6 +115,7 @@ public class Plant extends AbstractModel<Plant> {
     public void setUrl(String url) {
         this.url = url;
     }
+
     public void removeActivity(Activity activity) {
         plantActivities.remove(activity);
     }
@@ -146,4 +128,19 @@ public class Plant extends AbstractModel<Plant> {
                 .ifPresent(this::removeActivity);
     }
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

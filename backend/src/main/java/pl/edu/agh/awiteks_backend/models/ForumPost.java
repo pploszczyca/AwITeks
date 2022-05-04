@@ -3,14 +3,24 @@ package pl.edu.agh.awiteks_backend.models;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "forum_post")
 @JsonIgnoreProperties({"user", "thread"})
 public class ForumPost {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Schema(required = true)
     private Integer id;
     @Schema(required = true)
     private String content;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
     @Schema(required = true)
     private User author;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "forum_thread_id", nullable = false)
     @Schema(required = true)
     private ForumThread thread;
     @Schema(required = true)

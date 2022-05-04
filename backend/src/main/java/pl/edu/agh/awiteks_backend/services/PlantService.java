@@ -7,9 +7,11 @@ import pl.edu.agh.awiteks_backend.api.plants.PlantSummary;
 import pl.edu.agh.awiteks_backend.api.plants.PlantsStats;
 import pl.edu.agh.awiteks_backend.mappers.PlantMapper;
 import pl.edu.agh.awiteks_backend.models.Plant;
-import pl.edu.agh.awiteks_backend.models.Species;
 import pl.edu.agh.awiteks_backend.models.User;
-import pl.edu.agh.awiteks_backend.repositories.Repository;
+import pl.edu.agh.awiteks_backend.repositories.PlantRepository;
+import pl.edu.agh.awiteks_backend.repositories.SpeciesRepository;
+import pl.edu.agh.awiteks_backend.repositories.UserRepository;
+import pl.edu.agh.awiteks_backend.utilities.ListUtilities;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -18,27 +20,27 @@ import java.util.stream.Collectors;
 @Service
 public class PlantService extends ModelService<Plant> {
 
-    private final Repository<User> userRepository;
+    private final UserRepository userRepository;
 
-    private final Repository<Species> speciesRepository;
+    private final SpeciesRepository speciesRepository;
 
     @Autowired
-    public PlantService(Repository<Plant> modelRepository,
-                        Repository<User> userRepository,
-                        Repository<Species> speciesRepository
+    public PlantService(PlantRepository modelRepository,
+                        UserRepository userRepository,
+                        SpeciesRepository speciesRepository,
+                        ListUtilities listUtilities
     ) {
-        super(modelRepository);
+        super(modelRepository, listUtilities);
         this.userRepository = userRepository;
         this.speciesRepository = speciesRepository;
     }
 
     public Plant addPlant(AddPlantRequestBody addPlantRequestBody, int userId) {
         // TODO custom exceptions, rewrite this once DB is ready
-        var spiece = speciesRepository.get(addPlantRequestBody.speciesId()).orElseThrow();
-        var user = userRepository.get(userId).orElseThrow();
+        var spiece = speciesRepository.findById(addPlantRequestBody.speciesId()).orElseThrow();
+        var user = userRepository.findById(userId).orElseThrow();
 
         var plant = new Plant(
-                (int)(Math.random() * 99999 + 1790), // xD
                 addPlantRequestBody.name(),
                 user,
                 spiece,
@@ -60,10 +62,9 @@ public class PlantService extends ModelService<Plant> {
         super.remove(id);
     }
 
-    public void changeFavourite(int plantId){
+    public void changeFavourite(int plantId) {
         this.get(plantId).ifPresent(
                 plant -> {
-                    System.out.println(plant.isFavourite());
                     plant.setFavourite(!plant.isFavourite());
                     update(plant);
                 }
@@ -72,7 +73,7 @@ public class PlantService extends ModelService<Plant> {
 
     private void addPlantToUserList(Plant plant, int userId) {
         userRepository
-                .get(userId)
+                .findById(userId)
                 .ifPresent(presentUser -> {
                     presentUser.addPlant(plant);
                     plant.setUser(presentUser);
@@ -89,7 +90,7 @@ public class PlantService extends ModelService<Plant> {
 
     private List<Plant> getUsersPlants(int userId) {
         // TODO maybe create custom exception
-        return userRepository.get(userId)
+        return userRepository.findById(userId)
                 .map(User::getUserPlants)
                 .orElseThrow(() -> new IllegalArgumentException("no such user"));
     }

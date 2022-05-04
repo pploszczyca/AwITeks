@@ -1,9 +1,20 @@
 package pl.edu.agh.awiteks_backend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-public class Species extends AbstractModel<Species> {
+import javax.persistence.*;
+import java.util.List;
+
+@Entity
+@Table(name = "species")
+@JsonIgnoreProperties({"plantList"})
+public class Species {
     private static final int NO_CREATOR = -1;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    private String name;
     @Schema(required = true)
     private int maxAge;
     @Schema(required = true)
@@ -18,10 +29,13 @@ public class Species extends AbstractModel<Species> {
     private Fertilization fertilizationDose;
     @Schema(required = true)
     private int creatorId;
+    @OneToMany(mappedBy = "spiece", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @Schema(required = true)
+    private List<Plant> plantList;
 
-    public Species(int id, String name, int maxAge, Insolation neededInsolation, int waterDose,
-                   int waterRoutine, int fertilizationRoutine, Fertilization fertilizationDose, int creatorID) {
-        super(id, name);
+    public Species(String name, int maxAge, Insolation neededInsolation, int waterDose,
+                   int waterRoutine, int fertilizationRoutine, Fertilization fertilizationDose, int creatorID, List<Plant> plantList) {
+        this.name = name;
         this.maxAge = maxAge;
         this.neededInsolation = neededInsolation;
         this.waterDose = waterDose;
@@ -29,30 +43,10 @@ public class Species extends AbstractModel<Species> {
         this.fertilizationRoutine = fertilizationRoutine;
         this.fertilizationDose = fertilizationDose;
         this.creatorId = creatorID;
-    }
-
-    public Species(int id, String name, int maxAge, Insolation neededInsolation, int waterDose,
-                   int waterRoutine, int fertilizationRoutine, Fertilization fertilizationDose) {
-        this(id, name, maxAge, neededInsolation, waterDose, waterRoutine, fertilizationRoutine, fertilizationDose, NO_CREATOR);
+        this.plantList = plantList;
     }
 
     public Species() {
-    }
-
-    @Override
-    public Species copy() {
-        // deep copy needed
-        return new Species(
-                super.id,
-                super.name,
-                this.maxAge,
-                this.neededInsolation,
-                this.waterDose,
-                this.waterRoutine,
-                this.fertilizationRoutine,
-                this.fertilizationDose,
-                this.creatorId
-        );
     }
 
     public int getMaxAge() {
@@ -109,5 +103,29 @@ public class Species extends AbstractModel<Species> {
 
     public void setCreatorId(int creatorId) {
         this.creatorId = creatorId;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<Plant> getPlantList() {
+        return plantList;
+    }
+
+    public void setPlantList(List<Plant> plantList) {
+        this.plantList = plantList;
     }
 }

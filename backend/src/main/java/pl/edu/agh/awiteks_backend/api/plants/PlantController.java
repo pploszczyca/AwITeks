@@ -13,6 +13,7 @@ import java.util.Optional;
 @RequestMapping("/plants")
 public class PlantController {
     private final PlantService plantService;
+
     @Autowired
     public PlantController(PlantService plantService) {
         this.plantService = plantService;
@@ -35,7 +36,7 @@ public class PlantController {
     @ResponseBody
     public Plant addPlant(@RequestBody AddPlantRequestBody plant) {
         // TODO creatorID from JWT
-        return plantService.addPlant(plant, 0);
+        return plantService.addPlant(plant, 1);
     }
 
     @Operation(summary = "Changing Favourite flag in plant")
@@ -61,18 +62,18 @@ public class PlantController {
 
     @Operation(summary = "Get photo URL of plant")
     @GetMapping(path = "/plants/{id}/URL")
-    public String getURL(@PathVariable int id){
+    public String getURL(@PathVariable int id) {
         Optional<Plant> plantOptional = plantService.get(id);
-        if(plantOptional.isPresent()){
+        if (plantOptional.isPresent()) {
             return plantOptional.get().getUrl();
-        }else{
+        } else {
             return "https://tatamariusz.pl/hans-christian-andersen-polny-kwiatek/#iLightbox[gallery3623]/0";
         }
     }
 
     @Operation(summary = "Get all plants summary")
-    @GetMapping(value="/user/summary")
-    public List<PlantSummary> getAllPlantsSummary(){
+    @GetMapping(value = "/user/summary")
+    public List<PlantSummary> getAllPlantsSummary() {
         // TODO user ID from JWT
         return plantService.getPlantSummaries(0);
     }
