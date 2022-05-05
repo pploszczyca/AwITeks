@@ -16,19 +16,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
     private static final String JWT_AUTH_PREFIX = "Bearer";
 
     private final TokenService tokenService;
-    private final List<String> excludedRoutes;
+    private final List<Pattern> excludedRoutes;
+
 
     @Autowired
     public JwtAuthFilter(TokenService tokenService, @Value("#{jwtExcludedRoutes}") List<String> excludedRoutes) {
         super();
         this.tokenService = tokenService;
-        this.excludedRoutes = excludedRoutes;
+        this.excludedRoutes = excludedRoutes.stream().map(Pattern::compile).collect(Collectors.toList());
     }
 
     @Override
@@ -62,7 +65,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     private boolean applies(HttpServletRequest request) {
         // this is probably not the most elegant solution but will work for now (feel free to rewrite)
         return excludedRoutes.stream()
-                .filter(route -> route.equals(request.getServletPath()))
+                .filter(excludedPath -> excludedPath.asMatchPredicate().test(request.getServletPath()))
                 .findAny()
                 .isEmpty();
     }

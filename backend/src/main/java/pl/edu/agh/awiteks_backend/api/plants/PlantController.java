@@ -66,18 +66,6 @@ public class PlantController {
         plantService.remove(id);
     }
 
-    @Operation(summary = "Get photo URL of plant")
-    @GetMapping(path = "/plants/{id}/URL")
-    public String getURL(@PathVariable int id) {
-        // TODO do we need this?
-        Optional<Plant> plantOptional = plantService.get(id);
-        if (plantOptional.isPresent()) {
-            return plantOptional.get().getUrl();
-        } else {
-            return "https://tatamariusz.pl/hans-christian-andersen-polny-kwiatek/#iLightbox[gallery3623]/0";
-        }
-    }
-
     @Operation(summary = "Get all plants summary")
     @GetMapping(value="/summary")
     public List<PlantSummary> getAllPlantsSummary(JwtAccessToken accessToken){

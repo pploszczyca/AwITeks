@@ -11,8 +11,8 @@ public class AuthConstraintsConfig {
     @Bean(name = "jwtExcludedRoutes")
     public List<String> configureJwtExcludedRoutes() {
         return List.of(
-                "/auth/login",
-                "/auth/register"
+                "/auth/.*", // auth endpoints
+                "/v3/.*"    // swagger endpoints
             );
     }
 }

@@ -61,6 +61,31 @@ $ docker run -p 3306:3306 -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:latest
 - zapisujemy zwrócony `accessToken`
 - do kolejnych zapytań dodajemy nagłówek: `Authorization: Bearer <accessToken>`
 
+Przykład:
+```
+POST /auth/login
+
+curl -X POST -H "Content-Type: application/json" \
+-d '{"email": "test@com.pl", "password": "secret-password"}' \
+http://localhost:5000/auth/login
+
+Response:
+{
+    "accessToken": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIxIiwiaXNzIjoiYXdJVGVrcyIsImV4cCI6MTY1MTg1NTc4NCwiaWF0IjoxNjUxNzY5Mzg0fQ.hsh5rcUjqGma5lN0El8i6Q1oukQQ0eXizL-yYw92Jy6Acy_jvuLE7Xzoq0IsW-aQ",
+    "expiresIn": 1651855784
+}
+```
+
+W kolejnych zapytaniach danego użytkownika wykorzystujemy zwrócony token, przykładowo:
+
+```
+GET /plants/summary
+
+curl -H "Content-Type: application/json" \
+-H "Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIxIiwiaXNzIjoiYXdJVGVrcyIsImV4cCI6MTY1MTg1NTc4NCwiaWF0IjoxNjUxNzY5Mzg0fQ.hsh5rcUjqGma5lN0El8i6Q1oukQQ0eXizL-yYw92Jy6Acy_jvuLE7Xzoq0IsW-aQ" \
+http://localhost:5000/plants/summary
+
+```
 --- 
 
 ### Uruchomienie frontendu
