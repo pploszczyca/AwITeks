@@ -1,4 +1,4 @@
-package pl.edu.agh.awiteks_backend.api;
+package pl.edu.agh.awiteks_backend.api.users;
 
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +18,9 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
+
+    // TODO most of these endpoints are useless for frontend and mustn't be open to it
+    // TODO either implement admin auth and make them open only for admin or remove them
 
     @Operation(summary = "Get all users")
     @GetMapping(produces = "application/json")
