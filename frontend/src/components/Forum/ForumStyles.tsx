@@ -1,5 +1,17 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Col, Row } from "react-bootstrap";
 import styled from "styled-components";
+
+
+export const Star = styled(FontAwesomeIcon)`
+  color: #FFD700;
+  margin-left: 10px;
+
+  :hover {
+      opacity: 0.7;
+      cursor: pointer;
+  }
+`;
 
 
 export const OpenButton = styled(Button)`
