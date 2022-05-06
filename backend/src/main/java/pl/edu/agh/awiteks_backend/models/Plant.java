@@ -2,7 +2,6 @@ package pl.edu.agh.awiteks_backend.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -14,42 +13,50 @@ import java.util.List;
 public class Plant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Schema(required = true)
     private Integer id;
+
+    @Schema(required = true)
     private String name;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     @Schema(required = true)
     private User user;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "species_id", nullable = false)
     @Schema(required = true)
-    private Species spiece;
+    private Species species;
+
     private String note;
+
     @Schema(required = true)
     private Insolation actualInsolation;
+
     @OneToMany(mappedBy = "plant", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @Schema(required = true)
     private List<Activity> plantActivities = new ArrayList<>();
-    @Schema(required = true)
-    private boolean isFavourite = false;
 
-    @Autowired
+    @Schema(required = true)
+    private boolean favourite;
+
     @Schema(required = true)
     private String url;
 
-    public Plant(String name, User user, Species spiece, String note, Insolation actualInsolation, List<Activity> plantActivities, boolean isFavourite, String url) {
+    public Plant(String name, User user, Species species, String note, Insolation actualInsolation, List<Activity> plantActivities, boolean favourite, String url) {
         this.name = name;
         this.user = user;
-        this.spiece = spiece;
+        this.species = species;
         this.note = note;
         this.actualInsolation = actualInsolation;
         this.plantActivities = plantActivities;
-        this.isFavourite = isFavourite;
+        this.favourite = favourite;
         this.url = url;
     }
 
-    public Plant(String name, User user, Species spiece, String note, Insolation actualInsolation, boolean isFavourite, String url) {
-        this(name, user, spiece, note, actualInsolation, new ArrayList<>(), isFavourite, url);
+    public Plant(String name, User user, Species species, String note, Insolation actualInsolation, boolean favourite, String url) {
+        this(name, user, species, note, actualInsolation, new ArrayList<>(), favourite, url);
     }
 
     public Plant() {
@@ -67,8 +74,8 @@ public class Plant {
         return user;
     }
 
-    public Species getSpiece() {
-        return spiece;
+    public Species getSpecies() {
+        return species;
     }
 
     public Insolation getActualInsolation() {
@@ -79,8 +86,8 @@ public class Plant {
         this.user = user;
     }
 
-    public void setSpiece(Species spiece) {
-        this.spiece = spiece;
+    public void setSpecies(Species spiece) {
+        this.species = spiece;
     }
 
     public void setActualInsolation(Insolation actualInsolation) {
@@ -101,11 +108,11 @@ public class Plant {
     }
 
     public boolean isFavourite() {
-        return isFavourite;
+        return favourite;
     }
 
     public void setFavourite(boolean favourite) {
-        isFavourite = favourite;
+        this.favourite = favourite;
     }
 
     public String getUrl() {

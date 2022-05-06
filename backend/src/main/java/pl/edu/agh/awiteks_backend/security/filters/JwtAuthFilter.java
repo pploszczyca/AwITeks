@@ -63,6 +63,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     }
 
     private boolean applies(HttpServletRequest request) {
+        // this is definitely not the most elegant solution but will work for now (feel obligated to rewrite)
+        // (dont require authorization for cors preflight)
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+            return false;
+        }
+
         // this is probably not the most elegant solution but will work for now (feel free to rewrite)
         return excludedRoutes.stream()
                 .filter(excludedPath -> excludedPath.asMatchPredicate().test(request.getServletPath()))

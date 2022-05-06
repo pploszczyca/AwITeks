@@ -16,12 +16,15 @@ public class ForumThread {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Schema(required = true)
     private Integer id;
+
     @Schema(required = true)
     private String title;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     @Schema(required = true)
     private User creator;
+
     @OneToMany(mappedBy = "thread", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @Schema(required = true)
     private List<ForumPost> forumPosts;

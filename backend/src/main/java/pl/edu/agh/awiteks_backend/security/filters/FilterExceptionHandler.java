@@ -1,9 +1,13 @@
 package pl.edu.agh.awiteks_backend.security.filters;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import org.springframework.web.cors.DefaultCorsProcessor;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 import pl.edu.agh.awiteks_backend.security.UnauthorizedException;
 
 import javax.servlet.FilterChain;
@@ -12,6 +16,13 @@ import javax.servlet.http.HttpServletResponse;
 
 @Component
 public class FilterExceptionHandler extends OncePerRequestFilter {
+
+    private final ApplicationContext context;
+
+    @Autowired
+    public FilterExceptionHandler(ApplicationContext context) {
+        this.context = context;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) {
@@ -27,6 +38,23 @@ public class FilterExceptionHandler extends OncePerRequestFilter {
 
             response.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+        }
+        finally {
+            addCorsHeaders(request, response);
+        }
+    }
+
+    private void addCorsHeaders(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            // if exception (such as UnauthorizedException thrown by JWTFilter) is thrown
+            // filter chain doesn't add cors headers by default, and we get cors errors in the browser
+            new DefaultCorsProcessor().processRequest(
+                    context.getBean(HandlerMappingIntrospector.class).getCorsConfiguration(request),
+                    request,
+                    response
+            );
+        } catch (Exception exception) {
+            exception.printStackTrace();
         }
     }
 }

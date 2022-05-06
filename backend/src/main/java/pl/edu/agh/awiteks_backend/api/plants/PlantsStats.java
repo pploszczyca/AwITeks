@@ -6,5 +6,5 @@ public record PlantsStats(
         @Schema(required = true) int totalPlants,
         @Schema(required = true) int neglectedPlants,
         @Schema(required = true) int wellGroomedPlants
-) {
+        ) {
 }

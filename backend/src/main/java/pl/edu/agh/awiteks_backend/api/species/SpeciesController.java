@@ -1,6 +1,7 @@
 package pl.edu.agh.awiteks_backend.api.species;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.agh.awiteks_backend.models.Species;
@@ -9,6 +10,8 @@ import pl.edu.agh.awiteks_backend.services.SpeciesService;
 
 import java.util.List;
 import java.util.Optional;
+
+import static pl.edu.agh.awiteks_backend.configs.SwaggerConfig.JWT_AUTH;
 
 @RestController
 @RequestMapping("/species")
@@ -20,35 +23,35 @@ public class SpeciesController {
         this.speciesService = speciesService;
     }
 
-    @Operation(summary = "Get all species")
+    @Operation(summary = "Get all species", security = @SecurityRequirement(name = JWT_AUTH))
     @GetMapping(produces = "application/json")
     public List<Species> getAllSpecies(JwtAccessToken accessToken) {
         // TODO validate ownership
         return speciesService.getAll();
     }
 
-    @Operation(summary = "Get specific specie by id")
+    @Operation(summary = "Get specific specie by id", security = @SecurityRequirement(name = JWT_AUTH))
     @GetMapping(value = "/{id}", produces = "application/json")
     public Optional<Species> getSpecies(@PathVariable int id) {
         // TODO validate ownership
         return speciesService.get(id);
     }
 
-    @Operation(summary = "Add new species")
+    @Operation(summary = "Add new species", security = @SecurityRequirement(name = JWT_AUTH))
     @PostMapping
     @ResponseBody
     public Species addSpecies(JwtAccessToken creatorAccessToken, @RequestBody AddSpeciesRequestBody species) {
         return speciesService.addSpecies(species, creatorAccessToken.getUserId());
     }
 
-    @Operation(summary = "Update specie")
+    @Operation(summary = "Update specie", security = @SecurityRequirement(name = JWT_AUTH))
     @PutMapping(consumes = "application/json")
     public void updateSpecies(@RequestBody Species species) {
         // TODO validate ownership
         speciesService.update(species);
     }
 
-    @Operation(summary = "Delete specie by id")
+    @Operation(summary = "Delete specie by id", security = @SecurityRequirement(name = JWT_AUTH))
     @DeleteMapping(value = "/{id}")
     public void removeSpecies(@PathVariable int id) {
         // TODO validate ownership

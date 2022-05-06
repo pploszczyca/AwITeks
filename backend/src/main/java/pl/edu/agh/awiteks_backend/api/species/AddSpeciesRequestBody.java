@@ -12,5 +12,5 @@ public record AddSpeciesRequestBody(
         @Schema(required = true) Insolation neededInsolation,
         @Schema(required = true) int waterDose,
         @Schema(required = true) int waterRoutine
-) {
+        ) {
 }
