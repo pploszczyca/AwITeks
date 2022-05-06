@@ -14,9 +14,23 @@
 
 
 
-export * from './apis/activity-controller-api';
-export * from './apis/auth-controller-api';
-export * from './apis/plant-controller-api';
-export * from './apis/species-controller-api';
-export * from './apis/user-controller-api';
+/**
+ * 
+ * @export
+ * @interface UserInfo
+ */
+export interface UserInfo {
+    /**
+     * 
+     * @type {string}
+     * @memberof UserInfo
+     */
+    'email': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserInfo
+     */
+    'username': string;
+}
 

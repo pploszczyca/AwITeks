@@ -11,6 +11,7 @@ import Loader from '../Loader/Loader';
 import { EditPlantForm } from '../EditPlantForm/EditPlantForm';
 import { toast } from 'react-toastify';
 import { fertilizationToString, insolationToString } from '../../utils/util';
+import { PageRoutes } from '../../utils/constants';
 
 
 const PlantDetailsView: React.FC<{}> = (props) => {
@@ -21,14 +22,14 @@ const PlantDetailsView: React.FC<{}> = (props) => {
     const [showEditPlantForm, setShowEditPlantForm] = useState(false);
 
     if (plantId == null) {
-        navigate('/my-plants');
+        navigate(PageRoutes.MY_PLANTS)
     }
 
     const { data: plantResp, isLoading } = useQuery(['plants', plantId], async () => getApis().plantsApi.getPlant(+plantId!))
     const deletePlantMutation = useMutation(async () => {
         await getApis().plantsApi.removePlant(+plantId!);
         toast.success("Usunięto roślinę");
-        navigate('/my-plants');
+        navigate(PageRoutes.MY_PLANTS)
     }, {
         onSuccess: () => {
             queryClient.invalidateQueries(['plants', plantId]);
@@ -42,7 +43,7 @@ const PlantDetailsView: React.FC<{}> = (props) => {
 
     const plant = plantResp!.data;
     if (plant == null) {
-        navigate('/my-plants');
+        navigate(PageRoutes.MY_PLANTS)
     }
 
     return (
@@ -58,8 +59,8 @@ const PlantDetailsView: React.FC<{}> = (props) => {
 
                                 <Card.Text>
                                     <span className="d-block">Nazwa rośliny: {plant.name}</span>
-                                    <span className="d-block">Gatunek: {plant.spiece.name}</span>
-                                    <span className="d-block">Średnia długość życia gatunku: {plant.spiece.maxAge}</span>
+                                    <span className="d-block">Gatunek: {plant.species.name}</span>
+                                    <span className="d-block">Średnia długość życia gatunku: {plant.species.maxAge}</span>
                                 </Card.Text>
 
                             </Card.Body>
@@ -85,11 +86,11 @@ const PlantDetailsView: React.FC<{}> = (props) => {
                                 <TitleSeparator />
 
                                 <Card.Text>
-                                    <span className="d-block">Wymagane nasłonecznienie: {insolationToString(plant.spiece.neededInsolation)}</span>
-                                    <span className="d-block">Częstotliwość podlewania: {plant.spiece.waterRoutine} / tydzień</span>
-                                    <span className="d-block">Zalecana ilość wody: {plant.spiece.waterDose}l</span>
-                                    <span className="d-block">Częstotliwość nawożenia: {plant.spiece.fertilizationRoutine} / miesiąc</span>
-                                    <span className="d-block">Intensywność nawożenia: {fertilizationToString(plant.spiece.fertilizationDose)}</span>
+                                    <span className="d-block">Wymagane nasłonecznienie: {insolationToString(plant.species.neededInsolation)}</span>
+                                    <span className="d-block">Częstotliwość podlewania: {plant.species.waterRoutine} / tydzień</span>
+                                    <span className="d-block">Zalecana ilość wody: {plant.species.waterDose}l</span>
+                                    <span className="d-block">Częstotliwość nawożenia: {plant.species.fertilizationRoutine} / miesiąc</span>
+                                    <span className="d-block">Intensywność nawożenia: {fertilizationToString(plant.species.fertilizationDose)}</span>
                                 </Card.Text>
 
                                 <div className="d-flex justify-content-center">
@@ -119,7 +120,7 @@ const PlantDetailsView: React.FC<{}> = (props) => {
                                         className="mb-1"
                                         variant="danger"
                                         onClick={() => deletePlantMutation.mutate()}
-                                        isDisabled={deletePlantMutation.isLoading}
+                                        disabled={deletePlantMutation.isLoading}
                                     >
                                         Usuń roślinę
                                     </RequirementsButton>

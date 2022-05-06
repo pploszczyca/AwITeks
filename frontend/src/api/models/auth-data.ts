@@ -14,9 +14,23 @@
 
 
 
-export * from './apis/activity-controller-api';
-export * from './apis/auth-controller-api';
-export * from './apis/plant-controller-api';
-export * from './apis/species-controller-api';
-export * from './apis/user-controller-api';
+/**
+ * 
+ * @export
+ * @interface AuthData
+ */
+export interface AuthData {
+    /**
+     * 
+     * @type {string}
+     * @memberof AuthData
+     */
+    'accessToken': string;
+    /**
+     * 
+     * @type {number}
+     * @memberof AuthData
+     */
+    'expiresIn': number;
+}
 

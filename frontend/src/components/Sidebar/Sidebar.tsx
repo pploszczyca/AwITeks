@@ -1,9 +1,12 @@
 import React from 'react';
-import { Container, Nav } from "react-bootstrap";
+import { Button, Container, Nav } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { NavbarEdit, MobileNavbar } from './SidebarStyles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHouse, faCalendarDays, faSeedling, faComments, faGear } from '@fortawesome/free-solid-svg-icons'
+import { PageRoutes } from '../../utils/constants';
+import { selectIsLoggedIn, useAppDispatch, useAppSelector } from '../../Store/store';
+import { logout } from '../../Store/features/auth/authSlice';
 
 
 function buildNavLink(to: string, mobile: boolean, content: any) {
@@ -20,23 +23,35 @@ function buildNavLink(to: string, mobile: boolean, content: any) {
 }
 
 const PATHS = {
-    '/dashboard': ['Strona główna', faHouse],
-    '/my-plants': ['Moje rośliny', faSeedling],
-    '/calendar': ['Kalendarz', faCalendarDays],
-    '/forum': ['Forum', faComments],
-    '/settings': ['Ustawienia', faGear],
+    [PageRoutes.DASHBOARD]: ['Strona główna', faHouse],
+    [PageRoutes.MY_PLANTS]: ['Moje rośliny', faSeedling],
+    [PageRoutes.CALENDAR]: ['Kalendarz', faCalendarDays],
+    [PageRoutes.FORUM]: ['Forum', faComments],
+    [PageRoutes.SETTINGS]: ['Ustawienia', faGear],
 };
 
 const Sidebar: React.FC<{}> = () => {
     useNavigate(); // rerenders components on url change
+    const isLoggedIn = useAppSelector(selectIsLoggedIn);
+    const dispatch = useAppDispatch();
 
     return (
-        <div style={{display: window.location.pathname === '/home' ? 'none': 'block'}}>
+        <div style={{ display: window.location.pathname === '/home' ? 'none' : 'block' }}>
             <NavbarEdit variant="dark" className="d-md-block d-none">
                 <Container className="d-flex flex-column">
                     <div id="logo"><p>awITex</p></div>
                     <Nav className="me-auto d-flex flex-column" id="menu-options">
                         {Object.entries(PATHS).map(([to, [title]]) => buildNavLink(to, false, title))}
+                        {
+                            isLoggedIn && // TODO this is only for convenience here, will be moved in the future
+                            (
+                                <Button
+                                    onClick={() => dispatch(logout())}
+                                >
+                                    Wyloguj
+                                </Button>
+                            )
+                        }
                     </Nav>
                 </Container>
             </NavbarEdit>

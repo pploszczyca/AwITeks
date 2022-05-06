@@ -39,7 +39,7 @@ export interface Plant {
      * @type {Species}
      * @memberof Plant
      */
-    'spiece': Species;
+    'species': Species;
     /**
      * 
      * @type {string}
@@ -60,16 +60,16 @@ export interface Plant {
     'plantActivities': Array<Activity>;
     /**
      * 
+     * @type {boolean}
+     * @memberof Plant
+     */
+    'favourite': boolean;
+    /**
+     * 
      * @type {string}
      * @memberof Plant
      */
     'url': string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Plant
-     */
-    'favourite'?: boolean;
 }
 
 export const PlantActualInsolationEnum = {

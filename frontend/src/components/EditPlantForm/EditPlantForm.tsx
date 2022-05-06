@@ -44,7 +44,7 @@ export const EditPlantForm: React.FC<EditPlantFormProps> = ({ show, setShowPlant
                 lastWateringDate: getLastActivityDate(plant, "WATERING"),
                 name: plant.name,
                 note: plant.note ?? "",
-                speciesId: plant.spiece.id
+                speciesId: plant.species.id
             }}
         />
     )
