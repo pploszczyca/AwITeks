@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Row } from "react-bootstrap";
 import { ContentContainer } from "../App/AppStyle";
-import { ForumHeader, ForumCol, ForumTile, TableRow, OpenButton, Star} from "./ForumStyles";
+import { ForumHeader, ForumCol, ForumTile, ForumRow, OpenButton, Star} from "./ForumStyles";
 import { faStar as faStarSolid } from '@fortawesome/free-solid-svg-icons';
 
 const mockData = [  ['tytuł tematu 1', '7', 'username1', '2022-01-03'],
@@ -27,9 +27,9 @@ const Forum: React.FC<{}> = () => {
 
     function getHeaderRow(){
         return(
-            <TableRow  className="m-0">
+            <ForumRow  className="m-0">
                 {COLS.map(idx => (<ForumCol className={classes[idx]}><ForumHeader className={classes[idx]}>{headers[idx]}</ForumHeader></ForumCol>))}
-            </TableRow>
+            </ForumRow>
         )
     }
 
@@ -50,17 +50,16 @@ const Forum: React.FC<{}> = () => {
 
     return (
         <ContentContainer>
-            
             <Row className="mt-5">
                     {getHeaderRow()}
                     {ROWS.map(rowNum => (
-                        <TableRow className="m-0" key={rowNum}>
+                        <ForumRow className="m-0" key={rowNum}>
                             {COLS.map(colNum => (
                                 <ForumCol className={classes[colNum]} key={`${rowNum}.${colNum}`} >
                                     {getTableElem(rowNum, colNum)}
                                 </ForumCol>
                             ))}
-                        </TableRow>
+                        </ForumRow>
                     ))}
             </Row>
         </ContentContainer>

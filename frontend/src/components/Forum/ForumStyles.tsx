@@ -20,34 +20,6 @@ export const Star = styled(FontAwesomeIcon)`
   }
 `;
 
-export const StarPolygon = styled.div`
-  position: relative;
-  top: 0%;
-  left: 80%;
-  width: 20px;
-  height: 20px;
-  // background-color: #FFD700;
-  clip-path: polygon(
-    50% 0%,
-    61% 35%,
-    98% 35%,
-    68% 57%,
-    79% 91%,
-    50% 70%,
-    21% 91%,
-    32% 57%,
-    2% 35%,
-    39% 35%
-  );
-
-  &.starred{
-    background-color: #FFD700;
-  }
-  &.unstarred{
-    background-color: grey;
-  }
-`;
-
 export const OpenButton = styled(Button)`
     background-color: #008F8C;
     outline: none;
@@ -83,21 +55,8 @@ export const ForumCol =  styled(Col)`
     }
 
 `;
-export const ForumTable = styled.div`
-    height: 100%;
-    min-width: 210px;
-    background-color: #0FC2C0;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    box-shadow: 0 0 7px -3px rgba(0, 0, 0, 1);
-    border-spacing: 0;
-`;
 
-export const TableRow = styled(Row)`
+export const ForumRow = styled(Row)`
   text-align: center;
   width: 100%;
   height: 2.5em;
