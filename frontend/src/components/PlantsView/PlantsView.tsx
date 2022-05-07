@@ -20,8 +20,8 @@ import {useMutation, useQuery, useQueryClient} from "react-query";
 import Loader from "../Loader/Loader";
 import {PlantSummary} from "../../api/models/plant-summary";
 import {AddPlantForm} from "../AddPlantForm/AddPlantForm";
-import {SortByTypes} from "./SortByTypes";
-import {sortBy} from "./SortBy";
+import {sortBy} from "./utils";
+import {SortByTypes} from "./utils";
 
 
 const PlantsView: React.FC<{}> = () => {
