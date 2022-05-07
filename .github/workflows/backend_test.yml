@@ -1,6 +1,6 @@
 name: Backend Test CI
 
-on: [pull_request]
+on: [push]
 
 jobs:
   build:
@@ -10,6 +10,18 @@ jobs:
       run:
         working-directory: backend
 
+    services:
+      mysql:
+        image: mysql:5.7.38
+        env:
+          MYSQL_DATABASE: db
+          MYSQL_USER: user
+          MYSQL_PASSWORD: my-secret-pw
+          MYSQL_ROOT_PASSWORD: my-secret-pw
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK 17
@@ -18,4 +30,6 @@ jobs:
           java-version: '17'
           distribution: 'adopt'
       - name: Build Gradle Project
-        run: ./gradlew build --no-daemon -x test
+        run: ./gradlew build
+      - name: Test Gradle Project
+        run: ./gradlew test
