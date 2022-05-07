@@ -1,23 +1,34 @@
-import React, { useRef, useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
-import { Row, Col, Form } from "react-bootstrap";
-import { SearchBoxContainer, SearchBox, AddPlantButton, PlantTypesContainer, DropdownItem, ListContainer, SettingsWrapper, SettingsBox } from './PlantsViewStyles';
+import React, {useRef, useState} from "react";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faMagnifyingGlass} from '@fortawesome/free-solid-svg-icons';
+import {Col, Form, Row} from "react-bootstrap";
+import {
+    AddPlantButton,
+    DropdownItem,
+    ListContainer,
+    PlantTypesContainer,
+    SearchBox,
+    SearchBoxContainer,
+    SettingsBox,
+    SettingsWrapper
+} from './PlantsViewStyles';
 import PlantSummaryCard from "../PlantSummaryCard/PlantSummaryCard";
 import Dropdown from "../utils/Dropdown";
-import { ContentContainer } from "../App/AppStyle";
-import { getApis } from "../../api/initializeApis";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import {ContentContainer} from "../App/AppStyle";
+import {getApis} from "../../api/initializeApis";
+import {useMutation, useQuery, useQueryClient} from "react-query";
 import Loader from "../Loader/Loader";
-import { PlantSummary } from "../../api/models/plant-summary";
-import { AddPlantForm } from "../AddPlantForm/AddPlantForm";
-
+import {PlantSummary} from "../../api/models/plant-summary";
+import {AddPlantForm} from "../AddPlantForm/AddPlantForm";
+import {SortByTypes} from "./SortByTypes";
+import {sortBy} from "./SortBy";
 
 
 const PlantsView: React.FC<{}> = () => {
     const [isAddPlantFormVisible, setAddPlantFormVisible] = useState(false);
     const queryClient = useQueryClient();
     const searchInputRef: React.MutableRefObject<HTMLInputElement | null> = useRef(null);
+    const [sortByType, setSortByType] = useState(SortByTypes.SORT_BY_NAME)
 
     const { data: speciesList, isLoading: speciesLoading } = useQuery('species', () => getApis().speciesApi
         .getAllSpecies().then(resp => resp.data));
@@ -33,6 +44,10 @@ const PlantsView: React.FC<{}> = () => {
             queryClient.setQueryData(['plants-summary', plantSummary.id], plantSummary);
         }
     });
+
+    const changeSortType = (newSortType: SortByTypes) => {
+        setSortByType(newSortType)
+    }
 
     if (speciesLoading || plantsLoading) {
         return <Loader />;
@@ -90,10 +105,10 @@ const PlantsView: React.FC<{}> = () => {
                                             color: "#FFF",
                                         }}
                                     >
-                                        <DropdownItem>Data dodania</DropdownItem>
-                                        <DropdownItem>Czas posiadania</DropdownItem>
-                                        <DropdownItem>Opcja Trzecia</DropdownItem>
-                                        <DropdownItem>Opcja Czwarta</DropdownItem>
+                                        <DropdownItem onClick={() => changeSortType(SortByTypes.NO_SORT)}>Brak sortowania</DropdownItem>
+                                        <DropdownItem onClick={() => changeSortType(SortByTypes.SORT_BY_NAME)}>Nazwy</DropdownItem>
+                                        <DropdownItem onClick={() => changeSortType(SortByTypes.SORT_BY_SPECIES_NAME)}>Nazwy Gatunku</DropdownItem>
+                                        <DropdownItem onClick={() => changeSortType(SortByTypes.SORT_BY_FAVOURITE)}>Ulubionych</DropdownItem>
                                     </Dropdown>
                                 </div>
                             </Row>
@@ -104,7 +119,7 @@ const PlantsView: React.FC<{}> = () => {
 
 
             <Row as={ListContainer}>
-                {plantSummaryList!.map(plant => (
+                {sortBy(plantSummaryList, sortByType)!.map(plant => (
                     <Col
                         key={plant.id}
                         xxl={3} xl={4} md={6} sm={12}
