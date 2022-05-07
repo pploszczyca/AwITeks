@@ -106,6 +106,19 @@ npm test
 
 ---
 
+## Dodawanie prefiksu branch'a do commita
+W folderze `.githooks` znajduje się skrypt, który umożliwia dodanie prefiksu brancha do nazwy commita. Aby go aktywować należy w terminalu wpisać:
+```
+$ git config --local core.hooksPath .githooks/
+```
+
+### Uwaga dla osób korzystających z windows
+Możliwe, że trzeba podmienić pierwszą linijkę pliku `prepare-commit-msg` na 
+```sh
+#!/bin/sh
+```
+---
+
 ## Dokumetacja API
 Do projektu backendowego został podpięty [springdoc](https://springdoc.org/#Introduction). Po uruchomieniu backendu dokumentacja znajduje się pod linkiem: http://localhost:5000/swagger-ui/index.html.
 

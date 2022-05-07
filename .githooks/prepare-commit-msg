@@ -1,0 +1,14 @@
+#!/bin/bash
+project_prefix="AWIT"
+branchname=$(git branch | grep ^* | sed 's/\* //g' | sed 's/feature\///g')
+if [ "$branchname" = "master" ] || [ "$branchname" = "development" ]
+    then
+    exit
+fi
+  
+originalmessage=`cat $1`
+  
+if [[ $originalmessage == $branchname* ]] || [[ $originalmessage == "[$branchname]"* ]] || [[ $originalmessage == "[$project_prefix"* ]] || [[ $originalmessage == "$project_prefix"* ]] || [[ $originalmessage == "[NT]"* ]]; then
+    exit
+fi
+echo "[$branchname] $originalmessage" > $1
