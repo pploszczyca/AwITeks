@@ -14,12 +14,15 @@ public class Activity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Schema(required = true)
     private Integer id;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "plant_id", nullable = false)
     @Schema(required = true)
     private Plant plant;
+
     @Schema(required = true)
     private ActivityType activityType;
+
     @Schema(required = true)
     private String date;
 

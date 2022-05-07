@@ -2,7 +2,7 @@
 .npmignore
 api.ts
 apis/activity-controller-api.ts
-apis/aw-iteks-backend-application-api.ts
+apis/auth-controller-api.ts
 apis/plant-controller-api.ts
 apis/species-controller-api.ts
 apis/user-controller-api.ts
@@ -14,9 +14,15 @@ index.ts
 models/activity.ts
 models/add-plant-request-body.ts
 models/add-species-request-body.ts
+models/auth-data.ts
+models/forum-post.ts
+models/forum-thread.ts
 models/index.ts
 models/plant-summary.ts
 models/plant.ts
 models/plants-stats.ts
 models/species.ts
+models/user-info.ts
+models/user-login-request-body.ts
+models/user-register-request-body.ts
 models/user.ts

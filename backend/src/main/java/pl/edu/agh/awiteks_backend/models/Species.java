@@ -13,23 +13,34 @@ public class Species {
     private static final int NO_CREATOR = -1;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Schema(required = true)
     private Integer id;
+
+    @Schema(required = true)
     private String name;
+
     @Schema(required = true)
     private int maxAge;
+
     @Schema(required = true)
     private Insolation neededInsolation;
+
     @Schema(required = true)
     private int waterDose;
+
     @Schema(required = true)
     private int waterRoutine;
+
     @Schema(required = true)
     private int fertilizationRoutine;
+
     @Schema(required = true)
     private Fertilization fertilizationDose;
+
     @Schema(required = true)
     private int creatorId;
-    @OneToMany(mappedBy = "spiece", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+
+    @OneToMany(mappedBy = "species", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @Schema(required = true)
     private List<Plant> plantList;
 

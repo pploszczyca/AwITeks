@@ -59,15 +59,15 @@ public class SpeciesService extends ModelService<Species> {
     private boolean checkIfPlantExist(int speciesID) {
         return streamUtilities
                 .asStream(plantRepository.findAll())
-                .anyMatch(plant -> plant.getSpiece().getId() == speciesID);
+                .anyMatch(plant -> plant.getSpecies().getId() == speciesID);
     }
 
     private void updateSpeciesInPlant(Species species) {
         streamUtilities
                 .asStream(plantRepository.findAll())
-                .filter(plant -> Objects.equals(plant.getSpiece().getId(), species.getId()))
+                .filter(plant -> Objects.equals(plant.getSpecies().getId(), species.getId()))
                 .forEach(plant -> {
-                    plant.setSpiece(species);
+                    plant.setSpecies(species);
                     plantRepository.save(plant);
                 });
     }

@@ -37,13 +37,13 @@ public class PlantService extends ModelService<Plant> {
 
     public Plant addPlant(AddPlantRequestBody addPlantRequestBody, int userId) {
         // TODO custom exceptions, rewrite this once DB is ready
-        var spiece = speciesRepository.findById(addPlantRequestBody.speciesId()).orElseThrow();
+        var species = speciesRepository.findById(addPlantRequestBody.speciesId()).orElseThrow();
         var user = userRepository.findById(userId).orElseThrow();
 
         var plant = new Plant(
                 addPlantRequestBody.name(),
                 user,
-                spiece,
+                species,
                 addPlantRequestBody.note(),
                 addPlantRequestBody.insolation(),
                 new LinkedList<>(),

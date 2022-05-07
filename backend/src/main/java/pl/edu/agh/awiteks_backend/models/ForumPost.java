@@ -13,16 +13,20 @@ public class ForumPost {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Schema(required = true)
     private Integer id;
+
     @Schema(required = true)
     private String content;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     @Schema(required = true)
     private User author;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "forum_thread_id", nullable = false)
     @Schema(required = true)
     private ForumThread thread;
+
     @Schema(required = true)
     private String date;
 

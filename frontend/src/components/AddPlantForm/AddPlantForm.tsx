@@ -4,7 +4,7 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { getApis } from '../../api/initializeApis';
 import Loader from '../Loader/Loader';
 import { PlantForm } from '../PlantForm/PlantForm';
-import { Plant } from '../../api';
+import { AddPlantRequestBody, Plant } from '../../api';
 
 type addPlantFormProps = {
     show: boolean;
@@ -14,7 +14,7 @@ type addPlantFormProps = {
 
 export const AddPlantForm: React.FC<addPlantFormProps> = ({ show, setShowPlantForm }) => {
     const queryClient = useQueryClient();
-    const addPlantMutation = useMutation(getApis().plantsApi.addPlant, {
+    const addPlantMutation = useMutation((plant: AddPlantRequestBody) => getApis().plantsApi.addPlant(plant), {
         onSuccess: (plant) => {
             queryClient.setQueryData(['plants', plant.data?.id], plant.data);
             queryClient.setQueryData(['plants'], (oldPlants: Plant[] | undefined) =>

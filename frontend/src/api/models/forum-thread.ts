@@ -14,50 +14,37 @@
 
 
 import { ForumPost } from './forum-post';
-import { ForumThread } from './forum-thread';
-import { Plant } from './plant';
+import { User } from './user';
 
 /**
  * 
  * @export
- * @interface User
+ * @interface ForumThread
  */
-export interface User {
+export interface ForumThread {
     /**
      * 
      * @type {number}
-     * @memberof User
+     * @memberof ForumThread
      */
     'id': number;
     /**
      * 
      * @type {string}
-     * @memberof User
+     * @memberof ForumThread
      */
-    'username': string;
+    'title': string;
     /**
      * 
-     * @type {string}
-     * @memberof User
+     * @type {User}
+     * @memberof ForumThread
      */
-    'email': string;
-    /**
-     * 
-     * @type {Array<Plant>}
-     * @memberof User
-     */
-    'userPlants': Array<Plant>;
+    'creator': User;
     /**
      * 
      * @type {Array<ForumPost>}
-     * @memberof User
+     * @memberof ForumThread
      */
-    'forumPostList': Array<ForumPost>;
-    /**
-     * 
-     * @type {Array<ForumThread>}
-     * @memberof User
-     */
-    'forumThreadList': Array<ForumThread>;
+    'forumPosts': Array<ForumPost>;
 }
 

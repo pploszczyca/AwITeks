@@ -1,4 +1,4 @@
-INSERT INTO user (id, name) VALUES (1, 'test');
+INSERT INTO user (id, name, email, password, username) VALUES (1, 'test', 'test@test.pl', 'testtest', 'konrad');
 
 INSERT INTO species (creator_id, fertilization_dose, fertilization_routine, max_age, name, needed_insolation, water_dose, water_routine)
 VALUES (1, 1, 1, 1, 'test specie', 1, 1, 1);

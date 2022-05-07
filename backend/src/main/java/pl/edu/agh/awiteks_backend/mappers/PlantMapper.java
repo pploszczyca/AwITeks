@@ -8,7 +8,7 @@ public class PlantMapper {
         return new PlantSummary(
                 plant.getId(),
                 plant.getName(),
-                plant.getSpiece().getName(),
+                plant.getSpecies().getName(),
                 plant.isFavourite(),
                 plant.getUrl()
         );
