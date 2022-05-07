@@ -1,4 +1,29 @@
 # AwITeks
+## Spis treści
+- [AwITeks](#awiteks)
+  - [Spis treści](#spis-treści)
+  - [Technologie](#technologie)
+    - [Backend](#backend)
+    - [Frontend](#frontend)
+  - [Porty](#porty)
+  - [Branche](#branche)
+  - [Uruchomienie projektu](#uruchomienie-projektu)
+    - [Uruchomienie backendu](#uruchomienie-backendu)
+      - [Uruchomienie za pomocą dockera-compose](#uruchomienie-za-pomocą-dockera-compose)
+      - [Uruchomienie za pomocą IntelliJ](#uruchomienie-za-pomocąintellij)
+      - [Samodzielne uruchomienie bazy danych](#samodzielne-uruchomienie-bazy-danych)
+    - [Testowanie endpointów poza frontem](#testowanie-endpointów-poza-frontem)
+    - [Uruchomienie frontendu](#uruchomienie-frontendu)
+  - [Dodawanie prefiksu branch'a do commita](#dodawanie-prefiksu-brancha-do-commita)
+    - [Uwaga dla osób korzystających z windows](#uwaga-dla-osób-korzystających-z-windows)
+  - [Dokumetacja API](#dokumetacja-api)
+  - [Definition of done:](#definition-of-done)
+  - [Wykres spalania:](#wykres-spalania)
+  - [Retro](#retro)
+    - [Sprint 1](#sprint-1)
+      - [Co wyszło dobrze](#co-wyszło-dobrze)
+      - [Co wyszło źle](#co-wyszło-źle)
+      - [Wnioski](#wnioski)
 ## Technologie
 ### Backend
 * Java 17
@@ -131,3 +156,26 @@ Do projektu backendowego został podpięty [springdoc](https://springdoc.org/#In
 ## Wykres spalania:
 Zadaniem Scrum Mastera jest, aby wykres był uzupełniany co tydzień według logów z Jiry.<br />
 [link](https://docs.google.com/spreadsheets/d/1tHKVENLM-GykhG75kQ3YZRpPJ57ifT13/edit?usp=sharing&ouid=105439589476939159664&rtpof=true&sd=true)
+
+## Retro
+### Sprint 1
+#### Co wyszło dobrze
+* Fajna organizacja na froncie - sensowny layout powstał szybko,
+* Pair-programming,
+* Wyciąganie wniosków i code review,
+* Organizacja pracy na Gicie i Jirze,
+* Kontakt pomiędzy frontem i backendem - rozwiązanie nieścisłości,
+* Pomoc członków zespołu.
+
+#### Co wyszło źle
+* Brak otwartości w zespole - nie umiem/nie zrobię/nie wiem,
+* Baza danych powinna była zostać podłączona na początku,
+* Nie cały zespół angażował się w projekt,
+* Brak dokumentacji tasków skończonych,
+* Komunikacja z niektórymi członkami zespołu,
+* Brak słowności i terminowości.
+
+#### Wnioski
+* Trzeba lepiej zorganizować podział pracy,
+* Wyznaczyć terminy na taski,
+* Większa otwartość w proszeniu o pomoc.
