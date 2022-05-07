@@ -3,22 +3,22 @@ import { Button, Col, Row } from "react-bootstrap";
 import styled from "styled-components";
 
 
-// export const Star = styled(FontAwesomeIcon)`
-//   color: #FFD700;
-//   margin-left: 10px;
+export const Star = styled(FontAwesomeIcon)`
+  color: #FFD700;
+  margin-left: 10px;
 
-//   :hover {
-//       opacity: 0.7;
-//       cursor: pointer;
-//   }
+  :hover {
+      opacity: 0.7;
+      cursor: pointer;
+  }
 
-//   &.starred{
-//     background-color: blue;
-//   }
-//   &.unstarred{
-//     background-color: yellow;
-//   }
-// `;
+  &.starred{
+    color: #FFD700;
+  }
+  &.unstarred{
+    color: grey;
+  }
+`;
 
 export const StarPolygon = styled.div`
   position: relative;
@@ -41,7 +41,7 @@ export const StarPolygon = styled.div`
   );
 
   &.starred{
-    background-color: yellow;
+    background-color: #FFD700;
   }
   &.unstarred{
     background-color: grey;
@@ -64,18 +64,22 @@ export const OpenButton = styled(Button)`
 
 export const ForumCol =  styled(Col)`
     padding: 1px;
+    border: 1px solid black;
 
-    &.red{
-      width: 100%;
-      // border: 2px solid red;
+    &.title{
+      max-width: 450px;
     }
-    &.green{
-      width: 80%;
-      // border: 2px solid green;
+    &.num{
+      max-width: 150px;
     }
-    &.yellow{
-      width: 90%;
-      // border: 2px solid yellow;
+    &.username{
+      max-width: 250px;
+    }
+    &.date{
+      max-width: 200px;
+    }
+    &.action{
+      max-width: 150px;
     }
 
 `;

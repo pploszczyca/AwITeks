@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Row } from "react-bootstrap";
 import { ContentContainer } from "../App/AppStyle";
-import { ForumHeader, ForumCol, ForumTile, TableRow, OpenButton, StarPolygon } from "./ForumStyles";
+import { ForumHeader, ForumCol, ForumTile, TableRow, OpenButton, Star} from "./ForumStyles";
+import { faStar as faStarSolid } from '@fortawesome/free-solid-svg-icons';
 
 const mockData = [  ['tytuł tematu 1', '7', 'username1', '2022-01-03'],
                     ['tytuł tematu 2', '14', 'username2', '2022-04-30'],
@@ -14,7 +15,7 @@ const mockData = [  ['tytuł tematu 1', '7', 'username1', '2022-01-03'],
 
 const Forum: React.FC<{}> = () => {
     const headers = ['Tytuł tematu', 'Liczba odpowiedzi', 'Założyciel tematu', 'Data założenia tematu','Akcje'];
-    const classes = ['red','green','red','green','yellow'];
+    const classes = ['title','num','username','date','action'];
     const COLS = Array.from(Array(headers.length).keys());
     const ROWS = Array.from(Array(mockData.length).keys());
 
@@ -39,9 +40,10 @@ const Forum: React.FC<{}> = () => {
         return (
             last === false ? <ForumTile className={name}>{data}</ForumTile> : <ForumTile>
                                                                                 <OpenButton>Otwórz</OpenButton>
-                                                                                <StarPolygon 
+                                                                                <Star icon = {faStarSolid} 
                                                                                     className={isFavourite[rowNum] ? 'starred': 'unstarred'} 
-                                                                                    onClick={() => toggleClass(rowNum)} />
+                                                                                    onClick={() => toggleClass(rowNum)} 
+                                                                                />
                                                                             </ForumTile>
         )
     }
