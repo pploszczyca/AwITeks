@@ -18,7 +18,7 @@ import {ContentContainer} from "../App/AppStyle";
 import {getApis} from "../../api/initializeApis";
 import {useMutation, useQuery, useQueryClient} from "react-query";
 import Loader from "../Loader/Loader";
-import {PlantSummary} from "../../api/models/plant-summary";
+import {PlantSummary} from "../../api";
 import {AddPlantForm} from "../AddPlantForm/AddPlantForm";
 import {sortBy} from "./utils";
 import {SortByTypes} from "./utils";
@@ -44,10 +44,6 @@ const PlantsView: React.FC<{}> = () => {
             queryClient.setQueryData(['plants-summary', plantSummary.id], plantSummary);
         }
     });
-
-    const changeSortType = (newSortType: SortByTypes) => {
-        setSortByType(newSortType)
-    }
 
     if (speciesLoading || plantsLoading) {
         return <Loader />;
@@ -105,10 +101,10 @@ const PlantsView: React.FC<{}> = () => {
                                             color: "#FFF",
                                         }}
                                     >
-                                        <DropdownItem onClick={() => changeSortType(SortByTypes.NO_SORT)}>Brak sortowania</DropdownItem>
-                                        <DropdownItem onClick={() => changeSortType(SortByTypes.SORT_BY_NAME)}>Nazwy</DropdownItem>
-                                        <DropdownItem onClick={() => changeSortType(SortByTypes.SORT_BY_SPECIES_NAME)}>Nazwy Gatunku</DropdownItem>
-                                        <DropdownItem onClick={() => changeSortType(SortByTypes.SORT_BY_FAVOURITE)}>Ulubionych</DropdownItem>
+                                        <DropdownItem onClick={() => setSortByType(SortByTypes.NO_SORT)}>Brak sortowania</DropdownItem>
+                                        <DropdownItem onClick={() => setSortByType(SortByTypes.SORT_BY_NAME)}>Nazwy</DropdownItem>
+                                        <DropdownItem onClick={() => setSortByType(SortByTypes.SORT_BY_SPECIES_NAME)}>Nazwy Gatunku</DropdownItem>
+                                        <DropdownItem onClick={() => setSortByType(SortByTypes.SORT_BY_FAVOURITE)}>Ulubionych</DropdownItem>
                                     </Dropdown>
                                 </div>
                             </Row>
