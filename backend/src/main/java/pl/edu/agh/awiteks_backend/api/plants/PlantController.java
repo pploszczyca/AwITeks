@@ -38,7 +38,7 @@ public class PlantController {
     }
 
     @Operation(summary = "Add new plant, assign it to specifier user and specie",
-               security = @SecurityRequirement(name = JWT_AUTH))
+            security = @SecurityRequirement(name = JWT_AUTH))
     @PostMapping
     @ResponseBody
     public Plant addPlant(JwtAccessToken creatorAccessToken, @RequestBody AddPlantRequestBody plant) {
@@ -71,8 +71,8 @@ public class PlantController {
     }
 
     @Operation(summary = "Get all plants summary", security = @SecurityRequirement(name = JWT_AUTH))
-    @GetMapping(value="/summary")
-    public List<PlantSummary> getAllPlantsSummary(JwtAccessToken accessToken){
+    @GetMapping(value = "/summary")
+    public List<PlantSummary> getAllPlantsSummary(JwtAccessToken accessToken) {
         return plantService.getPlantSummaries(accessToken.getUserId());
     }
 

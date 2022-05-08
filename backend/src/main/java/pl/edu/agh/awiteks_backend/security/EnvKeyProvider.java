@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import pl.edu.agh.awiteks_backend.configs.EnvNames;
 
 @Component
-public class EnvKeyProvider implements KeyProvider{
+public class EnvKeyProvider implements KeyProvider {
     @Value("${" + EnvNames.JWT_SECRET_KEY + "}")
     private String jwtSecretKey;
 

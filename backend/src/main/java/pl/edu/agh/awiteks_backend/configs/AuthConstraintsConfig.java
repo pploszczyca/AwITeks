@@ -14,6 +14,6 @@ public class AuthConstraintsConfig {
                 "/auth/.*",             // auth endpoints
                 "/v3/.*",               // swagger endpoints
                 "/swagger-ui/.*"        // swagger UI
-            );
+        );
     }
 }

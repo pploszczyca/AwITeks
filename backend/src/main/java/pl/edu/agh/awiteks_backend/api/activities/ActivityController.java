@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import pl.edu.agh.awiteks_backend.models.Activity;
 import pl.edu.agh.awiteks_backend.services.ActivityService;
 
-import java.util.List;
-
 import static pl.edu.agh.awiteks_backend.configs.SwaggerConfig.JWT_AUTH;
 
 @RestController

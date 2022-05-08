@@ -38,8 +38,7 @@ public class FilterExceptionHandler extends OncePerRequestFilter {
 
             response.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-        }
-        finally {
+        } finally {
             addCorsHeaders(request, response);
         }
     }
