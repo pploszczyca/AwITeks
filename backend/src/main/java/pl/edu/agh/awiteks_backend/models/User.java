@@ -48,6 +48,8 @@ public class User {
             @Lazy List<ForumPost> forumPostList,
             @Lazy List<ForumThread> forumThreadList) {
         this.username = username;
+        this.email = email;
+        this.password = password;
         this.userPlants = userPlants;
         this.forumPostList = forumPostList;
         this.forumThreadList = forumThreadList;
