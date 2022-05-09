@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Col, Row } from "react-bootstrap";
 import styled from "styled-components";
+import { ContentContainer } from "../App/AppStyle";
 
 
 export const Star = styled(FontAwesomeIcon)`
@@ -27,6 +28,8 @@ export const OpenButton = styled(Button)`
     color: white;
     font-size: 100%;
     border-radius: 2px;
+    justify-content: center;
+
     :hover {
         opacity: 0.9;
         cursor: pointer;
@@ -37,9 +40,13 @@ export const OpenButton = styled(Button)`
 export const ForumCol =  styled(Col)`
     padding: 1px;
     border: 1px solid black;
+    justify-content: center;
+
+    display: flex;
+    min-width: 0;
 
     &.title{
-      max-width: 450px;
+      max-width: 420px;
     }
     &.num{
       max-width: 150px;
@@ -57,13 +64,16 @@ export const ForumCol =  styled(Col)`
 `;
 
 export const ForumRow = styled(Row)`
+  justify-content: center;
   text-align: center;
   width: 100%;
   height: 2.5em;
+  vertical-align: middle;
 `;
 
 export const ForumHeader = styled.div`
-  text-align: center;
+  justify-content: center;
+  vertical-align: middle;
   width: 100%;
   box-shadow: 0 0 7px -3px rgba(0, 0, 0, 1);
   height: 100%;
@@ -73,9 +83,26 @@ export const ForumHeader = styled.div`
 `;
 
 export const ForumTile = styled.div`
-    text-align: center;
-    // width: 100%;
+    // display: flex;
+    // align-items: center;
+    justify-content: center;
+    
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+
+    width: 100%;
     height: 100%;
     box-shadow: 0 0 7px -3px rgba(0, 0, 0, 1);
     background-color: #f5f5f5;
+
+    &.not-last{
+      padding-top: 0.4em;
+    }
+`;
+
+export const ForumContainer = styled(ContentContainer)`
+  // border: 1px solid black;
+  max-width: 1500px;
 `;
