@@ -7,8 +7,11 @@ if [ "$branchname" = "master" ] || [ "$branchname" = "development" ]
 fi
   
 originalmessage=`cat $1`
+
+branch_number=$(echo $branchname | cut -d '-' -f 2)
+commit_prefix=$project_prefix-$branch_number
   
-if [[ $originalmessage == $branchname* ]] || [[ $originalmessage == "[$branchname]"* ]] || [[ $originalmessage == "[$project_prefix"* ]] || [[ $originalmessage == "$project_prefix"* ]] || [[ $originalmessage == "[NT]"* ]]; then
+if [[ $originalmessage == $commit_prefix* ]] || [[ $originalmessage == "[$commit_prefix]"* ]] || [[ $originalmessage == "[$project_prefix"* ]] || [[ $originalmessage == "$project_prefix"* ]] || [[ $originalmessage == "[NT]"* ]]; then
     exit
 fi
-echo "[$branchname] $originalmessage" > $1
+echo "[$commit_prefix] $originalmessage" > $1
