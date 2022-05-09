@@ -38,12 +38,11 @@ public class AuthService {
     }
 
     private User assertValidCredentials(String email, String password) {
-        // TODO throw exception that will return 401 if invalid
         // password is plaintext here
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        return userRepository.findByUsername(email).orElseThrow();
+        return userRepository.findByEmail(email).orElseThrow();
     }
 
     public ResponseEntity<?> registerUser(UserRegisterRequestBody registerRequestBody) {
