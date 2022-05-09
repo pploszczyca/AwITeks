@@ -2,7 +2,7 @@ package pl.edu.agh.awiteks_backend.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.edu.agh.awiteks_backend.api.species.AddSpeciesRequestBody;
+import pl.edu.agh.awiteks_backend.api.species.body_models.AddSpeciesRequestBody;
 import pl.edu.agh.awiteks_backend.models.Species;
 import pl.edu.agh.awiteks_backend.repositories.PlantRepository;
 import pl.edu.agh.awiteks_backend.repositories.SpeciesRepository;

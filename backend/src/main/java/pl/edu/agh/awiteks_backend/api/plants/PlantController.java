@@ -4,6 +4,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import pl.edu.agh.awiteks_backend.api.plants.body_models.AddPlantRequestBody;
+import pl.edu.agh.awiteks_backend.api.plants.body_models.PlantSummary;
+import pl.edu.agh.awiteks_backend.api.plants.body_models.PlantsStats;
 import pl.edu.agh.awiteks_backend.models.Plant;
 import pl.edu.agh.awiteks_backend.security.jwt.JwtAccessToken;
 import pl.edu.agh.awiteks_backend.services.PlantService;
@@ -38,7 +41,7 @@ public class PlantController {
     }
 
     @Operation(summary = "Add new plant, assign it to specifier user and specie",
-               security = @SecurityRequirement(name = JWT_AUTH))
+            security = @SecurityRequirement(name = JWT_AUTH))
     @PostMapping
     @ResponseBody
     public Plant addPlant(JwtAccessToken creatorAccessToken, @RequestBody AddPlantRequestBody plant) {
@@ -71,8 +74,8 @@ public class PlantController {
     }
 
     @Operation(summary = "Get all plants summary", security = @SecurityRequirement(name = JWT_AUTH))
-    @GetMapping(value="/summary")
-    public List<PlantSummary> getAllPlantsSummary(JwtAccessToken accessToken){
+    @GetMapping(value = "/summary")
+    public List<PlantSummary> getAllPlantsSummary(JwtAccessToken accessToken) {
         return plantService.getPlantSummaries(accessToken.getUserId());
     }
 

@@ -13,8 +13,8 @@ public class ActivityService extends ModelService<Activity> {
 
     @Autowired
     public ActivityService(ActivityRepository activityRepository,
-            PlantRepository plantRepository,
-            ListUtilities listUtilities
+                           PlantRepository plantRepository,
+                           ListUtilities listUtilities
     ) {
         super(activityRepository, listUtilities);
         this.plantRepository = plantRepository;

@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
     private static final String JWT_AUTH_PREFIX = "Bearer";
-
     private final TokenService tokenService;
     private final List<Pattern> excludedRoutes;
 
@@ -36,8 +35,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-            throws ServletException, IOException
-    {
+            throws ServletException, IOException {
         if (applies(request)) {
             try {
                 authenticateWithJwt(request);

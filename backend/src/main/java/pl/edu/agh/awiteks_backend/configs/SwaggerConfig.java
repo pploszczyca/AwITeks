@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class SwaggerConfig {
-    public static final String JWT_AUTH =  "JWT_AUTH";
+    public static final String JWT_AUTH = "JWT_AUTH";
 
     @Bean
     public OpenAPI configureApi() {
@@ -18,6 +18,6 @@ public class SwaggerConfig {
                                 .type(SecurityScheme.Type.HTTP)
                                 .scheme("bearer")
                                 .bearerFormat("JWT"))
-                );
+        );
     }
 }

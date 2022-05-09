@@ -2,9 +2,9 @@ package pl.edu.agh.awiteks_backend.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.edu.agh.awiteks_backend.api.plants.AddPlantRequestBody;
-import pl.edu.agh.awiteks_backend.api.plants.PlantSummary;
-import pl.edu.agh.awiteks_backend.api.plants.PlantsStats;
+import pl.edu.agh.awiteks_backend.api.plants.body_models.AddPlantRequestBody;
+import pl.edu.agh.awiteks_backend.api.plants.body_models.PlantSummary;
+import pl.edu.agh.awiteks_backend.api.plants.body_models.PlantsStats;
 import pl.edu.agh.awiteks_backend.mappers.PlantMapper;
 import pl.edu.agh.awiteks_backend.models.Plant;
 import pl.edu.agh.awiteks_backend.models.User;

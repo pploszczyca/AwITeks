@@ -1,6 +1,6 @@
 package pl.edu.agh.awiteks_backend.mappers;
 
-import pl.edu.agh.awiteks_backend.api.plants.PlantSummary;
+import pl.edu.agh.awiteks_backend.api.plants.body_models.PlantSummary;
 import pl.edu.agh.awiteks_backend.models.Plant;
 
 public class PlantMapper {
