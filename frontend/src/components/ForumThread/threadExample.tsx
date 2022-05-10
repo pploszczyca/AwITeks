@@ -71,7 +71,9 @@ export const Threads: Array<ForumThread> = [
                 date: "2021-10-10"
             }
         ],
-        title: "Jak często podlewać kaktusa?"
+        title: "Jak często podlewać kaktusa?",
+        isFavourite: false,
+        dateCreated: new Date("2019-01-16")
     },
     {
         id: 2,
@@ -108,7 +110,9 @@ export const Threads: Array<ForumThread> = [
                 date: "2021-10-10"
             }
         ],
-        title: "Ile słońca potrzebuje paprotka?"
+        title: "Ile słońca potrzebuje paprotka?",
+        isFavourite: false,
+        dateCreated: new Date("2019-01-16")
     }
 ]
 
