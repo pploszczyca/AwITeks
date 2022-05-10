@@ -4,5 +4,6 @@ export const PageRoutes = {
     MY_PLANTS: '/my-plants',
     CALENDAR: '/calendar',
     FORUM: '/forum',
-    SETTINGS: '/settings'
+    SETTINGS: '/settings',
+    FORUM_THREAD: '/forum/thread'
 };
