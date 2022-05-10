@@ -28,16 +28,14 @@ public class PlantController {
 
     @Operation(summary = "Get all plants", security = @SecurityRequirement(name = JWT_AUTH))
     @GetMapping(produces = "application/json")
-    public List<Plant> getAllPlants() {
-        // TODO see note in UserController
-        return plantService.getAll();
+    public List<Plant> getAllPlants(JwtAccessToken jwtAccessToken) {
+        return plantService.getAll(jwtAccessToken.getUserId());
     }
 
     @Operation(summary = "Get plant by id", security = @SecurityRequirement(name = JWT_AUTH))
     @GetMapping(value = "/{id}", produces = "application/json")
-    public Optional<Plant> getPlant(@PathVariable int id) {
-        // TODO validate ownership
-        return plantService.get(id);
+    public Optional<Plant> getPlant(JwtAccessToken jwtAccessToken, @PathVariable int id) {
+        return plantService.get(id, jwtAccessToken.getUserId());
     }
 
     @Operation(summary = "Add new plant, assign it to specifier user and specie",
@@ -51,9 +49,8 @@ public class PlantController {
     @Operation(summary = "Changing Favourite flag in plant", security = @SecurityRequirement(name = JWT_AUTH))
     @PutMapping(path = "/{plantId}/toggle-favourite")
     @ResponseBody
-    public void togglePlantFavourite(@PathVariable int plantId) {
-        // TODO validate ownership
-        plantService.changeFavourite(plantId);
+    public void togglePlantFavourite(JwtAccessToken jwtAccessToken, @PathVariable int plantId) {
+        plantService.changeFavourite(plantId, jwtAccessToken.getUserId());
     }
 
 
@@ -68,9 +65,8 @@ public class PlantController {
 
     @Operation(summary = "Delete plant by id", security = @SecurityRequirement(name = JWT_AUTH))
     @DeleteMapping(value = "/{id}")
-    public void removePlant(@PathVariable int id) {
-        // TODO validate ownership
-        plantService.remove(id);
+    public void removePlant(JwtAccessToken accessToken, @PathVariable int id) {
+        plantService.remove(id, accessToken.getUserId());
     }
 
     @Operation(summary = "Get all plants summary", security = @SecurityRequirement(name = JWT_AUTH))
