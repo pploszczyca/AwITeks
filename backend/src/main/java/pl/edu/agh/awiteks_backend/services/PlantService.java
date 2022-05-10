@@ -60,7 +60,7 @@ public class PlantService {
     }
 
     public void remove(int id, int userId) {
-        if(plantRepository.existsByIdAndUserId(id, userId)) {
+        if (plantRepository.existsByIdAndUserId(id, userId)) {
             removePlantFromUserList(id);
             this.plantRepository.deleteById(id);
         }
@@ -99,9 +99,7 @@ public class PlantService {
 
     private List<Plant> getUsersPlants(int userId) {
         // TODO maybe create custom exception
-        return userRepository.findById(userId)
-                .map(User::getUserPlants)
-                .orElseThrow(() -> new IllegalArgumentException("no such user"));
+        return listUtilities.iterableToList(plantRepository.findAllByUserId(userId));
     }
 
     public List<PlantSummary> getPlantSummaries(int userId) {

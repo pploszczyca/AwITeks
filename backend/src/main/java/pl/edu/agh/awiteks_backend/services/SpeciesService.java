@@ -4,18 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.edu.agh.awiteks_backend.api.species.body_models.AddSpeciesRequestBody;
 import pl.edu.agh.awiteks_backend.models.Species;
-import pl.edu.agh.awiteks_backend.repositories.PlantRepository;
 import pl.edu.agh.awiteks_backend.repositories.SpeciesRepository;
-import pl.edu.agh.awiteks_backend.utilities.ListUtilities;
 import pl.edu.agh.awiteks_backend.utilities.StreamUtilities;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
-public class SpeciesService{
+public class SpeciesService {
     private final SpeciesRepository speciesRepository;
     private final StreamUtilities streamUtilities;
 

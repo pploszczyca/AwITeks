@@ -9,5 +9,6 @@ public interface PlantRepository extends CrudRepository<Plant, Integer> {
     Optional<Plant> findByIdAndUserId(int id, int userId);
 
     Iterable<Plant> findAllByUserId(int userId);
+
     Boolean existsByIdAndUserId(int id, int userId);
 }

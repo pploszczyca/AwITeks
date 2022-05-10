@@ -7,5 +7,6 @@ import java.util.Optional;
 
 public interface SpeciesRepository extends CrudRepository<Species, Integer> {
     Optional<Species> findByIdAndCreatorId(int id, int creatorId);
+
     Boolean existsByIdAndCreatorId(int id, int creatorId);
 }
