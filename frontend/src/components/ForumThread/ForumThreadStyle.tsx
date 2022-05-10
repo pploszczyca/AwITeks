@@ -6,6 +6,8 @@ export const ThreadInfo = styled(Row)`
   color: white;
   border-radius: 10px;
   padding: 10px;
+  margin-left: 0;
+  margin-right: 0;
   
   & p{
     text-align: center;
@@ -23,7 +25,7 @@ export const ChatWindow = styled.div`
   border-radius: 10px;
   border: 1px black solid;
   padding: 0 20px 20px 20px;
-  max-height: 70vh;
+  //max-height: 70vh;
 `;
 
 export const PostDetails = styled.p`
@@ -61,5 +63,11 @@ export const SendButton = styled.button`
   
   &:hover{
     background-color: #008F8C;
+  }
+
+  @media(max-width: 767px){
+    margin-bottom: 100px;
+    top: 0;
+    transform: none;
   }
 `;

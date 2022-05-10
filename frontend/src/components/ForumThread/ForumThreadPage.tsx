@@ -41,7 +41,7 @@ const ForumThreadPage: React.FC<{}> = () => {
         } else{
             setThread(getThread(+threadId))
         }
-    }, [])
+    }, [navigate, threadId])
 
     return(
      <ContentContainer>
