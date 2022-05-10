@@ -7,7 +7,6 @@ import pl.edu.agh.awiteks_backend.api.plants.body_models.PlantSummary;
 import pl.edu.agh.awiteks_backend.api.plants.body_models.PlantsStats;
 import pl.edu.agh.awiteks_backend.mappers.PlantMapper;
 import pl.edu.agh.awiteks_backend.models.Plant;
-import pl.edu.agh.awiteks_backend.models.User;
 import pl.edu.agh.awiteks_backend.repositories.PlantRepository;
 import pl.edu.agh.awiteks_backend.repositories.SpeciesRepository;
 import pl.edu.agh.awiteks_backend.repositories.UserRepository;
