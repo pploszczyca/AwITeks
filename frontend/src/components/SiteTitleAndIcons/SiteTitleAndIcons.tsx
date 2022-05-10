@@ -20,6 +20,9 @@ function getTitle(path: string) {
     else if (path.startsWith("/my-plants/")) {
         return "Szczegóły rośliny";
     }
+    else if(path.startsWith("forum/thread/")){
+        return "Dyskusja";
+    }
 }
 
 function SiteTitleAndIcons() {
