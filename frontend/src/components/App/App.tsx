@@ -17,6 +17,7 @@ import { Role } from '../../utils/roles';
 import { PageRoutes } from '../../utils/constants';
 import { queryClient } from '../../Store/store';
 import ForumThreadPage from "../ForumThread/ForumThreadPage";
+import Forum from "../Forum/Forum"
 
 
 function App() {
@@ -36,7 +37,8 @@ function App() {
                                 <Route path={PageRoutes.MY_PLANTS} element={<PageGuard role={Role.LOGGED_IN}><PlantsView /></PageGuard>} />
                                 <Route path={PageRoutes.CALENDAR} element={<PageGuard role={Role.LOGGED_IN}><Calendar /></PageGuard>} />
                                 <Route path={`${PageRoutes.MY_PLANTS}/:plantId`} element={<PageGuard role={Role.LOGGED_IN}><PlantDetailsView /></PageGuard>} />
-
+                                <Route path={PageRoutes.FORUM} element={<PageGuard role={Role.LOGGED_IN}><Forum/></PageGuard>} />
+                                
                                 {/*TODO: add PageGuard*/}
                                 <Route path={`${PageRoutes.FORUM_THREAD}/:threadId`} element={<ForumThreadPage/>}/>
 
