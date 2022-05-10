@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {ContentContainer} from "../App/AppStyle";
 import {ChatWindow, PostContent, PostDetails, SendButton, SenderArea, ThreadInfo} from "./ForumThreadStyle";
 import {useNavigate, useParams} from "react-router-dom";
@@ -14,10 +14,8 @@ function getThread(id: number){
 }
 
 
-function fitAreaToContent(){
+function fitAreaToContent(text: HTMLTextAreaElement, row: HTMLDivElement){
     const maxHeight = 300; // px
-    let text = document.getElementById('text-field')!;
-    let row = document.getElementById('send-elements')!;
 
     text.style.height = "0";
     text.style.height = Math.min(text.scrollHeight, maxHeight) + "px";
@@ -34,6 +32,8 @@ const ForumThreadPage: React.FC<{}> = () => {
     const navigate = useNavigate();
     const { threadId } = useParams();
     const [thread, setThread] = useState<ForumThread>();
+    const textFieldRef: React.RefObject<HTMLTextAreaElement> = useRef(null);
+    const sendRow: React.RefObject<HTMLDivElement> = useRef(null);
 
     useEffect(() => {
         if (threadId == null) {
@@ -64,9 +64,10 @@ const ForumThreadPage: React.FC<{}> = () => {
                      ))}
                  </ChatWindow>
 
-                 <Row id='send-elements' style={{height: 45}}>
+                 <Row ref={sendRow} style={{height: 45}}>
                      <Col lg={10} className="h-100 mt-2">
-                        <SenderArea id='text-field' onInput={() => fitAreaToContent()}/>
+                        <SenderArea ref={textFieldRef}
+                                    onInput={() => fitAreaToContent(textFieldRef.current!, sendRow.current!)}/>
                      </Col>
                      <Col lg={2} className="mt-2">
                         <SendButton>Wyślij</SendButton>
