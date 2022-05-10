@@ -33,7 +33,6 @@ const Forum: React.FC<{}> = () => {
     let mockData = Array.from(Array(10).keys()).map(idx => getMockThread(idx));
    
     const COLS = Array.from(Array(headers.length).keys());
-    const ROWS = Array.from(Array(mockData.length).keys());
 
     const [isFavourite, setFavourite] = useState(mockData.map(elem => elem.isFavourite));
 
@@ -41,35 +40,6 @@ const Forum: React.FC<{}> = () => {
         mockData[idx].isFavourite = !mockData[idx].isFavourite;
         setFavourite(isFavourite.map((element, currIdx) => currIdx===idx ? !element : element));
     };
-
-    function getData(rowNum: number, colNum: number){
-        var data;
-        switch(colNum){
-            case 0: {
-                data = mockData[rowNum].title;
-                break;
-            }
-            case 1: {
-                data = mockData[rowNum].forumPosts.length;
-                break;
-            }
-            case 2: {
-                data = mockData[rowNum].creator.username;
-                break;
-            }
-            case 3: {
-                let date = mockData[rowNum].dateCreated;
-                data = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
-                break;
-            }
-            default: {
-                data = "---";
-                break;
-            }
-                
-        }
-        return data;
-    }
 
     function getHeaderRow(){
         return(
@@ -81,31 +51,32 @@ const Forum: React.FC<{}> = () => {
         )
     }
 
-    function getTableElem(rowNum: number, colNum: number) {
-        let data = getData(rowNum, colNum);
-        let last = (colNum === (headers.length-1));
-        return (
-            last === false ? 
-                <ForumTile key={rowNum+'.'+colNum} className='not-last'>{data}</ForumTile>  //className={name}
-                : 
-                <ForumTile key={rowNum+'.'+colNum}>
-                    <OpenButton>Otwórz</OpenButton>
-                    <Star icon = {faStarSolid} 
-                        className={isFavourite[rowNum] ? 'starred': 'unstarred'} 
-                        onClick={() => toggleFavourite(rowNum)} 
-                    />
-                </ForumTile>
-        )
-    }
-
-    function getThread(rowNum: number){
+    function getThread(thread: ForumThread, idx: number){
         return(
-            <ForumRow key={rowNum} className="m-0">
-                {COLS.map(colNum => (
-                    <ForumCol key={rowNum+'.'+colNum} className={classes[colNum]}>
-                        {getTableElem(rowNum, colNum)}
-                    </ForumCol>
-                ))}
+            <ForumRow key={thread.id} className="m-0">
+                <ForumCol  className='title'>
+                    <ForumTile className='not-last'>{thread.title}</ForumTile>
+                </ForumCol>
+                <ForumCol  className='num'>
+                    <ForumTile className='not-last'>{thread.forumPosts.length}</ForumTile>
+                </ForumCol>
+                <ForumCol  className='username'>
+                    <ForumTile className='not-last'>{thread.creator.username}</ForumTile>
+                </ForumCol>
+                <ForumCol  className='date'>
+                    <ForumTile className='not-last'>
+                        {thread.dateCreated.getFullYear()+"-"+(thread.dateCreated.getMonth()+1)+"-"+thread.dateCreated.getDate()}
+                    </ForumTile>
+                </ForumCol>
+                <ForumCol  className='action'>
+                    <ForumTile>
+                        <OpenButton>Otwórz</OpenButton>
+                        <Star icon = {faStarSolid} 
+                            className={isFavourite[idx] ? 'starred': 'unstarred'} 
+                            onClick={() => toggleFavourite(idx)} 
+                        />
+                    </ForumTile>
+                </ForumCol>
             </ForumRow>
         )
     }
@@ -114,7 +85,7 @@ const Forum: React.FC<{}> = () => {
         <ForumContainer>
             <Row className="mt-5">
                     {getHeaderRow()}
-                    {ROWS.map(idx => getThread(idx))}
+                    {mockData.map((thread,idx) => getThread(thread, idx))}
             </Row>
         </ForumContainer>
     )
