@@ -3,11 +3,12 @@ import { ErrorMessage, Formik, Field } from "formik";
 import { Button, Col, Form, Row, Spinner } from "react-bootstrap";
 import { FormContainer } from "../styles/FormStyle";
 import { validateEmail } from "../validators";
-import { useAppDispatch } from "../../../Store/store";
+import { useAppDispatch, useAppSelector } from "../../../Store/store";
 import { login } from "../../../Store/features/auth/authSlice";
 
 const LoginPage: React.FC<{}> = () => {
     const dispatch = useAppDispatch();
+    const { isFetching } = useAppSelector(state => state.auth);
 
     return (
         <Formik
@@ -21,7 +22,7 @@ const LoginPage: React.FC<{}> = () => {
             onSubmit={(values, { setSubmitting }) => {
             }}
         >
-            {({ isSubmitting, setSubmitting, values }) => (
+            {({ values }) => (
                 <Form>
                     <FormContainer className="mt-2 p-5">
                         <Row className='justify-content-center'>
@@ -46,16 +47,13 @@ const LoginPage: React.FC<{}> = () => {
                         <Row className="mt-4 d-flex justify-content-center">
                             <Col sm={12} className="d-flex justify-content-center mb-2">
                                 <Button
-                                    disabled={isSubmitting}
+                                    disabled={isFetching}
                                     style={{ minWidth: 100, backgroundColor: '#023535', border: 'none' }}
-                                    onClick={async () => {
-                                        setSubmitting(true);
-                                        console.log(values);
+                                    onClick={() => {
                                         dispatch(login(values));
-                                        setSubmitting(false);
                                     }}
                                 >
-                                    {isSubmitting ?
+                                    {isFetching ?
                                         <Spinner
                                             as="span"
                                             animation="border"

@@ -8,14 +8,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import pl.edu.agh.awiteks_backend.api.auth.body_models.AuthData;
-import pl.edu.agh.awiteks_backend.api.auth.body_models.BadRegisterData;
-import pl.edu.agh.awiteks_backend.api.auth.body_models.UserLoginRequestBody;
-import pl.edu.agh.awiteks_backend.api.auth.body_models.UserRegisterRequestBody;
+import pl.edu.agh.awiteks_backend.api.auth.body_models.*;
 import pl.edu.agh.awiteks_backend.models.User;
 import pl.edu.agh.awiteks_backend.repositories.UserRepository;
 import pl.edu.agh.awiteks_backend.security.jwt.JwtAccessToken;
 import pl.edu.agh.awiteks_backend.security.jwt.TokenService;
+
+import java.util.List;
 
 @Service
 public class AuthService {
@@ -32,9 +31,14 @@ public class AuthService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public AuthData authenticateUser(UserLoginRequestBody userLoginRequest) {
-        User user = assertValidCredentials(userLoginRequest.email(), userLoginRequest.password());
-        return createTokenFromUser(user);
+    public AuthResponse authenticateUser(UserLoginRequestBody userLoginRequest) {
+        try {
+            User user = assertValidCredentials(userLoginRequest.email(), userLoginRequest.password());
+            return AuthResponse.withOkStatus(createTokenFromUser(user));
+        } catch (Exception exception) {
+            // maybe make it more sophisticated (especially if exception may have no user-friendly msg)
+            return AuthResponse.withErrors(List.of(exception.getMessage()));
+        }
     }
 
     private User assertValidCredentials(String email, String password) {
@@ -45,17 +49,15 @@ public class AuthService {
         return userRepository.findByEmail(email).orElseThrow();
     }
 
-    public ResponseEntity<?> registerUser(UserRegisterRequestBody registerRequestBody) {
+    public AuthResponse registerUser(UserRegisterRequestBody registerRequestBody) {
         if (isUserAlreadyRegistered(registerRequestBody)) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new BadRegisterData("User already exist"));
+            return AuthResponse.withErrors(List.of("user already exists"));
         }
 
         User newUser = createNewUser(registerRequestBody);
         userRepository.save(newUser);
 
-        return ResponseEntity.ok(createTokenFromUser(newUser));
+        return AuthResponse.withOkStatus(createTokenFromUser(newUser));
     }
 
     private AuthData createTokenFromUser(User user) {

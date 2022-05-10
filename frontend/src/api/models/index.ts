@@ -2,6 +2,7 @@ export * from './activity';
 export * from './add-plant-request-body';
 export * from './add-species-request-body';
 export * from './auth-data';
+export * from './auth-response';
 export * from './forum-post';
 export * from './forum-thread';
 export * from './plant';
