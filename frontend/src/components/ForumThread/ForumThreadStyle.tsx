@@ -25,7 +25,8 @@ export const ChatWindow = styled.div`
   border-radius: 10px;
   border: 1px black solid;
   padding: 0 20px 20px 20px;
-  //max-height: 70vh;
+  max-height: 70vh;
+  overflow-y: scroll;
 `;
 
 export const PostDetails = styled.p`
