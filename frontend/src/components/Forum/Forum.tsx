@@ -100,9 +100,9 @@ const Forum: React.FC<{}> = () => {
 
     function getThread(rowNum: number){
         return(
-            <ForumRow className="m-0">
+            <ForumRow key={rowNum} className="m-0">
                 {COLS.map(colNum => (
-                    <ForumCol key={colNum} className={classes[colNum]}>
+                    <ForumCol key={rowNum+'.'+colNum} className={classes[colNum]}>
                         {getTableElem(rowNum, colNum)}
                     </ForumCol>
                 ))}
