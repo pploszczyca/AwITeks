@@ -128,7 +128,7 @@ public class PlantService {
     }
 
     private Plant makePlantFromRequestBody(AddPlantRequestBody addPlantRequestBody, int userId) {
-        var species = speciesRepository.findById(addPlantRequestBody.speciesId()).orElseThrow();
+        var species = speciesRepository.findByIdAndCreatorId(addPlantRequestBody.speciesId(), userId).orElseThrow();
         var user = userRepository.findById(userId).orElseThrow();
 
         return new Plant(

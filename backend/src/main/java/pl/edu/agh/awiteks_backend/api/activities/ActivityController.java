@@ -22,13 +22,13 @@ public class ActivityController {
 
     @Operation(summary = "Add new activity to plant", security = @SecurityRequirement(name = JWT_AUTH))
     @PostMapping("/{plantID}")
-    public void addActivity(@RequestBody Activity activity, @PathVariable int plantID, JwtAccessToken jwtAccessToken) {
+    public void addActivity(JwtAccessToken jwtAccessToken, @RequestBody Activity activity, @PathVariable int plantID) {
         activityService.add(activity, plantID, jwtAccessToken.getUserId());
     }
 
     @Operation(summary = "Delete activity", security = @SecurityRequirement(name = JWT_AUTH))
     @DeleteMapping("/{plantId}/{activityId}")
-    public void removeActivity(@PathVariable int plantId, @PathVariable int activityId, JwtAccessToken jwtAccessToken) {
+    public void removeActivity(JwtAccessToken jwtAccessToken, @PathVariable int plantId, @PathVariable int activityId) {
         activityService.remove(plantId, activityId, jwtAccessToken.getUserId());
     }
 
