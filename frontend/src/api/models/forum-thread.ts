@@ -46,5 +46,17 @@ export interface ForumThread {
      * @memberof ForumThread
      */
     'forumPosts': Array<ForumPost>;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof ForumThread
+     */
+     'isFavourite': boolean;
+     /**
+     * 
+     * @type {Date}
+     * @memberof ForumThread
+     */
+      'dateCreated': Date;
 }
 
