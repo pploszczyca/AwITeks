@@ -6,7 +6,7 @@ import {PageRoutes} from "../../utils/constants";
 import {Threads} from "./threadExample";
 import {ForumThread} from "../../api";
 import Loader from "../Loader/Loader";
-import {Button, Col, Row} from "react-bootstrap";
+import {Col, Row} from "react-bootstrap";
 
 
 function getThread(id: number){
@@ -41,11 +41,11 @@ const ForumThreadPage: React.FC<{}> = () => {
         } else{
             setThread(getThread(+threadId))
         }
-    })
+    }, [])
 
     return(
      <ContentContainer>
-         {thread == undefined ? (
+         {thread === undefined ? (
              <Loader/>
          ) : (
              <>
