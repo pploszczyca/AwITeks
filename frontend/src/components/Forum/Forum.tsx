@@ -31,7 +31,6 @@ const Forum: React.FC<{}> = () => {
     const classes = ['title','num','username','date','action'];
 
     let mockData = Array.from(Array(10).keys()).map(idx => getMockThread(idx));
-    console.log("mock data: "+mockData[0].dateCreated);
    
     const COLS = Array.from(Array(headers.length).keys());
     const ROWS = Array.from(Array(mockData.length).keys());
@@ -75,8 +74,8 @@ const Forum: React.FC<{}> = () => {
     function getHeaderRow(){
         return(
             <ForumRow  className="m-0">
-                {COLS.map(idx => (<ForumCol key={idx.toString()} className={classes[idx]}>
-                                    <ForumHeader className={classes[idx]}>{headers[idx]}</ForumHeader>
+                {COLS.map(idx => (<ForumCol key={idx} className={classes[idx]}>
+                                    <ForumHeader key={idx} className={classes[idx]}>{headers[idx]}</ForumHeader>
                                 </ForumCol>))}
             </ForumRow>
         )
@@ -87,9 +86,9 @@ const Forum: React.FC<{}> = () => {
         let last = (colNum === (headers.length-1));
         return (
             last === false ? 
-                <ForumTile  key="colNum" className='not-last'>{data}</ForumTile>  //className={name}
+                <ForumTile key={rowNum+'.'+colNum} className='not-last'>{data}</ForumTile>  //className={name}
                 : 
-                <ForumTile>
+                <ForumTile key={rowNum+'.'+colNum}>
                     <OpenButton>Otwórz</OpenButton>
                     <Star icon = {faStarSolid} 
                         className={isFavourite[rowNum] ? 'starred': 'unstarred'} 
@@ -101,9 +100,9 @@ const Forum: React.FC<{}> = () => {
 
     function getThread(rowNum: number){
         return(
-            <ForumRow className="m-0" key={rowNum}>
+            <ForumRow className="m-0">
                 {COLS.map(colNum => (
-                    <ForumCol className={classes[colNum]}>
+                    <ForumCol key={colNum} className={classes[colNum]}>
                         {getTableElem(rowNum, colNum)}
                     </ForumCol>
                 ))}
