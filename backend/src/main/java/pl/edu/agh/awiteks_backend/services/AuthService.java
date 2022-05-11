@@ -1,7 +1,6 @@
 package pl.edu.agh.awiteks_backend.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -14,6 +13,7 @@ import pl.edu.agh.awiteks_backend.repositories.UserRepository;
 import pl.edu.agh.awiteks_backend.security.jwt.JwtAccessToken;
 import pl.edu.agh.awiteks_backend.security.jwt.TokenService;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -74,6 +74,9 @@ public class AuthService {
         return new User(
                 registerRequestBody.username(),
                 registerRequestBody.email(),
-                passwordEncoder.encode(registerRequestBody.password()));
+                passwordEncoder.encode(registerRequestBody.password()),
+                new LinkedList<>(),
+                new LinkedList<>(),
+                new LinkedList<>());
     }
 }

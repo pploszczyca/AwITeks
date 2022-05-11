@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.context.annotation.Lazy;
 
 import javax.persistence.*;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 @Entity
@@ -56,7 +56,7 @@ public class User {
     }
 
     public User(String username, String email, String password) {
-        this(username, email, password, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        this(username, email, password, new LinkedList<>(), new LinkedList<>(), new LinkedList<>());
     }
 
     public User() {

@@ -26,16 +26,14 @@ public class SpeciesController {
 
     @Operation(summary = "Get all species", security = @SecurityRequirement(name = JWT_AUTH))
     @GetMapping(produces = "application/json")
-    public List<Species> getAllSpecies(JwtAccessToken accessToken) {
-        // TODO validate ownership
-        return speciesService.getAll();
+    public List<Species> getAllSpecies(JwtAccessToken jwtAccessToken) {
+        return speciesService.getAll(jwtAccessToken.getUserId());
     }
 
     @Operation(summary = "Get specific specie by id", security = @SecurityRequirement(name = JWT_AUTH))
     @GetMapping(value = "/{id}", produces = "application/json")
-    public Optional<Species> getSpecies(@PathVariable int id) {
-        // TODO validate ownership
-        return speciesService.get(id);
+    public Optional<Species> getSpecies(JwtAccessToken jwtAccessToken, @PathVariable int id) {
+        return speciesService.get(id, jwtAccessToken.getUserId());
     }
 
     @Operation(summary = "Add new species", security = @SecurityRequirement(name = JWT_AUTH))
@@ -47,15 +45,13 @@ public class SpeciesController {
 
     @Operation(summary = "Update specie", security = @SecurityRequirement(name = JWT_AUTH))
     @PutMapping(consumes = "application/json")
-    public void updateSpecies(@RequestBody Species species) {
-        // TODO validate ownership
-        speciesService.update(species);
+    public void updateSpecies(JwtAccessToken jwtAccessToken, @RequestBody Species species) {
+        speciesService.update(species, jwtAccessToken.getUserId());
     }
 
     @Operation(summary = "Delete specie by id", security = @SecurityRequirement(name = JWT_AUTH))
     @DeleteMapping(value = "/{id}")
-    public void removeSpecies(@PathVariable int id) {
-        // TODO validate ownership
-        speciesService.remove(id);
+    public void removeSpecies(JwtAccessToken jwtAccessToken, @PathVariable int id) {
+        speciesService.remove(id, jwtAccessToken.getUserId());
     }
 }
