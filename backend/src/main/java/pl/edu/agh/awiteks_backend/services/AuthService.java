@@ -17,6 +17,8 @@ import pl.edu.agh.awiteks_backend.repositories.UserRepository;
 import pl.edu.agh.awiteks_backend.security.jwt.JwtAccessToken;
 import pl.edu.agh.awiteks_backend.security.jwt.TokenService;
 
+import java.util.LinkedList;
+
 @Service
 public class AuthService {
     private final TokenService tokenService;
@@ -72,6 +74,9 @@ public class AuthService {
         return new User(
                 registerRequestBody.username(),
                 registerRequestBody.email(),
-                passwordEncoder.encode(registerRequestBody.password()));
+                passwordEncoder.encode(registerRequestBody.password()),
+                new LinkedList<>(),
+                new LinkedList<>(),
+                new LinkedList<>());
     }
 }

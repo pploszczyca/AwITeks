@@ -10,7 +10,7 @@ import java.util.List;
 @Table(name = "species")
 @JsonIgnoreProperties({"plantList"})
 public class Species {
-    private static final int NO_CREATOR = -1;
+    public static final int NO_CREATOR = -1;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Schema(required = true)

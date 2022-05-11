@@ -20,9 +20,9 @@ public class ActivityService extends ModelService<Activity> {
         this.plantRepository = plantRepository;
     }
 
-    public void add(Activity activity, int plantId) {
+    public void add(Activity activity, int plantId, int userId) {
         plantRepository
-                .findById(plantId)
+                .findByIdAndUserId(plantId, userId)
                 .ifPresent(presentPlant -> {
                     presentPlant.addActivity(activity);
                     activity.setPlant(presentPlant);
@@ -30,10 +30,10 @@ public class ActivityService extends ModelService<Activity> {
                 });
     }
 
-    public void remove(int plantId, int activityId) {
+    public void remove(int plantId, int activityId, int userId) {
         this.remove(activityId);
         plantRepository
-                .findById(plantId)
+                .findByIdAndUserId(plantId, userId)
                 .ifPresent(plant -> plant.removeActivity(activityId));
     }
 }

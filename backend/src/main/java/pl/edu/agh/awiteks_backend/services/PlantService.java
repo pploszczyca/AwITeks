@@ -7,7 +7,6 @@ import pl.edu.agh.awiteks_backend.api.plants.body_models.PlantSummary;
 import pl.edu.agh.awiteks_backend.api.plants.body_models.PlantsStats;
 import pl.edu.agh.awiteks_backend.mappers.PlantMapper;
 import pl.edu.agh.awiteks_backend.models.Plant;
-import pl.edu.agh.awiteks_backend.models.User;
 import pl.edu.agh.awiteks_backend.repositories.PlantRepository;
 import pl.edu.agh.awiteks_backend.repositories.SpeciesRepository;
 import pl.edu.agh.awiteks_backend.repositories.UserRepository;
@@ -15,10 +14,15 @@ import pl.edu.agh.awiteks_backend.utilities.ListUtilities;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class PlantService extends ModelService<Plant> {
+public class PlantService {
+
+    private final PlantRepository plantRepository;
+
+    private final ListUtilities listUtilities;
 
     private final UserRepository userRepository;
 
@@ -30,45 +34,47 @@ public class PlantService extends ModelService<Plant> {
                         SpeciesRepository speciesRepository,
                         ListUtilities listUtilities
     ) {
-        super(modelRepository, listUtilities);
+        this.plantRepository = modelRepository;
+        this.listUtilities = listUtilities;
         this.userRepository = userRepository;
         this.speciesRepository = speciesRepository;
     }
 
     public Plant addPlant(AddPlantRequestBody addPlantRequestBody, int userId) {
         // TODO custom exceptions, rewrite this once DB is ready
-        var species = speciesRepository.findById(addPlantRequestBody.speciesId()).orElseThrow();
-        var user = userRepository.findById(userId).orElseThrow();
-
-        var plant = new Plant(
-                addPlantRequestBody.name(),
-                user,
-                species,
-                addPlantRequestBody.note(),
-                addPlantRequestBody.insolation(),
-                new LinkedList<>(),
-                false,
-                "https://netscroll.pl/wp-content/uploads/2021/10/CactusToy1.jpg");
+        var plant = makePlantFromRequestBody(addPlantRequestBody, userId);
 
         addPlantToUserList(plant, userId);
-        add(plant);
+        plantRepository.save(plant);
 
         return plant;
     }
 
-    @Override
-    public void remove(int id) {
-        removePlantFromUserList(id);
-        super.remove(id);
+    public List<Plant> getAll(int userId) {
+        return this.listUtilities.iterableToList(plantRepository.findAllByUserId(userId));
     }
 
-    public void changeFavourite(int plantId) {
-        this.get(plantId).ifPresent(
-                plant -> {
-                    plant.setFavourite(!plant.isFavourite());
-                    update(plant);
-                }
-        );
+    public Optional<Plant> get(int id, int userId) {
+        return this.plantRepository.findByIdAndUserId(id, userId);
+    }
+
+    public void remove(int id, int userId) {
+        if (plantRepository.existsByIdAndUserId(id, userId)) {
+            removePlantFromUserList(id);
+            this.plantRepository.deleteById(id);
+        }
+
+    }
+
+    public void changeFavourite(int plantId, int userId) {
+        this.plantRepository
+                .findByIdAndUserId(plantId, userId)
+                .ifPresent(
+                        plant -> {
+                            plant.setFavourite(!plant.isFavourite());
+                            this.plantRepository.save(plant);
+                        }
+                );
     }
 
     private void addPlantToUserList(Plant plant, int userId) {
@@ -81,18 +87,18 @@ public class PlantService extends ModelService<Plant> {
     }
 
     private void removePlantFromUserList(int id) {
-        super.get(id).ifPresent(presentPlant ->
-                presentPlant
-                        .getUser()
-                        .removePlant(presentPlant)
-        );
+        this.plantRepository
+                .findById(id)
+                .ifPresent(presentPlant ->
+                        presentPlant
+                                .getUser()
+                                .removePlant(presentPlant)
+                );
     }
 
     private List<Plant> getUsersPlants(int userId) {
         // TODO maybe create custom exception
-        return userRepository.findById(userId)
-                .map(User::getUserPlants)
-                .orElseThrow(() -> new IllegalArgumentException("no such user"));
+        return listUtilities.iterableToList(plantRepository.findAllByUserId(userId));
     }
 
     public List<PlantSummary> getPlantSummaries(int userId) {
@@ -110,8 +116,27 @@ public class PlantService extends ModelService<Plant> {
     }
 
     public Plant updatePlant(AddPlantRequestBody addPlantRequestBody, int plantId, int userId) {
-        // TODO assert that the plant belongs to that user
-        // TODO update plant based on the request data (overwrite all)
-        return get(plantId).orElseThrow();
+        var plant = makePlantFromRequestBody(addPlantRequestBody, userId);
+        plant.setId(plantId);
+
+        plantRepository.save(plant);
+
+        return plant;
     }
+
+    private Plant makePlantFromRequestBody(AddPlantRequestBody addPlantRequestBody, int userId) {
+        var species = speciesRepository.findByIdAndCreatorId(addPlantRequestBody.speciesId(), userId).orElseThrow();
+        var user = userRepository.findById(userId).orElseThrow();
+
+        return new Plant(
+                addPlantRequestBody.name(),
+                user,
+                species,
+                addPlantRequestBody.note(),
+                addPlantRequestBody.insolation(),
+                new LinkedList<>(),
+                false,
+                "https://netscroll.pl/wp-content/uploads/2021/10/CactusToy1.jpg");
+    }
+
 }
