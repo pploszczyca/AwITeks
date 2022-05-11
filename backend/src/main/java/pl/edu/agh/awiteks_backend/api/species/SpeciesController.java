@@ -37,7 +37,7 @@ public class SpeciesController {
     }
 
     @Operation(summary = "Add new species", security = @SecurityRequirement(name = JWT_AUTH))
-    @PostMapping()
+    @PostMapping
     @ResponseBody
     public Species addSpecies(JwtAccessToken creatorAccessToken, @RequestBody AddSpeciesRequestBody species) {
         return speciesService.addSpecies(species, creatorAccessToken.getUserId());
