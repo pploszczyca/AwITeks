@@ -15,6 +15,7 @@ models/activity.ts
 models/add-plant-request-body.ts
 models/add-species-request-body.ts
 models/auth-data.ts
+models/auth-response.ts
 models/forum-post.ts
 models/forum-thread.ts
 models/index.ts

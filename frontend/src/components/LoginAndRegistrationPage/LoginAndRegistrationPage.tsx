@@ -1,10 +1,15 @@
 import React from "react";
-import {Col, Nav, Row, Tab} from "react-bootstrap";
+import { Col, Nav, Row, Tab } from "react-bootstrap";
 import LoginPage from "./LoginPage/LoginPage";
-import {Content, PillItem} from "./styles/LoginAndRegistrationStyle";
+import { Content, PillItem } from "./styles/LoginAndRegistrationStyle";
 import RegistrationPage from "./RegistrationPage/RegistrationPage";
+import { useAppDispatch, useAppSelector } from "../../Store/store";
+import { clearAuthErrors } from "../../Store/features/auth/authSlice";
 
 const LoginAndRegistrationPage: React.FC<{}> = () => {
+    const { errors } = useAppSelector(state => state.auth);
+    const dispatch = useAppDispatch();
+
     return (
         <Content>
             <Row>
@@ -18,10 +23,21 @@ const LoginAndRegistrationPage: React.FC<{}> = () => {
                             <Col lg={6}>
                                 <Nav variant='pills' className='flex-row nav-justified'>
                                     <PillItem>
-                                        <Nav.Link eventKey="login">Logowanie</Nav.Link>
+                                        <Nav.Link
+                                            onClick={() => dispatch(clearAuthErrors())}
+                                            eventKey="login"
+                                        >
+                                            Logowanie
+                                        </Nav.Link>
                                     </PillItem>
+
                                     <PillItem>
-                                        <Nav.Link eventKey="registration">Rejestracja</Nav.Link>
+                                        <Nav.Link
+                                            onClick={() => dispatch(clearAuthErrors())}
+                                            eventKey="registration"
+                                        >
+                                            Rejestracja
+                                        </Nav.Link>
                                     </PillItem>
                                 </Nav>
                             </Col>
@@ -29,17 +45,20 @@ const LoginAndRegistrationPage: React.FC<{}> = () => {
                         <Row>
                             <Tab.Content>
                                 <Tab.Pane eventKey="login">
-                                    <LoginPage/>
+                                    <LoginPage />
                                 </Tab.Pane>
                                 <Tab.Pane eventKey="registration">
-                                    <RegistrationPage/>
+                                    <RegistrationPage />
                                 </Tab.Pane>
                             </Tab.Content>
                         </Row>
                     </Tab.Container>
                 </Col>
             </Row>
-
+            {/* TODO proper error displaying */}
+            {errors && errors.map((err, idx) =>
+                <p key={idx} style={{ color: "red" }}>{err}</p>
+            )}
         </Content>
     );
 };

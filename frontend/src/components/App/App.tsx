@@ -32,6 +32,7 @@ function App() {
                         </Col>
                         <Col xs={10} style={{ height: "80vh", width: "100vw" }}>
                             <Routes>
+                                <Route path="" element={<PageGuard role={Role.LOGGED_IN}><Dashboard /></PageGuard>} />
                                 <Route path={PageRoutes.LOGIN} element={<PageGuard role={Role.NOT_LOGGED_IN}><LoginAndRegistrationPage /></PageGuard>} />
                                 <Route path={PageRoutes.DASHBOARD} element={<PageGuard role={Role.LOGGED_IN}><Dashboard /></PageGuard>} />
                                 <Route path={PageRoutes.MY_PLANTS} element={<PageGuard role={Role.LOGGED_IN}><PlantsView /></PageGuard>} />
@@ -40,7 +41,7 @@ function App() {
                                 <Route path={PageRoutes.FORUM} element={<PageGuard role={Role.LOGGED_IN}><Forum/></PageGuard>} />
                                 
                                 {/*TODO: add PageGuard*/}
-                                <Route path={`${PageRoutes.FORUM_THREAD}/:threadId`} element={<ForumThreadPage/>}/>
+                                <Route path={`${PageRoutes.FORUM_THREAD}/:threadId`} element={<ForumThreadPage />} />
 
                                 <Route path="*" element={<NotFound />} />
                             </Routes>

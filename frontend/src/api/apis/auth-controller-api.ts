@@ -21,7 +21,7 @@ import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObj
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from '../base';
 // @ts-ignore
-import { AuthData } from '../models';
+import { AuthResponse } from '../models';
 // @ts-ignore
 import { UserLoginRequestBody } from '../models';
 // @ts-ignore
@@ -121,7 +121,7 @@ export const AuthControllerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async login(userLoginRequestBody: UserLoginRequestBody, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AuthData>> {
+        async login(userLoginRequestBody: UserLoginRequestBody, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AuthResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.login(userLoginRequestBody, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -132,7 +132,7 @@ export const AuthControllerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async register(userRegisterRequestBody: UserRegisterRequestBody, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AuthData>> {
+        async register(userRegisterRequestBody: UserRegisterRequestBody, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AuthResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.register(userRegisterRequestBody, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -153,7 +153,7 @@ export const AuthControllerApiFactory = function (configuration?: Configuration,
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        login(userLoginRequestBody: UserLoginRequestBody, options?: any): AxiosPromise<AuthData> {
+        login(userLoginRequestBody: UserLoginRequestBody, options?: any): AxiosPromise<AuthResponse> {
             return localVarFp.login(userLoginRequestBody, options).then((request) => request(axios, basePath));
         },
         /**
@@ -163,7 +163,7 @@ export const AuthControllerApiFactory = function (configuration?: Configuration,
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        register(userRegisterRequestBody: UserRegisterRequestBody, options?: any): AxiosPromise<AuthData> {
+        register(userRegisterRequestBody: UserRegisterRequestBody, options?: any): AxiosPromise<AuthResponse> {
             return localVarFp.register(userRegisterRequestBody, options).then((request) => request(axios, basePath));
         },
     };
