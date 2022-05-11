@@ -6,7 +6,7 @@ import { AppDispatch, RootState } from '../../store';
 // As long as we dont have refresh tokens access tokens will be stored in local storage
 const LOCAL_STORAGE_AUTH_KEY = 'JWT';
 
-export function isTokenExipired(authData: AuthData) {
+export function isTokeExpired(authData: AuthData) {
     return authData.expiresIn >= new Date().getTime();
 }
 
@@ -31,7 +31,7 @@ function buildInitialState(): AuthState {
     let isLoggedIn = false;
 
     if (authData) {
-        if (!isTokenExipired(authData)) {
+        if (!isTokeExpired(authData)) {
             isLoggedIn = true;
         }
         else {
@@ -49,11 +49,8 @@ function buildInitialState(): AuthState {
     };
 }
 
-const handleAuthResponse = createAsyncThunk<
-    any,
-    Promise<AuthResponse>,
-    { dispatch: AppDispatch }
->('auth/handleAuthResponse',
+const handleAuthResponse = createAsyncThunk<any, Promise<AuthResponse>, { dispatch: AppDispatch }>(
+    'auth/handleAuthResponse',
     async (resp, { dispatch }) => {
         dispatch(setFetching(true));
         try {
@@ -76,11 +73,8 @@ const handleAuthResponse = createAsyncThunk<
     }
 )
 
-export const login = createAsyncThunk<
-    any,
-    UserLoginRequestBody,
-    { dispatch: AppDispatch, state: RootState }
->('auth/login',
+export const login = createAsyncThunk<any, UserLoginRequestBody, { dispatch: AppDispatch, state: RootState }>(
+    'auth/login',
     async (loginData, { getState, dispatch }) => {
         if (getState().auth.isFetching)
             return;
@@ -90,11 +84,8 @@ export const login = createAsyncThunk<
     }
 )
 
-export const register = createAsyncThunk<
-    any,
-    UserRegisterRequestBody,
-    { dispatch: AppDispatch, state: RootState }
->('auth/register',
+export const register = createAsyncThunk<any, UserRegisterRequestBody, { dispatch: AppDispatch, state: RootState }>(
+    'auth/register',
     async (registerData, { getState, dispatch }) => {
         if (getState().auth.isFetching)
             return;

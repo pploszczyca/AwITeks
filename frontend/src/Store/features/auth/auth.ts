@@ -1,12 +1,12 @@
 import { store } from "../../store";
-import { isTokenExipired, logout } from "./authSlice";
+import { isTokeExpired, logout } from "./authSlice";
 
 
 export async function getAccessToken(): Promise<string> {
     const auth = store.getState().auth;
 
     if (auth.isLoggedIn) {
-        if (isTokenExipired(auth.authData!)) {
+        if (isTokeExpired(auth.authData!)) {
             store.dispatch(logout());
         }
         else {
