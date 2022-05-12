@@ -165,7 +165,7 @@ VALUES ('Sprobuj wlaczyc mu muzyke', '2022-05-12',2, 1);
 INSERT INTO forum_post(content, date, user_id, forum_thread_id)
 VALUES ('Nic to nie daje, leniwy jakis', '2022-05-12',1, 1);
 INSERT INTO forum_post(content, date, user_id, forum_thread_id)
-VALUES ('Koniecznie Cypisa, utwór: Gdzie jest bialy wegorz', '2022-05-12',2, 1);
+VALUES ('Koniecznie Cypisa, utwor: Gdzie jest bialy wegorz. Moj tanczy tak: https://youtu.be/hHm6lgzyU0o?t=16 ', '2022-05-12',2, 1);
 
 
 INSERT INTO forum_thread (title, user_id)
