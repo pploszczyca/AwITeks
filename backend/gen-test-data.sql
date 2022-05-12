@@ -8,11 +8,11 @@ VALUES ('test2@test.pl', '$2a$10$FKyI3VHkkTEMCHk2exDdmu5kcMiHRtEjAR0pdm.Y5xJtfFO
 ## pre-definied species
 INSERT INTO species (creator_id, fertilization_dose, fertilization_routine, max_age, name, needed_insolation,
                      water_dose, water_routine)
-VALUES (-1, 1, 1, 1, 'koperek', 3, 100, 1);
+VALUES (-1, 1, 1, 1, 'koperek', 2, 100, 1);
 
 INSERT INTO species (creator_id, fertilization_dose, fertilization_routine, max_age, name, needed_insolation,
                      water_dose, water_routine)
-VALUES (-1, 2, 2, 5, 'kaktus', 3, 20, 1);
+VALUES (-1, 2, 2, 5, 'kaktus', 1, 20, 1);
 
 INSERT INTO species (creator_id, fertilization_dose, fertilization_routine, max_age, name, needed_insolation,
                      water_dose, water_routine)
@@ -44,7 +44,7 @@ VALUES (1, 2, 2, 1, 'specjalna paprotka', 2, 50, 1);
 ## second user private species
 INSERT INTO species (creator_id, fertilization_dose, fertilization_routine, max_age, name, needed_insolation,
                      water_dose, water_routine)
-VALUES (2, 2, 20, 1, 'wyjatkowy kaktus', 3, 50, 10);
+VALUES (2, 2, 20, 1, 'wyjatkowy kaktus', 2, 50, 10);
 
 INSERT INTO species (creator_id, fertilization_dose, fertilization_routine, max_age, name, needed_insolation,
                      water_dose, water_routine)
