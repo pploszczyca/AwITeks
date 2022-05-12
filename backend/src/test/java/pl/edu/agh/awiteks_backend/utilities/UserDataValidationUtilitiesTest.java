@@ -27,7 +27,7 @@ class UserDataValidationUtilitiesTest {
 
     @ParameterizedTest
     @CsvSource({"test1-23_it.works@test.pl,true", "@test.pl,false", "test1@test..pl,false"})
-    private void testEmail(String email, boolean expected) {
+    void testEmail(String email, boolean expected) {
         assertEquals(expected, userDataValidationUtilities.validateEmail(email));
     }
 }
