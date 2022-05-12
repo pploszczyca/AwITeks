@@ -48,7 +48,7 @@ VALUES (2, 2, 20, 1, 'wyjatkowy kaktus', 2, 50, 10);
 
 INSERT INTO species (creator_id, fertilization_dose, fertilization_routine, max_age, name, needed_insolation,
                      water_dose, water_routine)
-VALUES (2, 3, 20, 5, 'specjalna magnolia', 2, 500, 10);
+VALUES (2, 2, 20, 5, 'specjalna magnolia', 2, 500, 10);
 
 
 ## plants for user1
@@ -63,7 +63,7 @@ VALUES (1, false, 'Magnolia Ewa', 'Taka stokowa zwykla magnolia, imieniem Ewa, h
            , 5, 1);
 
 INSERT INTO plants (actual_insolation, favourite, name, note, url, species_id, user_id)
-VALUES (3, true, 'Kaktusek', 'Nie chce tanczyc',
+VALUES (2, true, 'Kaktusek', 'Nie chce tanczyc',
         'https://sztuczne-rosliny.pl/wp-content/uploads/2017/01/sztuczny-kaktus-karnegia-800-800-1.jpg'
            , 2, 1);
 
@@ -89,7 +89,7 @@ VALUES (1, false, 'Swieza Stokrotka', 'stokrotka, tak jak ten akademik ds8',
            , 6, 2);
 
 INSERT INTO plants (actual_insolation, favourite, name, note, url, species_id, user_id)
-VALUES (3, false, 'moj wyjatkowy kaktus', 'bardzo bardzo specjalny kaktus wygladajacy jak ludzik',
+VALUES (1, false, 'moj wyjatkowy kaktus', 'bardzo bardzo specjalny kaktus wygladajacy jak ludzik',
         'https://succulentcity.com/wp-content/uploads/2019/10/What-Is-Special-About-A-Cactus-4.-Their-unique-growth-habits-sc.jpg'
            , 2, 2);
 
