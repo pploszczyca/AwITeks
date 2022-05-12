@@ -36,7 +36,7 @@ const Forum: React.FC<{}> = () => {
                 {content(thread).map((column, colId) => {
                     return (
                         <ForumCol key={colId} className={column.outsideClass}>
-                            <ForumTile className={column.insideClass}>
+                            <ForumTile className={column.insideClass + " py-2 align-items-center d-flex"}>
                                 {colId === content(thread).length - 1 ? (
                                     <>
                                         <OpenButton>Otwórz</OpenButton>
@@ -59,20 +59,20 @@ const Forum: React.FC<{}> = () => {
     return (
         <ForumContainer>
             <h2 className='text-center my-3'>Znajdź interesujący Cię temat w liście poniżej lub załóż nowy temat.</h2>
-            <Row className='px-2 my-5'>
-                <Col xs={2}>
+            <Row className='px-2 justify-content-center'>
+                <Col xxl={2} lg={4} className='my-2'>
                     <FilterChips text="Tylko obserwowane"/>
                 </Col>
-                <Col xs={2}>
+                <Col xxl={2} lg={4} className='my-2'>
                     <FilterChips text="Założone przez Ciebie"/>
                 </Col>
-                <Col xs={6}>
+                <Col xxl={6} lg={8} className='my-2'>
                     <SearchBoxContainerModified onClick={() => searchInputRef.current?.focus()}>
                         <FontAwesomeIcon icon={faMagnifyingGlass} fontSize={20} />
                         <SearchBoxModified ref={searchInputRef} type="text" placeholder="Wyszukaj temat po nazwie" />
                     </SearchBoxContainerModified>
                 </Col>
-                <Col xs={2}>
+                <Col xxl={2} lg={4} className='my-2'>
                     <AddThreadBtn>Dodaj nowy temat</AddThreadBtn>
                 </Col>
             </Row>

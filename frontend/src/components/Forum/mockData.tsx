@@ -1,6 +1,6 @@
 import {ForumThread, User} from "../../api";
 
-const headers = ['Tytuł tematu', 'Liczba odpowiedzi', 'Założyciel tematu', 'Data założenia tematu','Akcje'];
+const headers = ['Tytuł tematu', 'Liczba odpowiedzi', 'Założyciel', 'Data założenia','Akcje'];
 const classes = ['title', 'num', 'username', 'date', 'action'];
 
 const content = (thread: ForumThread) => [
