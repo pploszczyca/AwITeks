@@ -164,6 +164,8 @@ INSERT INTO forum_post(content, date, user_id, forum_thread_id)
 VALUES ('Sprobuj wlaczyc mu muzyke', '2022-05-12',2, 1);
 INSERT INTO forum_post(content, date, user_id, forum_thread_id)
 VALUES ('Nic to nie daje, leniwy jakis', '2022-05-12',1, 1);
+INSERT INTO forum_post(content, date, user_id, forum_thread_id)
+VALUES ('Koniecznie Cypisa, utwór: Gdzie jest bialy wegorz', '2022-05-12',2, 1);
 
 
 INSERT INTO forum_thread (title, user_id)
@@ -172,7 +174,7 @@ VALUES ('Paprotka ma problem z doniczka.', 2);
 INSERT INTO forum_post(content, date, user_id, forum_thread_id)
 VALUES ('Moja paprotka wyszla z doniczki.','2022-05-12',2, 2);
 INSERT INTO forum_post(content, date, user_id, forum_thread_id)
-VALUES ('Temat poruszany na forum wiele razy. Uzyj szukajki - jakby byla :).', '2022-05-12',1, 2);
+VALUES ('Temat poruszany na forum wiele razy. Uzyj szukajki, bo jest.', '2022-05-12',1, 2);
 INSERT INTO forum_post(content, date, user_id, forum_thread_id)
 VALUES ('Google milczy na temat maszerujaych paprotek :(','2022-05-12',2, 2);
 
