@@ -6,12 +6,15 @@ import { ForumThread } from "../../api";
 import {getMockThread, headers, classes, content} from "./mockData";
 import FilterChips from "./FilterChips/FilterChips";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {useNavigate} from "react-router-dom";
+import {PageRoutes} from "../../utils/constants";
 
 
 const Forum: React.FC<{}> = () => {
     let mockData = Array.from(Array(10).keys()).map(idx => getMockThread(idx));
     const [isFavourite, setFavourite] = useState(mockData.map(elem => elem.isFavourite));
     const searchInputRef: React.MutableRefObject<HTMLInputElement | null> = useRef(null);
+    const navigate = useNavigate();
 
     function toggleFavourite(idx: number){
         mockData[idx].isFavourite = !mockData[idx].isFavourite;
@@ -39,7 +42,8 @@ const Forum: React.FC<{}> = () => {
                             <ForumTile className={column.insideClass + " py-2 align-items-center d-flex"}>
                                 {colId === content(thread).length - 1 ? (
                                     <>
-                                        <OpenButton>Otwórz</OpenButton>
+                                        {/*TODO: navigation system - demo below*/}
+                                        <OpenButton onClick={() => navigate(PageRoutes.FORUM_THREAD + '/1')}>Otwórz</OpenButton>
                                         <Star icon = {faStarSolid}
                                               className={isFavourite[idx] ? 'starred': 'unstarred'}
                                               onClick={() => toggleFavourite(idx)}
