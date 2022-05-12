@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Col, Row } from "react-bootstrap";
 import styled from "styled-components";
+import {SearchBox, SearchBoxContainer} from "../PlantsView/PlantsViewStyles";
 
 
 export const Star = styled(FontAwesomeIcon)`
@@ -107,4 +108,24 @@ export const ForumContainer = styled.div`
   justify-content: center;
   margin-right: 6px;
   margin-left: 6px;
+`;
+
+export const SearchBoxContainerModified = styled(SearchBoxContainer)`
+  height: 40px;
+  font-size: 17px;
+`;
+
+export const SearchBoxModified = styled(SearchBox)`
+  height: 40px;
+`;
+
+export const AddThreadBtn = styled.button`
+  border-radius: 10px;
+  background-color: #008F8C;
+  height: 40px;
+  width: 100%;
+  font-size: 17px;
+  color: white;
+  border: none;
+  outline: none;
 `;

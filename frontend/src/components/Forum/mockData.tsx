@@ -1,5 +1,4 @@
 import {ForumThread, User} from "../../api";
-import React from "react";
 
 const headers = ['Tytuł tematu', 'Liczba odpowiedzi', 'Założyciel tematu', 'Data założenia tematu','Akcje'];
 const classes = ['title', 'num', 'username', 'date', 'action'];
