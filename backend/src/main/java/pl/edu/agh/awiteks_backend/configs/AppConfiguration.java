@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import pl.edu.agh.awiteks_backend.utilities.ListUtilities;
 import pl.edu.agh.awiteks_backend.utilities.StreamUtilities;
+import pl.edu.agh.awiteks_backend.utilities.UserDataValidationUtilities;
 
 @Configuration
 public class AppConfiguration {
@@ -19,5 +20,11 @@ public class AppConfiguration {
     @Scope("singleton")
     public ListUtilities getListUtilities() {
         return new ListUtilities();
+    }
+
+    @Bean
+    @Scope("singleton")
+    public UserDataValidationUtilities getUserValidationUtilities() {
+        return new UserDataValidationUtilities();
     }
 }

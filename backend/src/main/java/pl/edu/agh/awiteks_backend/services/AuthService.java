@@ -12,23 +12,28 @@ import pl.edu.agh.awiteks_backend.models.User;
 import pl.edu.agh.awiteks_backend.repositories.UserRepository;
 import pl.edu.agh.awiteks_backend.security.jwt.JwtAccessToken;
 import pl.edu.agh.awiteks_backend.security.jwt.TokenService;
+import pl.edu.agh.awiteks_backend.utilities.UserDataValidationUtilities;
 
 import java.util.LinkedList;
 import java.util.List;
 
 @Service
 public class AuthService {
+    private final static String USER_EXISTS_ERROR_MESSAGE = "user already exists";
+    private final static String REGISTER_DATA_ERROR_MESSAGE = "Registration data is not correct";
     private final TokenService tokenService;
     private final UserRepository userRepository;
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
+    private final UserDataValidationUtilities userDataValidationUtilities;
 
     @Autowired
-    public AuthService(TokenService tokenService, UserRepository userRepository, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder) {
+    public AuthService(TokenService tokenService, UserRepository userRepository, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder, UserDataValidationUtilities userDataValidationUtilities) {
         this.tokenService = tokenService;
         this.userRepository = userRepository;
         this.authenticationManager = authenticationManager;
         this.passwordEncoder = passwordEncoder;
+        this.userDataValidationUtilities = userDataValidationUtilities;
     }
 
     public AuthResponse authenticateUser(UserLoginRequestBody userLoginRequest) {
@@ -50,8 +55,12 @@ public class AuthService {
     }
 
     public AuthResponse registerUser(UserRegisterRequestBody registerRequestBody) {
+        if(!isRegisterDataProper(registerRequestBody)) {
+            return makeErrorResponse(REGISTER_DATA_ERROR_MESSAGE);
+        }
+
         if (isUserAlreadyRegistered(registerRequestBody)) {
-            return AuthResponse.withErrors(List.of("user already exists"));
+            return makeErrorResponse(USER_EXISTS_ERROR_MESSAGE);
         }
 
         User newUser = createNewUser(registerRequestBody);
@@ -68,6 +77,16 @@ public class AuthService {
 
     private boolean isUserAlreadyRegistered(UserRegisterRequestBody registerRequestBody) {
         return userRepository.existsByEmail(registerRequestBody.email()) || userRepository.existsByUsername(registerRequestBody.username());
+    }
+
+    private boolean isRegisterDataProper(UserRegisterRequestBody registerRequestBody) {
+        return userDataValidationUtilities.validateEmail(registerRequestBody.email()) &&
+                userDataValidationUtilities.validateUsername(registerRequestBody.username()) &&
+                userDataValidationUtilities.validatePassword(registerRequestBody.password());
+    }
+
+    private AuthResponse makeErrorResponse(String errorMessage) {
+        return AuthResponse.withErrors(List.of(errorMessage));
     }
 
     private User createNewUser(UserRegisterRequestBody registerRequestBody) {
