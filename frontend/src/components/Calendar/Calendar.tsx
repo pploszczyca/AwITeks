@@ -3,12 +3,13 @@ import { Row } from "react-bootstrap";
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons'
 import Card from "react-bootstrap/Card"
 import { CalendarCol, CalendarService, ExportButton, DayWrapperCard, DayHeader, Arrow, CalendarServiceBottom } from './CalendarStyles';
-import { calculateSeverity, DAYS, getTileDate, getTileNotifications, MONTHS, nextMonth, prevMonth, WEEKS } from './utils';
+import { DAYS, getMonthNotifications, getTileDate, MONTHS, nextMonth, prevMonth, WEEKS } from './utils';
 import { CalendarDay } from '../CalendarDay/CalendarDay';
 import { ContentContainer } from "../App/AppStyle";
 import { getApis } from "../../api/initializeApis";
 import { useQuery } from 'react-query';
 import Loader from '../Loader/Loader';
+
 
 
 type CalendarProps = {
@@ -24,36 +25,22 @@ function exportCalendar() {
 const Calendar: React.FC<CalendarProps> = ({ plantId, variant = 'big' }) => {
     const [displayedDate, setDisplayedDate] = useState(new Date());
 
-    // TODO this will have to be rewritten once backend is fixed
-    const { data: notifications, isLoading } = useQuery(['plants', 'notifications'], async () => {
-        const plantsRequest = await getApis().plantsApi.getAllPlants();
-        const plants = plantsRequest.data;
+    const { data: plants, isLoading: arePlantsLoading } =
+        useQuery(['plants'], () => getApis().plantsApi.getAllPlants().then(resp => resp.data));
 
-        return plants.filter(plant => plantId === undefined || plant.id === plantId).map(plant => {
-            return plant.plantActivities.map(activity => {
-                const date = new Date(activity.date)
+    const { data: activities, isLoading: areActivitiesLoading } =
+        useQuery(['activities', displayedDate.getFullYear(), displayedDate.getMonth() + 1], () =>
+            getApis().activityApi.getActivities(displayedDate.getFullYear(), displayedDate.getMonth() + 1).then(resp => resp.data));
 
-                return {
-                    day: date.getDate(),
-                    month: date.getMonth(),
-                    year: date.getFullYear(),
-                    items: [
-                        {
-                            notificationId: activity.id!,
-                            plantId: plant.id!,
-                            severity: calculateSeverity(date)
-                        }
-                    ]
-                }
-            })
-        }).flat()
-    });
+    if (arePlantsLoading || areActivitiesLoading) {
+        return <Loader />;
+    }
 
-
+    const notifications = getMonthNotifications(displayedDate, activities!, plants!);
 
     function buildCalendarDay(weekNr: number, day: number) {
         const tileDate = getTileDate(weekNr * 7 + day + 1, displayedDate);
-        const tileNotifications = getTileNotifications(tileDate, notifications!);
+        const tileNotifications = notifications.get(tileDate.getDate()) ?? [];
 
         return <CalendarDay
             displayedDate={displayedDate}
@@ -61,10 +48,6 @@ const Calendar: React.FC<CalendarProps> = ({ plantId, variant = 'big' }) => {
             tileDate={tileDate}
             variant={variant}
         />;
-    }
-
-    if (isLoading) {
-        return <Loader />;
     }
 
 

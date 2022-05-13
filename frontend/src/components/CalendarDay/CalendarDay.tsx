@@ -52,10 +52,10 @@ export const CalendarDay: React.FC<CalendarDayProps> = ({ displayedDate, tileDat
                 </Modal.Header>
                 <Modal.Body>
                     {notifications.length > 0 ?
-                        notifications.map(({ plantId, notificationId, severity }) => (
+                        notifications.map(({ activity, severity }) => (
                             // TODO probably should get also name of plant and notification reason
-                            <div key={notificationId}>
-                                Powiadomienie stopnia {severity} dla rośliny ID: {plantId}
+                            <div key={`${activity.activityType}_${activity.plant.id}`}>
+                                Powiadomienie stopnia {severity} dla rośliny ID: {activity.plant.id}
                             </div>
                         ))
                         :

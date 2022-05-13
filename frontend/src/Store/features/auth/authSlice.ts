@@ -108,23 +108,23 @@ export const authSlice = createSlice({
     name: 'auth',
     initialState: buildInitialState(),
     reducers: {
-        setAuthData: (state, action: PayloadAction<AuthData>) => {
+        setAuthData: (state: AuthState, action: PayloadAction<AuthData>) => {
             state.authData = action.payload;
             state.isLoggedIn = true;
             state.errors = undefined;
         },
-        resetAuthData: (state) => {
+        resetAuthData: (state: AuthState) => {
             state.authData = null;
             state.isLoggedIn = false;
             state.errors = undefined; // maybe leave it
         },
-        clearAuthErrors: (state) => {
+        clearAuthErrors: (state: AuthState) => {
             state.errors = undefined;
         },
-        setAuthErrors: (state, action: PayloadAction<string[]>) => {
+        setAuthErrors: (state: AuthState, action: PayloadAction<string[]>) => {
             state.errors = action.payload;
         },
-        setFetching: (state, action: PayloadAction<boolean>) => {
+        setFetching: (state: AuthState, action: PayloadAction<boolean>) => {
             state.isFetching = action.payload;
         }
     },

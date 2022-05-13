@@ -3,7 +3,6 @@ import { useMutation, useQueryClient } from 'react-query';
 import { AddPlantRequestBody, Plant } from '../../api';
 import { getApis } from '../../api/initializeApis';
 import { PlantForm } from '../PlantForm/PlantForm';
-import Moment from "moment";
 
 
 type EditPlantFormProps = {
@@ -11,13 +10,6 @@ type EditPlantFormProps = {
     plant: Plant;
     setShowPlantForm: React.Dispatch<React.SetStateAction<boolean>>;
 };
-
-
-function getLastActivityDate(plant: Plant, type: string) {
-    const dates = plant.plantActivities.filter(a => a.activityType === type);
-
-    return Moment(dates.length > 0 ? new Date(dates.at(-1)!.date) : new Date()).format("yyyy-MM-DD");
-}
 
 export const EditPlantForm: React.FC<EditPlantFormProps> = ({ show, setShowPlantForm, plant }) => {
     const queryClient = useQueryClient();
@@ -40,8 +32,8 @@ export const EditPlantForm: React.FC<EditPlantFormProps> = ({ show, setShowPlant
             onSubmit={(newPlantValues) => addPlantMutation.mutateAsync(newPlantValues)}
             initialValues={{
                 insolation: plant.actualInsolation,
-                lastFertilizationDate: getLastActivityDate(plant, "FERTILISATION"),
-                lastWateringDate: getLastActivityDate(plant, "WATERING"),
+                lastFertilizationDate: plant.lastFertilizationDate,
+                lastWateringDate: plant.lastWateringDate,
                 name: plant.name,
                 note: plant.note ?? "",
                 speciesId: plant.species.id

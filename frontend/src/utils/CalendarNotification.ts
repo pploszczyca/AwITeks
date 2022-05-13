@@ -1,3 +1,5 @@
+import { Activity } from "../api";
+
 export enum NotificationSeverity {
     LOW = "LOW",
     MEDIUM = "MEDIUM",
@@ -6,9 +8,8 @@ export enum NotificationSeverity {
 
 
 export interface NotificationItem {
-    notificationId: number;
-    plantId: number;
-    severity: NotificationSeverity; // not sure how severity will be modeled on backend, for now simple enum is assumed
+    activity: Activity;
+    severity: NotificationSeverity;
 };
 
 

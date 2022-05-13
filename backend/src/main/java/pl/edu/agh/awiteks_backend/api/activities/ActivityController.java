@@ -8,6 +8,8 @@ import pl.edu.agh.awiteks_backend.models.Activity;
 import pl.edu.agh.awiteks_backend.security.jwt.JwtAccessToken;
 import pl.edu.agh.awiteks_backend.services.ActivityService;
 
+import java.util.List;
+
 import static pl.edu.agh.awiteks_backend.configs.SwaggerConfig.JWT_AUTH;
 
 @RestController
@@ -30,6 +32,12 @@ public class ActivityController {
     @DeleteMapping("/{plantId}/{activityId}")
     public void removeActivity(JwtAccessToken jwtAccessToken, @PathVariable int plantId, @PathVariable int activityId) {
         activityService.remove(plantId, activityId, jwtAccessToken.getUserId());
+    }
+
+    @Operation(summary = "Get all user's activities for given year and month", security = @SecurityRequirement(name = JWT_AUTH))
+    @GetMapping
+    public List<Activity> getActivities(JwtAccessToken jwtAccessToken, @RequestParam int year, @RequestParam  int month) {
+        return activityService.getUsersActivities(jwtAccessToken.getUserId(), year, month);
     }
 
 }

@@ -1,4 +1,7 @@
+import { Plant, Activity } from "../../api";
 import { CalendarNotification, NotificationItem, NotificationSeverity } from "../../utils/CalendarNotification";
+import Moment from 'moment';
+import { DATE_FORMAT } from "../../utils/constants";
 
 export const DAYS = Array.from(Array(7).keys());
 export const WEEKS = Array.from(Array(6).keys());
@@ -42,7 +45,6 @@ export function getTileDate(fieldNumber: number, date: Date): Date {
     return new Date(date.getFullYear(), date.getMonth(), actualDayNumber);
 }
 
-
 export function getTileNotifications(tileDate: Date, notifications: CalendarNotification[]): NotificationItem[] {
     // TODO this should be optimised when we get shape of notifications from backend
 
@@ -54,14 +56,54 @@ export function getTileNotifications(tileDate: Date, notifications: CalendarNoti
 }
 
 export function calculateSeverity(date: Date) {
-    const currentDate = new Date()
-    const differenceInDays = (date.getTime() - currentDate.getTime()) / (1000 * 3600 * 24);
-
-    if (differenceInDays >= 3) {
-        return NotificationSeverity.LOW
-    } else if (differenceInDays <= 3 && differenceInDays >= 0) {
-        return NotificationSeverity.MEDIUM
-    } else {
-        return NotificationSeverity.HIGH
+    if (Moment().isBefore(date)) {
+        return Moment().diff(date, 'days') >= 3 ? NotificationSeverity.LOW : NotificationSeverity.MEDIUM;
     }
+
+    return NotificationSeverity.HIGH;
+}
+
+
+function getPeriodicPlantActivities(plant: Plant): Activity[] {
+    return [
+        {
+            activityType: 'WATERING',
+            date: Moment(plant.lastWateringDate).add(plant.species.waterRoutine).format(DATE_FORMAT),
+            plant
+        },
+        {
+            activityType: 'FERTILISATION',
+            date: Moment(plant.lastFertilizationDate).add(plant.species.fertilizationRoutine).format(DATE_FORMAT),
+            plant
+        }
+    ];
+}
+
+
+export function getMonthNotifications(displayedDate: Date, monthActivities: Activity[], plants: Plant[] = []): Map<number, NotificationItem[]> {
+    const calendarNotifications: Map<number, NotificationItem[]> = new Map();
+
+    const plantActivities = plants
+        .flatMap(getPeriodicPlantActivities)
+        .filter(activity => Moment(displayedDate).isSame(Moment(activity.date), 'month'));
+
+    [...plantActivities, ...monthActivities].forEach(activity => {
+        const activityDay = new Date(activity.date).getDate();
+        const dayNotifications = calendarNotifications.get(activityDay);
+        const notificationItem = {
+            activity,
+            severity: calculateSeverity(new Date(activity.date))
+        };
+
+        console.log(notificationItem);
+
+        if (dayNotifications != null) {
+            dayNotifications.push(notificationItem);
+        }
+        else {
+            calendarNotifications.set(activityDay, [notificationItem]);
+        }
+    });
+
+    return calendarNotifications;
 }

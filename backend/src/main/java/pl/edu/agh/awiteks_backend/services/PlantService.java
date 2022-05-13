@@ -6,7 +6,10 @@ import pl.edu.agh.awiteks_backend.api.plants.body_models.AddPlantRequestBody;
 import pl.edu.agh.awiteks_backend.api.plants.body_models.PlantSummary;
 import pl.edu.agh.awiteks_backend.api.plants.body_models.PlantsStats;
 import pl.edu.agh.awiteks_backend.mappers.PlantMapper;
+import pl.edu.agh.awiteks_backend.models.Activity;
+import pl.edu.agh.awiteks_backend.models.ActivityType;
 import pl.edu.agh.awiteks_backend.models.Plant;
+import pl.edu.agh.awiteks_backend.repositories.ActivityRepository;
 import pl.edu.agh.awiteks_backend.repositories.PlantRepository;
 import pl.edu.agh.awiteks_backend.repositories.SpeciesRepository;
 import pl.edu.agh.awiteks_backend.repositories.UserRepository;
@@ -19,30 +22,30 @@ import java.util.stream.Collectors;
 
 @Service
 public class PlantService {
-
     private final PlantRepository plantRepository;
-
     private final ListUtilities listUtilities;
-
     private final UserRepository userRepository;
-
+    private final ActivityRepository activityRepository;
     private final SpeciesRepository speciesRepository;
 
     @Autowired
     public PlantService(PlantRepository modelRepository,
                         UserRepository userRepository,
                         SpeciesRepository speciesRepository,
+                        ActivityRepository activityRepository,
                         ListUtilities listUtilities
     ) {
         this.plantRepository = modelRepository;
-        this.listUtilities = listUtilities;
         this.userRepository = userRepository;
         this.speciesRepository = speciesRepository;
+        this.activityRepository = activityRepository;
+        this.listUtilities = listUtilities;
     }
 
     public Plant addPlant(AddPlantRequestBody addPlantRequestBody, int userId) {
         // TODO custom exceptions, rewrite this once DB is ready
         var plant = makePlantFromRequestBody(addPlantRequestBody, userId);
+
 
         addPlantToUserList(plant, userId);
         plantRepository.save(plant);
@@ -128,7 +131,7 @@ public class PlantService {
         var species = speciesRepository.findByIdAndCreatorId(addPlantRequestBody.speciesId(), userId).orElseThrow();
         var user = userRepository.findById(userId).orElseThrow();
 
-        return new Plant(
+       var plant = new Plant(
                 addPlantRequestBody.name(),
                 user,
                 species,
@@ -137,6 +140,10 @@ public class PlantService {
                 new LinkedList<>(),
                 false,
                 "https://netscroll.pl/wp-content/uploads/2021/10/CactusToy1.jpg");
-    }
 
+       plant.addActivity(new Activity(plant, ActivityType.WATERING, addPlantRequestBody.lastWateringDate()));
+       plant.addActivity(new Activity(plant, ActivityType.FERTILISATION, addPlantRequestBody.lastFertilizationDate()));
+
+       return plant;
+    }
 }

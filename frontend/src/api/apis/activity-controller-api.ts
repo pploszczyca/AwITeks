@@ -74,6 +74,54 @@ export const ActivityControllerApiAxiosParamCreator = function (configuration?: 
         },
         /**
          * 
+         * @summary Get all user\'s activities for given year and month
+         * @param {number} year 
+         * @param {number} month 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getActivities: async (year: number, month: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'year' is not null or undefined
+            assertParamExists('getActivities', 'year', year)
+            // verify required parameter 'month' is not null or undefined
+            assertParamExists('getActivities', 'month', month)
+            const localVarPath = `/activity`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication JWT_AUTH required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+            if (year !== undefined) {
+                localVarQueryParameter['year'] = year;
+            }
+
+            if (month !== undefined) {
+                localVarQueryParameter['month'] = month;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Delete activity
          * @param {number} plantId 
          * @param {number} activityId 
@@ -138,6 +186,18 @@ export const ActivityControllerApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary Get all user\'s activities for given year and month
+         * @param {number} year 
+         * @param {number} month 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getActivities(year: number, month: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Activity>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getActivities(year, month, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @summary Delete activity
          * @param {number} plantId 
          * @param {number} activityId 
@@ -171,6 +231,17 @@ export const ActivityControllerApiFactory = function (configuration?: Configurat
         },
         /**
          * 
+         * @summary Get all user\'s activities for given year and month
+         * @param {number} year 
+         * @param {number} month 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getActivities(year: number, month: number, options?: any): AxiosPromise<Array<Activity>> {
+            return localVarFp.getActivities(year, month, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary Delete activity
          * @param {number} plantId 
          * @param {number} activityId 
@@ -201,6 +272,19 @@ export class ActivityControllerApi extends BaseAPI {
      */
     public addActivity(plantID: number, activity: Activity, options?: AxiosRequestConfig) {
         return ActivityControllerApiFp(this.configuration).addActivity(plantID, activity, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get all user\'s activities for given year and month
+     * @param {number} year 
+     * @param {number} month 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ActivityControllerApi
+     */
+    public getActivities(year: number, month: number, options?: AxiosRequestConfig) {
+        return ActivityControllerApiFp(this.configuration).getActivities(year, month, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

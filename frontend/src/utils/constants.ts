@@ -1,4 +1,4 @@
-import {ForumThread} from "../api";
+import { ForumThread } from "../api";
 
 export const PageRoutes = {
     LOGIN: '/home',
@@ -10,7 +10,9 @@ export const PageRoutes = {
     FORUM_THREAD: '/forum/thread'
 };
 
-const headers = ['Tytuł tematu', 'Liczba odpowiedzi', 'Założyciel', 'Data założenia','Akcje'];
+export const DATE_FORMAT = "yyyy-MM-DD";
+
+const headers = ['Tytuł tematu', 'Liczba odpowiedzi', 'Założyciel', 'Data założenia', 'Akcje'];
 const classes = ['title', 'num', 'username', 'date', 'action'];
 
 const content = (thread: ForumThread) => [
@@ -28,7 +30,7 @@ const content = (thread: ForumThread) => [
     },
     {
         outsideClass: classes[3],
-        content: thread.dateCreated.getFullYear()+"-"+(thread.dateCreated.getMonth()+1)+"-"+thread.dateCreated.getDate()
+        content: thread.dateCreated.getFullYear() + "-" + (thread.dateCreated.getMonth() + 1) + "-" + thread.dateCreated.getDate()
     },
     {
         outsideClass: classes[4],
@@ -36,4 +38,4 @@ const content = (thread: ForumThread) => [
     }
 ]
 
-export {headers, classes, content}
+export { headers, classes, content }
