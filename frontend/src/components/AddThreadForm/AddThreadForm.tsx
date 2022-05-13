@@ -29,6 +29,24 @@ export const AddThreadForm: React.FC<AddThreadFormProps> = ({ show, setShowThrea
                     }}
                     onSubmit={async (values, { setSubmitting }) => {
                         try {
+                            // todo: add thread using endpoint - optional thread obj template below
+                            // const user: User = null; // todo
+                            // const date: Date = new Date(); // for sure that date is the same in forumPost and dateCreated
+                            // const thread: ForumThread = {
+                            //     id: Math.floor(Math.random() * 100),
+                            //     title: values.threadTitle,
+                            //     creator: user,
+                            //     forumPosts: [
+                            //         {
+                            //             id: Math.floor(Math.random() * 100),
+                            //             content: values.firstMsg,
+                            //             author: user,
+                            //             date: date.toDateString()
+                            //         }
+                            //     ],
+                            //     isFavourite: true, // if logged user is the author we can checked this thread as favourite
+                            //     dateCreated: date
+                            // }
                             toast.success("Nowy temat dodany pomyślnie!");
                             setShowThreadForm(false);
                         } catch (err) {
