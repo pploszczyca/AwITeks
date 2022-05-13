@@ -1,36 +1,5 @@
 import {ForumThread, User} from "../../api";
 
-const headers = ['Tytuł tematu', 'Liczba odpowiedzi', 'Założyciel', 'Data założenia','Akcje'];
-const classes = ['title', 'num', 'username', 'date', 'action'];
-
-const content = (thread: ForumThread) => [
-    {
-        outsideClass: classes[0],
-        insideClass: 'not-last',
-        content: thread.title
-    },
-    {
-        outsideClass: classes[1],
-        insideClass: 'not-last',
-        content: thread.forumPosts.length
-    },
-    {
-        outsideClass: classes[2],
-        insideClass: 'not-last',
-        content: thread.creator.username
-    },
-    {
-        outsideClass: classes[3],
-        insideClass: 'not-last',
-        content: thread.dateCreated.getFullYear()+"-"+(thread.dateCreated.getMonth()+1)+"-"+thread.dateCreated.getDate()
-    },
-    {
-        outsideClass: classes[4],
-        insideClass: 'not-last',
-        content: null
-    }
-]
-
 export function getMockThread(idx: number){
     let date: Date = new Date("2019-01-16");
     let user: User = {
@@ -52,4 +21,3 @@ export function getMockThread(idx: number){
     return mockThread;
 }
 
-export {headers, classes, content}

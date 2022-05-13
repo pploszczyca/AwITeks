@@ -3,11 +3,11 @@ import {Col, Row} from "react-bootstrap";
 import {ForumHeader, ForumCol, ForumTile, ForumRow, OpenButton, Star, ForumContainer, SearchBoxContainerModified, SearchBoxModified, AddThreadBtn} from "./ForumStyles";
 import {faMagnifyingGlass, faStar as faStarSolid} from '@fortawesome/free-solid-svg-icons';
 import { ForumThread } from "../../api";
-import {getMockThread, headers, classes, content} from "./mockData";
+import {getMockThread} from "./mockData";
 import FilterChips from "./FilterChips/FilterChips";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {useNavigate} from "react-router-dom";
-import {PageRoutes} from "../../utils/constants";
+import {PageRoutes, headers, classes, content} from "../../utils/constants";
 
 
 const Forum: React.FC<{}> = () => {
@@ -39,7 +39,7 @@ const Forum: React.FC<{}> = () => {
                 {content(thread).map((column, colId) => {
                     return (
                         <ForumCol key={colId} className={column.outsideClass}>
-                            <ForumTile className={column.insideClass + " py-2 align-items-center d-flex"}>
+                            <ForumTile className={"not-last py-2 align-items-center d-flex"}>
                                 {colId === content(thread).length - 1 ? (
                                     <>
                                         {/*TODO: navigation system - demo below*/}
