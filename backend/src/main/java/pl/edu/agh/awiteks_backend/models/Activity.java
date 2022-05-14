@@ -24,7 +24,6 @@ public class Activity {
     @Schema(required = true)
     private String date;
 
-
     public Activity(Plant plant, ActivityType activityType, String date) {
         this.plant = plant;
         this.activityType = activityType;

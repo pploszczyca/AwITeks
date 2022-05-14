@@ -22,6 +22,8 @@ import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObj
 import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from '../base';
 // @ts-ignore
 import { Activity } from '../models';
+// @ts-ignore
+import { AddActivityRequestBody } from '../models';
 /**
  * ActivityControllerApi - axios parameter creator
  * @export
@@ -31,18 +33,14 @@ export const ActivityControllerApiAxiosParamCreator = function (configuration?: 
         /**
          * 
          * @summary Add new activity to plant
-         * @param {number} plantID 
-         * @param {Activity} activity 
+         * @param {AddActivityRequestBody} addActivityRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        addActivity: async (plantID: number, activity: Activity, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'plantID' is not null or undefined
-            assertParamExists('addActivity', 'plantID', plantID)
-            // verify required parameter 'activity' is not null or undefined
-            assertParamExists('addActivity', 'activity', activity)
-            const localVarPath = `/activity/{plantID}`
-                .replace(`{${"plantID"}}`, encodeURIComponent(String(plantID)));
+        addActivity: async (addActivityRequestBody: AddActivityRequestBody, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'addActivityRequestBody' is not null or undefined
+            assertParamExists('addActivity', 'addActivityRequestBody', addActivityRequestBody)
+            const localVarPath = `/activity`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -65,7 +63,7 @@ export const ActivityControllerApiAxiosParamCreator = function (configuration?: 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(activity, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(addActivityRequestBody, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -74,7 +72,7 @@ export const ActivityControllerApiAxiosParamCreator = function (configuration?: 
         },
         /**
          * 
-         * @summary Get all user\'s activities for given year and month
+         * @summary Get all user\'s activities for given year and month, plus all overdue activities
          * @param {number} year 
          * @param {number} month 
          * @param {*} [options] Override http request option.
@@ -175,18 +173,17 @@ export const ActivityControllerApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Add new activity to plant
-         * @param {number} plantID 
-         * @param {Activity} activity 
+         * @param {AddActivityRequestBody} addActivityRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async addActivity(plantID: number, activity: Activity, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.addActivity(plantID, activity, options);
+        async addActivity(addActivityRequestBody: AddActivityRequestBody, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.addActivity(addActivityRequestBody, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
          * 
-         * @summary Get all user\'s activities for given year and month
+         * @summary Get all user\'s activities for given year and month, plus all overdue activities
          * @param {number} year 
          * @param {number} month 
          * @param {*} [options] Override http request option.
@@ -221,17 +218,16 @@ export const ActivityControllerApiFactory = function (configuration?: Configurat
         /**
          * 
          * @summary Add new activity to plant
-         * @param {number} plantID 
-         * @param {Activity} activity 
+         * @param {AddActivityRequestBody} addActivityRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        addActivity(plantID: number, activity: Activity, options?: any): AxiosPromise<void> {
-            return localVarFp.addActivity(plantID, activity, options).then((request) => request(axios, basePath));
+        addActivity(addActivityRequestBody: AddActivityRequestBody, options?: any): AxiosPromise<void> {
+            return localVarFp.addActivity(addActivityRequestBody, options).then((request) => request(axios, basePath));
         },
         /**
          * 
-         * @summary Get all user\'s activities for given year and month
+         * @summary Get all user\'s activities for given year and month, plus all overdue activities
          * @param {number} year 
          * @param {number} month 
          * @param {*} [options] Override http request option.
@@ -264,19 +260,18 @@ export class ActivityControllerApi extends BaseAPI {
     /**
      * 
      * @summary Add new activity to plant
-     * @param {number} plantID 
-     * @param {Activity} activity 
+     * @param {AddActivityRequestBody} addActivityRequestBody 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ActivityControllerApi
      */
-    public addActivity(plantID: number, activity: Activity, options?: AxiosRequestConfig) {
-        return ActivityControllerApiFp(this.configuration).addActivity(plantID, activity, options).then((request) => request(this.axios, this.basePath));
+    public addActivity(addActivityRequestBody: AddActivityRequestBody, options?: AxiosRequestConfig) {
+        return ActivityControllerApiFp(this.configuration).addActivity(addActivityRequestBody, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
-     * @summary Get all user\'s activities for given year and month
+     * @summary Get all user\'s activities for given year and month, plus all overdue activities
      * @param {number} year 
      * @param {number} month 
      * @param {*} [options] Override http request option.

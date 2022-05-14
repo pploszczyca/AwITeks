@@ -11,6 +11,6 @@ public interface ActivityRepository extends CrudRepository<Activity, Integer> {
     @Query("SELECT a " +
            "FROM Activity a INNER JOIN a.plant p " +
            "WHERE p.user.id = ?1 AND YEAR(DATE(a.date)) = ?2 AND MONTH(DATE(a.date)) = ?3")
-    List<Activity> getAllByUserIdAndDate(int userId, int year, int month);
+    List<Activity> getDisplayableActivities(int userId, int year, int month);
 
 }

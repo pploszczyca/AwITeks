@@ -1,11 +1,31 @@
 import { Plant, Activity } from "../../api";
-import { CalendarNotification, NotificationItem, NotificationSeverity } from "../../utils/CalendarNotification";
 import Moment from 'moment';
 import { DATE_FORMAT } from "../../utils/constants";
+
+
+export enum NotificationSeverity {
+    DONE,
+    LOW,
+    MEDIUM,
+    HIGH,
+};
+
+export type NotificationItem = {
+    activity: Activity;
+    severity: NotificationSeverity;
+};
+
+
+export type ToggleActivityArgs = {
+    tileDate: Date;
+    notificationItem: NotificationItem;
+};
+
 
 export const DAYS = Array.from(Array(7).keys());
 export const WEEKS = Array.from(Array(6).keys());
 export const MONTHS = ["Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czerwiec", "Lipiec", "Sierpień", "Wrzesień", "Październik", "Listopad", "Grudzień"];
+export const MIN_LOW_SEVERITY_DAY_DIFFERENCE = 3;
 
 export function nextMonth(date: Date): Date {
     let day = 1;
@@ -17,7 +37,13 @@ export function nextMonth(date: Date): Date {
         year++;
     }
 
-    return new Date(year, month, day);
+    const result = new Date(year, month, day);
+
+    if (Moment().isSame(result, 'month')) {
+        return new Date();
+    }
+
+    return result;
 }
 
 export function prevMonth(date: Date): Date {
@@ -30,8 +56,13 @@ export function prevMonth(date: Date): Date {
         year--;
     }
 
+    const result = new Date(year, month, day);
 
-    return new Date(year, month, day);
+    if (Moment().isSame(result, 'month')) {
+        return new Date();
+    }
+
+    return result;
 }
 
 
@@ -45,65 +76,76 @@ export function getTileDate(fieldNumber: number, date: Date): Date {
     return new Date(date.getFullYear(), date.getMonth(), actualDayNumber);
 }
 
-export function getTileNotifications(tileDate: Date, notifications: CalendarNotification[]): NotificationItem[] {
-    // TODO this should be optimised when we get shape of notifications from backend
+function calculateSeverity(activity: Activity): NotificationSeverity {
+    const date = Moment(activity.date);
 
-    const tileNotifications = notifications
-        .find(({ day, month, year }) =>
-            day === tileDate.getDate() && month === tileDate.getMonth() && year === tileDate.getFullYear());
-
-    return tileNotifications == null ? [] : tileNotifications!.items;
-}
-
-export function calculateSeverity(date: Date) {
     if (Moment().isBefore(date)) {
-        return Moment().diff(date, 'days') >= 3 ? NotificationSeverity.LOW : NotificationSeverity.MEDIUM;
+        return Moment(date).diff(Moment(), 'days') >= MIN_LOW_SEVERITY_DAY_DIFFERENCE ?
+            NotificationSeverity.LOW : NotificationSeverity.MEDIUM;
     }
 
     return NotificationSeverity.HIGH;
 }
 
 
-function getPeriodicPlantActivities(plant: Plant): Activity[] {
-    return [
+export function getPeriodicPlantActivities(plants: Plant[]): Activity[] {
+
+    return plants.flatMap(plant => ([
         {
             activityType: 'WATERING',
-            date: Moment(plant.lastWateringDate).add(plant.species.waterRoutine).format(DATE_FORMAT),
-            plant
+            date: Moment(plant.lastWateringDate).add(plant.species.waterRoutine, 'days').format(DATE_FORMAT),
+            plant,
         },
         {
             activityType: 'FERTILISATION',
-            date: Moment(plant.lastFertilizationDate).add(plant.species.fertilizationRoutine).format(DATE_FORMAT),
-            plant
+            date: Moment(plant.lastFertilizationDate).add(plant.species.fertilizationRoutine, 'days').format(DATE_FORMAT),
+            plant,
         }
-    ];
+    ]));
+}
+
+const addNotifications = (displayedDate: Date, calendarNotifications: Map<number, NotificationItem[]>,
+    activities: Activity[], severityFn: (a: Activity) => NotificationSeverity) => {
+
+    activities
+        .filter(activity => Moment(displayedDate).isSame(Moment(activity.date), 'month'))
+        .forEach(activity => {
+            const activityDay = new Date(activity.date).getDate();
+            const notificationItem = {
+                activity,
+                severity: severityFn(activity)
+            };
+
+            const dayNotifications = calendarNotifications.get(activityDay);
+
+            if (dayNotifications != null) {
+                dayNotifications.push(notificationItem);
+            }
+            else {
+                calendarNotifications.set(activityDay, [notificationItem]);
+            }
+        });
 }
 
 
-export function getMonthNotifications(displayedDate: Date, monthActivities: Activity[], plants: Plant[] = []): Map<number, NotificationItem[]> {
+export function getDoneMonthNotifications(displayedDate: Date, doneActivities: Activity[]): Map<number, NotificationItem[]> {
     const calendarNotifications: Map<number, NotificationItem[]> = new Map();
 
-    const plantActivities = plants
-        .flatMap(getPeriodicPlantActivities)
-        .filter(activity => Moment(displayedDate).isSame(Moment(activity.date), 'month'));
-
-    [...plantActivities, ...monthActivities].forEach(activity => {
-        const activityDay = new Date(activity.date).getDate();
-        const dayNotifications = calendarNotifications.get(activityDay);
-        const notificationItem = {
-            activity,
-            severity: calculateSeverity(new Date(activity.date))
-        };
-
-        console.log(notificationItem);
-
-        if (dayNotifications != null) {
-            dayNotifications.push(notificationItem);
-        }
-        else {
-            calendarNotifications.set(activityDay, [notificationItem]);
-        }
-    });
+    addNotifications(displayedDate, calendarNotifications, doneActivities, (_) => NotificationSeverity.DONE);
 
     return calendarNotifications;
+}
+
+export function getUndoneMonthNotifications(displayedDate: Date, undoneActivities: Activity[]): Map<number, NotificationItem[]> {
+    const calendarNotifications: Map<number, NotificationItem[]> = new Map();
+
+    addNotifications(displayedDate, calendarNotifications, undoneActivities, calculateSeverity);
+
+    return calendarNotifications;
+}
+
+export function getOverdueNotifications(undoneActivities: Activity[]): NotificationItem[] {
+    return undoneActivities
+        .filter(activity => Moment().isAfter(activity.date, 'day'))
+        .map(activity => ({ activity, severity: NotificationSeverity.HIGH }));
 }

@@ -14,11 +14,11 @@ type EditPlantFormProps = {
 export const EditPlantForm: React.FC<EditPlantFormProps> = ({ show, setShowPlantForm, plant }) => {
     const queryClient = useQueryClient();
     const addPlantMutation = useMutation(
-        (newPlantValues: AddPlantRequestBody) => getApis().plantsApi.updatePlant(plant.id, newPlantValues),
+        (newPlantValues: AddPlantRequestBody) => getApis().plantsApi.updatePlant(plant.id, newPlantValues).then(resp => resp.data),
         {
             onSuccess: (plant) => {
-                queryClient.setQueryData(['plants', plant.data?.id], plant.data);
-                queryClient.invalidateQueries(['plants-summary', plant.data?.id]);
+                queryClient.invalidateQueries(['plants']);
+                queryClient.invalidateQueries(['plants-summary', plant.id]);
             }
         });
 
