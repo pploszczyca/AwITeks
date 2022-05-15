@@ -170,7 +170,7 @@ public class Plant {
 
     private String getLastActivityDate(ActivityType activityType) {
         return plantActivities.stream()
-            .filter(activity -> activity.getActivityType() == activityType)
+            .filter(activity -> activity.getActivityType().equals(activityType))
             .sorted((a1, a2)-> {
                 // TODO we should really keep them as dates in the model
                 var d1 = LocalDate.parse(a1.getDate());
