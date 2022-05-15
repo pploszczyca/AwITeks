@@ -1,24 +1,20 @@
+import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import Moment from 'moment';
 import React, { useState } from 'react';
 import { Row } from "react-bootstrap";
-import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons'
-import Card from "react-bootstrap/Card"
-import {
-    CalendarCol, CalendarService, ExportButton,
-    DayWrapperCard, DayHeader, Arrow, CalendarServiceBottom
-} from './CalendarStyles';
-import {
-    DAYS, getDoneMonthNotifications, getOverdueNotifications, getPeriodicPlantActivities, getTileDate,
-    getUndoneMonthNotifications, MONTHS, nextMonth, prevMonth, ToggleActivityArgs, WEEKS
-} from './utils';
-import { CalendarDay } from './CalendarDay/CalendarDay';
-import { ContentContainer } from "../App/AppStyle";
-import { getApis } from "../../api/initializeApis";
+import Card from "react-bootstrap/Card";
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { isToday } from './CalendarDay/utils';
+import { getApis } from "../../api/initializeApis";
 import { AddActivityRequestBody } from '../../api/models/add-activity-request-body';
 import { DATE_FORMAT } from '../../utils/constants';
-import Moment from 'moment';
-
+import { ContentContainer } from "../App/AppStyle";
+import { CalendarDay } from './CalendarDay/CalendarDay';
+import { isToday } from './CalendarDay/utils';
+import { Arrow, CalendarCol, CalendarService, CalendarServiceBottom, DayHeader, DayWrapperCard, ExportButton } from './CalendarStyles';
+import {
+    DAYS, getDoneMonthNotifications, getOverdueNotifications, getPeriodicPlantActivities, getTileDate,
+    getUndoneMonthNotifications, MONTHS, nextMonth, prevMonth, WEEKS
+} from './utils';
 
 
 type CalendarProps = {
@@ -36,15 +32,9 @@ const Calendar: React.FC<CalendarProps> = ({ plantId, variant = 'big' }) => {
     const queryClient = useQueryClient();
 
     // TODO error handling
-    const markActivityDone = useMutation(({ tileDate, notificationItem }: ToggleActivityArgs) => {
-        const activity: AddActivityRequestBody = {
-            plantId: notificationItem.activity.plant.id,
-            activityType: notificationItem.activity.activityType,
-            date: Moment(tileDate).format(DATE_FORMAT)
-        };
-
-        return getApis().activityApi.addActivity(activity);
-    },
+    const addActivity = useMutation((activity: AddActivityRequestBody) => (
+        getApis().activityApi.addActivity(activity)
+        ),
         {
             onSuccess: (_, args) => {
                 // TODO this probably could be done without total invalidation
@@ -58,8 +48,15 @@ const Calendar: React.FC<CalendarProps> = ({ plantId, variant = 'big' }) => {
         useQuery(['plants'], () => getApis().plantsApi.getAllPlants().then(resp => resp.data));
 
     let { data: activities, isLoading: areActivitiesLoading } =
-        useQuery(['activities', displayedDate.getFullYear(), displayedDate.getMonth() + 1], () =>
-            getApis().activityApi.getActivities(displayedDate.getFullYear(), displayedDate.getMonth() + 1).then(resp => resp.data));
+        useQuery(['activities',
+                  displayedDate.getFullYear(),
+                  displayedDate.getMonth() + 1
+                ],
+                () => getApis().activityApi.getActivities(
+                        displayedDate.getFullYear(),
+                        displayedDate.getMonth() + 1
+                 ).then(resp => resp.data)
+            );
 
     if (arePlantsLoading || areActivitiesLoading) {
         plants = [];
@@ -86,11 +83,25 @@ const Calendar: React.FC<CalendarProps> = ({ plantId, variant = 'big' }) => {
 
         return <CalendarDay
             displayedDate={displayedDate}
+            tileDate={tileDate}
+            plants={plants!}
             doneNotifications={done}
             undoneNotifications={undone}
             overdueNotifications={isToday(tileDate) ? overdueNotifications : undefined}
-            onToggleNotification={markActivityDone.mutate}
-            tileDate={tileDate}
+            onToggleNotification={(args) => {
+                return addActivity.mutateAsync({
+                    activityType: args.notificationItem.activity.activityType,
+                    date: Moment(args.tileDate).format(DATE_FORMAT),
+                    plantId: args.notificationItem.activity.plant.id
+                })
+            }}
+            onAddNewActivity={(args) => {
+                return addActivity.mutateAsync({
+                    activityType: args.activityType,
+                    date: Moment(args.date).format(DATE_FORMAT),
+                    plantId: args.plantId
+                });
+            }}
             variant={variant}
         />;
     }

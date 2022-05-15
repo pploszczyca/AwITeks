@@ -1,13 +1,17 @@
-import Moment from 'moment';
 import { faDroplet, faLeaf } from "@fortawesome/free-solid-svg-icons";
-import { ActivityActivityTypeEnum } from '../../../api';
+import Moment from 'moment';
+import { ActivityActivityTypeEnum, Plant } from '../../../api';
 import { NotificationItem, NotificationSeverity } from '../utils';
+
+export type NewActivityOption = {
+    activityType: ActivityActivityTypeEnum,
+    plantId: number,
+};
 
 export const ACTIVITY_ICONS = {
     [ActivityActivityTypeEnum.Watering]: faDroplet,
     [ActivityActivityTypeEnum.Fertilisation]: faLeaf,
 };
-
 
 export const ICON_STYLES = {
     [ActivityActivityTypeEnum.Watering]: {
@@ -19,9 +23,13 @@ export const ICON_STYLES = {
 };
 
 export const ACTIVITY_DESCRIPTION = {
-    [ActivityActivityTypeEnum.Watering]: 'Podlanie: ',
-    [ActivityActivityTypeEnum.Fertilisation]: 'Nawiezienie: '
+    [ActivityActivityTypeEnum.Watering]: 'Podlanie',
+    [ActivityActivityTypeEnum.Fertilisation]: 'Nawiezienie'
 };
+
+export function getSupportedActivityTypes(): ActivityActivityTypeEnum[] {
+    return [ActivityActivityTypeEnum.Watering, ActivityActivityTypeEnum.Fertilisation];
+}
 
 export function isToday(date: Date): boolean {
     return Moment().isSame(date, 'day');
@@ -46,5 +54,10 @@ export function getSeverityColor(severity: NotificationSeverity): string {
 
 
 export function getUniqueActivityTypes(notifications: NotificationItem[]): ActivityActivityTypeEnum[] {
-    return Array.from(new Set(notifications.map(({ activity }) => activity.activityType)).values());
+    return Array.from(new Set(notifications.map(({ activity }) => activity.activityType)).values()).sort();
+}
+
+export function getInvalidNewActivityOptions(plants: Plant[], currentNotifications: NotificationItem[]): NewActivityOption[] {
+    return currentNotifications
+        .map(({activity}) => ({plantId: activity.plant.id, activityType: activity.activityType}))
 }

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -170,6 +171,12 @@ public class Plant {
     private String getLastActivityDate(ActivityType activityType) {
         return plantActivities.stream()
             .filter(activity -> activity.getActivityType() == activityType)
+            .sorted((a1, a2)-> {
+                // TODO we should really keep them as dates in the model
+                var d1 = LocalDate.parse(a1.getDate());
+                var d2 = LocalDate.parse(a2.getDate());
+                return d1.compareTo(d2);
+            })
             .collect(Collectors.toCollection(LinkedList::new))
             .getLast().getDate();
     }

@@ -135,7 +135,7 @@ public class PlantService {
             plant.setName(addPlantRequestBody.name());
             plant.setActualInsolation(addPlantRequestBody.insolation());
             plant.setNote(addPlantRequestBody.note());
-            // TODO handle all ...
+            // TODO handle all fields, remove activity if it was later than this or smth
 
             if (!plant.getLastFertilizationDate().equals(addPlantRequestBody.lastFertilizationDate())) {
                 plant.addActivity(new Activity(

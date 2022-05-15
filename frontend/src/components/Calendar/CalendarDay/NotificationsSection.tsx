@@ -1,10 +1,10 @@
+import Moment from 'moment';
 import { Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { PageRoutes } from "../../../utils/constants";
 import { NotificationItem } from "../utils";
 import { ACTIVITY_DESCRIPTION } from "./utils";
-import Moment from 'moment';
 
 type NotificationsSectionProps = {
     notifications: NotificationItem[];
@@ -32,7 +32,7 @@ const NotificationWrapper = styled.div`
 
 const ActivityDescription = styled.div`
     display: inline-block;
-    min-width: 100px;
+    min-width: 125px;
 `;
 
 const Separator = styled.div`
@@ -43,9 +43,6 @@ const Separator = styled.div`
 
 export const NotificationsSection: React.FC<NotificationsSectionProps> = (
     { title, notifications, onToggle, hasNextSection, tileDate }) => {
-
-    if (notifications.length === 0)
-        return <div></div>;
 
     return (
         <>
@@ -60,7 +57,7 @@ export const NotificationsSection: React.FC<NotificationsSectionProps> = (
                             <NotificationWrapper key={notification.activity.activityType + notification.activity.plant.id}>
                                 <div>
                                     <ActivityDescription>
-                                        {ACTIVITY_DESCRIPTION[notification.activity.activityType]}
+                                        {ACTIVITY_DESCRIPTION[notification.activity.activityType]}:
                                     </ActivityDescription>
                                     <Link to={`${PageRoutes.MY_PLANTS}/${notification.activity.plant.id}`}>
                                         {notification.activity.plant.name}
