@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "forum_post")
-@JsonIgnoreProperties({"user", "thread"})
+@JsonIgnoreProperties({"author", "thread"})
 public class ForumPost {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

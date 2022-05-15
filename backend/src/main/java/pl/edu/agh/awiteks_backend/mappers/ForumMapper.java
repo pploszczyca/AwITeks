@@ -10,7 +10,7 @@ public class ForumMapper {
         }
         return new ForumThreadSummary(
                 forumThread.getId(),
-                forumThread.getName(),
+                forumThread.getTitle(),
                 forumThread.getCreator(),
                 forumThread.getCreationTime(),
                 forumThread.getPostsCount(),

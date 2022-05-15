@@ -86,4 +86,12 @@ public class ForumThread {
     public Integer getPostsCount(){
         return forumPosts.size();
     }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 }
