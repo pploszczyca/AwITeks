@@ -53,7 +53,7 @@ public class UserDataValidationUtilities {
      * </ul>
      * */
     public boolean validateUsername(String username) {
-        String regexPattern = "^[A-Za-z_][A-Za-z0-9_]{3,}$";
+        String regexPattern = "^[A-Za-z_][A-Za-z0-9_]{2,}$";
         return patternMatches(username, regexPattern);
     }
 
