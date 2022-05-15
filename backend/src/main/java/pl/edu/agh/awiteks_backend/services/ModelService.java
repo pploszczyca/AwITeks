@@ -1,34 +1,37 @@
 package pl.edu.agh.awiteks_backend.services;
 
-import pl.edu.agh.awiteks_backend.repositories.Repository;
+import org.springframework.data.repository.CrudRepository;
+import pl.edu.agh.awiteks_backend.utilities.ListUtilities;
 
 import java.util.List;
 import java.util.Optional;
 
 public abstract class ModelService<T> {
-    private final Repository<T> modelRepository;
+    private final CrudRepository<T, Integer> modelRepository;
+    private final ListUtilities listUtilities;
 
-    public ModelService(Repository<T> modelRepository) {
+    public ModelService(CrudRepository<T, Integer> modelRepository, ListUtilities listUtilities) {
         this.modelRepository = modelRepository;
+        this.listUtilities = listUtilities;
     }
 
     public List<T> getAll() {
-        return modelRepository.getAll();
+        return listUtilities.iterableToList(modelRepository.findAll());
     }
 
     public Optional<T> get(int id) {
-        return modelRepository.get(id);
+        return modelRepository.findById(id);
     }
 
     public void add(T object) {
-        modelRepository.add(object);
+        modelRepository.save(object);
     }
 
     public void update(T object) {
-        modelRepository.update(object);
+        modelRepository.save(object);
     }
 
     public void remove(int id) {
-        modelRepository.remove(id);
+        modelRepository.deleteById(id);
     }
 }

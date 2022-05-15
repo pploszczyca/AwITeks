@@ -1,86 +1,84 @@
 package pl.edu.agh.awiteks_backend.api.plants;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import pl.edu.agh.awiteks_backend.api.plants.body_models.AddPlantRequestBody;
+import pl.edu.agh.awiteks_backend.api.plants.body_models.PlantSummary;
+import pl.edu.agh.awiteks_backend.api.plants.body_models.PlantsStats;
 import pl.edu.agh.awiteks_backend.models.Plant;
+import pl.edu.agh.awiteks_backend.security.jwt.JwtAccessToken;
 import pl.edu.agh.awiteks_backend.services.PlantService;
 
 import java.util.List;
 import java.util.Optional;
 
+import static pl.edu.agh.awiteks_backend.configs.SwaggerConfig.JWT_AUTH;
+
 @RestController
 @RequestMapping("/plants")
 public class PlantController {
     private final PlantService plantService;
+
     @Autowired
     public PlantController(PlantService plantService) {
         this.plantService = plantService;
     }
 
-    @Operation(summary = "Get all plants")
+    @Operation(summary = "Get all plants", security = @SecurityRequirement(name = JWT_AUTH))
     @GetMapping(produces = "application/json")
-    public List<Plant> getAllPlants() {
-        return plantService.getAll();
+    public List<Plant> getAllPlants(JwtAccessToken jwtAccessToken) {
+        return plantService.getAll(jwtAccessToken.getUserId());
     }
 
-    @Operation(summary = "Get plant by id")
+    @Operation(summary = "Get plant by id", security = @SecurityRequirement(name = JWT_AUTH))
     @GetMapping(value = "/{id}", produces = "application/json")
-    public Optional<Plant> getPlant(@PathVariable int id) {
-        return plantService.get(id);
+    public Optional<Plant> getPlant(JwtAccessToken jwtAccessToken, @PathVariable int id) {
+        return plantService.get(id, jwtAccessToken.getUserId());
     }
 
-    @Operation(summary = "Add new plant, assign it to specifier user and specie")
+    @Operation(summary = "Add new plant, assign it to specifier user and specie",
+            security = @SecurityRequirement(name = JWT_AUTH))
     @PostMapping
     @ResponseBody
-    public Plant addPlant(@RequestBody AddPlantRequestBody plant) {
-        // TODO creatorID from JWT
-        return plantService.addPlant(plant, 0);
+    public Plant addPlant(JwtAccessToken creatorAccessToken, @RequestBody AddPlantRequestBody plant) {
+        return plantService.addPlant(plant, creatorAccessToken.getUserId());
     }
 
-    @Operation(summary = "Changing Favourite flag in plant")
+    @Operation(summary = "Changing Favourite flag in plant", security = @SecurityRequirement(name = JWT_AUTH))
     @PutMapping(path = "/{plantId}/toggle-favourite")
     @ResponseBody
-    public void togglePlantFavourite(@PathVariable int plantId) {
-        plantService.changeFavourite(plantId);
+    public void togglePlantFavourite(JwtAccessToken jwtAccessToken, @PathVariable int plantId) {
+        plantService.changeFavourite(plantId, jwtAccessToken.getUserId());
     }
 
 
-    @Operation(summary = "Update plant")
+    @Operation(summary = "Update plant", security = @SecurityRequirement(name = JWT_AUTH))
     @PutMapping(path = "/{plantId}", consumes = "application/json")
-    public Plant updatePlant(@RequestBody AddPlantRequestBody plantRequestBody, @PathVariable int plantId) {
-        // TODO userId from JWT
-        return plantService.updatePlant(plantRequestBody, plantId, 0);
+    public Plant updatePlant(JwtAccessToken accessToken,
+                             @RequestBody AddPlantRequestBody addPlantRequestBody,
+                             @PathVariable int plantId
+    ) {
+        return plantService.updatePlant(addPlantRequestBody, plantId, accessToken.getUserId());
     }
 
-    @Operation(summary = "Delete plant by id")
+    @Operation(summary = "Delete plant by id", security = @SecurityRequirement(name = JWT_AUTH))
     @DeleteMapping(value = "/{id}")
-    public void removePlant(@PathVariable int id) {
-        plantService.remove(id);
+    public void removePlant(JwtAccessToken accessToken, @PathVariable int id) {
+        plantService.remove(id, accessToken.getUserId());
     }
 
-    @Operation(summary = "Get photo URL of plant")
-    @GetMapping(path = "/plants/{id}/URL")
-    public String getURL(@PathVariable int id){
-        Optional<Plant> plantOptional = plantService.get(id);
-        if(plantOptional.isPresent()){
-            return plantOptional.get().getUrl();
-        }else{
-            return "https://tatamariusz.pl/hans-christian-andersen-polny-kwiatek/#iLightbox[gallery3623]/0";
-        }
+    @Operation(summary = "Get all plants summary", security = @SecurityRequirement(name = JWT_AUTH))
+    @GetMapping(value = "/summary")
+    public List<PlantSummary> getAllPlantsSummary(JwtAccessToken accessToken) {
+        return plantService.getPlantSummaries(accessToken.getUserId());
     }
 
-    @Operation(summary = "Get all plants summary")
-    @GetMapping(value="/user/summary")
-    public List<PlantSummary> getAllPlantsSummary(){
-        // TODO user ID from JWT
-        return plantService.getPlantSummaries(0);
-    }
-
-    @Operation(summary = "Get plant stats")
-    @GetMapping(value = "/user/stats")
-    public PlantsStats getPlantsStats() {
-        // TODO user ID from JWT
-        return plantService.getPlantsStats(0);
+    @Operation(summary = "Get plant stats", security = @SecurityRequirement(name = JWT_AUTH))
+    @GetMapping(value = "/stats")
+    @SecurityRequirement(name = "JWT")
+    public PlantsStats getPlantsStats(JwtAccessToken accessToken) {
+        return plantService.getPlantsStats(accessToken.getUserId());
     }
 }

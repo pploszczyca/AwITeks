@@ -4,13 +4,28 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.time.LocalDateTime;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name = "forum_thread")
 @JsonIgnoreProperties({"creator"})
-public class ForumThread extends AbstractModel<ForumThread>{
+public class ForumThread {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Schema(required = true)
+    private Integer id;
+
+    @Schema(required = true)
+    private String title;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
     @Schema(required = true)
     private User creator;
+
+    @OneToMany(mappedBy = "thread", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @Schema(required = true)
     private List<ForumPost> forumPosts;
 
@@ -18,13 +33,13 @@ public class ForumThread extends AbstractModel<ForumThread>{
     private final LocalDateTime creationTime = LocalDateTime.now();
 
     public ForumThread(Integer id, String name, User user) {
-        super(id, name);
+        this.title = name;
         this.creator = user;
         this.forumPosts = new ArrayList<>();
     }
 
     public ForumThread(Integer id, String title, User user, List<ForumPost> forumPosts) {
-        super(id, title);
+        this.title = title;
         this.creator = user;
         this.forumPosts = forumPosts;
     }
@@ -36,7 +51,6 @@ public class ForumThread extends AbstractModel<ForumThread>{
         return id;
     }
 
-    @Override
     public ForumThread copy() {
         return null;
     }

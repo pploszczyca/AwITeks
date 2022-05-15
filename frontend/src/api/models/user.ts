@@ -13,6 +13,8 @@
  */
 
 
+import { ForumPost } from './forum-post';
+import { ForumThread } from './forum-thread';
 import { Plant } from './plant';
 
 /**
@@ -32,12 +34,30 @@ export interface User {
      * @type {string}
      * @memberof User
      */
-    'name': string;
+    'username': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof User
+     */
+    'email': string;
     /**
      * 
      * @type {Array<Plant>}
      * @memberof User
      */
     'userPlants': Array<Plant>;
+    /**
+     * 
+     * @type {Array<ForumPost>}
+     * @memberof User
+     */
+    'forumPostList': Array<ForumPost>;
+    /**
+     * 
+     * @type {Array<ForumThread>}
+     * @memberof User
+     */
+    'forumThreadList': Array<ForumThread>;
 }
 

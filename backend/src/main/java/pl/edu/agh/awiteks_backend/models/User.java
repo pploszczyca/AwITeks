@@ -3,24 +3,66 @@ package pl.edu.agh.awiteks_backend.models;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.context.annotation.Lazy;
 
-import java.util.ArrayList;
+import javax.persistence.*;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
-public class User extends AbstractModel<User> {
+@Entity
+@Table(name = "user",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = "username"),
+                @UniqueConstraint(columnNames = "email")
+        })
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Schema(required = true)
+    private Integer id;
+
+    @Schema(required = true)
+    private String username;
+
+    @Schema(required = true)
+    private String email;
+
+    @Schema(hidden = true)
+    private String password;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @Schema(required = true)
     private List<Plant> userPlants;
 
-    @Schema(required = false)
-    private List<ForumThread> followedThreads;
+    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @Schema(required = true)
+    private List<ForumPost> forumPostList;
 
-    public User(int id, String name,   @Lazy List<Plant> userPlants) {
-        super(id, name);
+    @OneToMany(mappedBy = "creator", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @Schema(required = true)
+    private List<ForumThread> forumThreadList;
+
+    //TODO: FIX THIS. Use ManyToTMany or just thread IDs.
+    //@OneToMany(mappedBy = "creator", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    //@Schema(required = false)
+    //private List<ForumThread> followedThreads;
+
+    public User(
+            String username,
+            String email,
+            String password,
+            @Lazy List<Plant> userPlants,
+            @Lazy List<ForumPost> forumPostList,
+            @Lazy List<ForumThread> forumThreadList) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
         this.userPlants = userPlants;
+        this.forumPostList = forumPostList;
+        this.forumThreadList = forumThreadList;
     }
 
-    public User(int id, String name) {
-        this(id, name, new ArrayList<>());
+    public User(String username, String email, String password) {
+        this(username, email, password, new LinkedList<>(), new LinkedList<>(), new LinkedList<>());
     }
 
     public User() {
@@ -35,34 +77,6 @@ public class User extends AbstractModel<User> {
         userPlants.remove(plant);
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public List<ForumThread> getFollowedThreads() {
-        return followedThreads;
-    }
-
-    public void setFollowedThreads(List<ForumThread> followedThreads) {
-        this.followedThreads = followedThreads;
-    }
-
-    public void addFollowedThread(ForumThread thread){
-        this.followedThreads.add(thread);
-    }
-
-    @Override
-    public User copy() {
-        List<Plant> list = this.userPlants.stream().map(AbstractModel::copy).toList();
-        return new User(
-                id,
-                name,
-                list);
-    }
 
     public List<Plant> getUserPlants() {
         return userPlants;
@@ -72,7 +86,67 @@ public class User extends AbstractModel<User> {
         this.userPlants = userPlants;
     }
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+//    public List<ForumThread> getFollowedThreads() {
+//        return followedThreads;
+//    }
+//
+//    public void setFollowedThreads(List<ForumThread> followedThreads) {
+//        this.followedThreads = followedThreads;
+//    }
+//
+//    public void addFollowedThread(ForumThread thread){
+//        this.followedThreads.add(thread);
+//    }
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public List<ForumPost> getForumPostList() {
+        return forumPostList;
+    }
+
+    public void setForumPostList(List<ForumPost> forumPostList) {
+        this.forumPostList = forumPostList;
+    }
+
+    public List<ForumThread> getForumThreadList() {
+        return forumThreadList;
+    }
+
+    public void setForumThreadList(List<ForumThread> forumThreadList) {
+        this.forumThreadList = forumThreadList;
+    }
+
     public boolean isFollowing(ForumThread thread) {
-        return followedThreads.contains(thread);
+        //return followedThreads.contains(thread);
+        return false;
     }
 }

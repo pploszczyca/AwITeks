@@ -1,0 +1,43 @@
+version: '3.7'
+
+services:
+  awit-backend:
+    image: 'awit-backend'
+    build:
+      context: .
+    ports:
+      - "5000:5000"
+    container_name: awit-backend
+    depends_on:
+      - mysql
+
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/db?createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: my-secret-pw
+
+    networks:
+      - backend
+
+  mysql:
+    image: mysql:5.7.38
+    ports:
+      - "3306:3306"
+    restart: always
+    environment:
+      MYSQL_DATABASE: db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: my-secret-pw
+      MYSQL_ROOT_PASSWORD: my-secret-pw
+
+    volumes:
+      - awit-data:/var/lib/mysql
+
+    networks:
+      - backend
+
+volumes:
+  awit-data:
+
+networks:
+  backend:

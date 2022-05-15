@@ -15,7 +15,7 @@ type SpeciesFormProps = {
 
 export const SpeciesForm: React.FC<SpeciesFormProps> = ({ show, hide }) => {
     const queryClient = useQueryClient();
-    const addSpeciesMutation = useMutation(getApis().speciesApi.addSpecies,
+    const addSpeciesMutation = useMutation((species: AddSpeciesRequestBody) => getApis().speciesApi.addSpecies(species),
         {
             onSuccess: (species) => {
                 queryClient.setQueryData(['species', species.data?.creatorId], species.data);

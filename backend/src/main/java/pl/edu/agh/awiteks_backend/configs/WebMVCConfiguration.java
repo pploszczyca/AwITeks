@@ -15,6 +15,8 @@ public class WebMVCConfiguration implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedMethods("*")
+                .allowedHeaders("*")
+                .allowCredentials(true)
                 .allowedOrigins(reactDevServerUrl);
     }
 }

@@ -2,22 +2,30 @@ package pl.edu.agh.awiteks_backend.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.edu.agh.awiteks_backend.models.Plant;
-import pl.edu.agh.awiteks_backend.models.Species;
+import pl.edu.agh.awiteks_backend.api.users.body_models.UserInfo;
 import pl.edu.agh.awiteks_backend.models.User;
-import pl.edu.agh.awiteks_backend.repositories.Repository;
+import pl.edu.agh.awiteks_backend.repositories.PlantRepository;
+import pl.edu.agh.awiteks_backend.repositories.SpeciesRepository;
+import pl.edu.agh.awiteks_backend.repositories.UserRepository;
+import pl.edu.agh.awiteks_backend.utilities.ListUtilities;
+import pl.edu.agh.awiteks_backend.utilities.StreamUtilities;
 
 @Service
 public class UserService extends ModelService<User> {
 
-    private final Repository<Species> speciesRepository;
-    private final Repository<Plant> plantRepository;
+    private final SpeciesRepository speciesRepository;
+    private final PlantRepository plantRepository;
+    private final StreamUtilities streamUtilities;
 
     @Autowired
-    public UserService(Repository<User> modelRepository, Repository<Species> speciesRepository, Repository<Plant> plantRepository) {
-        super(modelRepository);
+    public UserService(UserRepository modelRepository,
+                       SpeciesRepository speciesRepository,
+                       PlantRepository plantRepository,
+                       ListUtilities listUtilities, StreamUtilities streamUtilities) {
+        super(modelRepository, listUtilities);
         this.speciesRepository = speciesRepository;
         this.plantRepository = plantRepository;
+        this.streamUtilities = streamUtilities;
     }
 
     @Override
@@ -27,18 +35,22 @@ public class UserService extends ModelService<User> {
         super.remove(id);
     }
 
+    public UserInfo getUserInfo(int userId) {
+        // TODO error handling
+        User user = get(userId).orElseThrow();
+        return new UserInfo(user.getEmail(), user.getUsername());
+    }
+
     private void removeAllUserPlants(int id) {
         super.get(id)
-                .ifPresent(presentUser -> presentUser
-                        .getUserPlants()
-                        .forEach(plantRepository::remove));
+                .ifPresent(presentUser -> plantRepository.deleteAll(presentUser.getUserPlants()));
     }
 
     private void removeAllUserSpecies(int id) {
-        speciesRepository
-                .getAll()
-                .stream()
+        streamUtilities
+                .asStream(speciesRepository.findAll())
                 .filter(species -> species.getCreatorId() == id)
-                .forEach(speciesRepository::remove);
+                .forEach(speciesRepository::delete);
     }
+
 }
