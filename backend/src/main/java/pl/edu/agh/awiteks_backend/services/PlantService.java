@@ -15,6 +15,7 @@ import pl.edu.agh.awiteks_backend.repositories.UserRepository;
 import pl.edu.agh.awiteks_backend.utilities.ListUtilities;
 import pl.edu.agh.awiteks_backend.utilities.PlantValidator;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -46,16 +47,7 @@ public class PlantService {
         plantValidator.validateNewPlantRequest(addPlantRequestBody);
         var plant = makePlantFromRequestBody(addPlantRequestBody, userId);
 
-        plant.addActivity(new Activity(
-                plant,
-                ActivityType.WATERING,
-                addPlantRequestBody.lastWateringDate()));
-
-        plant.addActivity(new Activity(
-                plant,
-                ActivityType.FERTILISATION,
-                addPlantRequestBody.lastFertilizationDate()));
-
+        addPlantActivities(plant, addPlantRequestBody, List.of(ActivityType.values()));
         addPlantToUserList(plant, userId);
         plantRepository.save(plant);
 
@@ -132,28 +124,15 @@ public class PlantService {
                 .findByIdAndUserId(plantId, userId)
                 .orElseThrow();
 
-            plant.setName(addPlantRequestBody.name());
-            plant.setActualInsolation(addPlantRequestBody.insolation());
-            plant.setNote(addPlantRequestBody.note());
-            // TODO handle all fields, remove activity if it was later than this or smth
+        var species = speciesRepository.findById(addPlantRequestBody.speciesId()).orElseThrow();
+        plant.setName(addPlantRequestBody.name());
+        plant.setActualInsolation(addPlantRequestBody.insolation());
+        plant.setNote(addPlantRequestBody.note());
+        plant.setSpecies(species);
+        fixPlantActivities(plant, addPlantRequestBody);
+        plantRepository.save(plant);
 
-            if (!plant.getLastFertilizationDate().equals(addPlantRequestBody.lastFertilizationDate())) {
-                plant.addActivity(new Activity(
-                        plant,
-                        ActivityType.FERTILISATION,
-                        addPlantRequestBody.lastFertilizationDate()));
-            }
-
-            if (!plant.getLastWateringDate().equals(addPlantRequestBody.lastWateringDate())) {
-                plant.addActivity(new Activity(
-                        plant,
-                        ActivityType.WATERING,
-                        addPlantRequestBody.lastWateringDate()));
-            }
-
-            plantRepository.save(plant);
-
-            return plant;
+        return plant;
     }
 
     private Plant makePlantFromRequestBody(AddPlantRequestBody addPlantRequestBody, int userId) {
@@ -171,5 +150,37 @@ public class PlantService {
                 "https://netscroll.pl/wp-content/uploads/2021/10/CactusToy1.jpg");
 
         return plant;
+    }
+
+    private void fixPlantActivities(Plant plant, AddPlantRequestBody addPlantRequestBody) {
+        var activityTypesToFix = Arrays.stream(ActivityType.values())
+                        .filter(activityType -> shouldCreateActivity(plant, addPlantRequestBody, activityType))
+                        .collect(Collectors.toList());
+
+        addPlantActivities(plant, addPlantRequestBody, activityTypesToFix);
+    }
+
+    private void addPlantActivities(Plant plant, AddPlantRequestBody addPlantRequestBody, List<ActivityType> activityTypes) {
+        activityTypes.stream()
+                .map(activityType -> createActivityFromAddPlantRequest(plant, addPlantRequestBody, activityType))
+                .forEach(plant::addActivity);
+    }
+
+    private Activity createActivityFromAddPlantRequest(Plant plant, AddPlantRequestBody addPlantRequestBody,
+                                                       ActivityType activityType
+    ) {
+        return switch (activityType) {
+            case WATERING -> new Activity(plant, activityType,  addPlantRequestBody.lastWateringDate());
+            case FERTILISATION -> new Activity(plant, activityType, addPlantRequestBody.lastFertilizationDate());
+        };
+    }
+
+    private boolean shouldCreateActivity(Plant plant, AddPlantRequestBody addPlantRequestBody,
+                                         ActivityType activityType
+    ) {
+        return switch (activityType) {
+            case WATERING -> !plant.getLastWateringDate().equals(addPlantRequestBody.lastWateringDate());
+            case FERTILISATION -> !plant.getLastFertilizationDate().equals(addPlantRequestBody.lastFertilizationDate());
+        };
     }
 }
