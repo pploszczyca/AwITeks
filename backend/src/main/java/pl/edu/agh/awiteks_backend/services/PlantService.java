@@ -6,12 +6,16 @@ import pl.edu.agh.awiteks_backend.api.plants.body_models.AddPlantRequestBody;
 import pl.edu.agh.awiteks_backend.api.plants.body_models.PlantSummary;
 import pl.edu.agh.awiteks_backend.api.plants.body_models.PlantsStats;
 import pl.edu.agh.awiteks_backend.mappers.PlantMapper;
+import pl.edu.agh.awiteks_backend.models.Activity;
+import pl.edu.agh.awiteks_backend.models.ActivityType;
 import pl.edu.agh.awiteks_backend.models.Plant;
 import pl.edu.agh.awiteks_backend.repositories.PlantRepository;
 import pl.edu.agh.awiteks_backend.repositories.SpeciesRepository;
 import pl.edu.agh.awiteks_backend.repositories.UserRepository;
 import pl.edu.agh.awiteks_backend.utilities.ListUtilities;
+import pl.edu.agh.awiteks_backend.utilities.PlantValidator;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -19,31 +23,31 @@ import java.util.stream.Collectors;
 
 @Service
 public class PlantService {
-
     private final PlantRepository plantRepository;
-
     private final ListUtilities listUtilities;
-
     private final UserRepository userRepository;
-
     private final SpeciesRepository speciesRepository;
+    private final PlantValidator plantValidator;
 
     @Autowired
     public PlantService(PlantRepository modelRepository,
                         UserRepository userRepository,
                         SpeciesRepository speciesRepository,
+                        PlantValidator plantValidator,
                         ListUtilities listUtilities
     ) {
         this.plantRepository = modelRepository;
-        this.listUtilities = listUtilities;
         this.userRepository = userRepository;
         this.speciesRepository = speciesRepository;
+        this.plantValidator = plantValidator;
+        this.listUtilities = listUtilities;
     }
 
     public Plant addPlant(AddPlantRequestBody addPlantRequestBody, int userId) {
-        // TODO custom exceptions, rewrite this once DB is ready
+        plantValidator.validateNewPlantRequest(addPlantRequestBody);
         var plant = makePlantFromRequestBody(addPlantRequestBody, userId);
 
+        addPlantActivities(plant, addPlantRequestBody, List.of(ActivityType.values()));
         addPlantToUserList(plant, userId);
         plantRepository.save(plant);
 
@@ -116,9 +120,16 @@ public class PlantService {
     }
 
     public Plant updatePlant(AddPlantRequestBody addPlantRequestBody, int plantId, int userId) {
-        var plant = makePlantFromRequestBody(addPlantRequestBody, userId);
-        plant.setId(plantId);
+        var plant = plantRepository
+                .findByIdAndUserId(plantId, userId)
+                .orElseThrow();
 
+        var species = speciesRepository.findById(addPlantRequestBody.speciesId()).orElseThrow();
+        plant.setName(addPlantRequestBody.name());
+        plant.setActualInsolation(addPlantRequestBody.insolation());
+        plant.setNote(addPlantRequestBody.note());
+        plant.setSpecies(species);
+        fixPlantActivities(plant, addPlantRequestBody);
         plantRepository.save(plant);
 
         return plant;
@@ -128,7 +139,7 @@ public class PlantService {
         var species = speciesRepository.findByIdAndCreatorId(addPlantRequestBody.speciesId(), userId).orElseThrow();
         var user = userRepository.findById(userId).orElseThrow();
 
-        return new Plant(
+        var plant = new Plant(
                 addPlantRequestBody.name(),
                 user,
                 species,
@@ -137,6 +148,39 @@ public class PlantService {
                 new LinkedList<>(),
                 false,
                 "https://netscroll.pl/wp-content/uploads/2021/10/CactusToy1.jpg");
+
+        return plant;
     }
 
+    private void fixPlantActivities(Plant plant, AddPlantRequestBody addPlantRequestBody) {
+        var activityTypesToFix = Arrays.stream(ActivityType.values())
+                        .filter(activityType -> shouldCreateActivity(plant, addPlantRequestBody, activityType))
+                        .collect(Collectors.toList());
+
+        addPlantActivities(plant, addPlantRequestBody, activityTypesToFix);
+    }
+
+    private void addPlantActivities(Plant plant, AddPlantRequestBody addPlantRequestBody, List<ActivityType> activityTypes) {
+        activityTypes.stream()
+                .map(activityType -> createActivityFromAddPlantRequest(plant, addPlantRequestBody, activityType))
+                .forEach(plant::addActivity);
+    }
+
+    private Activity createActivityFromAddPlantRequest(Plant plant, AddPlantRequestBody addPlantRequestBody,
+                                                       ActivityType activityType
+    ) {
+        return switch (activityType) {
+            case WATERING -> new Activity(plant, activityType,  addPlantRequestBody.lastWateringDate());
+            case FERTILISATION -> new Activity(plant, activityType, addPlantRequestBody.lastFertilizationDate());
+        };
+    }
+
+    private boolean shouldCreateActivity(Plant plant, AddPlantRequestBody addPlantRequestBody,
+                                         ActivityType activityType
+    ) {
+        return switch (activityType) {
+            case WATERING -> !plant.getLastWateringDate().equals(addPlantRequestBody.lastWateringDate());
+            case FERTILISATION -> !plant.getLastFertilizationDate().equals(addPlantRequestBody.lastFertilizationDate());
+        };
+    }
 }

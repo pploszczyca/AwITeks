@@ -13,39 +13,38 @@
  */
 
 
-import { Plant } from './plant';
 
 /**
  * 
  * @export
- * @interface Activity
+ * @interface AddActivityRequestBody
  */
-export interface Activity {
+export interface AddActivityRequestBody {
     /**
      * 
-     * @type {Plant}
-     * @memberof Activity
+     * @type {number}
+     * @memberof AddActivityRequestBody
      */
-    'plant': Plant;
+    'plantId': number;
     /**
      * 
      * @type {string}
-     * @memberof Activity
+     * @memberof AddActivityRequestBody
      */
-    'activityType': ActivityActivityTypeEnum;
+    'activityType': AddActivityRequestBodyActivityTypeEnum;
     /**
      * 
      * @type {string}
-     * @memberof Activity
+     * @memberof AddActivityRequestBody
      */
     'date': string;
 }
 
-export const ActivityActivityTypeEnum = {
+export const AddActivityRequestBodyActivityTypeEnum = {
     Watering: 'WATERING',
     Fertilisation: 'FERTILISATION'
 } as const;
 
-export type ActivityActivityTypeEnum = typeof ActivityActivityTypeEnum[keyof typeof ActivityActivityTypeEnum];
+export type AddActivityRequestBodyActivityTypeEnum = typeof AddActivityRequestBodyActivityTypeEnum[keyof typeof AddActivityRequestBodyActivityTypeEnum];
 
 

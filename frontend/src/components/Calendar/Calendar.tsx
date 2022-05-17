@@ -1,19 +1,25 @@
+import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import Moment from 'moment';
 import React, { useState } from 'react';
 import { Row } from "react-bootstrap";
-import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons'
-import Card from "react-bootstrap/Card"
-import { CalendarCol, CalendarService, ExportButton, DayWrapperCard, DayHeader, Arrow, CalendarServiceBottom } from './CalendarStyles';
-import { calculateSeverity, DAYS, getTileDate, getTileNotifications, MONTHS, nextMonth, prevMonth, WEEKS } from './utils';
-import { CalendarDay } from '../CalendarDay/CalendarDay';
-import { ContentContainer } from "../App/AppStyle";
+import Card from "react-bootstrap/Card";
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { getApis } from "../../api/initializeApis";
-import { useQuery } from 'react-query';
-import Loader from '../Loader/Loader';
+import { AddActivityRequestBody } from '../../api/models/add-activity-request-body';
+import { DATE_FORMAT } from '../../utils/constants';
+import { ContentContainer } from "../App/AppStyle";
+import { CalendarDay } from './CalendarDay/CalendarDay';
+import { isToday } from './CalendarDay/utils';
+import { Arrow, CalendarCol, CalendarService, CalendarServiceBottom, DayHeader, DayWrapperCard, ExportButton } from './CalendarStyles';
+import {
+    DAYS, getDoneMonthNotifications, getOverdueNotifications, getPeriodicPlantActivities, getTileDate,
+    getUndoneMonthNotifications, MONTHS, nextMonth, prevMonth, WEEKS
+} from './utils';
 
 
 type CalendarProps = {
-    plantId?: number // if undefined, all plants should be considered
-    variant?: 'small' | 'big'
+    plantId?: number; // if undefined, all plants should be considered
+    variant?: 'small' | 'big';
 };
 
 function exportCalendar() {
@@ -23,48 +29,83 @@ function exportCalendar() {
 
 const Calendar: React.FC<CalendarProps> = ({ plantId, variant = 'big' }) => {
     const [displayedDate, setDisplayedDate] = useState(new Date());
+    const queryClient = useQueryClient();
 
-    // TODO this will have to be rewritten once backend is fixed
-    const { data: notifications, isLoading } = useQuery(['plants', 'notifications'], async () => {
-        const plantsRequest = await getApis().plantsApi.getAllPlants();
-        const plants = plantsRequest.data;
+    // TODO error handling
+    const addActivity = useMutation((activity: AddActivityRequestBody) => (
+        getApis().activityApi.addActivity(activity)
+        ),
+        {
+            onSuccess: (_, args) => {
+                // TODO this probably could be done without total invalidation
+                queryClient.invalidateQueries(['activities']);
+                queryClient.invalidateQueries(['plants']);
+            }
+        }
+    );
 
-        return plants.filter(plant => plantId === undefined || plant.id === plantId).map(plant => {
-            return plant.plantActivities.map(activity => {
-                const date = new Date(activity.date)
+    let { data: plants, isLoading: arePlantsLoading } =
+        useQuery(['plants'], () => getApis().plantsApi.getAllPlants().then(resp => resp.data));
 
-                return {
-                    day: date.getDate(),
-                    month: date.getMonth(),
-                    year: date.getFullYear(),
-                    items: [
-                        {
-                            notificationId: activity.id!,
-                            plantId: plant.id!,
-                            severity: calculateSeverity(date)
-                        }
-                    ]
-                }
-            })
-        }).flat()
-    });
+    let { data: activities, isLoading: areActivitiesLoading } =
+        useQuery(['activities',
+                  displayedDate.getFullYear(),
+                  displayedDate.getMonth() + 1
+                ],
+                () => getApis().activityApi.getActivities(
+                        displayedDate.getFullYear(),
+                        displayedDate.getMonth() + 1
+                 ).then(resp => resp.data)
+            );
+
+    if (arePlantsLoading || areActivitiesLoading) {
+        plants = [];
+        activities = [];
+    }
+
+    if (plantId !== undefined) {
+        // TODO just modify useQuery
+        plants = plants!.filter(({ id }) => id === plantId);
+        activities = activities!.filter(({ plant }) => plant.id === plantId);
+    }
+
+    console.log(plants);
 
 
+    const plantActivites = getPeriodicPlantActivities(plants!);
+
+    const doneNotifications = getDoneMonthNotifications(displayedDate, activities!);
+    const undoneNotifications = getUndoneMonthNotifications(displayedDate, plantActivites);
+    const overdueNotifications = getOverdueNotifications(plantActivites);
 
     function buildCalendarDay(weekNr: number, day: number) {
         const tileDate = getTileDate(weekNr * 7 + day + 1, displayedDate);
-        const tileNotifications = getTileNotifications(tileDate, notifications!);
+        const done = doneNotifications.get(tileDate.getDate()) ?? [];
+        const undone = undoneNotifications.get(tileDate.getDate()) ?? [];
 
         return <CalendarDay
             displayedDate={displayedDate}
-            notifications={tileNotifications}
             tileDate={tileDate}
+            plants={plants!}
+            doneNotifications={done}
+            undoneNotifications={undone}
+            overdueNotifications={isToday(tileDate) ? overdueNotifications : undefined}
+            onToggleNotification={(args) => {
+                return addActivity.mutateAsync({
+                    activityType: args.notificationItem.activity.activityType,
+                    date: Moment(args.tileDate).format(DATE_FORMAT),
+                    plantId: args.notificationItem.activity.plant.id
+                })
+            }}
+            onAddNewActivity={(args) => {
+                return addActivity.mutateAsync({
+                    activityType: args.activityType,
+                    date: Moment(args.date).format(DATE_FORMAT),
+                    plantId: args.plantId
+                });
+            }}
             variant={variant}
         />;
-    }
-
-    if (isLoading) {
-        return <Loader />;
     }
 
 
@@ -135,7 +176,7 @@ const Calendar: React.FC<CalendarProps> = ({ plantId, variant = 'big' }) => {
                         <Row className="m-0" key={weekNr}>
                             {DAYS.map(day => (
                                 <CalendarCol key={`${weekNr}.${day}`}>
-                                    <Card as={DayWrapperCard} style={{ minHeight: variant === 'small' ? "5rem" : "" }}>
+                                    <Card as={DayWrapperCard} style={{ minHeight: variant === 'small' ? "6rem" : "" }}>
                                         {buildCalendarDay(weekNr, day)}
                                     </Card>
                                 </CalendarCol>

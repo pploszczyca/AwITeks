@@ -1,8 +1,8 @@
 ## password is just "password"
-INSERT INTO user (email, password, username)
-VALUES ('test1@test.pl', '$2a$10$FKyI3VHkkTEMCHk2exDdmu5kcMiHRtEjAR0pdm.Y5xJtfFOe09jU2', 'konrad');
-INSERT INTO user (email, password, username)
-VALUES ('test2@test.pl', '$2a$10$FKyI3VHkkTEMCHk2exDdmu5kcMiHRtEjAR0pdm.Y5xJtfFOe09jU2', 'maciek');
+INSERT INTO user (id, email, password, username)
+VALUES (1, 'test1@test.pl', '$2a$10$FKyI3VHkkTEMCHk2exDdmu5kcMiHRtEjAR0pdm.Y5xJtfFOe09jU2', 'konrad');
+INSERT INTO user (id, email, password, username)
+VALUES (2, 'test2@test.pl', '$2a$10$FKyI3VHkkTEMCHk2exDdmu5kcMiHRtEjAR0pdm.Y5xJtfFOe09jU2', 'maciek');
 
 
 ## pre-definied species

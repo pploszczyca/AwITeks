@@ -1,6 +1,5 @@
 package pl.edu.agh.awiteks_backend.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.persistence.*;
@@ -8,11 +7,10 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "activities")
-@JsonIgnoreProperties({"plant"})
 public class Activity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Schema(required = true)
+    @Schema(hidden = true)
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -25,7 +23,6 @@ public class Activity {
 
     @Schema(required = true)
     private String date;
-
 
     public Activity(Plant plant, ActivityType activityType, String date) {
         this.plant = plant;
