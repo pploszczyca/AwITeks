@@ -1,5 +1,9 @@
 package pl.edu.agh.awiteks_backend.services;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.edu.agh.awiteks_backend.api.plants.body_models.AddPlantRequestBody;
@@ -11,11 +15,6 @@ import pl.edu.agh.awiteks_backend.repositories.PlantRepository;
 import pl.edu.agh.awiteks_backend.repositories.SpeciesRepository;
 import pl.edu.agh.awiteks_backend.repositories.UserRepository;
 import pl.edu.agh.awiteks_backend.utilities.ListUtilities;
-
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class PlantService {
@@ -42,7 +41,7 @@ public class PlantService {
 
     public Plant addPlant(AddPlantRequestBody addPlantRequestBody, int userId) {
         // TODO custom exceptions, rewrite this once DB is ready
-        var plant = makePlantFromRequestBody(addPlantRequestBody, userId);
+        final var plant = makePlantFromRequestBody(addPlantRequestBody, userId);
 
         addPlantToUserList(plant, userId);
         plantRepository.save(plant);
@@ -51,7 +50,8 @@ public class PlantService {
     }
 
     public List<Plant> getAll(int userId) {
-        return this.listUtilities.iterableToList(plantRepository.findAllByUserId(userId));
+        return this.listUtilities.iterableToList(
+                plantRepository.findAllByUserId(userId));
     }
 
     public Optional<Plant> get(int id, int userId) {
@@ -98,7 +98,8 @@ public class PlantService {
 
     private List<Plant> getUsersPlants(int userId) {
         // TODO maybe create custom exception
-        return listUtilities.iterableToList(plantRepository.findAllByUserId(userId));
+        return listUtilities.iterableToList(
+                plantRepository.findAllByUserId(userId));
     }
 
     public List<PlantSummary> getPlantSummaries(int userId) {
@@ -110,13 +111,16 @@ public class PlantService {
     public PlantsStats getPlantsStats(int userId) {
         // TODO move frontend logic to compute these stats here
         // TODO we can either aggregate this or compute every time
-        List<Plant> userPlants = getUsersPlants(userId);
+        final List<Plant> userPlants = getUsersPlants(userId);
+        final var neglectedPlants = 5;
+        final var wellGroomedPlants = 5;
 
-        return new PlantsStats(userPlants.size(), 5, 5);
+        return new PlantsStats(userPlants.size(), neglectedPlants, wellGroomedPlants);
     }
 
-    public Plant updatePlant(AddPlantRequestBody addPlantRequestBody, int plantId, int userId) {
-        var plant = makePlantFromRequestBody(addPlantRequestBody, userId);
+    public Plant updatePlant(AddPlantRequestBody addPlantRequestBody,
+                             int plantId, int userId) {
+        final var plant = makePlantFromRequestBody(addPlantRequestBody, userId);
         plant.setId(plantId);
 
         plantRepository.save(plant);
@@ -124,9 +128,11 @@ public class PlantService {
         return plant;
     }
 
-    private Plant makePlantFromRequestBody(AddPlantRequestBody addPlantRequestBody, int userId) {
-        var species = speciesRepository.findByIdAndCreatorId(addPlantRequestBody.speciesId(), userId).orElseThrow();
-        var user = userRepository.findById(userId).orElseThrow();
+    private Plant makePlantFromRequestBody(
+            AddPlantRequestBody addPlantRequestBody, int userId) {
+        final var species = speciesRepository.findByIdAndCreatorId(
+                addPlantRequestBody.speciesId(), userId).orElseThrow();
+        final var user = userRepository.findById(userId).orElseThrow();
 
         return new Plant(
                 addPlantRequestBody.name(),

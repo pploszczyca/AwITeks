@@ -2,10 +2,18 @@ package pl.edu.agh.awiteks_backend.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
-
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "plants")
@@ -44,7 +52,9 @@ public class Plant {
     @Schema(required = true)
     private String url;
 
-    public Plant(String name, User user, Species species, String note, Insolation actualInsolation, List<Activity> plantActivities, boolean favourite, String url) {
+    public Plant(String name, User user, Species species, String note,
+                 Insolation actualInsolation, List<Activity> plantActivities,
+                 boolean favourite, String url) {
         this.name = name;
         this.user = user;
         this.species = species;
@@ -55,8 +65,10 @@ public class Plant {
         this.url = url;
     }
 
-    public Plant(String name, User user, Species species, String note, Insolation actualInsolation, boolean favourite, String url) {
-        this(name, user, species, note, actualInsolation, new ArrayList<>(), favourite, url);
+    public Plant(String name, User user, Species species, String note,
+                 Insolation actualInsolation, boolean favourite, String url) {
+        this(name, user, species, note, actualInsolation, new ArrayList<>(),
+                favourite, url);
     }
 
     public Plant() {
