@@ -33,3 +33,7 @@ jobs:
         run: ./gradlew build
       - name: Test Gradle Project
         run: ./gradlew test
+      - name: Checkstyle main source code
+        run: ./gradlew checkstyleMain
+      - name: Checkstyle tests source code
+        run: ./gradlew checkstyleTest
