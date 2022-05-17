@@ -30,11 +30,14 @@ public class ForumPost {
     @Schema(required = true)
     private String date;
 
-    public ForumPost(int id, User author, ForumThread thread, String content) {
-        this.id = id;
+    @Schema(required = true)
+    private boolean favourite;
+
+    public ForumPost(User author, ForumThread thread, String content, boolean favourite) {
         this.author = author;
         this.thread = thread;
         this.content = content;
+        this.favourite = favourite;
     }
 
     public ForumPost() {

@@ -1,4 +1,4 @@
-package pl.edu.agh.awiteks_backend.api.forum;
+package pl.edu.agh.awiteks_backend.api.forum.body_models;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 

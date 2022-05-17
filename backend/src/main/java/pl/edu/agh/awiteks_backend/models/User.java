@@ -73,10 +73,17 @@ public class User {
         userPlants.add(plant);
     }
 
+    public void addThread(ForumThread thread){
+        this.forumThreadList.add(thread);
+    }
+
     public void removePlant(Plant plant) {
         userPlants.remove(plant);
     }
 
+    public void removeThread(ForumThread forumThread){
+        forumThreadList.remove(forumThread);
+    }
 
     public List<Plant> getUserPlants() {
         return userPlants;

@@ -32,16 +32,21 @@ public class ForumThread {
     @Schema(required = false)
     private final LocalDateTime creationTime = LocalDateTime.now();
 
-    public ForumThread(Integer id, String name, User user) {
+    @Schema(required = true)
+    private boolean favourite;
+
+    public ForumThread(String name, User user, boolean favourite) {
         this.title = name;
         this.creator = user;
         this.forumPosts = new ArrayList<>();
+        this.favourite = favourite;
     }
 
-    public ForumThread(Integer id, String title, User user, List<ForumPost> forumPosts) {
+    public ForumThread(String title, User user, List<ForumPost> forumPosts, boolean favourite) {
         this.title = title;
         this.creator = user;
         this.forumPosts = forumPosts;
+        this.favourite = favourite;
     }
 
     public ForumThread() {
@@ -83,7 +88,7 @@ public class ForumThread {
         return creationTime;
     }
 
-    public Integer getPostsCount(){
+    public Integer getPostsCount() {
         return forumPosts.size();
     }
 
@@ -93,5 +98,13 @@ public class ForumThread {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public boolean isFavourite() {
+        return favourite;
+    }
+
+    public void setFavourite(boolean favourite) {
+        this.favourite = favourite;
     }
 }
