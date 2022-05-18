@@ -49,14 +49,11 @@ public class ForumService {
                 forumThread,
                 addThreadRequestBody.content()
         );
-        userRepository
-                .findById(userId)
-                .ifPresent(presentUser -> {
-                    presentUser.addThread(forumThread);
-                    forumThread.setUser(creator);
-                });
-        postRepository.save(post);
+        creator.addThread(forumThread);
+        forumThread.addForumPost(post);
+        creator.getForumPostList().add(post);
         forumRepository.save(forumThread);
+        postRepository.save(post);
         return forumThread;
     }
 

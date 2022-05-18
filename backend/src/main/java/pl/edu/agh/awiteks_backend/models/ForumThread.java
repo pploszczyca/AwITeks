@@ -51,7 +51,7 @@ public class ForumThread {
     public ForumThread() {
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
