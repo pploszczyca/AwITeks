@@ -3,9 +3,6 @@ package pl.edu.agh.awiteks_backend.models;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
-
-import javax.persistence.*;
-import java.sql.Blob;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -17,6 +14,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -59,7 +57,9 @@ public class Plant {
     @Lob
     private String photo;
 
-    public Plant(String name, User user, Species species, String note, Insolation actualInsolation, List<Activity> plantActivities, boolean favourite, String photo) {
+    public Plant(String name, User user, Species species, String note,
+                 Insolation actualInsolation, List<Activity> plantActivities,
+                 boolean favourite, String photo) {
         this.name = name;
         this.user = user;
         this.species = species;
@@ -70,8 +70,10 @@ public class Plant {
         this.photo = photo;
     }
 
-    public Plant(String name, User user, Species species, String note, Insolation actualInsolation, boolean favourite, String photo) {
-        this(name, user, species, note, actualInsolation, new ArrayList<>(), favourite, photo);
+    public Plant(String name, User user, Species species, String note,
+                 Insolation actualInsolation, boolean favourite, String photo) {
+        this(name, user, species, note, actualInsolation, new ArrayList<>(),
+                favourite, photo);
     }
 
     public Plant() {

@@ -95,14 +95,16 @@ public class PlantController {
 
     @Operation(summary = "Get plant photo", security = @SecurityRequirement(name = JWT_AUTH))
     @GetMapping(value = "/{id}/photo")
-    public String getPlantPhoto(JwtAccessToken accessToken, @PathVariable int id) {
+    public String getPlantPhoto(JwtAccessToken accessToken,
+                                @PathVariable int id) {
         return plantService.getPhoto(id, accessToken.getUserId());
     }
 
     @Operation(summary = "Set plant photo", security = @SecurityRequirement(name = JWT_AUTH))
     @PostMapping(value = "/{id}/photo")
     @SecurityRequirement(name = "JWT")
-    public Plant addPlantPhoto(JwtAccessToken accessToken, @PathVariable int id, @RequestBody String base64String) {
-        return plantService.setPhoto(id, accessToken.getUserId(),base64String);
+    public Plant addPlantPhoto(JwtAccessToken accessToken, @PathVariable int id,
+                               @RequestBody String base64String) {
+        return plantService.setPhoto(id, accessToken.getUserId(), base64String);
     }
 }

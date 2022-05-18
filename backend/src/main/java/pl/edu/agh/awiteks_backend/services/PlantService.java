@@ -1,6 +1,10 @@
 package pl.edu.agh.awiteks_backend.services;
 
-import org.apache.tomcat.util.codec.binary.Base64;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.edu.agh.awiteks_backend.api.plants.body_models.AddPlantRequestBody;
@@ -202,13 +206,17 @@ public class PlantService {
                     .equals(addPlantRequestBody.lastFertilizationDate());
         };
     }
-    public String getPhoto(int plantId, int userId){
-        Plant plant = plantRepository.findByIdAndUserId(plantId, userId).orElseThrow();
-        return plant.getPhoto();
+
+    public String getPhoto(int plantId, int userId) {
+        return plantRepository
+                .findByIdAndUserId(plantId, userId)
+                .orElseThrow()
+                .getPhoto();
     }
 
-    public Plant setPhoto(int plantId, int userId, String base64String){
-        Plant plant = plantRepository.findByIdAndUserId(plantId, userId).orElseThrow();
+    public Plant setPhoto(int plantId, int userId, String base64String) {
+        final Plant plant = plantRepository.findByIdAndUserId(plantId, userId)
+                .orElseThrow();
         plant.setPhoto(base64String);
         return plant;
     }
