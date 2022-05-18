@@ -57,7 +57,7 @@ public class ForumService {
         return forumThread;
     }
 
-    public List<ForumThreadSummaryResponseBody> getAllThreads(int userId) {
+    public List<ForumThreadSummaryResponseBody> getAllThreads() {
         return this.streamUtilities.asStream(forumRepository.findAll()).map(ForumMapper::mapForumThreadToForumThreadSummary).collect(Collectors.toList());
     }
 
@@ -105,9 +105,8 @@ public class ForumService {
 //                );
 //    }
 
-    public List<ForumThreadSummaryResponseBody> getThreadsWithMatchingName(int userId, String searchKey) {
-        //TODO: Does not work
-        return this.getAllThreads(userId).stream().filter(thread -> thread.title().contains(searchKey)).collect(Collectors.toList());
+    public List<ForumThreadSummaryResponseBody> getThreadsWithMatchingName(String searchKey) {
+        return this.getAllThreads().stream().filter(thread -> thread.title().contains(searchKey)).collect(Collectors.toList());
     }
 
     public ForumPost addPostToThread(Integer threadId, AddPostRequestBody postRequestBody, Integer authorId) {

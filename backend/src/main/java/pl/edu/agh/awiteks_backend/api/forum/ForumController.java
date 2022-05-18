@@ -32,7 +32,7 @@ public class ForumController {
     public List<ForumThreadSummaryResponseBody> getAllThreads(@RequestParam(name = "favOnly", defaultValue = "false") String favOnly,
                                                              @RequestParam(name = "ownOnly", defaultValue = "false") String ownOnly,
                                                              JwtAccessToken jwtAccessToken) {
-        return forumService.getAllThreads(jwtAccessToken.getUserId());
+        return forumService.getAllThreads();
     }
 
     @Operation(summary = "Get thread by id")
@@ -45,7 +45,7 @@ public class ForumController {
     @Operation(summary = "Get all threads with matching names")
     @GetMapping(value = "/search", produces = "application/json")
     public List<ForumThreadSummaryResponseBody> getThreadsWithMatchingName(@RequestParam(name = "keyword", defaultValue = "") String searchKey, JwtAccessToken jwtAccessToken){
-        return forumService.getThreadsWithMatchingName(0, searchKey);   //TODO: Does not work, returns all. What?
+        return forumService.getThreadsWithMatchingName(searchKey);   //TODO: Does not work, returns all. What?
     }
 
     @Operation(summary = "Add new thread with initial post")
