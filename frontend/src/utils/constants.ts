@@ -1,5 +1,7 @@
 import { ForumThread } from "../api";
 
+export const base64Header = "data:image/jpeg;base64,";
+
 export const PageRoutes = {
     LOGIN: '/home',
     DASHBOARD: '/dashboard',

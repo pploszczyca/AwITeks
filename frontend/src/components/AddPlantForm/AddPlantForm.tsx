@@ -43,7 +43,8 @@ export const AddPlantForm: React.FC<addPlantFormProps> = ({ show, setShowPlantFo
                 lastWateringDate: Moment(new Date()).format("yyyy-MM-DD"),
                 name: "",
                 note: "",
-                speciesId: species![0]!.id // beautiful language
+                speciesId: species![0]!.id,
+                photo: ""
             }}
         />
     )
