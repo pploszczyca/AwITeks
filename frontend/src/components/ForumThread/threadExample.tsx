@@ -72,8 +72,8 @@ export const Threads: Array<ForumThread> = [
             }
         ],
         title: "Jak często podlewać kaktusa?",
-        isFavourite: false,
-        dateCreated: new Date("2019-01-16")
+        // isFavourite: false,
+        // dateCreated: new Date("2019-01-16")
     },
     {
         id: 2,
@@ -111,8 +111,8 @@ export const Threads: Array<ForumThread> = [
             }
         ],
         title: "Ile słońca potrzebuje paprotka?",
-        isFavourite: false,
-        dateCreated: new Date("2019-01-16")
+        // isFavourite: false,
+        // dateCreated: new Date("2019-01-16")
     }
 ]
 

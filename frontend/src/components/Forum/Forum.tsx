@@ -13,13 +13,13 @@ import {AddThreadForm} from "../AddThreadForm/AddThreadForm";
 
 const Forum: React.FC<{}> = () => {
     let mockData = Array.from(Array(10).keys()).map(idx => getMockThread(idx));
-    const [isFavourite, setFavourite] = useState(mockData.map(elem => elem.isFavourite));
+    const [isFavourite, setFavourite] = useState(mockData.map(elem => true)); //todo: elem => elem.isFavourite  waiting for backend
     const searchInputRef: React.MutableRefObject<HTMLInputElement | null> = useRef(null);
     const navigate = useNavigate();
     const [showAddThreadForm, setShowAddThreadForm] = useState(false);
 
     function toggleFavourite(idx: number){
-        mockData[idx].isFavourite = !mockData[idx].isFavourite;
+        // mockData[idx].isFavourite = !mockData[idx].isFavourite; //todo: uncomment later
         setFavourite(isFavourite.map((element, currIdx) => currIdx===idx ? !element : element));
     }
 

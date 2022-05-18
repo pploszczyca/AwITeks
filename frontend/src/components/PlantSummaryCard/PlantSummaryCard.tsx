@@ -6,7 +6,7 @@ import React from 'react';
 import { Card, Button } from 'react-bootstrap';
 import { FavoriteIcon, StyledCard } from './PlantSummaryCardStyles';
 import { PlantSummary } from "../../api/models/plant-summary";
-import { PageRoutes } from "../../utils/constants";
+import {base64Header, PageRoutes} from "../../utils/constants";
 
 interface PlantSummaryProps {
     plantSummary: PlantSummary;
@@ -18,7 +18,7 @@ const PlantSummaryCard: React.FC<PlantSummaryProps> = ({ plantSummary: plant, to
 
     return (
         <Card as={StyledCard} className='text-center'>
-            <Card.Img variant="top" src={plant.imgUrl} />
+            <Card.Img variant="top" src={base64Header + plant.photo} />
             <Card.Body>
                 <Card.Title>{plant.name}</Card.Title>
                 <Card.Text>

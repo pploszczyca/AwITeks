@@ -85,21 +85,18 @@ export const PlantForm: React.FC<PlantFormProps> =
                                             </Col>
 
                                             <Col className="form-group mt-3" xl={4} md={12}>
-                                                <label>Zdjęcie:</label><br />
-                                                {/*{plant.imgUrl === '' ?*/}
+                                                {/*<label>Zdjęcie:</label><br />*/}
+                                                {/*{values.photo === '' ?*/}
                                                 {/*    (   <>*/}
-                                                {/*            <Field className="form-control" type="file" name="photo" accept="image/png, image/jpeg"/>*/}
-                                                {/*            <ErrorMessage name="photo" component="div">*/}
-                                                {/*                { msg => <div style={{ color: 'red' }}>{msg}</div> }*/}
-                                                {/*            </ErrorMessage>*/}
+                                                {/*            <Field className="form-control" type="file" accept="image/png, image/jpeg" onChange={() => displayPhoto()}/>*/}
                                                 {/*        </>*/}
                                                 {/*    )*/}
                                                 {/*    :*/}
                                                 {/*    (*/}
                                                 {/*        <>*/}
                                                 {/*            <div className="d-flex gap-1 align-items-center">*/}
-                                                {/*                <img id="plantPhoto" src={plant.imgUrl} alt="" width={64} height={64}/>*/}
-                                                {/*                <Field id="photoInput" className="form-control" type="file"  accept="image/png, image/jpeg" name="edit-photo" onChange={() => displayPhoto()}/>*/}
+                                                {/*                <img id="plantPhoto" src={base64Header + photo} alt="" width={64} height={64}/>*/}
+                                                {/*                <Field id="photoInput" className="form-control" type="file"  accept="image/png, image/jpeg" onChange={() => displayPhoto()}/>*/}
                                                 {/*            </div>*/}
                                                 {/*        </>*/}
                                                 {/*    )*/}
