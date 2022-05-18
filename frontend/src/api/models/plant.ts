@@ -62,7 +62,7 @@ export interface Plant {
      * @type {string}
      * @memberof Plant
      */
-    'url': string;
+    'photo': string;
     /**
      * 
      * @type {string}
