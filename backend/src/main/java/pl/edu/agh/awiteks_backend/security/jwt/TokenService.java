@@ -52,7 +52,8 @@ public class TokenService {
                 )
         );
 
-        final String token = createToken(String.valueOf(userId), expirationDate);
+        final String token =
+                createToken(String.valueOf(userId), expirationDate);
         return new JwtAccessToken(token, userId,
                 expirationDate.toInstant().getEpochSecond());
     }

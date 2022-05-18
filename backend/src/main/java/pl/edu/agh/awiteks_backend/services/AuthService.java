@@ -63,8 +63,10 @@ public class AuthService {
 
     private User assertValidCredentials(String email, String password) {
         // password is plaintext here
-        final Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(email, password));
+        final Authentication authentication =
+                authenticationManager.authenticate(
+                        new UsernamePasswordAuthenticationToken(email,
+                                password));
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         return userRepository.findByEmail(email).orElseThrow();
@@ -87,7 +89,8 @@ public class AuthService {
     }
 
     private AuthData createTokenFromUser(User user) {
-        final JwtAccessToken token = tokenService.createAccessToken(user.getId());
+        final JwtAccessToken token =
+                tokenService.createAccessToken(user.getId());
 
         return new AuthData(token.getCredentials(), token.getExpireTime());
     }

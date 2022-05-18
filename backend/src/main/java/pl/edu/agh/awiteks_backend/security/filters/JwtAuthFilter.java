@@ -64,7 +64,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
 
         final String token = authHeader.substring(JWT_AUTH_PREFIX.length());
-        final JwtAccessToken jwtAccessToken = tokenService.parseAccessToken(token);
+        final JwtAccessToken jwtAccessToken =
+                tokenService.parseAccessToken(token);
         SecurityContextHolder.getContext().setAuthentication(jwtAccessToken);
     }
 
