@@ -1,20 +1,20 @@
 package pl.edu.agh.awiteks_backend.mappers;
 
-import pl.edu.agh.awiteks_backend.api.forum.body_models.ForumThreadSummaryRequestBody;
+import pl.edu.agh.awiteks_backend.api.forum.body_models.ForumThreadSummaryResponseBody;
 import pl.edu.agh.awiteks_backend.models.ForumThread;
 
 public class ForumMapper {
-    public static ForumThreadSummaryRequestBody mapForumThreadToForumThreadSummary(ForumThread forumThread){
+    public static ForumThreadSummaryResponseBody mapForumThreadToForumThreadSummary(ForumThread forumThread){
         if(forumThread == null){
             return null;
         }
-        return new ForumThreadSummaryRequestBody(
+        return new ForumThreadSummaryResponseBody(
                 forumThread.getId(),
                 forumThread.getTitle(),
-                forumThread.getCreator().getUsername(),
+                forumThread.getUser().getUsername(),
                 forumThread.getCreationTime(),
                 forumThread.getPostsCount(),
-                forumThread.getCreator().isFollowing(forumThread)
+                forumThread.getUser().isFollowing(forumThread)
         );
     }
 }

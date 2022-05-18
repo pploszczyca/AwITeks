@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.agh.awiteks_backend.api.forum.body_models.AddPostRequestBody;
 import pl.edu.agh.awiteks_backend.api.forum.body_models.AddThreadRequestBody;
-import pl.edu.agh.awiteks_backend.api.forum.body_models.ForumThreadSummaryRequestBody;
+import pl.edu.agh.awiteks_backend.api.forum.body_models.ForumThreadSummaryResponseBody;
 import pl.edu.agh.awiteks_backend.models.ForumPost;
 import pl.edu.agh.awiteks_backend.models.ForumThread;
 import pl.edu.agh.awiteks_backend.security.jwt.JwtAccessToken;
@@ -29,7 +29,7 @@ public class ForumController {
 
     @Operation(summary = "Get all forum threads", security = @SecurityRequirement(name = JWT_AUTH))
     @GetMapping(produces = "application/json")
-    public List<ForumThread> getAllThreads(@RequestParam(name = "favOnly", defaultValue = "false") String favOnly,
+    public List<ForumThreadSummaryResponseBody> getAllThreads(@RequestParam(name = "favOnly", defaultValue = "false") String favOnly,
                                                              @RequestParam(name = "ownOnly", defaultValue = "false") String ownOnly,
                                                              JwtAccessToken jwtAccessToken) {
         return forumService.getAllThreads(jwtAccessToken.getUserId());
@@ -44,8 +44,8 @@ public class ForumController {
 
     @Operation(summary = "Get all threads with matching names")
     @GetMapping(value = "/search", produces = "application/json")
-    public List<ForumThreadSummaryRequestBody> getThreadsWithMatchingName(@RequestParam(name = "keyword", defaultValue = "") String searchKey, JwtAccessToken jwtAccessToken){
-        return forumService.getThreadsWithMatchingName(0, searchKey);   // todo
+    public List<ForumThreadSummaryResponseBody> getThreadsWithMatchingName(@RequestParam(name = "keyword", defaultValue = "") String searchKey, JwtAccessToken jwtAccessToken){
+        return forumService.getThreadsWithMatchingName(0, searchKey);   //TODO: Does not work, returns all. What?
     }
 
     @Operation(summary = "Add new thread with initial post")

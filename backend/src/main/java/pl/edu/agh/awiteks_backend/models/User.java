@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Lazy;
 import javax.persistence.*;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Table(name = "user",
@@ -33,18 +32,23 @@ public class User {
     @Schema(required = true)
     private List<Plant> userPlants;
 
-    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @Schema(required = true)
     private List<ForumPost> forumPostList;
 
-    @OneToMany(mappedBy = "creator", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @Schema(required = true)
     private List<ForumThread> forumThreadList;
 
-    //TODO: FIX THIS. Use ManyToTMany or just thread IDs.
-    //@OneToMany(mappedBy = "creator", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    //@Schema(required = false)
-    //private List<ForumThread> followedThreads;
+    //TODO: Test this
+    @ManyToMany
+    @JoinTable(
+            name="follow_threads",
+            joinColumns = @JoinColumn(name="user_id"),
+            inverseJoinColumns = @JoinColumn(name="forum_thread_id")
+    )
+    @Schema(required = true)
+    private List<ForumThread> followedThreads;
 
     public User(
             String username,

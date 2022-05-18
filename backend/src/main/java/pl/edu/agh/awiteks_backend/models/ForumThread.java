@@ -10,7 +10,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "forum_thread")
-@JsonIgnoreProperties({"creator"})
+@JsonIgnoreProperties({"user"})
 public class ForumThread {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,30 +23,29 @@ public class ForumThread {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     @Schema(required = true)
-    private User creator;
+    private User user;
 
     @OneToMany(mappedBy = "thread", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @Schema(required = true)
     private List<ForumPost> forumPosts;
 
+    @ManyToMany(mappedBy = "followedThreads", cascade = CascadeType.ALL)
+    @Schema(required = true)
+    private List<User> followingUsers;
+
     @Schema(required = false)
     private final LocalDateTime creationTime = LocalDateTime.now();
 
-    @Schema(required = true)
-    private boolean favourite;
-
-    public ForumThread(String name, User user, boolean favourite) {
+    public ForumThread(String name, User user) {
         this.title = name;
-        this.creator = user;
+        this.user = user;
         this.forumPosts = new ArrayList<>();
-        this.favourite = favourite;
     }
 
-    public ForumThread(String title, User user, List<ForumPost> forumPosts, boolean favourite) {
+    public ForumThread(String title, User user, List<ForumPost> forumPosts) {
         this.title = title;
-        this.creator = user;
+        this.user = user;
         this.forumPosts = forumPosts;
-        this.favourite = favourite;
     }
 
     public ForumThread() {
@@ -64,12 +63,12 @@ public class ForumThread {
         this.id = id;
     }
 
-    public User getCreator() {
-        return creator;
+    public User getUser() {
+        return user;
     }
 
-    public void setCreator(User user) {
-        this.creator = user;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public void setForumPosts(List<ForumPost> posts) {
@@ -100,11 +99,4 @@ public class ForumThread {
         this.title = title;
     }
 
-    public boolean isFavourite() {
-        return favourite;
-    }
-
-    public void setFavourite(boolean favourite) {
-        this.favourite = favourite;
-    }
 }

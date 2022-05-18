@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "forum_post")
-@JsonIgnoreProperties({"author", "thread"})
+@JsonIgnoreProperties({"user", "thread"})
 public class ForumPost {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,7 +20,7 @@ public class ForumPost {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     @Schema(required = true)
-    private User author;
+    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "forum_thread_id", nullable = false)
@@ -30,14 +30,10 @@ public class ForumPost {
     @Schema(required = true)
     private String date;
 
-    @Schema(required = true)
-    private boolean favourite;
-
-    public ForumPost(User author, ForumThread thread, String content, boolean favourite) {
-        this.author = author;
+    public ForumPost(User author, ForumThread thread, String content) {
+        this.user = author;
         this.thread = thread;
         this.content = content;
-        this.favourite = favourite;
     }
 
     public ForumPost() {
@@ -51,12 +47,12 @@ public class ForumPost {
         this.id = id;
     }
 
-    public User getAuthor() {
-        return author;
+    public User getUser() {
+        return user;
     }
 
-    public void setAuthor(User newAuthor) {
-        this.author = newAuthor;
+    public void setUser(User newAuthor) {
+        this.user = newAuthor;
     }
 
     public ForumThread getThread() {
