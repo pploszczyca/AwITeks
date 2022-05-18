@@ -2,10 +2,18 @@ package pl.edu.agh.awiteks_backend.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
-
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "forum_thread")
@@ -34,7 +42,8 @@ public class ForumThread {
         this.forumPosts = new ArrayList<>();
     }
 
-    public ForumThread(Integer id, String title, User user, List<ForumPost> forumPosts) {
+    public ForumThread(Integer id, String title, User user,
+                       List<ForumPost> forumPosts) {
         this.id = id;
         this.title = title;
         this.creator = user;

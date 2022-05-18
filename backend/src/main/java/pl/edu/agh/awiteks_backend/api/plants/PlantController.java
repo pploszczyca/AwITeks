@@ -2,19 +2,25 @@ package pl.edu.agh.awiteks_backend.api.plants;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import pl.edu.agh.awiteks_backend.api.plants.body_models.AddPlantRequestBody;
 import pl.edu.agh.awiteks_backend.api.plants.body_models.PlantSummary;
 import pl.edu.agh.awiteks_backend.api.plants.body_models.PlantsStats;
+import static pl.edu.agh.awiteks_backend.configs.SwaggerConfig.JWT_AUTH;
 import pl.edu.agh.awiteks_backend.models.Plant;
 import pl.edu.agh.awiteks_backend.security.jwt.JwtAccessToken;
 import pl.edu.agh.awiteks_backend.services.PlantService;
-
-import java.util.List;
-import java.util.Optional;
-
-import static pl.edu.agh.awiteks_backend.configs.SwaggerConfig.JWT_AUTH;
 
 @RestController
 @RequestMapping("/plants")
@@ -34,7 +40,8 @@ public class PlantController {
 
     @Operation(summary = "Get plant by id", security = @SecurityRequirement(name = JWT_AUTH))
     @GetMapping(value = "/{id}", produces = "application/json")
-    public Optional<Plant> getPlant(JwtAccessToken jwtAccessToken, @PathVariable int id) {
+    public Optional<Plant> getPlant(JwtAccessToken jwtAccessToken,
+                                    @PathVariable int id) {
         return plantService.get(id, jwtAccessToken.getUserId());
     }
 
@@ -42,14 +49,16 @@ public class PlantController {
             security = @SecurityRequirement(name = JWT_AUTH))
     @PostMapping
     @ResponseBody
-    public Plant addPlant(JwtAccessToken creatorAccessToken, @RequestBody AddPlantRequestBody plant) {
+    public Plant addPlant(JwtAccessToken creatorAccessToken,
+                          @RequestBody AddPlantRequestBody plant) {
         return plantService.addPlant(plant, creatorAccessToken.getUserId());
     }
 
     @Operation(summary = "Changing Favourite flag in plant", security = @SecurityRequirement(name = JWT_AUTH))
     @PutMapping(path = "/{plantId}/toggle-favourite")
     @ResponseBody
-    public void togglePlantFavourite(JwtAccessToken jwtAccessToken, @PathVariable int plantId) {
+    public void togglePlantFavourite(JwtAccessToken jwtAccessToken,
+                                     @PathVariable int plantId) {
         plantService.changeFavourite(plantId, jwtAccessToken.getUserId());
     }
 
@@ -57,10 +66,12 @@ public class PlantController {
     @Operation(summary = "Update plant", security = @SecurityRequirement(name = JWT_AUTH))
     @PutMapping(path = "/{plantId}", consumes = "application/json")
     public Plant updatePlant(JwtAccessToken accessToken,
-                             @RequestBody AddPlantRequestBody addPlantRequestBody,
+                             @RequestBody
+                             AddPlantRequestBody addPlantRequestBody,
                              @PathVariable int plantId
     ) {
-        return plantService.updatePlant(addPlantRequestBody, plantId, accessToken.getUserId());
+        return plantService.updatePlant(addPlantRequestBody, plantId,
+                accessToken.getUserId());
     }
 
     @Operation(summary = "Delete plant by id", security = @SecurityRequirement(name = JWT_AUTH))

@@ -2,15 +2,22 @@ package pl.edu.agh.awiteks_backend.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
-
-import javax.persistence.*;
 import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "species")
 @JsonIgnoreProperties({"plantList"})
 public class Species {
     public static final int NO_CREATOR = -1;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Schema(required = true)
@@ -44,8 +51,11 @@ public class Species {
     @Schema(required = true)
     private List<Plant> plantList;
 
-    public Species(String name, int maxAge, Insolation neededInsolation, int waterDose,
-                   int waterRoutine, int fertilizationRoutine, Fertilization fertilizationDose, int creatorID, List<Plant> plantList) {
+    public Species(String name, int maxAge, Insolation neededInsolation,
+                   int waterDose,
+                   int waterRoutine, int fertilizationRoutine,
+                   Fertilization fertilizationDose, int creatorID,
+                   List<Plant> plantList) {
         this.name = name;
         this.maxAge = maxAge;
         this.neededInsolation = neededInsolation;

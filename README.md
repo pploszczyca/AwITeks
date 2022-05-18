@@ -17,6 +17,9 @@
   - [Dodawanie prefiksu branch'a do commita](#dodawanie-prefiksu-brancha-do-commita)
     - [Uwaga dla osób korzystających z windows](#uwaga-dla-osób-korzystających-z-windows)
   - [Dokumetacja API](#dokumetacja-api)
+  - [Statyczna analiza kodu](#statyczna-analiza-kodu)
+    - [Backend](#backend-1)
+    - [Frontend](#frontend-1)
   - [Definition of done:](#definition-of-done)
   - [Wykres spalania:](#wykres-spalania)
   - [Retro](#retro)
@@ -31,6 +34,7 @@
 * [springdoc-openapi](https://springdoc.org/#Introduction)
 * MySQL
   * [MySQL - docker image](https://hub.docker.com/_/mysql)
+* [Checkstyle](https://checkstyle.sourceforge.io/)
 
 ### Frontend
 * [React](https://pl.reactjs.org/)
@@ -147,8 +151,15 @@ Możliwe, że trzeba podmienić pierwszą linijkę pliku `prepare-commit-msg` n
 ## Dokumetacja API
 Do projektu backendowego został podpięty [springdoc](https://springdoc.org/#Introduction). Po uruchomieniu backendu dokumentacja znajduje się pod linkiem: http://localhost:5000/swagger-ui/index.html.
 
+## Statyczna analiza kodu
+### Backend
+Do backendowego projektu został podpięty `Checkstyle`. Konfiguracja znajduje się w [tym pliku](./backend/config/checkstyle/checkstyle.xml). Można doinstalować odpowiednią wtyczkę do IntelIJ [CheckStyle-IDEA](https://plugins.jetbrains.com/plugin/1065-checkstyle-idea) i załadować do niej odpowiedni plik konfiguracyjny.
+
+### Frontend
+Na ten moment działa domyślna konfiguracja [ESLint](https://eslint.org/).
+
 ## Definition of done:
-- Ma działać (kompilować się, nie rzucać błędami)
+- Ma działać (kompilować się, nie rzucać błędami i przechodzić testy)
 - Spełnia kryteria akceptacyjne
 - Przeszło przez Code Review (poprawki zostały zaakceptowane)
 - Zostało dołączone do gałęzi develop (merge)

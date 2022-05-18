@@ -1,16 +1,17 @@
 package pl.edu.agh.awiteks_backend.services;
 
+import java.util.List;
+import java.util.Optional;
 import org.springframework.data.repository.CrudRepository;
 import pl.edu.agh.awiteks_backend.utilities.ListUtilities;
 
-import java.util.List;
-import java.util.Optional;
-
 public abstract class ModelService<T> {
     private final CrudRepository<T, Integer> modelRepository;
+
     private final ListUtilities listUtilities;
 
-    public ModelService(CrudRepository<T, Integer> modelRepository, ListUtilities listUtilities) {
+    public ModelService(CrudRepository<T, Integer> modelRepository,
+                        ListUtilities listUtilities) {
         this.modelRepository = modelRepository;
         this.listUtilities = listUtilities;
     }
