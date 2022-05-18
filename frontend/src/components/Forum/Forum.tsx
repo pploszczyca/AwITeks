@@ -25,9 +25,22 @@ import {AddThreadForm} from "../AddThreadForm/AddThreadForm";
 const Forum: React.FC<{}> = () => {
     let mockData = getThreadsList(10);
     const [isFavourite, setFavourite] = useState(mockData.map(elem => elem.isFollowed));
+    const [filteredData, setFilteredData] = useState(mockData);
     const searchInputRef: React.MutableRefObject<HTMLInputElement | null> = useRef(null);
     const navigate = useNavigate();
     const [showAddThreadForm, setShowAddThreadForm] = useState(false);
+
+    const filter = (e: { target: { value: string; }; }) => {
+        const keyword = e.target.value;
+        if (keyword !== '') {
+            const results = mockData.filter((thread) => {
+                return thread.title.toLowerCase().includes(keyword.toLowerCase());
+            });
+            setFilteredData(results);
+          } else {
+            setFilteredData(mockData);
+          }
+    }
 
     function toggleFavourite(idx: number){
         mockData[idx].isFollowed = !mockData[idx].isFollowed;
@@ -98,7 +111,7 @@ const Forum: React.FC<{}> = () => {
                     <Col xxl={6} lg={8} className='my-2'>
                         <SearchBoxContainerModified onClick={() => searchInputRef.current?.focus()}>
                             <FontAwesomeIcon icon={faMagnifyingGlass} fontSize={20} />
-                            <SearchBoxModified ref={searchInputRef} type="text" placeholder="Wyszukaj temat po nazwie" />
+                            <SearchBoxModified ref={searchInputRef} type="text" placeholder="Wyszukaj temat po nazwie" onChange={filter}/>
                         </SearchBoxContainerModified>
                     </Col>
                     <Col xxl={2} lg={4} className='my-2'>
@@ -107,7 +120,7 @@ const Forum: React.FC<{}> = () => {
                 </Row>
                 <Row className="mt-5">
                     {getHeaderRow()}
-                    {mockData.map((thread,idx) => getThread(thread, idx))}
+                    {filteredData.map((thread,idx) => getThread(thread, idx))}
                 </Row>
             </ForumContainer>
             <AddThreadForm show={showAddThreadForm} setShowThreadForm={setShowAddThreadForm}/>
