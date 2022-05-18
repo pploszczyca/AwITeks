@@ -81,4 +81,19 @@ public class PlantController {
     public PlantsStats getPlantsStats(JwtAccessToken accessToken) {
         return plantService.getPlantsStats(accessToken.getUserId());
     }
+
+
+    @Operation(summary = "Get plant photo", security = @SecurityRequirement(name = JWT_AUTH))
+    @GetMapping(value = "/{id}/photo")
+    @SecurityRequirement(name = "JWT")
+    public String getPlantPhoto(JwtAccessToken accessToken, @PathVariable int id) {
+        return plantService.getPhoto(id, accessToken.getUserId());
+    }
+
+    @Operation(summary = "Set plant photo", security = @SecurityRequirement(name = JWT_AUTH))
+    @PostMapping(value = "/{id}/photo")
+    @SecurityRequirement(name = "JWT")
+    public Plant addPlantPhoto(JwtAccessToken accessToken, @PathVariable int id, @RequestBody String base64String) {
+        return plantService.setPhoto(id, accessToken.getUserId(),base64String);
+    }
 }

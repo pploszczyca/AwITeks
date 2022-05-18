@@ -1,5 +1,6 @@
 package pl.edu.agh.awiteks_backend.services;
 
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.edu.agh.awiteks_backend.api.plants.body_models.AddPlantRequestBody;
@@ -15,6 +16,9 @@ import pl.edu.agh.awiteks_backend.repositories.UserRepository;
 import pl.edu.agh.awiteks_backend.utilities.ListUtilities;
 import pl.edu.agh.awiteks_backend.utilities.PlantValidator;
 
+import javax.sql.rowset.serial.SerialBlob;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -139,7 +143,10 @@ public class PlantService {
         var species = speciesRepository.findByIdAndCreatorId(addPlantRequestBody.speciesId(), userId).orElseThrow();
         var user = userRepository.findById(userId).orElseThrow();
 
-        var plant = new Plant(
+        byte[] decodedByte = Base64.decodeBase64(addPlantRequestBody.photo());
+
+        Plant plant = null;
+        plant = new Plant(
                 addPlantRequestBody.name(),
                 user,
                 species,
@@ -147,7 +154,7 @@ public class PlantService {
                 addPlantRequestBody.insolation(),
                 new LinkedList<>(),
                 false,
-                "https://netscroll.pl/wp-content/uploads/2021/10/CactusToy1.jpg");
+                addPlantRequestBody.photo());
 
         return plant;
     }
@@ -182,5 +189,28 @@ public class PlantService {
             case WATERING -> !plant.getLastWateringDate().equals(addPlantRequestBody.lastWateringDate());
             case FERTILISATION -> !plant.getLastFertilizationDate().equals(addPlantRequestBody.lastFertilizationDate());
         };
+    }
+    public String getPhoto(int plantId, int userId){
+        Plant plant = plantRepository.findByIdAndUserId(plantId, userId).orElseThrow();
+        /*
+        Blob blob = plant.getPhoto();
+        try {
+            int blobLength =(int) blob.length();
+            byte[] blobAsBytes = blob.getBytes(1,blobLength);
+            String result = Base64.encodeBase64String(blobAsBytes);
+            return result;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+         */
+        return plant.getPhoto();
+    }
+
+    public Plant setPhoto(int plantId, int userId, String base64String){
+        Plant plant = plantRepository.findByIdAndUserId(plantId, userId).orElseThrow();
+        byte[] bytes = Base64.decodeBase64(base64String);
+        plant.setPhoto(base64String);
+        return plant;
     }
 }
