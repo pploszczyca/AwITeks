@@ -62,8 +62,14 @@ const Forum: React.FC<{}> = () => {
         
     };
 
-    function toggleFavourite(idx: number){
-        mockData[idx].isFollowed = !mockData[idx].isFollowed;
+    function toggleFavourite(idx: number, id: number){
+        filteredData[idx].isFollowed = !filteredData[idx].isFollowed;//how much of that is really necessary?
+        for(var i=0; i<mockData.length;i++){
+            if(mockData[i].id === id){
+                mockData[i].isFollowed = !mockData[i].isFollowed;
+                break;
+            }
+        }
         setFavourite(isFavourite.map((element, currIdx) => currIdx===idx ? !element : element));
     }
 
@@ -102,8 +108,8 @@ const Forum: React.FC<{}> = () => {
                                         </OpenButton>
 
                                         <Star icon = {faStarSolid}
-                                              className={isFavourite[idx] ? 'starred': 'unstarred'}
-                                              onClick={() => toggleFavourite(idx)}
+                                              className={isFavourite[thread.id] ? 'starred': 'unstarred'}
+                                              onClick={() => toggleFavourite(idx, thread.id)}
                                         />
                                     </>
                                 ) : (
