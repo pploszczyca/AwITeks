@@ -70,7 +70,7 @@ const Forum: React.FC<{}> = () => {
                 break;
             }
         }
-        setFavourite(isFavourite.map((element, currIdx) => currIdx===idx ? !element : element));
+        setFavourite(isFavourite.map((element, currIdx) => mockData[currIdx].id===id ? !element : element));
     }
 
     function getHeaderRow(){
