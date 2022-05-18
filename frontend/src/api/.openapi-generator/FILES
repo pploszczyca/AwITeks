@@ -12,6 +12,7 @@ configuration.ts
 git_push.sh
 index.ts
 models/activity.ts
+models/add-activity-request-body.ts
 models/add-plant-request-body.ts
 models/add-species-request-body.ts
 models/auth-data.ts

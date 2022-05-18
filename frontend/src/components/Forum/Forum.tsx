@@ -8,6 +8,7 @@ import FilterChips from "./FilterChips/FilterChips";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {useNavigate} from "react-router-dom";
 import {PageRoutes, headers, classes, content} from "../../utils/constants";
+import {AddThreadForm} from "../AddThreadForm/AddThreadForm";
 
 
 const Forum: React.FC<{}> = () => {
@@ -15,6 +16,7 @@ const Forum: React.FC<{}> = () => {
     const [isFavourite, setFavourite] = useState(mockData.map(elem => elem.isFavourite));
     const searchInputRef: React.MutableRefObject<HTMLInputElement | null> = useRef(null);
     const navigate = useNavigate();
+    const [showAddThreadForm, setShowAddThreadForm] = useState(false);
 
     function toggleFavourite(idx: number){
         mockData[idx].isFavourite = !mockData[idx].isFavourite;
@@ -61,30 +63,33 @@ const Forum: React.FC<{}> = () => {
     }
 
     return (
-        <ForumContainer>
-            <h2 className='text-center my-3'>Znajdź interesujący Cię temat w liście poniżej lub załóż nowy temat.</h2>
-            <Row className='px-2 justify-content-center'>
-                <Col xxl={2} lg={4} className='my-2'>
-                    <FilterChips text="Tylko obserwowane"/>
-                </Col>
-                <Col xxl={2} lg={4} className='my-2'>
-                    <FilterChips text="Założone przez Ciebie"/>
-                </Col>
-                <Col xxl={6} lg={8} className='my-2'>
-                    <SearchBoxContainerModified onClick={() => searchInputRef.current?.focus()}>
-                        <FontAwesomeIcon icon={faMagnifyingGlass} fontSize={20} />
-                        <SearchBoxModified ref={searchInputRef} type="text" placeholder="Wyszukaj temat po nazwie" />
-                    </SearchBoxContainerModified>
-                </Col>
-                <Col xxl={2} lg={4} className='my-2'>
-                    <AddThreadBtn>Dodaj nowy temat</AddThreadBtn>
-                </Col>
-            </Row>
-            <Row className="mt-5">
+        <>
+            <ForumContainer>
+                <h2 className='text-center my-3'>Znajdź interesujący Cię temat w liście poniżej lub załóż nowy temat.</h2>
+                <Row className='px-2 justify-content-center'>
+                    <Col xxl={2} lg={4} className='my-2'>
+                        <FilterChips text="Tylko obserwowane"/>
+                    </Col>
+                    <Col xxl={2} lg={4} className='my-2'>
+                        <FilterChips text="Założone przez Ciebie"/>
+                    </Col>
+                    <Col xxl={6} lg={8} className='my-2'>
+                        <SearchBoxContainerModified onClick={() => searchInputRef.current?.focus()}>
+                            <FontAwesomeIcon icon={faMagnifyingGlass} fontSize={20} />
+                            <SearchBoxModified ref={searchInputRef} type="text" placeholder="Wyszukaj temat po nazwie" />
+                        </SearchBoxContainerModified>
+                    </Col>
+                    <Col xxl={2} lg={4} className='my-2'>
+                        <AddThreadBtn onClick={() => setShowAddThreadForm(true)}>Dodaj nowy temat</AddThreadBtn>
+                    </Col>
+                </Row>
+                <Row className="mt-5">
                     {getHeaderRow()}
                     {mockData.map((thread,idx) => getThread(thread, idx))}
-            </Row>
-        </ForumContainer>
+                </Row>
+            </ForumContainer>
+            <AddThreadForm show={showAddThreadForm} setShowThreadForm={setShowAddThreadForm}/>
+        </>
     )
 };
 

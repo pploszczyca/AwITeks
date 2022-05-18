@@ -1,8 +1,12 @@
 package pl.edu.agh.awiteks_backend.models;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -17,7 +21,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "plants")
-@JsonIgnoreProperties({"user"})
+@JsonIgnoreProperties({"user", "plantActivities"})
 public class Plant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -161,5 +165,25 @@ public class Plant {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @JsonProperty
+    @Schema(required = true)
+    public String getLastWateringDate() {
+        return getLastActivityDate(ActivityType.WATERING);
+    }
+
+    @JsonProperty
+    @Schema(required = true)
+    public String getLastFertilizationDate() {
+        return getLastActivityDate(ActivityType.FERTILISATION);
+    }
+
+    private String getLastActivityDate(ActivityType activityType) {
+        return plantActivities.stream()
+            .filter(activity -> activity.getActivityType().equals(activityType))
+            .max(Comparator.comparing(a -> LocalDate.parse(a.getDate())))
+            .map(Activity::getDate)
+            .orElseThrow();
     }
 }
