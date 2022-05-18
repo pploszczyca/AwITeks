@@ -77,7 +77,6 @@ public class PlantController {
 
     @Operation(summary = "Get plant stats", security = @SecurityRequirement(name = JWT_AUTH))
     @GetMapping(value = "/stats")
-    @SecurityRequirement(name = "JWT")
     public PlantsStats getPlantsStats(JwtAccessToken accessToken) {
         return plantService.getPlantsStats(accessToken.getUserId());
     }
@@ -85,7 +84,6 @@ public class PlantController {
 
     @Operation(summary = "Get plant photo", security = @SecurityRequirement(name = JWT_AUTH))
     @GetMapping(value = "/{id}/photo")
-    @SecurityRequirement(name = "JWT")
     public String getPlantPhoto(JwtAccessToken accessToken, @PathVariable int id) {
         return plantService.getPhoto(id, accessToken.getUserId());
     }

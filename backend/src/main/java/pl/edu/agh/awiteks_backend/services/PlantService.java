@@ -16,9 +16,6 @@ import pl.edu.agh.awiteks_backend.repositories.UserRepository;
 import pl.edu.agh.awiteks_backend.utilities.ListUtilities;
 import pl.edu.agh.awiteks_backend.utilities.PlantValidator;
 
-import javax.sql.rowset.serial.SerialBlob;
-import java.sql.Blob;
-import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -143,10 +140,7 @@ public class PlantService {
         var species = speciesRepository.findByIdAndCreatorId(addPlantRequestBody.speciesId(), userId).orElseThrow();
         var user = userRepository.findById(userId).orElseThrow();
 
-        byte[] decodedByte = Base64.decodeBase64(addPlantRequestBody.photo());
-
-        Plant plant = null;
-        plant = new Plant(
+        return new Plant(
                 addPlantRequestBody.name(),
                 user,
                 species,
@@ -155,8 +149,6 @@ public class PlantService {
                 new LinkedList<>(),
                 false,
                 addPlantRequestBody.photo());
-
-        return plant;
     }
 
     private void fixPlantActivities(Plant plant, AddPlantRequestBody addPlantRequestBody) {
@@ -192,24 +184,11 @@ public class PlantService {
     }
     public String getPhoto(int plantId, int userId){
         Plant plant = plantRepository.findByIdAndUserId(plantId, userId).orElseThrow();
-        /*
-        Blob blob = plant.getPhoto();
-        try {
-            int blobLength =(int) blob.length();
-            byte[] blobAsBytes = blob.getBytes(1,blobLength);
-            String result = Base64.encodeBase64String(blobAsBytes);
-            return result;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-         */
         return plant.getPhoto();
     }
 
     public Plant setPhoto(int plantId, int userId, String base64String){
         Plant plant = plantRepository.findByIdAndUserId(plantId, userId).orElseThrow();
-        byte[] bytes = Base64.decodeBase64(base64String);
         plant.setPhoto(base64String);
         return plant;
     }
