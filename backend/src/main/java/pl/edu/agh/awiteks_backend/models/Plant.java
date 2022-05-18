@@ -1,17 +1,22 @@
 package pl.edu.agh.awiteks_backend.models;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
-
-import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "plants")
@@ -50,7 +55,9 @@ public class Plant {
     @Schema(required = true)
     private String url;
 
-    public Plant(String name, User user, Species species, String note, Insolation actualInsolation, List<Activity> plantActivities, boolean favourite, String url) {
+    public Plant(String name, User user, Species species, String note,
+                 Insolation actualInsolation, List<Activity> plantActivities,
+                 boolean favourite, String url) {
         this.name = name;
         this.user = user;
         this.species = species;
@@ -61,8 +68,10 @@ public class Plant {
         this.url = url;
     }
 
-    public Plant(String name, User user, Species species, String note, Insolation actualInsolation, boolean favourite, String url) {
-        this(name, user, species, note, actualInsolation, new ArrayList<>(), favourite, url);
+    public Plant(String name, User user, Species species, String note,
+                 Insolation actualInsolation, boolean favourite, String url) {
+        this(name, user, species, note, actualInsolation, new ArrayList<>(),
+                favourite, url);
     }
 
     public Plant() {
@@ -171,9 +180,10 @@ public class Plant {
 
     private String getLastActivityDate(ActivityType activityType) {
         return plantActivities.stream()
-            .filter(activity -> activity.getActivityType().equals(activityType))
-            .max(Comparator.comparing(a -> LocalDate.parse(a.getDate())))
-            .map(Activity::getDate)
-            .orElseThrow();
+                .filter(activity -> activity.getActivityType()
+                        .equals(activityType))
+                .max(Comparator.comparing(a -> LocalDate.parse(a.getDate())))
+                .map(Activity::getDate)
+                .orElseThrow();
     }
 }

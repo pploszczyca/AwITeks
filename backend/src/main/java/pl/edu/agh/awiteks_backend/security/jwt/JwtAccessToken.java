@@ -1,12 +1,13 @@
 package pl.edu.agh.awiteks_backend.security.jwt;
 
-import org.springframework.security.authentication.AbstractAuthenticationToken;
-
 import java.util.Date;
+import org.springframework.security.authentication.AbstractAuthenticationToken;
 
 public class JwtAccessToken extends AbstractAuthenticationToken {
     private final String token;
+
     private final long expireTime; // epoch time
+
     private final int userId;
 
     public JwtAccessToken(String token, int userId, long expireTime) {

@@ -1,11 +1,18 @@
 package pl.edu.agh.awiteks_backend.models;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import org.springframework.context.annotation.Lazy;
-
-import javax.persistence.*;
 import java.util.LinkedList;
 import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+import org.springframework.context.annotation.Lazy;
 
 @Entity
 @Table(name = "user",
@@ -56,7 +63,8 @@ public class User {
     }
 
     public User(String username, String email, String password) {
-        this(username, email, password, new LinkedList<>(), new LinkedList<>(), new LinkedList<>());
+        this(username, email, password, new LinkedList<>(), new LinkedList<>(),
+                new LinkedList<>());
     }
 
     public User() {

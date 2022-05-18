@@ -1,5 +1,6 @@
 package pl.edu.agh.awiteks_backend.services;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.edu.agh.awiteks_backend.api.activities.body_models.AddActivityRequestBody;
@@ -8,11 +9,10 @@ import pl.edu.agh.awiteks_backend.repositories.ActivityRepository;
 import pl.edu.agh.awiteks_backend.repositories.PlantRepository;
 import pl.edu.agh.awiteks_backend.utilities.ListUtilities;
 
-import java.util.List;
-
 @Service
 public class ActivityService extends ModelService<Activity> {
     private final PlantRepository plantRepository;
+
     private final ActivityRepository activityRepository;
 
     @Autowired
@@ -25,11 +25,12 @@ public class ActivityService extends ModelService<Activity> {
         this.plantRepository = plantRepository;
     }
 
-    public void addActivity(AddActivityRequestBody activityRequestBody, int userId) {
+    public void addActivity(AddActivityRequestBody activityRequestBody,
+                            int userId) {
         plantRepository
                 .findByIdAndUserId(activityRequestBody.plantId(), userId)
                 .ifPresent(presentPlant -> {
-                    Activity activity = new Activity(
+                    final Activity activity = new Activity(
                             presentPlant,
                             activityRequestBody.activityType(),
                             activityRequestBody.date());
