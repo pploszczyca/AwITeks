@@ -21,26 +21,46 @@ import {useNavigate} from "react-router-dom";
 import {classes, content, headers, PageRoutes} from "../../utils/constants";
 import {AddThreadForm} from "../AddThreadForm/AddThreadForm";
 
-
 const Forum: React.FC<{}> = () => {
     let mockData = getThreadsList(10);
     const [isFavourite, setFavourite] = useState(mockData.map(elem => elem.isFollowed));
     const [filteredData, setFilteredData] = useState(mockData);
+    const [filters, setFilters] = useState(["",'',''])
+    const UserID = 1;
     const searchInputRef: React.MutableRefObject<HTMLInputElement | null> = useRef(null);
     const navigate = useNavigate();
     const [showAddThreadForm, setShowAddThreadForm] = useState(false);
 
-    const filter = (e: { target: { value: string; }; }) => {
+    const filterSearchBar = (e: { target: { value: string; }; }) => {
         const keyword = e.target.value;
-        if (keyword !== '') {
-            const results = mockData.filter((thread) => {
+        filters[0] = keyword;
+        setFilters(filters);
+        filterData();
+    };
+
+    const filterChip = (id: number) => {
+        filters[id] = '1';
+        setFilters(filters);
+        filterData();
+    };
+
+    const filterData = () => {
+        let result = mockData;
+        if(filters[0]!==''){
+            const keyword: string = filters[0];
+            result = mockData.filter((thread) => {
                 return thread.title.toLowerCase().includes(keyword.toLowerCase());
             });
-            setFilteredData(results);
-          } else {
-            setFilteredData(mockData);
-          }
-    }
+        }
+        if(filters[1]!==''){
+            result = result.filter((elem: ForumThreadSummaryResponseBody) => elem.isFollowed===true);
+        }
+        if(filters[2]!==''){
+            result = result.filter((elem: ForumThreadSummaryResponseBody) => elem.creator.id===UserID);
+        }
+        setFilteredData(result);
+        
+    };
 
     function toggleFavourite(idx: number){
         mockData[idx].isFollowed = !mockData[idx].isFollowed;
@@ -103,15 +123,15 @@ const Forum: React.FC<{}> = () => {
                 <h2 className='text-center my-3'>Znajdź interesujący Cię temat w liście poniżej lub załóż nowy temat.</h2>
                 <Row className='px-2 justify-content-center'>
                     <Col xxl={2} lg={4} className='my-2'>
-                        <FilterChips text="Tylko obserwowane"/>
+                        <FilterChips text="Tylko obserwowane" id={1}/>
                     </Col>
                     <Col xxl={2} lg={4} className='my-2'>
-                        <FilterChips text="Założone przez Ciebie"/>
+                        <FilterChips text="Założone przez Ciebie" id={2}/>
                     </Col>
                     <Col xxl={6} lg={8} className='my-2'>
                         <SearchBoxContainerModified onClick={() => searchInputRef.current?.focus()}>
                             <FontAwesomeIcon icon={faMagnifyingGlass} fontSize={20} />
-                            <SearchBoxModified ref={searchInputRef} type="text" placeholder="Wyszukaj temat po nazwie" onChange={filter}/>
+                            <SearchBoxModified ref={searchInputRef} type="text" placeholder="Wyszukaj temat po nazwie" onChange={filterSearchBar}/>
                         </SearchBoxContainerModified>
                     </Col>
                     <Col xxl={2} lg={4} className='my-2'>
