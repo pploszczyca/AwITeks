@@ -15,6 +15,9 @@ export const DATE_FORMAT = "yyyy-MM-DD";
 const headers = ['Tytuł tematu', 'Liczba odpowiedzi', 'Założyciel', 'Data założenia', 'Akcje'];
 const classes = ['title', 'num', 'username', 'date', 'action'];
 
+const date = (thread: ForumThread) => {
+   return new Date(thread.forumPosts[0].date)
+}
 const content = (thread: ForumThread) => [
     {
         outsideClass: classes[0],
@@ -30,7 +33,7 @@ const content = (thread: ForumThread) => [
     },
     {
         outsideClass: classes[3],
-        content: thread.dateCreated.getFullYear() + "-" + (thread.dateCreated.getMonth() + 1) + "-" + thread.dateCreated.getDate()
+        content: date(thread).getFullYear() + "-" + (date(thread).getMonth() + 1) + "-" + date(thread).getDate()
     },
     {
         outsideClass: classes[4],

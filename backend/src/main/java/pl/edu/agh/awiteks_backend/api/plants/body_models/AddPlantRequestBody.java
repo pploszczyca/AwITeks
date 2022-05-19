@@ -10,7 +10,8 @@ public record AddPlantRequestBody(
         @Schema(required = true) String lastFertilizationDate,
         // TODO maybe use Date or sth like this here once DB is working??
         @Schema(required = true) String note,
-        @Schema(required = true) int speciesId
+        @Schema(required = true) int speciesId,
+        @Schema String photo
 ) {
 
 }

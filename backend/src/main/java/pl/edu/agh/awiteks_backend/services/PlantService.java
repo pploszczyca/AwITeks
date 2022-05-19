@@ -153,7 +153,7 @@ public class PlantService {
                 addPlantRequestBody.speciesId(), userId).orElseThrow();
         final var user = userRepository.findById(userId).orElseThrow();
 
-        final var plant = new Plant(
+        return new Plant(
                 addPlantRequestBody.name(),
                 user,
                 species,
@@ -161,9 +161,7 @@ public class PlantService {
                 addPlantRequestBody.insolation(),
                 new LinkedList<>(),
                 false,
-                "https://netscroll.pl/wp-content/uploads/2021/10/CactusToy1.jpg");
-
-        return plant;
+                addPlantRequestBody.photo());
     }
 
     private void fixPlantActivities(Plant plant,
@@ -207,5 +205,19 @@ public class PlantService {
             case FERTILISATION -> !plant.getLastFertilizationDate()
                     .equals(addPlantRequestBody.lastFertilizationDate());
         };
+    }
+
+    public String getPhoto(int plantId, int userId) {
+        return plantRepository
+                .findByIdAndUserId(plantId, userId)
+                .orElseThrow()
+                .getPhoto();
+    }
+
+    public Plant setPhoto(int plantId, int userId, String base64String) {
+        final Plant plant = plantRepository.findByIdAndUserId(plantId, userId)
+                .orElseThrow();
+        plant.setPhoto(base64String);
+        return plant;
     }
 }

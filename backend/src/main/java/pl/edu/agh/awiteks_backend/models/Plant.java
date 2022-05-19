@@ -14,6 +14,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -53,11 +54,12 @@ public class Plant {
     private boolean favourite;
 
     @Schema(required = true)
-    private String url;
+    @Lob
+    private String photo;
 
     public Plant(String name, User user, Species species, String note,
                  Insolation actualInsolation, List<Activity> plantActivities,
-                 boolean favourite, String url) {
+                 boolean favourite, String photo) {
         this.name = name;
         this.user = user;
         this.species = species;
@@ -65,13 +67,13 @@ public class Plant {
         this.actualInsolation = actualInsolation;
         this.plantActivities = plantActivities;
         this.favourite = favourite;
-        this.url = url;
+        this.photo = photo;
     }
 
     public Plant(String name, User user, Species species, String note,
-                 Insolation actualInsolation, boolean favourite, String url) {
+                 Insolation actualInsolation, boolean favourite, String photo) {
         this(name, user, species, note, actualInsolation, new ArrayList<>(),
-                favourite, url);
+                favourite, photo);
     }
 
     public Plant() {
@@ -130,14 +132,6 @@ public class Plant {
         this.favourite = favourite;
     }
 
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
     public void removeActivity(Activity activity) {
         plantActivities.remove(activity);
     }
@@ -148,6 +142,14 @@ public class Plant {
                 .filter(activity -> activity.getId() == activityId)
                 .findFirst()
                 .ifPresent(this::removeActivity);
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
 
     public Integer getId() {
