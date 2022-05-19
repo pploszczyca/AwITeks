@@ -11,7 +11,7 @@ import Loader from '../Loader/Loader';
 import { EditPlantForm } from '../EditPlantForm/EditPlantForm';
 import { toast } from 'react-toastify';
 import { fertilizationToString, insolationToString } from '../../utils/util';
-import {PageRoutes} from '../../utils/constants';
+import {base64Header, PageRoutes} from '../../utils/constants';
 
 
 const PlantDetailsView: React.FC<{}> = (props) => {
@@ -52,7 +52,7 @@ const PlantDetailsView: React.FC<{}> = (props) => {
                 <Row>
                     <Col xxl={6}>
                         <Card as={DetailsWrapper}>
-                            <Card.Img variant="top" src={plant.photo} />
+                            <Card.Img variant="top" src={base64Header + plant.photo} />
                             <Card.Body>
                                 <Card.Title style={{ fontSize: 26 }}>Informacje ogólne</Card.Title>
                                 <TitleSeparator />
