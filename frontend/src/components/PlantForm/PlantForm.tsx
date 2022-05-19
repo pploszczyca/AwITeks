@@ -46,7 +46,6 @@ export const PlantForm: React.FC<PlantFormProps> =
 
         const displayPhoto = (event: any) => {
             let input = event.target;
-            console.log(input)
 
             toBase64(input).then(data => {
                 if(typeof(data) === "string"){
