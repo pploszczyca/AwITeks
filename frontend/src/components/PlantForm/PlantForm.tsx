@@ -44,8 +44,9 @@ export const PlantForm: React.FC<PlantFormProps> =
             setShowSpeciesForm(false);
         };
 
-        const displayPhoto = () => {
-            let input: HTMLInputElement = document.getElementById('photoInput')! as HTMLInputElement;
+        const displayPhoto = (event: any) => {
+            let input = event.target;
+            console.log(input)
 
             toBase64(input).then(data => {
                 if(typeof(data) === "string"){
@@ -106,7 +107,7 @@ export const PlantForm: React.FC<PlantFormProps> =
                                                     ) : (
                                                         <></>
                                                     )}
-                                                    <Field id="photoInput" className="form-control" type="file" name='edit-photo' accept="image/jpeg" onChange={() => displayPhoto()}/>
+                                                    <Field id="photoInput" className="form-control" type="file" name='edit-photo' accept="image/jpeg" onChange={displayPhoto}/>
                                                 </div>
                                             </Col>
 
