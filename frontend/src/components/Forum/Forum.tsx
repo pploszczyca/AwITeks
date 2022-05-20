@@ -28,7 +28,7 @@ const Forum: React.FC<{}> = () => {
     const [filteredData, setFilteredData] = useState(mockData);
     const [filters, setFilters] = useState(["",'',''])
     const [chipsActive, setChipsActive] = useState([false,false,false]);
-    const UserID = 1;
+    const UserName = "username0";
     const searchInputRef: React.MutableRefObject<HTMLInputElement | null> = useRef(null);
     const navigate = useNavigate();
     const [showAddThreadForm, setShowAddThreadForm] = useState(false);
@@ -39,12 +39,6 @@ const Forum: React.FC<{}> = () => {
         setFilters(filters);
         filterData();
     };
-
-    // const filterThreads = (event: any) => {
-    //     // chips.current?.classList.toggle('active');
-    //     event.target.classList.toggle('active')
-    //     filterChip(1);
-    // }
 
     const filterChip = (id: number) => {
         if(filters[id] === ''){
@@ -65,7 +59,7 @@ const Forum: React.FC<{}> = () => {
             result = result.filter((elem: ForumThreadSummaryResponseBody) => elem.isFollowed===true);
         }
         if(filters[2]!==''){
-            result = result.filter((elem: ForumThreadSummaryResponseBody) => elem.creator.id===UserID);
+            result = result.filter((elem: ForumThreadSummaryResponseBody) => elem.creatorName===UserName);
         }
         if(filters[0]!==''){
             const keyword: string = filters[0];
@@ -79,13 +73,7 @@ const Forum: React.FC<{}> = () => {
 
     const FilterChips: React.FC<{text: string, id: number}> = ({text, id}) => {
         const filterThreads = () => {
-            if(text === "Tylko obserwowane"){
-                filterChip(1);
-            }
-            else{
-                filterChip(2);
-            }
-           
+            filterChip(id);
         }
     
         return (
