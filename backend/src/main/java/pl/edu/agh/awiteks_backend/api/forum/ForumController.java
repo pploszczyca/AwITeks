@@ -32,20 +32,21 @@ public class ForumController {
     public List<ForumThreadSummaryResponseBody> getAllThreads(@RequestParam(name = "favOnly", defaultValue = "false") String favOnly,
                                                              @RequestParam(name = "ownOnly", defaultValue = "false") String ownOnly,
                                                              JwtAccessToken jwtAccessToken) {
+        //TODO: Use the params to filter threads
         return forumService.getAllThreads();
     }
 
     @Operation(summary = "Get thread by id")
     @GetMapping(value = "/{id}", produces = "application/json")
     public Optional<ForumThread> getThread(@PathVariable int id, JwtAccessToken jwtAccessToken) {
-        return forumService.get(id, jwtAccessToken.getUserId());
+        return forumService.get(id);
     }
 
 
     @Operation(summary = "Get all threads with matching names")
     @GetMapping(value = "/search", produces = "application/json")
-    public List<ForumThreadSummaryResponseBody> getThreadsWithMatchingName(@RequestParam(name = "keyword", defaultValue = "") String searchKey, JwtAccessToken jwtAccessToken){
-        return forumService.getThreadsWithMatchingName(searchKey);   //TODO: Does not work, returns all. What?
+    public List<ForumThreadSummaryResponseBody> getThreadsWithMatchingName(@RequestParam(name = "searchKey", defaultValue = "") String searchKey){
+        return forumService.getThreadsWithMatchingName(searchKey);
     }
 
     @Operation(summary = "Add new thread with initial post")

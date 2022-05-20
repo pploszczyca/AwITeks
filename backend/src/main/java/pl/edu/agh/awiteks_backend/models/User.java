@@ -105,17 +105,6 @@ public class User {
         this.id = id;
     }
 
-//    public List<ForumThread> getFollowedThreads() {
-//        return followedThreads;
-//    }
-//
-//    public void setFollowedThreads(List<ForumThread> followedThreads) {
-//        this.followedThreads = followedThreads;
-//    }
-//
-//    public void addFollowedThread(ForumThread thread){
-//        this.followedThreads.add(thread);
-//    }
     public String getUsername() {
         return username;
     }
@@ -157,6 +146,7 @@ public class User {
     }
 
     public boolean isFollowing(ForumThread thread) {
+        //TODO: enable this method of thread filtering in Controller/Service
         //return followedThreads.contains(thread);
         return false;
     }

@@ -16,8 +16,8 @@ import pl.edu.agh.awiteks_backend.utilities.ListUtilities;
 import pl.edu.agh.awiteks_backend.utilities.StreamUtilities;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class ForumService {
@@ -58,11 +58,11 @@ public class ForumService {
     }
 
     public List<ForumThreadSummaryResponseBody> getAllThreads() {
-        return this.streamUtilities.asStream(forumRepository.findAll()).map(ForumMapper::mapForumThreadToForumThreadSummary).collect(Collectors.toList());
+        return this.streamUtilities.asStream(forumRepository.findAll()).map(ForumMapper::mapForumThreadToForumThreadSummary).toList();
     }
 
     public List<ForumThreadSummaryResponseBody> getAllThreads(String favOnly, String ownOnly, int userId) {
-        // todo may not be working :>
+        // TODO: use this instead of the 0 argument one
         final boolean favThreadsOnly = favOnly.equals("true");
         final boolean ownThreadsOnly = ownOnly.equals("true");
         var requester = userRepository.findById(userId);
@@ -70,10 +70,10 @@ public class ForumService {
                 .stream()
                 .filter(thread -> favThreadsOnly && requester.isPresent() && requester.get().isFollowing(thread))
                 .filter(thread -> ownThreadsOnly && thread.getUser().getId() == userId)
-                .map(ForumMapper::mapForumThreadToForumThreadSummary).collect(Collectors.toList());
+                .map(ForumMapper::mapForumThreadToForumThreadSummary).toList();
     }
 
-    public Optional<ForumThread> get(int id, int userId) {
+    public Optional<ForumThread> get(int id) {
         return this.forumRepository.findById(id);
     }
 
@@ -94,19 +94,8 @@ public class ForumService {
                 );
     }
 
-//    public void changeFavourite(int plantId, int userId) {
-//        this.forumRepository
-//                .findByIdAndUserId(plantId, userId)
-//                .ifPresent(
-//                        forumThread -> {
-//                            forumThread.setFavourite(!forumThread.isFavourite());
-//                            this.forumRepository.save(forumThread);
-//                        }
-//                );
-//    }
-
     public List<ForumThreadSummaryResponseBody> getThreadsWithMatchingName(String searchKey) {
-        return this.getAllThreads().stream().filter(thread -> thread.title().contains(searchKey)).collect(Collectors.toList());
+        return this.getAllThreads().stream().filter(thread -> thread.title().toLowerCase(Locale.ROOT).contains(searchKey.toLowerCase(Locale.ROOT))).toList();
     }
 
     public ForumPost addPostToThread(Integer threadId, AddPostRequestBody postRequestBody, Integer authorId) {
@@ -115,7 +104,7 @@ public class ForumService {
         ForumPost post = new ForumPost(creator, thread, postRequestBody.content());
         thread.addForumPost(post);  // todo may be source of a problem
         creator.getForumPostList().add(post);//Maybe?
-        this.postRepository.save(post);
+        this.postRepository.save(post);//TODO: Does not work, to be investigated.
         return post;
     }
 

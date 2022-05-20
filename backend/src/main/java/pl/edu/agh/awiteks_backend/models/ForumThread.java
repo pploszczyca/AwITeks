@@ -55,10 +55,6 @@ public class ForumThread {
         return id;
     }
 
-    public ForumThread copy() {
-        return null;
-    }
-
     public void setId(Integer id) {
         this.id = id;
     }
