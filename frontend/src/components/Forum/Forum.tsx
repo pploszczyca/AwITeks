@@ -20,12 +20,14 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {useNavigate} from "react-router-dom";
 import {classes, content, headers, PageRoutes} from "../../utils/constants";
 import {AddThreadForm} from "../AddThreadForm/AddThreadForm";
+import {ChipsButton} from "./FilterChips/ChipsStyle";
 
 const Forum: React.FC<{}> = () => {
     let mockData = getThreadsList(10);
     const [isFavourite, setFavourite] = useState(mockData.map(elem => elem.isFollowed));
     const [filteredData, setFilteredData] = useState(mockData);
     const [filters, setFilters] = useState(["",'',''])
+    const [chipsActive, setChipsActive] = useState([false,false,false]);
     const UserID = 1;
     const searchInputRef: React.MutableRefObject<HTMLInputElement | null> = useRef(null);
     const navigate = useNavigate();
@@ -38,29 +40,60 @@ const Forum: React.FC<{}> = () => {
         filterData();
     };
 
+    // const filterThreads = (event: any) => {
+    //     // chips.current?.classList.toggle('active');
+    //     event.target.classList.toggle('active')
+    //     filterChip(1);
+    // }
+
     const filterChip = (id: number) => {
-        filters[id] = '1';
+        if(filters[id] === ''){
+            filters[id] = '1';
+        }
+        else{
+            filters[id] = '';
+        }
+        chipsActive[id] = !chipsActive[id];
+        setChipsActive(chipsActive);
         setFilters(filters);
         filterData();
     };
 
     const filterData = () => {
         let result = mockData;
-        if(filters[0]!==''){
-            const keyword: string = filters[0];
-            result = mockData.filter((thread) => {
-                return thread.title.toLowerCase().includes(keyword.toLowerCase());
-            });
-        }
         if(filters[1]!==''){
             result = result.filter((elem: ForumThreadSummaryResponseBody) => elem.isFollowed===true);
         }
         if(filters[2]!==''){
             result = result.filter((elem: ForumThreadSummaryResponseBody) => elem.creator.id===UserID);
         }
+        if(filters[0]!==''){
+            const keyword: string = filters[0];
+            result = result.filter((thread) => {
+                return thread.title.toLowerCase().includes(keyword.toLowerCase());
+            });
+        }
         setFilteredData(result);
         
     };
+
+    const FilterChips: React.FC<{text: string, id: number}> = ({text, id}) => {
+        const filterThreads = () => {
+            if(text === "Tylko obserwowane"){
+                filterChip(1);
+            }
+            else{
+                filterChip(2);
+            }
+           
+        }
+    
+        return (
+            <ChipsButton onClick={filterThreads} className={chipsActive[id] ? 'active': ''}> 
+                {text}
+            </ChipsButton>
+        )
+    }
 
     function toggleFavourite(idx: number, id: number){
         filteredData[idx].isFollowed = !filteredData[idx].isFollowed;//how much of that is really necessary?
@@ -153,5 +186,6 @@ const Forum: React.FC<{}> = () => {
         </>
     )
 };
+
 
 export default Forum;
