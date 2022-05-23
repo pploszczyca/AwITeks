@@ -146,8 +146,6 @@ public class User {
     }
 
     public boolean isFollowing(ForumThread thread) {
-        //TODO: enable this method of thread filtering in Controller/Service
-        //return followedThreads.contains(thread);
-        return false;
+        return followedThreads.contains(thread);
     }
 }

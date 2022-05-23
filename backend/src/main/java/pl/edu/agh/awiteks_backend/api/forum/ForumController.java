@@ -29,10 +29,7 @@ public class ForumController {
 
     @Operation(summary = "Get all forum threads", security = @SecurityRequirement(name = JWT_AUTH))
     @GetMapping(produces = "application/json")
-    public List<ForumThreadSummaryResponseBody> getAllThreads(@RequestParam(name = "favOnly", defaultValue = "false") String favOnly,
-                                                             @RequestParam(name = "ownOnly", defaultValue = "false") String ownOnly,
-                                                             JwtAccessToken jwtAccessToken) {
-        //TODO: Use the params to filter threads
+    public List<ForumThreadSummaryResponseBody> getAllThreads() {
         return forumService.getAllThreads();
     }
 
@@ -64,7 +61,13 @@ public class ForumController {
 
     @Operation(summary = "Get all posts for given thread")
     @GetMapping(value = "/{threadId}/posts")
-    public List<ForumPost> getPostsFromThread(@PathVariable int threadId, JwtAccessToken jwtAccessToken) {
+    public List<ForumPost> getPostsFromThread(@PathVariable int threadId) {
         return forumService.getPostsFromThread(threadId);
+    }
+
+    @Operation(summary = "Edit post")
+    @PostMapping(value = "/{threadId}/{postId}/edit")
+    public ForumPost editPost(@RequestBody AddPostRequestBody postRequestBody, @PathVariable int threadId, @PathVariable int postId, JwtAccessToken jwtAccessToken){
+        return forumService.editPost(threadId, postId, postRequestBody, jwtAccessToken.getUserId());
     }
 }

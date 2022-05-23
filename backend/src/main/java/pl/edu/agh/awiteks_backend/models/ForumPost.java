@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "forum_post")
@@ -27,8 +28,8 @@ public class ForumPost {
     @Schema(required = true)
     private ForumThread thread;
 
-    @Schema(required = true)
-    private String date;
+    @Schema(required = false)
+    private final LocalDateTime date = LocalDateTime.now();
 
     public ForumPost(User author, ForumThread thread, String content) {
         this.user = author;
@@ -71,11 +72,7 @@ public class ForumPost {
         this.content = newContent;
     }
 
-    public String getDate() {
+    public LocalDateTime getDate() {
         return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
     }
 }

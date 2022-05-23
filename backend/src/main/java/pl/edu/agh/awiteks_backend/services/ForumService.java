@@ -62,7 +62,6 @@ public class ForumService {
     }
 
     public List<ForumThreadSummaryResponseBody> getAllThreads(String favOnly, String ownOnly, int userId) {
-        // TODO: use this instead of the 0 argument one
         final boolean favThreadsOnly = favOnly.equals("true");
         final boolean ownThreadsOnly = ownOnly.equals("true");
         var requester = userRepository.findById(userId);
@@ -102,14 +101,26 @@ public class ForumService {
         ForumThread thread = this.forumRepository.findById(threadId).orElseThrow();
         User creator = userRepository.findById(authorId).orElseThrow();
         ForumPost post = new ForumPost(creator, thread, postRequestBody.content());
-        thread.addForumPost(post);  // todo may be source of a problem
-        creator.getForumPostList().add(post);//Maybe?
-        this.postRepository.save(post);//TODO: Does not work, to be investigated.
+        thread.addForumPost(post);
+        creator.getForumPostList().add(post);
+        this.postRepository.save(post);
         return post;
     }
 
     public List<ForumPost> getPostsFromThread(Integer threadId) {
         ForumThread thread = this.forumRepository.findById(threadId).orElseThrow();
-        return thread.getForumPosts();  // todo ???
+        return thread.getForumPosts();
+    }
+
+    public ForumPost editPost(Integer threadId, Integer postId, AddPostRequestBody postRequestBody, Integer userId){
+        ForumThread thread = this.forumRepository.findById(threadId).orElseThrow();
+        User creator = userRepository.findById(userId).orElseThrow();
+        ForumPost post = this.postRepository.findById(postId).orElseThrow();
+        creator.getForumPostList().remove(post);
+        post.setContent(postRequestBody.content());
+        thread.addForumPost(post);
+        creator.getForumPostList().add(post);
+        this.postRepository.save(post);
+        return post;
     }
 }
