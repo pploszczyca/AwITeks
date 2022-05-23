@@ -35,7 +35,7 @@ public class ForumController {
 
     @Operation(summary = "Get thread by id")
     @GetMapping(value = "/{id}", produces = "application/json")
-    public Optional<ForumThread> getThread(@PathVariable int id, JwtAccessToken jwtAccessToken) {
+    public Optional<ForumThread> getThread(@PathVariable int id) {
         return forumService.get(id);
     }
 
@@ -68,6 +68,10 @@ public class ForumController {
     @Operation(summary = "Edit post")
     @PostMapping(value = "/{threadId}/{postId}/edit")
     public ForumPost editPost(@RequestBody AddPostRequestBody postRequestBody, @PathVariable int threadId, @PathVariable int postId, JwtAccessToken jwtAccessToken){
-        return forumService.editPost(threadId, postId, postRequestBody, jwtAccessToken.getUserId());
+        try {
+            return forumService.editPost(threadId, postId, postRequestBody, jwtAccessToken.getUserId());
+        }catch (IllegalCallerException e){
+            return new ForumPost();
+        }
     }
 }

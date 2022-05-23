@@ -61,17 +61,6 @@ public class ForumService {
         return this.streamUtilities.asStream(forumRepository.findAll()).map(ForumMapper::mapForumThreadToForumThreadSummary).toList();
     }
 
-    public List<ForumThreadSummaryResponseBody> getAllThreads(String favOnly, String ownOnly, int userId) {
-        final boolean favThreadsOnly = favOnly.equals("true");
-        final boolean ownThreadsOnly = ownOnly.equals("true");
-        var requester = userRepository.findById(userId);
-        return this.listUtilities.iterableToList(forumRepository.findAll())
-                .stream()
-                .filter(thread -> favThreadsOnly && requester.isPresent() && requester.get().isFollowing(thread))
-                .filter(thread -> ownThreadsOnly && thread.getUser().getId() == userId)
-                .map(ForumMapper::mapForumThreadToForumThreadSummary).toList();
-    }
-
     public Optional<ForumThread> get(int id) {
         return this.forumRepository.findById(id);
     }
@@ -116,6 +105,7 @@ public class ForumService {
         ForumThread thread = this.forumRepository.findById(threadId).orElseThrow();
         User creator = userRepository.findById(userId).orElseThrow();
         ForumPost post = this.postRepository.findById(postId).orElseThrow();
+        if(!(post.getUser() == creator)) throw new IllegalCallerException();
         creator.getForumPostList().remove(post);
         post.setContent(postRequestBody.content());
         thread.addForumPost(post);
