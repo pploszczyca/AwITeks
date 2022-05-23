@@ -23,11 +23,15 @@ import pl.edu.agh.awiteks_backend.security.filters.JwtAuthFilter;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final JwtAuthFilter jwtAuthFilter;
+
     private final FilterExceptionHandler filterExceptionHandler;
+
     private final UserDetailsServiceImp userDetailsServiceImp;
 
     @Autowired
-    public SecurityConfig(JwtAuthFilter jwtAuthFilter, FilterExceptionHandler filterExceptionHandler, UserDetailsServiceImp userDetailsServiceImp) {
+    public SecurityConfig(JwtAuthFilter jwtAuthFilter,
+                          FilterExceptionHandler filterExceptionHandler,
+                          UserDetailsServiceImp userDetailsServiceImp) {
         this.jwtAuthFilter = jwtAuthFilter;
         this.filterExceptionHandler = filterExceptionHandler;
         this.userDetailsServiceImp = userDetailsServiceImp;
@@ -41,13 +45,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .anyRequest().permitAll() // jwtAuthFilter decides who gets in
                 .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilterBefore(filterExceptionHandler, ChannelProcessingFilter.class)
-                .addFilterAfter(jwtAuthFilter, SecurityContextPersistenceFilter.class)
+                .addFilterBefore(filterExceptionHandler,
+                        ChannelProcessingFilter.class)
+                .addFilterAfter(jwtAuthFilter,
+                        SecurityContextPersistenceFilter.class)
                 .csrf().disable()
                 .exceptionHandling()
-                .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
+                .authenticationEntryPoint(
+                        new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth)
+            throws Exception {
+        auth.userDetailsService(userDetailsServiceImp)
+                .passwordEncoder(new BCryptPasswordEncoder());
     }
 
     @Bean
@@ -61,8 +76,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsServiceImp).passwordEncoder(new BCryptPasswordEncoder());
-    }
 }

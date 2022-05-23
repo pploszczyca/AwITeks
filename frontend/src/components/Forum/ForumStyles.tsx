@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Col, Row } from "react-bootstrap";
 import styled from "styled-components";
+import {SearchBox, SearchBoxContainer} from "../PlantsView/PlantsViewStyles";
 
 
 export const Star = styled(FontAwesomeIcon)`
@@ -44,21 +45,41 @@ export const ForumCol =  styled(Col)`
     min-width: 0;
 
     &.title{
-      max-width: 35%;
+      max-width: 30%;
     }
-    &.num{
+    &.num {
+      min-width: 10%;
       max-width: 15%;
     }
     &.username{
       max-width: 20%;
     }
     &.date{
-      max-width: 20%;
+      max-width: 15%;
     }
     &.action{
-      max-width: 10%;
+      max-width: 20%;
     }
 
+    /* There is not enough space in mobile mode to display so much data in one line. 
+       That's why I decided to turn off the visibility of some columns. */
+    @media (max-width: 550px) {
+      &.title{
+        max-width: 60%;
+      }
+      &.num {
+        display: none;
+      }
+      &.username{
+        display: none;
+      }
+      &.date{
+        display: none;
+      }
+      &.action{
+        max-width: 40%;
+      }
+    }
 `;
 
 export const ForumRow = styled(Row)`
@@ -107,4 +128,31 @@ export const ForumContainer = styled.div`
   justify-content: center;
   margin-right: 6px;
   margin-left: 6px;
+  
+  @media(max-width: 768px){
+    left: 0;
+    width: 100vw;
+    padding-right: 10px;
+    padding-bottom: 100px;
+  }
+`;
+
+export const SearchBoxContainerModified = styled(SearchBoxContainer)`
+  height: 40px;
+  font-size: 17px;
+`;
+
+export const SearchBoxModified = styled(SearchBox)`
+  height: 40px;
+`;
+
+export const AddThreadBtn = styled.button`
+  border-radius: 10px;
+  background-color: #008F8C;
+  height: 40px;
+  width: 100%;
+  font-size: 17px;
+  color: white;
+  border: none;
+  outline: none;
 `;

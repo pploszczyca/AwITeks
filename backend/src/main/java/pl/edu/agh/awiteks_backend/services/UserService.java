@@ -14,14 +14,17 @@ import pl.edu.agh.awiteks_backend.utilities.StreamUtilities;
 public class UserService extends ModelService<User> {
 
     private final SpeciesRepository speciesRepository;
+
     private final PlantRepository plantRepository;
+
     private final StreamUtilities streamUtilities;
 
     @Autowired
     public UserService(UserRepository modelRepository,
                        SpeciesRepository speciesRepository,
                        PlantRepository plantRepository,
-                       ListUtilities listUtilities, StreamUtilities streamUtilities) {
+                       ListUtilities listUtilities,
+                       StreamUtilities streamUtilities) {
         super(modelRepository, listUtilities);
         this.speciesRepository = speciesRepository;
         this.plantRepository = plantRepository;
@@ -37,13 +40,14 @@ public class UserService extends ModelService<User> {
 
     public UserInfo getUserInfo(int userId) {
         // TODO error handling
-        User user = get(userId).orElseThrow();
+        final User user = get(userId).orElseThrow();
         return new UserInfo(user.getEmail(), user.getUsername());
     }
 
     private void removeAllUserPlants(int id) {
         super.get(id)
-                .ifPresent(presentUser -> plantRepository.deleteAll(presentUser.getUserPlants()));
+                .ifPresent(presentUser -> plantRepository.deleteAll(
+                        presentUser.getUserPlants()));
     }
 
     private void removeAllUserSpecies(int id) {

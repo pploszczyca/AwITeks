@@ -56,6 +56,12 @@ export interface AddPlantRequestBody {
      * @memberof AddPlantRequestBody
      */
     'speciesId': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof AddPlantRequestBody
+     */
+    'photo'?: string;
 }
 
 export const AddPlantRequestBodyInsolationEnum = {

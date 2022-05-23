@@ -1,15 +1,27 @@
 package pl.edu.agh.awiteks_backend.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
-
-import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "plants")
-@JsonIgnoreProperties({"user"})
+@JsonIgnoreProperties({"user", "plantActivities"})
 public class Plant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,9 +54,12 @@ public class Plant {
     private boolean favourite;
 
     @Schema(required = true)
-    private String url;
+    @Lob
+    private String photo;
 
-    public Plant(String name, User user, Species species, String note, Insolation actualInsolation, List<Activity> plantActivities, boolean favourite, String url) {
+    public Plant(String name, User user, Species species, String note,
+                 Insolation actualInsolation, List<Activity> plantActivities,
+                 boolean favourite, String photo) {
         this.name = name;
         this.user = user;
         this.species = species;
@@ -52,11 +67,13 @@ public class Plant {
         this.actualInsolation = actualInsolation;
         this.plantActivities = plantActivities;
         this.favourite = favourite;
-        this.url = url;
+        this.photo = photo;
     }
 
-    public Plant(String name, User user, Species species, String note, Insolation actualInsolation, boolean favourite, String url) {
-        this(name, user, species, note, actualInsolation, new ArrayList<>(), favourite, url);
+    public Plant(String name, User user, Species species, String note,
+                 Insolation actualInsolation, boolean favourite, String photo) {
+        this(name, user, species, note, actualInsolation, new ArrayList<>(),
+                favourite, photo);
     }
 
     public Plant() {
@@ -115,14 +132,6 @@ public class Plant {
         this.favourite = favourite;
     }
 
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
     public void removeActivity(Activity activity) {
         plantActivities.remove(activity);
     }
@@ -133,6 +142,14 @@ public class Plant {
                 .filter(activity -> activity.getId() == activityId)
                 .findFirst()
                 .ifPresent(this::removeActivity);
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
 
     public Integer getId() {
@@ -149,5 +166,26 @@ public class Plant {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @JsonProperty
+    @Schema(required = true)
+    public String getLastWateringDate() {
+        return getLastActivityDate(ActivityType.WATERING);
+    }
+
+    @JsonProperty
+    @Schema(required = true)
+    public String getLastFertilizationDate() {
+        return getLastActivityDate(ActivityType.FERTILISATION);
+    }
+
+    private String getLastActivityDate(ActivityType activityType) {
+        return plantActivities.stream()
+                .filter(activity -> activity.getActivityType()
+                        .equals(activityType))
+                .max(Comparator.comparing(a -> LocalDate.parse(a.getDate())))
+                .map(Activity::getDate)
+                .orElseThrow();
     }
 }

@@ -49,6 +49,6 @@ export interface PlantSummary {
      * @type {string}
      * @memberof PlantSummary
      */
-    'imgUrl': string;
+    'photo': string;
 }
 

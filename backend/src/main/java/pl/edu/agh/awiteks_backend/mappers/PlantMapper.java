@@ -10,7 +10,6 @@ public class PlantMapper {
                 plant.getName(),
                 plant.getSpecies().getName(),
                 plant.isFavourite(),
-                plant.getUrl()
-        );
+                plant.getPhoto());
     }
 }

@@ -1,7 +1,7 @@
 import React from "react";
 import { ErrorMessage, Formik, Field } from "formik";
 import { Button, Col, Form, Row, Spinner } from "react-bootstrap";
-import { validateConfirmPassword, validateEmail, validatePassword } from "../validators";
+import {validateConfirmPassword, validateEmail, validatePassword, validateUsername} from "../validators";
 import { FormContainer } from "../styles/FormStyle";
 import { useAppDispatch, useAppSelector } from "../../../Store/store";
 import { register } from "../../../Store/features/auth/authSlice";
@@ -15,7 +15,7 @@ const RegistrationPage: React.FC<{}> = () => {
             initialValues={{ username: '', email: '', password: '', repeatPassword: '' }}
             validate={values => {
                 const errors: any = {};
-                if (!values.username) errors.username = 'Wymagane';
+                errors.username = validateUsername(values.username);
                 errors.email = validateEmail(values.email);
                 errors.password = validatePassword(values.password);
                 errors.repeatPassword = validateConfirmPassword(values.password, values.repeatPassword);

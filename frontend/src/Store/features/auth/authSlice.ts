@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AuthData, AuthResponse, UserLoginRequestBody, UserRegisterRequestBody } from '../../../api';
 import { getApis } from '../../../api/initializeApis';
 import { AppDispatch, RootState } from '../../store';
@@ -6,8 +6,8 @@ import { AppDispatch, RootState } from '../../store';
 // As long as we dont have refresh tokens access tokens will be stored in local storage
 const LOCAL_STORAGE_AUTH_KEY = 'JWT';
 
-export function isTokeExpired(authData: AuthData) {
-    return authData.expiresIn >= new Date().getTime();
+export function isTokenExpired(authData: AuthData) {
+    return authData.expiresIn * 1000 <= new Date().getTime();
 }
 
 function persistAuthState(auth: AuthData): void {
@@ -31,7 +31,7 @@ function buildInitialState(): AuthState {
     let isLoggedIn = false;
 
     if (authData) {
-        if (!isTokeExpired(authData)) {
+        if (!isTokenExpired(authData)) {
             isLoggedIn = true;
         }
         else {
@@ -108,23 +108,23 @@ export const authSlice = createSlice({
     name: 'auth',
     initialState: buildInitialState(),
     reducers: {
-        setAuthData: (state, action: PayloadAction<AuthData>) => {
+        setAuthData: (state: AuthState, action: PayloadAction<AuthData>) => {
             state.authData = action.payload;
             state.isLoggedIn = true;
             state.errors = undefined;
         },
-        resetAuthData: (state) => {
+        resetAuthData: (state: AuthState) => {
             state.authData = null;
             state.isLoggedIn = false;
             state.errors = undefined; // maybe leave it
         },
-        clearAuthErrors: (state) => {
+        clearAuthErrors: (state: AuthState) => {
             state.errors = undefined;
         },
-        setAuthErrors: (state, action: PayloadAction<string[]>) => {
+        setAuthErrors: (state: AuthState, action: PayloadAction<string[]>) => {
             state.errors = action.payload;
         },
-        setFetching: (state, action: PayloadAction<boolean>) => {
+        setFetching: (state: AuthState, action: PayloadAction<boolean>) => {
             state.isFetching = action.payload;
         }
     },
