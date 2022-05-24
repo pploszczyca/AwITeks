@@ -14,7 +14,6 @@ import pl.edu.agh.awiteks_backend.repositories.PostRepository;
 import pl.edu.agh.awiteks_backend.repositories.UserRepository;
 import pl.edu.agh.awiteks_backend.utilities.ListUtilities;
 import pl.edu.agh.awiteks_backend.utilities.StreamUtilities;
-
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
@@ -22,11 +21,13 @@ import java.util.Optional;
 @Service
 public class ForumService {
     private final UserRepository userRepository;
+
     private final ForumRepository forumRepository;
 
     private final PostRepository postRepository;
 
     private final ListUtilities listUtilities;
+
     private final StreamUtilities streamUtilities;
 
     @Autowired

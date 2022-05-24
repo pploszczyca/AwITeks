@@ -1,7 +1,6 @@
 package pl.edu.agh.awiteks_backend.api.forum.body_models;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-
 import java.time.LocalDateTime;
 
 public record ForumThreadSummaryResponseBody(
@@ -13,5 +12,3 @@ public record ForumThreadSummaryResponseBody(
         @Schema(required = true) boolean isFollowed
 ) {
 }
-
-
