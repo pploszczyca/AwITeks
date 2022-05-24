@@ -40,12 +40,12 @@ public class ForumService {
     }
 
     public ForumThread addThread(AddThreadRequestBody addThreadRequestBody, int userId) {
-        User creator = userRepository.findById(userId).orElseThrow();
+        final User creator = userRepository.findById(userId).orElseThrow();
         ForumThread forumThread = new ForumThread(
                 addThreadRequestBody.name(),
                 creator
         );
-        ForumPost post = new ForumPost(
+        final ForumPost post = new ForumPost(
                 creator,
                 forumThread,
                 addThreadRequestBody.content()
@@ -88,9 +88,9 @@ public class ForumService {
     }
 
     public ForumPost addPostToThread(Integer threadId, AddPostRequestBody postRequestBody, Integer authorId) {
-        ForumThread thread = this.forumRepository.findById(threadId).orElseThrow();
-        User creator = userRepository.findById(authorId).orElseThrow();
-        ForumPost post = new ForumPost(creator, thread, postRequestBody.content());
+        final ForumThread thread = this.forumRepository.findById(threadId).orElseThrow();
+        final User creator = userRepository.findById(authorId).orElseThrow();
+        final ForumPost post = new ForumPost(creator, thread, postRequestBody.content());
         thread.addForumPost(post);
         creator.getForumPostList().add(post);
         this.postRepository.save(post);
@@ -98,14 +98,14 @@ public class ForumService {
     }
 
     public List<ForumPost> getPostsFromThread(Integer threadId) {
-        ForumThread thread = this.forumRepository.findById(threadId).orElseThrow();
+        final ForumThread thread = this.forumRepository.findById(threadId).orElseThrow();
         return thread.getForumPosts();
     }
 
     public ForumPost editPost(Integer threadId, Integer postId, AddPostRequestBody postRequestBody, Integer userId){
-        ForumThread thread = this.forumRepository.findById(threadId).orElseThrow();
-        User creator = userRepository.findById(userId).orElseThrow();
-        ForumPost post = this.postRepository.findById(postId).orElseThrow();
+        final ForumThread thread = this.forumRepository.findById(threadId).orElseThrow();
+        final User creator = userRepository.findById(userId).orElseThrow();
+        final ForumPost post = this.postRepository.findById(postId).orElseThrow();
         if(!(post.getUser() == creator)) throw new IllegalCallerException();
         creator.getForumPostList().remove(post);
         post.setContent(postRequestBody.content());
