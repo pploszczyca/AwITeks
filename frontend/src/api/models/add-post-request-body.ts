@@ -14,10 +14,17 @@
 
 
 
-export * from './apis/activity-controller-api';
-export * from './apis/auth-controller-api';
-export * from './apis/forum-controller-api';
-export * from './apis/plant-controller-api';
-export * from './apis/species-controller-api';
-export * from './apis/user-controller-api';
+/**
+ * 
+ * @export
+ * @interface AddPostRequestBody
+ */
+export interface AddPostRequestBody {
+    /**
+     * 
+     * @type {string}
+     * @memberof AddPostRequestBody
+     */
+    'content': string;
+}
 

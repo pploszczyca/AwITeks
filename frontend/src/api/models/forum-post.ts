@@ -13,7 +13,6 @@
  */
 
 
-import { User } from './user';
 
 /**
  * 
@@ -35,15 +34,9 @@ export interface ForumPost {
     'content': string;
     /**
      * 
-     * @type {User}
-     * @memberof ForumPost
-     */
-    'author': User;
-    /**
-     * 
      * @type {string}
      * @memberof ForumPost
      */
-    'date': string;
+    'date'?: string;
 }
 

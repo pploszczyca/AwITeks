@@ -68,13 +68,13 @@ export interface Plant {
      * @type {string}
      * @memberof Plant
      */
-    'lastWateringDate': string;
+    'lastFertilizationDate': string;
     /**
      * 
      * @type {string}
      * @memberof Plant
      */
-    'lastFertilizationDate': string;
+    'lastWateringDate': string;
 }
 
 export const PlantActualInsolationEnum = {
