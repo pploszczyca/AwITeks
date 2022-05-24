@@ -72,7 +72,6 @@ public class PlantService {
             removePlantFromUserList(id);
             this.plantRepository.deleteById(id);
         }
-
     }
 
     public void changeFavourite(int plantId, int userId) {

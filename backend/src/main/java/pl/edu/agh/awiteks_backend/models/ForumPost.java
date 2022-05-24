@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "forum_post")
@@ -26,19 +27,18 @@ public class ForumPost {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     @Schema(required = true)
-    private User author;
+    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "forum_thread_id", nullable = false)
     @Schema(required = true)
     private ForumThread thread;
 
-    @Schema(required = true)
-    private String date;
+    @Schema(required = false)
+    private final LocalDateTime date = LocalDateTime.now();
 
-    public ForumPost(int id, User author, ForumThread thread, String content) {
-        this.id = id;
-        this.author = author;
+    public ForumPost(User author, ForumThread thread, String content) {
+        this.user = author;
         this.thread = thread;
         this.content = content;
     }
@@ -54,12 +54,12 @@ public class ForumPost {
         this.id = id;
     }
 
-    public User getAuthor() {
-        return author;
+    public User getUser() {
+        return user;
     }
 
-    public void setAuthor(User newAuthor) {
-        this.author = newAuthor;
+    public void setUser(User newAuthor) {
+        this.user = newAuthor;
     }
 
     public ForumThread getThread() {
@@ -78,11 +78,7 @@ public class ForumPost {
         this.content = newContent;
     }
 
-    public String getDate() {
+    public LocalDateTime getDate() {
         return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
     }
 }

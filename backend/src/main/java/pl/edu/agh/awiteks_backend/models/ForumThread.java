@@ -2,8 +2,6 @@ package pl.edu.agh.awiteks_backend.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.util.ArrayList;
-import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,9 +9,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "forum_thread")
@@ -30,23 +32,28 @@ public class ForumThread {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     @Schema(required = true)
-    private User creator;
+    private User user;
 
     @OneToMany(mappedBy = "thread", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @Schema(required = true)
     private List<ForumPost> forumPosts;
 
-    public ForumThread(Integer id, String name, User user) {
-        this.id = id;
-        this.creator = user;
+    @ManyToMany(mappedBy = "followedThreads", cascade = CascadeType.ALL)
+    @Schema(required = true)
+    private List<User> followingUsers;
+
+    @Schema(required = false)
+    private final LocalDateTime creationTime = LocalDateTime.now();
+
+    public ForumThread(String name, User user) {
+        this.title = name;
+        this.user = user;
         this.forumPosts = new ArrayList<>();
     }
 
-    public ForumThread(Integer id, String title, User user,
-                       List<ForumPost> forumPosts) {
-        this.id = id;
+    public ForumThread(String title, User user, List<ForumPost> forumPosts) {
         this.title = title;
-        this.creator = user;
+        this.user = user;
         this.forumPosts = forumPosts;
     }
 
@@ -61,20 +68,12 @@ public class ForumThread {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
+    public User getUser() {
+        return user;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public User getCreator() {
-        return creator;
-    }
-
-    public void setCreator(User user) {
-        this.creator = user;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public void setForumPosts(List<ForumPost> posts) {
@@ -88,4 +87,21 @@ public class ForumThread {
     public void addForumPost(ForumPost post) {
         this.forumPosts.add(post);
     }
+
+    public LocalDateTime getCreationTime() {
+        return creationTime;
+    }
+
+    public Integer getPostsCount() {
+        return forumPosts.size();
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
 }

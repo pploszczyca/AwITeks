@@ -9,6 +9,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -39,13 +42,23 @@ public class User {
     @Schema(required = true)
     private List<Plant> userPlants;
 
-    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @Schema(required = true)
     private List<ForumPost> forumPostList;
 
-    @OneToMany(mappedBy = "creator", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @Schema(required = true)
     private List<ForumThread> forumThreadList;
+
+    //TODO: Test this
+    @ManyToMany
+    @JoinTable(
+            name="follow_threads",
+            joinColumns = @JoinColumn(name="user_id"),
+            inverseJoinColumns = @JoinColumn(name="forum_thread_id")
+    )
+    @Schema(required = true)
+    private List<ForumThread> followedThreads;
 
     public User(
             String username,
@@ -75,10 +88,17 @@ public class User {
         userPlants.add(plant);
     }
 
+    public void addThread(ForumThread thread){
+        this.forumThreadList.add(thread);
+    }
+
     public void removePlant(Plant plant) {
         userPlants.remove(plant);
     }
 
+    public void removeThread(ForumThread forumThread){
+        forumThreadList.remove(forumThread);
+    }
 
     public List<Plant> getUserPlants() {
         return userPlants;
@@ -134,5 +154,9 @@ public class User {
 
     public void setForumThreadList(List<ForumThread> forumThreadList) {
         this.forumThreadList = forumThreadList;
+    }
+
+    public boolean isFollowing(ForumThread thread) {
+        return followedThreads.contains(thread);
     }
 }
