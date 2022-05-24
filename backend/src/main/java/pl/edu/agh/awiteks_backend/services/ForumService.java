@@ -41,7 +41,7 @@ public class ForumService {
 
     public ForumThread addThread(AddThreadRequestBody addThreadRequestBody, int userId) {
         final User creator = userRepository.findById(userId).orElseThrow();
-        ForumThread forumThread = new ForumThread(
+        final ForumThread forumThread = new ForumThread(
                 addThreadRequestBody.name(),
                 creator
         );
