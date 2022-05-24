@@ -6,7 +6,7 @@ import { AddPlantRequestBody } from "../../api";
 import { useQuery } from 'react-query';
 import Loader from '../Loader/Loader';
 import { SpeciesForm } from '../SpeciesForm/SpeciesForm';
-import { toast } from 'react-toastify';
+import {toast} from 'react-toastify';
 import { insolationToString } from '../../utils/util';
 import {toBase64} from "./photoService";
 import {base64Header} from "../../utils/constants";
@@ -28,7 +28,10 @@ export const PlantForm: React.FC<PlantFormProps> =
     ({ initialValues, show, setShowPlantForm, formTitle, onSubmit, acceptBtnText, successToastText }) => {
         const [showSpeciesForm, setShowSpeciesForm] = useState(false);
         const [photo, setPhoto] = useState<string>('');
-        const { data: speciesList, isLoading } = useQuery('species', () => getApis().speciesApi.getAllSpecies().then(resp => resp.data));
+        const { data: speciesList, isLoading } = useQuery(
+            'species',
+            () => getApis().speciesApi.getAllSpecies().then(resp => resp.data),
+            {onError: (error) => toast.error("Kurza twarz! Coś poszło nie tak :/", {autoClose: 8000})});
 
         if (isLoading) {
             return <Loader />;

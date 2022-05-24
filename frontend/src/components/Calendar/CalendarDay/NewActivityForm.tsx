@@ -7,6 +7,8 @@ import { ActivityActivityTypeEnum } from "../../../api";
 import { getApis } from "../../../api/initializeApis";
 import { AddNewActivityArgs } from "./CalendarDay";
 import { ACTIVITY_DESCRIPTION, NewActivityOption } from "./utils";
+import {toast} from "react-toastify";
+import React from "react";
 
 
 type NewActivityFormProps = {
@@ -57,7 +59,10 @@ const RowWrapper = styled.div`
 
 
 export const NewActivityForm: React.FC<NewActivityFormProps> = ({date, invalidOptions, onAddNewActivity}) => {
-    const {data: plants } = useQuery(['plants'], () => getApis().plantsApi.getAllPlants().then(resp => resp.data));
+    const {data: plants } = useQuery(
+        ['plants'],
+        () => getApis().plantsApi.getAllPlants().then(resp => resp.data),
+        {onError: (error) => toast.error("Kurza twarz! Coś poszło nie tak :/", {autoClose: 8000})});
 
     const initialValues = {
         plantId: plants && plants[0] ? plants[0].id : NO_PLANT_SELECTED,

@@ -9,7 +9,7 @@ import { Notes } from "../Notes/Notes";
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import Loader from '../Loader/Loader';
 import { EditPlantForm } from '../EditPlantForm/EditPlantForm';
-import { toast } from 'react-toastify';
+import {toast} from 'react-toastify';
 import { fertilizationToString, insolationToString } from '../../utils/util';
 import {base64Header, PageRoutes} from '../../utils/constants';
 
@@ -25,7 +25,12 @@ const PlantDetailsView: React.FC<{}> = (props) => {
         navigate(PageRoutes.MY_PLANTS)
     }
 
-    const { data: plantResp, isLoading } = useQuery(['plants', plantId], async () => getApis().plantsApi.getPlant(+plantId!))
+    const { data: plantResp, isLoading } = useQuery([
+        'plants', plantId],
+        async () => getApis().plantsApi.getPlant(+plantId!),
+        {onError: (error) => toast.error("Kurza twarz! Coś poszło nie tak :/", {autoClose: 8000})}
+    );
+
     const deletePlantMutation = useMutation(async () => {
         await getApis().plantsApi.removePlant(+plantId!);
         toast.success("Usunięto roślinę");
@@ -34,16 +39,20 @@ const PlantDetailsView: React.FC<{}> = (props) => {
         onSuccess: () => {
             queryClient.invalidateQueries(['plants', plantId]);
             queryClient.invalidateQueries(['plants-summary', plantId]);
-        }
+        },
+        onError: (error) => {toast.error("Kurza twarz! Coś poszło nie tak :/", {autoClose: 8000})}
     });
 
     if (isLoading || deletePlantMutation.isLoading) {
         return <Loader />;
     }
 
-    const plant = plantResp!.data;
+    const plant = plantResp ? plantResp.data : "Błąd serwera";
     if (plant == null) {
         navigate(PageRoutes.MY_PLANTS)
+    }
+    if(plant == "Błąd serwera" || plant === undefined){
+        return <strong>Kurza twarz! Coś poszło nie tak :/</strong>
     }
 
     return (

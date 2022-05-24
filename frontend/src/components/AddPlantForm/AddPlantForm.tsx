@@ -5,6 +5,7 @@ import { getApis } from '../../api/initializeApis';
 import Loader from '../Loader/Loader';
 import { PlantForm } from '../PlantForm/PlantForm';
 import { AddPlantRequestBody, Plant } from '../../api';
+import {toast} from "react-toastify";
 
 type addPlantFormProps = {
     show: boolean;
@@ -20,11 +21,18 @@ export const AddPlantForm: React.FC<addPlantFormProps> = ({ show, setShowPlantFo
             queryClient.setQueryData(['plants'], (oldPlants: Plant[] | undefined) =>
                 oldPlants ? [...oldPlants, plant.data] : [plant.data]);
             queryClient.invalidateQueries(['plants-summary']);
+        },
+        onError: (error) => {
+            toast.error("Kurza twarz! Coś poszło nie tak :/", {autoClose: 8000})
         }
     });
 
     // TODO assert species is not empty
-    const { data: species, isLoading } = useQuery(['species'], () => getApis().speciesApi.getAllSpecies().then(resp => resp.data));
+    const { data: species, isLoading } = useQuery(
+        ['species'],
+        () => getApis().speciesApi.getAllSpecies().then(resp => resp.data),
+        {onError: (error) => toast.error("Kurza twarz! Coś poszło nie tak :/")});
+
     if (isLoading) {
         return <Loader />;
     }

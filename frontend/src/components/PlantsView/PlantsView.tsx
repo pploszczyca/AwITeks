@@ -22,6 +22,7 @@ import {PlantSummary} from "../../api";
 import {AddPlantForm} from "../AddPlantForm/AddPlantForm";
 import {sortBy} from "./utils";
 import {SortByTypes} from "./utils";
+import {toast} from "react-toastify";
 
 
 const PlantsView: React.FC<{}> = () => {
@@ -30,11 +31,17 @@ const PlantsView: React.FC<{}> = () => {
     const searchInputRef: React.MutableRefObject<HTMLInputElement | null> = useRef(null);
     const [sortByType, setSortByType] = useState(SortByTypes.SORT_BY_NAME)
 
-    const { data: speciesList, isLoading: speciesLoading } = useQuery('species', () => getApis().speciesApi
-        .getAllSpecies().then(resp => resp.data));
+    const { data: speciesList, isLoading: speciesLoading } = useQuery(
+        'species',
+        () => getApis().speciesApi.getAllSpecies().then(resp => resp.data),
+        {onError: (error) => toast.error("Kurza twarz! Coś poszło nie tak :/", {autoClose: 8000})}
+    );
 
-    const { data: plantSummaryList, isLoading: plantsLoading } = useQuery(['plants-summary'], () => getApis().plantsApi
-        .getAllPlantsSummary().then(resp => resp.data));
+    const { data: plantSummaryList, isLoading: plantsLoading } = useQuery(
+        ['plants-summary'],
+        () => getApis().plantsApi.getAllPlantsSummary().then(resp => resp.data),
+        {onError: (error) => toast.error("Kurza twarz! Coś poszło nie tak :/", {autoClose: 8000})}
+    );
 
     const toggleFavourite = useMutation((plantSummary: PlantSummary) => {
         plantSummary.isFavourite = !plantSummary.isFavourite;
@@ -42,6 +49,9 @@ const PlantsView: React.FC<{}> = () => {
     }, {
         onSuccess: (_, plantSummary) => {
             queryClient.setQueryData(['plants-summary', plantSummary.id], plantSummary);
+        },
+        onError: error => {
+            toast.error("Kurza twarz! Coś poszło nie tak :/", {autoClose: 8000})
         }
     });
 
@@ -69,17 +79,21 @@ const PlantsView: React.FC<{}> = () => {
                     <Row>
                         <Col lg={7} sm={12} className="mt-3">
                             <Row as={PlantTypesContainer}>
-                                {speciesList!.map(species => (
-                                    <Col xl={4} lg={6} key={species.id}>
-                                        < Form.Check
-                                            inline
-                                            label={species.name}
-                                            name="plantTypes"
-                                            type="checkbox"
-                                            id={`plantTypeCheckbox_${species.id}`}
-                                        />
-                                    </Col>
-                                ))}
+                                {speciesList ? (
+                                    speciesList!.map(species => (
+                                        <Col xl={4} lg={6} key={species.id}>
+                                            < Form.Check
+                                                inline
+                                                label={species.name}
+                                                name="plantTypes"
+                                                type="checkbox"
+                                                id={`plantTypeCheckbox_${species.id}`}
+                                            />
+                                        </Col>
+                                    ))
+                                ) : (
+                                    <Col xs={12}><strong>Błąd serwera.</strong></Col>
+                                )}
                             </Row>
                         </Col>
 
@@ -115,7 +129,7 @@ const PlantsView: React.FC<{}> = () => {
 
 
             <Row as={ListContainer}>
-                {sortBy(plantSummaryList, sortByType)!.map(plant => (
+                {sortBy(plantSummaryList, sortByType)?.map(plant => (
                     <Col
                         key={plant.id}
                         xxl={3} xl={4} md={6} sm={12}

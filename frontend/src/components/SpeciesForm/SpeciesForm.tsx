@@ -4,7 +4,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { AddSpeciesRequestBody, Species } from "../../api";
 import { getApis } from "../../api/initializeApis";
 import { useMutation, useQueryClient } from 'react-query';
-import { toast } from 'react-toastify';
+import {toast} from 'react-toastify';
 import { fertilizationToString, insolationToString } from '../../utils/util';
 
 
@@ -21,6 +21,9 @@ export const SpeciesForm: React.FC<SpeciesFormProps> = ({ show, hide }) => {
                 queryClient.setQueryData(['species', species.data?.creatorId], species.data);
                 queryClient.setQueryData('species',
                     (oldSpecies: Species[] | undefined) => oldSpecies ? [...oldSpecies, species?.data] : [species?.data]);
+            },
+            onError: (error) => {
+                toast.error("Kurza twarz! Coś poszło nie tak :/", {autoClose: 8000})
             }
         });
 
@@ -148,6 +151,5 @@ export const SpeciesForm: React.FC<SpeciesFormProps> = ({ show, hide }) => {
                 </Formik>
             </Modal.Body>
         </Modal>
-
     )
 }

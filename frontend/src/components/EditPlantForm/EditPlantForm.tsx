@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from 'react-query';
 import { AddPlantRequestBody, Plant } from '../../api';
 import { getApis } from '../../api/initializeApis';
 import { PlantForm } from '../PlantForm/PlantForm';
+import {toast} from "react-toastify";
 
 
 type EditPlantFormProps = {
@@ -19,26 +20,27 @@ export const EditPlantForm: React.FC<EditPlantFormProps> = ({ show, setShowPlant
             onSuccess: (plant) => {
                 queryClient.invalidateQueries(['plants']);
                 queryClient.invalidateQueries(['plants-summary', plant.id]);
-            }
+            },
+            onError: error => {toast.error("Kurza twarz! Coś poszło nie tak :/", {autoClose: 8000})}
         });
 
     return (
-        <PlantForm
-            formTitle={`Edycja rośliny: ${plant.name}`}
-            acceptBtnText="Zapisz"
-            successToastText="Edycja pomyślna"
-            setShowPlantForm={setShowPlantForm}
-            show={show}
-            onSubmit={(newPlantValues) => addPlantMutation.mutateAsync(newPlantValues)}
-            initialValues={{
-                insolation: plant.actualInsolation,
-                lastFertilizationDate: plant.lastFertilizationDate,
-                lastWateringDate: plant.lastWateringDate,
-                name: plant.name,
-                note: plant.note ?? "",
-                speciesId: plant.species.id,
-                photo: plant.photo
-            }}
-        />
+            <PlantForm
+                formTitle={`Edycja rośliny: ${plant.name}`}
+                acceptBtnText="Zapisz"
+                successToastText="Edycja pomyślna"
+                setShowPlantForm={setShowPlantForm}
+                show={show}
+                onSubmit={(newPlantValues) => addPlantMutation.mutateAsync(newPlantValues)}
+                initialValues={{
+                    insolation: plant.actualInsolation,
+                    lastFertilizationDate: plant.lastFertilizationDate,
+                    lastWateringDate: plant.lastWateringDate,
+                    name: plant.name,
+                    note: plant.note ?? "",
+                    speciesId: plant.species.id,
+                    photo: plant.photo
+                }}
+            />
     )
 }
