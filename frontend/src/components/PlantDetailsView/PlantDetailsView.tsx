@@ -51,7 +51,7 @@ const PlantDetailsView: React.FC<{}> = (props) => {
     if (plant == null) {
         navigate(PageRoutes.MY_PLANTS)
     }
-    if(plant == "Błąd serwera" || plant === undefined){
+    if(plant === "Błąd serwera" || plant === undefined){
         return <strong>Kurza twarz! Coś poszło nie tak :/</strong>
     }
 
