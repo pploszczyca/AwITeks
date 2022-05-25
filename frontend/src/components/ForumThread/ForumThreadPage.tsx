@@ -6,7 +6,7 @@ import {PageRoutes, ThreadDetails} from "../../utils/constants";
 import Loader from "../Loader/Loader";
 import {Col, Row} from "react-bootstrap";
 import {posts} from "./threadExample";
-import {ForumPost} from "../../api";
+import {ForumPostUserIncluded} from "../../api/models/forum-post-user-included";
 
 
 function fitAreaToContent(text: HTMLTextAreaElement, row: HTMLDivElement){
@@ -24,14 +24,7 @@ function fitAreaToContent(text: HTMLTextAreaElement, row: HTMLDivElement){
 }
 
 function getPosts(){
-    // return posts.map(post =>
-    //     new Map()
-    //         .set("author", "Janusz")
-    //         .set("date", post.date)
-    //         .set("id", post.id)
-    //         .set("content", post.content)
-    // )
-    []
+    return posts;
 }
 
 const ForumThreadPage: React.FC<{}> = () => {
@@ -40,7 +33,7 @@ const ForumThreadPage: React.FC<{}> = () => {
     const threadInfo = location.state as ThreadDetails;
     const textFieldRef: React.RefObject<HTMLTextAreaElement> = useRef(null);
     const sendRow: React.RefObject<HTMLDivElement> = useRef(null);
-    const posts: ForumPost[] = getPosts(); // todo
+    const posts: ForumPostUserIncluded[] = getPosts(); // todo
 
     useEffect(() => {
         if (!threadInfo) {
@@ -63,7 +56,7 @@ const ForumThreadPage: React.FC<{}> = () => {
                  <ChatWindow className="mt-2">
                      {posts.map(post => (
                          <div key={post.id} className="mt-3">
-                             <PostDetails>{post.author.username}, {post.date || new Date().toDateString()}</PostDetails>
+                             <PostDetails>{post.userName}, {post.creationDate || new Date().toDateString()}</PostDetails>
                              <PostContent>{post.content}</PostContent>
                          </div>
                      ))}
