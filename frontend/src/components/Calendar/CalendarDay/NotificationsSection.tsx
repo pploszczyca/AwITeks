@@ -1,10 +1,10 @@
 import Moment from 'moment';
-import { Form } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import {Form} from "react-bootstrap";
+import {Link} from "react-router-dom";
 import styled from "styled-components";
-import { PageRoutes } from "../../../utils/constants";
-import { NotificationItem } from "../utils";
-import { ACTIVITY_DESCRIPTION } from "./utils";
+import {PageRoutes} from "../../../utils/constants";
+import {NotificationItem} from "../utils";
+import {ACTIVITY_DESCRIPTION} from "./utils";
 
 type NotificationsSectionProps = {
     notifications: NotificationItem[];

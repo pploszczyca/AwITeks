@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
-import { Button, Col, Container, Modal, Row, Spinner } from "react-bootstrap";
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { getApis } from "../../api/initializeApis";
-import { AddPlantRequestBody } from "../../api";
-import { useQuery } from 'react-query';
+import React, {useState} from 'react';
+import {Button, Col, Container, Modal, Row, Spinner} from "react-bootstrap";
+import {ErrorMessage, Field, Form, Formik} from 'formik';
+import {getApis} from "../../api/initializeApis";
+import {AddPlantRequestBody} from "../../api";
+import {useQuery} from 'react-query';
 import Loader from '../Loader/Loader';
-import { SpeciesForm } from '../SpeciesForm/SpeciesForm';
+import {SpeciesForm} from '../SpeciesForm/SpeciesForm';
 import {toast} from 'react-toastify';
-import { insolationToString } from '../../utils/util';
+import {insolationToString} from '../../utils/util';
 import {toBase64} from "./photoService";
-import {base64Header} from "../../utils/constants";
+import {base64Header, errorMsg} from "../../utils/constants";
 
 
 type PlantFormProps = {
@@ -31,7 +31,7 @@ export const PlantForm: React.FC<PlantFormProps> =
         const { data: speciesList, isLoading } = useQuery(
             'species',
             () => getApis().speciesApi.getAllSpecies().then(resp => resp.data),
-            {onError: (error) => toast.error("Kurza twarz! Coś poszło nie tak :/", {autoClose: 8000})});
+            {onError: (error) => errorMsg()});
 
         if (isLoading) {
             return <Loader />;

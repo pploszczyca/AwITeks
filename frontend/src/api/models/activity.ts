@@ -13,7 +13,7 @@
  */
 
 
-import { Plant } from './plant';
+import {Plant} from './plant';
 
 /**
  * 

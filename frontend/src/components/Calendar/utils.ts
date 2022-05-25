@@ -1,6 +1,6 @@
-import { Plant, Activity } from "../../api";
+import {Activity, Plant} from "../../api";
 import Moment from 'moment';
-import { DATE_FORMAT } from "../../utils/constants";
+import {DATE_FORMAT} from "../../utils/constants";
 
 
 export enum NotificationSeverity {

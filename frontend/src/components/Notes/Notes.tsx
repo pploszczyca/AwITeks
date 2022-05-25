@@ -1,6 +1,6 @@
 import React from 'react';
-import { Button, Col, Container, Modal, Row } from "react-bootstrap";
-import { Plant } from "../../api";
+import {Button, Col, Container, Modal, Row} from "react-bootstrap";
+import {Plant} from "../../api";
 
 
 type NotesFormProps = {

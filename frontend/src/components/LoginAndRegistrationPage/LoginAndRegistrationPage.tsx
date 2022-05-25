@@ -1,10 +1,10 @@
 import React from "react";
-import { Col, Nav, Row, Tab } from "react-bootstrap";
+import {Col, Nav, Row, Tab} from "react-bootstrap";
 import LoginPage from "./LoginPage/LoginPage";
-import { Content, PillItem } from "./styles/LoginAndRegistrationStyle";
+import {Content, PillItem} from "./styles/LoginAndRegistrationStyle";
 import RegistrationPage from "./RegistrationPage/RegistrationPage";
-import { useAppDispatch, useAppSelector } from "../../Store/store";
-import { clearAuthErrors } from "../../Store/features/auth/authSlice";
+import {useAppDispatch, useAppSelector} from "../../Store/store";
+import {clearAuthErrors} from "../../Store/features/auth/authSlice";
 
 const LoginAndRegistrationPage: React.FC<{}> = () => {
     const { errors } = useAppSelector(state => state.auth);

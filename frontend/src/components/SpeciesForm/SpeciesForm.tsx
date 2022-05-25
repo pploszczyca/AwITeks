@@ -1,11 +1,12 @@
 import React from 'react';
-import { Button, Col, Container, Modal, Row } from "react-bootstrap";
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { AddSpeciesRequestBody, Species } from "../../api";
-import { getApis } from "../../api/initializeApis";
-import { useMutation, useQueryClient } from 'react-query';
+import {Button, Col, Container, Modal, Row} from "react-bootstrap";
+import {ErrorMessage, Field, Form, Formik} from 'formik';
+import {AddSpeciesRequestBody, Species} from "../../api";
+import {getApis} from "../../api/initializeApis";
+import {useMutation, useQueryClient} from 'react-query';
 import {toast} from 'react-toastify';
-import { fertilizationToString, insolationToString } from '../../utils/util';
+import {fertilizationToString, insolationToString} from '../../utils/util';
+import {errorMsg} from "../../utils/constants";
 
 
 type SpeciesFormProps = {
@@ -23,7 +24,7 @@ export const SpeciesForm: React.FC<SpeciesFormProps> = ({ show, hide }) => {
                     (oldSpecies: Species[] | undefined) => oldSpecies ? [...oldSpecies, species?.data] : [species?.data]);
             },
             onError: (error) => {
-                toast.error("Kurza twarz! Coś poszło nie tak :/", {autoClose: 8000})
+                errorMsg()
             }
         });
 

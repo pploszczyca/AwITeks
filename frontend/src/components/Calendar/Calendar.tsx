@@ -1,21 +1,36 @@
-import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import {faArrowLeft, faArrowRight} from '@fortawesome/free-solid-svg-icons';
 import Moment from 'moment';
-import React, { useState } from 'react';
-import { Row } from "react-bootstrap";
+import React, {useState} from 'react';
+import {Row} from "react-bootstrap";
 import Card from "react-bootstrap/Card";
-import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { getApis } from "../../api/initializeApis";
-import { AddActivityRequestBody } from '../../api/models/add-activity-request-body';
-import {DATE_FORMAT} from '../../utils/constants';
-import { ContentContainer } from "../App/AppStyle";
-import { CalendarDay } from './CalendarDay/CalendarDay';
-import { isToday } from './CalendarDay/utils';
-import { Arrow, CalendarCol, CalendarService, CalendarServiceBottom, DayHeader, DayWrapperCard, ExportButton } from './CalendarStyles';
+import {useMutation, useQuery, useQueryClient} from 'react-query';
+import {getApis} from "../../api/initializeApis";
+import {AddActivityRequestBody} from '../../api/models/add-activity-request-body';
+import {DATE_FORMAT, errorMsg} from '../../utils/constants';
+import {ContentContainer} from "../App/AppStyle";
+import {CalendarDay} from './CalendarDay/CalendarDay';
+import {isToday} from './CalendarDay/utils';
 import {
-    DAYS, getDoneMonthNotifications, getOverdueNotifications, getPeriodicPlantActivities, getTileDate,
-    getUndoneMonthNotifications, MONTHS, nextMonth, prevMonth, WEEKS
+    Arrow,
+    CalendarCol,
+    CalendarService,
+    CalendarServiceBottom,
+    DayHeader,
+    DayWrapperCard,
+    ExportButton
+} from './CalendarStyles';
+import {
+    DAYS,
+    getDoneMonthNotifications,
+    getOverdueNotifications,
+    getPeriodicPlantActivities,
+    getTileDate,
+    getUndoneMonthNotifications,
+    MONTHS,
+    nextMonth,
+    prevMonth,
+    WEEKS
 } from './utils';
-import {toast} from "react-toastify";
 import {Activity} from "../../api";
 
 
@@ -43,7 +58,7 @@ const Calendar: React.FC<CalendarProps> = ({ plantId, variant = 'big' }) => {
                 queryClient.invalidateQueries(['plants']);
             },
             onError: (error) => {
-                toast.error("Kurza twarz! Coś poszło nie tak :/", {autoClose: 8000})
+                errorMsg()
             }
         }
     );
@@ -52,7 +67,7 @@ const Calendar: React.FC<CalendarProps> = ({ plantId, variant = 'big' }) => {
         useQuery(
             ['plants'],
             () => getApis().plantsApi.getAllPlants().then(resp => resp.data),
-            {onError: (error) => toast.error("Kurza twarz! Coś poszło nie tak :/", {autoClose: 8000})}
+            {onError: (error) => errorMsg()}
         );
 
     let { data: activities, isLoading: areActivitiesLoading } =
@@ -64,7 +79,7 @@ const Calendar: React.FC<CalendarProps> = ({ plantId, variant = 'big' }) => {
                         displayedDate.getFullYear(),
                         displayedDate.getMonth() + 1
                  ).then(resp => resp.data),
-            {onError: (error) => toast.error("Kurza twarz! Coś poszło nie tak :/", {autoClose: 8000})}
+            {onError: (error) => errorMsg()}
         );
 
     if (arePlantsLoading || areActivitiesLoading) {

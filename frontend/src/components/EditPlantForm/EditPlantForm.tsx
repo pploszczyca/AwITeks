@@ -1,9 +1,9 @@
 import React from 'react';
-import { useMutation, useQueryClient } from 'react-query';
-import { AddPlantRequestBody, Plant } from '../../api';
-import { getApis } from '../../api/initializeApis';
-import { PlantForm } from '../PlantForm/PlantForm';
-import {toast} from "react-toastify";
+import {useMutation, useQueryClient} from 'react-query';
+import {AddPlantRequestBody, Plant} from '../../api';
+import {getApis} from '../../api/initializeApis';
+import {PlantForm} from '../PlantForm/PlantForm';
+import {errorMsg} from "../../utils/constants";
 
 
 type EditPlantFormProps = {
@@ -21,7 +21,7 @@ export const EditPlantForm: React.FC<EditPlantFormProps> = ({ show, setShowPlant
                 queryClient.invalidateQueries(['plants']);
                 queryClient.invalidateQueries(['plants-summary', plant.id]);
             },
-            onError: error => {toast.error("Kurza twarz! Coś poszło nie tak :/", {autoClose: 8000})}
+            onError: error => {errorMsg()}
         });
 
     return (

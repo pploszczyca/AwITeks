@@ -1,14 +1,14 @@
-import { faCirclePlus } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Field, Form, Formik } from "formik";
-import { useQuery } from "react-query";
+import {faCirclePlus} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {Field, Form, Formik} from "formik";
+import {useQuery} from "react-query";
 import styled from "styled-components";
-import { ActivityActivityTypeEnum } from "../../../api";
-import { getApis } from "../../../api/initializeApis";
-import { AddNewActivityArgs } from "./CalendarDay";
-import { ACTIVITY_DESCRIPTION, NewActivityOption } from "./utils";
-import {toast} from "react-toastify";
+import {ActivityActivityTypeEnum} from "../../../api";
+import {getApis} from "../../../api/initializeApis";
+import {AddNewActivityArgs} from "./CalendarDay";
+import {ACTIVITY_DESCRIPTION, NewActivityOption} from "./utils";
 import React from "react";
+import {errorMsg} from "../../../utils/constants";
 
 
 type NewActivityFormProps = {
@@ -62,7 +62,7 @@ export const NewActivityForm: React.FC<NewActivityFormProps> = ({date, invalidOp
     const {data: plants } = useQuery(
         ['plants'],
         () => getApis().plantsApi.getAllPlants().then(resp => resp.data),
-        {onError: (error) => toast.error("Kurza twarz! Coś poszło nie tak :/", {autoClose: 8000})});
+        {onError: (error) => errorMsg()});
 
     const initialValues = {
         plantId: plants && plants[0] ? plants[0].id : NO_PLANT_SELECTED,

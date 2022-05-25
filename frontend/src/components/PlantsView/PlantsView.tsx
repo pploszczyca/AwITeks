@@ -20,9 +20,8 @@ import {useMutation, useQuery, useQueryClient} from "react-query";
 import Loader from "../Loader/Loader";
 import {PlantSummary} from "../../api";
 import {AddPlantForm} from "../AddPlantForm/AddPlantForm";
-import {sortBy} from "./utils";
-import {SortByTypes} from "./utils";
-import {toast} from "react-toastify";
+import {sortBy, SortByTypes} from "./utils";
+import {errorMsg, GENERIC_ERROR_MESSAGE} from "../../utils/constants";
 
 
 const PlantsView: React.FC<{}> = () => {
@@ -34,13 +33,13 @@ const PlantsView: React.FC<{}> = () => {
     const { data: speciesList, isLoading: speciesLoading } = useQuery(
         'species',
         () => getApis().speciesApi.getAllSpecies().then(resp => resp.data),
-        {onError: (error) => toast.error("Kurza twarz! Coś poszło nie tak :/", {autoClose: 8000})}
+        {onError: (error) => errorMsg()}
     );
 
     const { data: plantSummaryList, isLoading: plantsLoading } = useQuery(
         ['plants-summary'],
         () => getApis().plantsApi.getAllPlantsSummary().then(resp => resp.data),
-        {onError: (error) => toast.error("Kurza twarz! Coś poszło nie tak :/", {autoClose: 8000})}
+        {onError: (error) => errorMsg()}
     );
 
     const toggleFavourite = useMutation((plantSummary: PlantSummary) => {
@@ -51,7 +50,7 @@ const PlantsView: React.FC<{}> = () => {
             queryClient.setQueryData(['plants-summary', plantSummary.id], plantSummary);
         },
         onError: error => {
-            toast.error("Kurza twarz! Coś poszło nie tak :/", {autoClose: 8000})
+            errorMsg()
         }
     });
 
@@ -92,7 +91,7 @@ const PlantsView: React.FC<{}> = () => {
                                         </Col>
                                     ))
                                 ) : (
-                                    <Col xs={12}><strong>Błąd serwera.</strong></Col>
+                                    <Col xs={12}><strong>{GENERIC_ERROR_MESSAGE}</strong></Col>
                                 )}
                             </Row>
                         </Col>

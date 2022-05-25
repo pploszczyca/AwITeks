@@ -1,16 +1,16 @@
 import React from 'react';
-import { Col, Row } from "react-bootstrap";
-import { StatsCard } from "./DashboardStatsStyle";
-import { getApis } from "../../api/initializeApis";
-import { useQuery } from 'react-query';
+import {Col, Row} from "react-bootstrap";
+import {StatsCard} from "./DashboardStatsStyle";
+import {getApis} from "../../api/initializeApis";
+import {useQuery} from 'react-query';
 import Loader from '../Loader/Loader';
-import {toast} from "react-toastify";
+import {errorMsg, GENERIC_ERROR_MESSAGE} from "../../utils/constants";
 
 const DashboardStats: React.FC<{}> = () => {
     const { data: plantsStatsResp, isLoading } = useQuery(
         ['plants-summary', 'stats'],
         () => getApis().plantsApi.getPlantsStats(),
-        {onError: (error) => toast.error("Kurza twarz! Coś poszło nie tak :/", {autoClose: 8000})});
+        {onError: (error) => errorMsg()});
 
     if (isLoading) {
         return <Loader />;
@@ -26,7 +26,7 @@ const DashboardStats: React.FC<{}> = () => {
                     {plantsStats ? (
                         <p className="stat">{plantsStats.totalPlants}</p>
                     ) : (
-                        <strong>Błąd serwera. Brak danych</strong>
+                        <strong>{GENERIC_ERROR_MESSAGE}</strong>
                     )}
                     <br />
                 </StatsCard>
@@ -37,7 +37,7 @@ const DashboardStats: React.FC<{}> = () => {
                     {plantsStats ? (
                         <p className="stat">{plantsStats.neglectedPlants}</p>
                     ) : (
-                        <strong>Błąd serwera. Brak danych</strong>
+                        <strong>{GENERIC_ERROR_MESSAGE}</strong>
                     )}
                     <p className="details"> Gratulacje! <br /> Twoje rośliny wyglądają na zadbane.</p>
                 </StatsCard>
@@ -48,7 +48,7 @@ const DashboardStats: React.FC<{}> = () => {
                     {plantsStats ? (
                         <p className="stat">{plantsStats.wellGroomedPlants}</p>
                     ) : (
-                        <strong>Błąd serwera. Brak danych</strong>
+                        <strong>{GENERIC_ERROR_MESSAGE}</strong>
                     )}
                     <p className="details">Musisz lepiej dbać o niektóre rośliny.</p>
                 </StatsCard>

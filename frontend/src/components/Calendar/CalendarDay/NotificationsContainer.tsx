@@ -1,7 +1,7 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
-import { NotificationItem } from "../utils";
-import { ACTIVITY_ICONS, getUniqueActivityTypes, ICON_STYLES } from "./utils";
+import {NotificationItem} from "../utils";
+import {ACTIVITY_ICONS, getUniqueActivityTypes, ICON_STYLES} from "./utils";
 
 type NotificationsContainerProps = {
     notifications: NotificationItem[];

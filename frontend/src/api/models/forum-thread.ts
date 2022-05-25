@@ -13,8 +13,8 @@
  */
 
 
-import { ForumPost } from './forum-post';
-import { User } from './user';
+import {ForumPost} from './forum-post';
+import {User} from './user';
 
 /**
  * 

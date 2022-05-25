@@ -1,4 +1,4 @@
-import { PlantActualInsolationEnum, SpeciesFertilizationDoseEnum } from "../api";
+import {PlantActualInsolationEnum, SpeciesFertilizationDoseEnum} from "../api";
 
 export function insolationToString(insolation: PlantActualInsolationEnum): string {
   switch (insolation) {

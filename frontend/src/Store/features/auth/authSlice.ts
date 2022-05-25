@@ -1,7 +1,8 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { AuthData, AuthResponse, UserLoginRequestBody, UserRegisterRequestBody } from '../../../api';
-import { getApis } from '../../../api/initializeApis';
-import { AppDispatch, RootState } from '../../store';
+import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {AuthData, AuthResponse, UserLoginRequestBody, UserRegisterRequestBody} from '../../../api';
+import {getApis} from '../../../api/initializeApis';
+import {AppDispatch, RootState} from '../../store';
+import {errorMsg} from "../../../utils/constants";
 
 // As long as we dont have refresh tokens access tokens will be stored in local storage
 const LOCAL_STORAGE_AUTH_KEY = 'JWT';

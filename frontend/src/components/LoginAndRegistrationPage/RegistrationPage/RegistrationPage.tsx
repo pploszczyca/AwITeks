@@ -1,10 +1,10 @@
 import React from "react";
-import { ErrorMessage, Formik, Field } from "formik";
-import { Button, Col, Form, Row, Spinner } from "react-bootstrap";
+import {ErrorMessage, Field, Formik} from "formik";
+import {Button, Col, Form, Row, Spinner} from "react-bootstrap";
 import {validateConfirmPassword, validateEmail, validatePassword, validateUsername} from "../validators";
-import { FormContainer } from "../styles/FormStyle";
-import { useAppDispatch, useAppSelector } from "../../../Store/store";
-import { register } from "../../../Store/features/auth/authSlice";
+import {FormContainer} from "../styles/FormStyle";
+import {useAppDispatch, useAppSelector} from "../../../Store/store";
+import {register} from "../../../Store/features/auth/authSlice";
 
 const RegistrationPage: React.FC<{}> = () => {
     const dispatch = useAppDispatch();
