@@ -3,7 +3,7 @@ import {Button, Col, Container, Modal, Row, Spinner} from "react-bootstrap";
 import {ErrorMessage, Field, Form, Formik} from "formik";
 import {toast} from "react-toastify";
 import {useMutation, useQueryClient} from "react-query";
-import {AddPlantRequestBody, AddThreadRequestBody, ForumThread, ForumThreadSummaryResponseBody, Plant} from "../../api";
+import {AddThreadRequestBody, ForumThread} from "../../api";
 import {getApis} from "../../api/initializeApis";
 import {errorMsg} from "../../utils/constants";
 

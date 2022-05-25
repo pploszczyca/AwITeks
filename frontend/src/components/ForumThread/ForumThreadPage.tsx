@@ -8,9 +8,8 @@ import {Col, Row} from "react-bootstrap";
 import {useMutation, useQuery} from "react-query";
 import {getApis} from "../../api/initializeApis";
 import moment from "moment";
-import {AddPostRequestBody, AddThreadRequestBody, ForumPost, ForumPostUserIncluded, ForumThread} from "../../api";
+import {AddPostRequestBody, ForumPost} from "../../api";
 import {queryClient} from "../../Store/store";
-import {toast} from "react-toastify";
 
 
 function fitAreaToContent(text: HTMLTextAreaElement, row: HTMLDivElement){
