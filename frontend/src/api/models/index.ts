@@ -7,6 +7,7 @@ export * from './add-thread-request-body';
 export * from './auth-data';
 export * from './auth-response';
 export * from './forum-post';
+export * from './forum-post-user-included';
 export * from './forum-thread';
 export * from './forum-thread-summary-response-body';
 export * from './plant';

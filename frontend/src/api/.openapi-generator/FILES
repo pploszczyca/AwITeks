@@ -20,6 +20,7 @@ models/add-species-request-body.ts
 models/add-thread-request-body.ts
 models/auth-data.ts
 models/auth-response.ts
+models/forum-post-user-included.ts
 models/forum-post.ts
 models/forum-thread-summary-response-body.ts
 models/forum-thread.ts

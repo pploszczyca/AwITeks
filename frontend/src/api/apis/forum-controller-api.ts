@@ -27,6 +27,8 @@ import { AddThreadRequestBody } from '../models';
 // @ts-ignore
 import { ForumPost } from '../models';
 // @ts-ignore
+import { ForumPostUserIncluded } from '../models';
+// @ts-ignore
 import { ForumThread } from '../models';
 // @ts-ignore
 import { ForumThreadSummaryResponseBody } from '../models';
@@ -226,40 +228,6 @@ export const ForumControllerApiAxiosParamCreator = function (configuration?: Con
         },
         /**
          * 
-         * @summary Get thread by id
-         * @param {number} id 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getThread: async (id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'id' is not null or undefined
-            assertParamExists('getThread', 'id', id)
-            const localVarPath = `/forum/{id}`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
          * @summary Get all threads with matching names
          * @param {string} [searchKey] 
          * @param {*} [options] Override http request option.
@@ -356,19 +324,8 @@ export const ForumControllerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getPostsFromThread(threadId: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ForumPost>>> {
+        async getPostsFromThread(threadId: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ForumPostUserIncluded>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getPostsFromThread(threadId, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
-         * @summary Get thread by id
-         * @param {number} id 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getThread(id: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ForumThread>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getThread(id, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -441,18 +398,8 @@ export const ForumControllerApiFactory = function (configuration?: Configuration
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getPostsFromThread(threadId: number, options?: any): AxiosPromise<Array<ForumPost>> {
+        getPostsFromThread(threadId: number, options?: any): AxiosPromise<Array<ForumPostUserIncluded>> {
             return localVarFp.getPostsFromThread(threadId, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary Get thread by id
-         * @param {number} id 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getThread(id: number, options?: any): AxiosPromise<ForumThread> {
-            return localVarFp.getThread(id, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -534,18 +481,6 @@ export class ForumControllerApi extends BaseAPI {
      */
     public getPostsFromThread(threadId: number, options?: AxiosRequestConfig) {
         return ForumControllerApiFp(this.configuration).getPostsFromThread(threadId, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary Get thread by id
-     * @param {number} id 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof ForumControllerApi
-     */
-    public getThread(id: number, options?: AxiosRequestConfig) {
-        return ForumControllerApiFp(this.configuration).getThread(id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
