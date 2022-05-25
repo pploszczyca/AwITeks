@@ -2,6 +2,7 @@ package pl.edu.agh.awiteks_backend.api.forum;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,14 +16,11 @@ import pl.edu.agh.awiteks_backend.api.forum.body_models.AddPostRequestBody;
 import pl.edu.agh.awiteks_backend.api.forum.body_models.AddThreadRequestBody;
 import pl.edu.agh.awiteks_backend.api.forum.body_models.ForumPostUserIncluded;
 import pl.edu.agh.awiteks_backend.api.forum.body_models.ForumThreadSummaryResponseBody;
-import pl.edu.agh.awiteks_backend.mappers.ForumMapper;
+import static pl.edu.agh.awiteks_backend.configs.SwaggerConfig.JWT_AUTH;
 import pl.edu.agh.awiteks_backend.models.ForumPost;
 import pl.edu.agh.awiteks_backend.models.ForumThread;
 import pl.edu.agh.awiteks_backend.security.jwt.JwtAccessToken;
 import pl.edu.agh.awiteks_backend.services.ForumService;
-import java.util.List;
-import java.util.stream.Collectors;
-import static pl.edu.agh.awiteks_backend.configs.SwaggerConfig.JWT_AUTH;
 
 @RestController
 @RequestMapping("/forum")
@@ -40,37 +38,48 @@ public class ForumController {
         return forumService.getAllThreads();
     }
 
-    @Operation(summary = "Get all threads with matching names")
+    @Operation(summary = "Get all threads with matching names", security = @SecurityRequirement(name = JWT_AUTH))
     @GetMapping(value = "/search", produces = "application/json")
-    public List<ForumThreadSummaryResponseBody> getThreadsWithMatchingName(@RequestParam(name = "searchKey", defaultValue = "") String searchKey){
+    public List<ForumThreadSummaryResponseBody> getThreadsWithMatchingName(
+            @RequestParam(name = "searchKey", defaultValue = "")
+            String searchKey) {
         return forumService.getThreadsWithMatchingName(searchKey);
     }
 
-    @Operation(summary = "Add new thread with initial post")
+    @Operation(summary = "Add new thread with initial post", security = @SecurityRequirement(name = JWT_AUTH))
     @PostMapping
     @ResponseBody
-    public ForumThread addThread(@RequestBody AddThreadRequestBody thread, JwtAccessToken jwtAccessToken) {
+    public ForumThread addThread(@RequestBody AddThreadRequestBody thread,
+                                 JwtAccessToken jwtAccessToken) {
         return forumService.addThread(thread, jwtAccessToken.getUserId());
     }
 
-    @Operation(summary = "Add post to thread")
+    @Operation(summary = "Add post to thread", security = @SecurityRequirement(name = JWT_AUTH))
     @PostMapping(value = "/{threadId}")
-    public ForumPost addPostToThread(@RequestBody AddPostRequestBody postRequestBody, @PathVariable int threadId, JwtAccessToken jwtAccessToken) {
-        return forumService.addPostToThread(threadId, postRequestBody, jwtAccessToken.getUserId());
+    public ForumPost addPostToThread(
+            @RequestBody AddPostRequestBody postRequestBody,
+            @PathVariable int threadId, JwtAccessToken jwtAccessToken) {
+        return forumService.addPostToThread(threadId, postRequestBody,
+                jwtAccessToken.getUserId());
     }
 
-    @Operation(summary = "Get all posts for given thread")
+    @Operation(summary = "Get all posts for given thread", security = @SecurityRequirement(name = JWT_AUTH))
     @GetMapping(value = "/{threadId}/posts")
-    public List<ForumPostUserIncluded> getPostsFromThread(@PathVariable int threadId) {
-        return forumService.getPostsFromThread(threadId).stream().map(ForumMapper::mapForumPostToForumPostUserIncluded).collect(Collectors.toList());
+    public List<ForumPostUserIncluded> getPostsUserIncludedFromThread(
+            @PathVariable int threadId) {
+        return forumService.getPostsUserIncludedFromThread(threadId);
     }
 
-    @Operation(summary = "Edit post")
+    @Operation(summary = "Edit post", security = @SecurityRequirement(name = JWT_AUTH))
     @PostMapping(value = "/{threadId}/{postId}/edit")
-    public ForumPost editPost(@RequestBody AddPostRequestBody postRequestBody, @PathVariable int threadId, @PathVariable int postId, JwtAccessToken jwtAccessToken){
+    public ForumPost editPost(@RequestBody AddPostRequestBody postRequestBody,
+                              @PathVariable int threadId,
+                              @PathVariable int postId,
+                              JwtAccessToken jwtAccessToken) {
         try {
-            return forumService.editPost(threadId, postId, postRequestBody, jwtAccessToken.getUserId());
-        }catch (IllegalCallerException e){
+            return forumService.editPost(threadId, postId, postRequestBody,
+                    jwtAccessToken.getUserId());
+        } catch (IllegalCallerException e) {
             return new ForumPost();
         }
     }
