@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Col, Row} from "react-bootstrap";
 import {
     AddThreadBtn,
@@ -14,23 +14,35 @@ import {
 } from "./ForumStyles";
 import {faMagnifyingGlass, faStar as faStarSolid} from '@fortawesome/free-solid-svg-icons';
 import {ForumThreadSummaryResponseBody} from "../../api/models/forum-thread-summary-response-body";
-import {getThreadsList} from "./mockData";
 import FilterChips from "./FilterChips/FilterChips";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {useNavigate} from "react-router-dom";
-import {classes, content, headers, PageRoutes} from "../../utils/constants";
+import {classes, content, errorMsg, headers, PageRoutes} from "../../utils/constants";
 import {AddThreadForm} from "../AddThreadForm/AddThreadForm";
+import {useQuery} from "react-query";
+import {getApis} from "../../api/initializeApis";
+import Loader from "../Loader/Loader";
 
 
 const Forum: React.FC<{}> = () => {
-    let mockData = getThreadsList(10);
-    const [isFavourite, setFavourite] = useState(mockData.map(elem => elem.isFollowed));
+    const [isFavourite, setFavourite] = useState<boolean[]>([]);
     const searchInputRef: React.MutableRefObject<HTMLInputElement | null> = useRef(null);
     const navigate = useNavigate();
     const [showAddThreadForm, setShowAddThreadForm] = useState(false);
 
+    const { data: threadsList, isLoading: threadsLoading } = useQuery(
+        'forum',
+        () => getApis().forumApi.getAllThreads().then(resp => resp.data),
+        {onError: (error) => errorMsg()}
+    );
+
+    useEffect(() => {
+        if(threadsList) setFavourite(threadsList.map(elem => elem.isFollowed))
+    }, [threadsList]);
+
+
     function toggleFavourite(idx: number){
-        mockData[idx].isFollowed = !mockData[idx].isFollowed;
+        // mockData[idx].isFollowed = !mockData[idx].isFollowed;  // TODO: next sprint
         setFavourite(isFavourite.map((element, currIdx) => currIdx===idx ? !element : element));
     }
 
@@ -84,6 +96,10 @@ const Forum: React.FC<{}> = () => {
         )
     }
 
+    if (threadsLoading){
+        return <Loader/>;
+    }
+
     return (
         <>
             <ForumContainer>
@@ -107,7 +123,7 @@ const Forum: React.FC<{}> = () => {
                 </Row>
                 <Row className="mt-5">
                     {getHeaderRow()}
-                    {mockData.map((thread,idx) => getThread(thread, idx))}
+                    {threadsList!.map((thread, idx) => getThread(thread, idx))}
                 </Row>
             </ForumContainer>
             <AddThreadForm show={showAddThreadForm} setShowThreadForm={setShowAddThreadForm}/>
