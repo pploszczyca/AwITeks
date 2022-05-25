@@ -13,13 +13,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import pl.edu.agh.awiteks_backend.api.forum.body_models.AddPostRequestBody;
 import pl.edu.agh.awiteks_backend.api.forum.body_models.AddThreadRequestBody;
+import pl.edu.agh.awiteks_backend.api.forum.body_models.ForumPostUserIncluded;
 import pl.edu.agh.awiteks_backend.api.forum.body_models.ForumThreadSummaryResponseBody;
+import pl.edu.agh.awiteks_backend.mappers.ForumMapper;
 import pl.edu.agh.awiteks_backend.models.ForumPost;
 import pl.edu.agh.awiteks_backend.models.ForumThread;
 import pl.edu.agh.awiteks_backend.security.jwt.JwtAccessToken;
 import pl.edu.agh.awiteks_backend.services.ForumService;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 import static pl.edu.agh.awiteks_backend.configs.SwaggerConfig.JWT_AUTH;
 
 @RestController
@@ -37,13 +41,6 @@ public class ForumController {
     public List<ForumThreadSummaryResponseBody> getAllThreads() {
         return forumService.getAllThreads();
     }
-
-    @Operation(summary = "Get thread by id")
-    @GetMapping(value = "/{id}", produces = "application/json")
-    public Optional<ForumThread> getThread(@PathVariable int id) {
-        return forumService.get(id);
-    }
-
 
     @Operation(summary = "Get all threads with matching names")
     @GetMapping(value = "/search", produces = "application/json")
@@ -66,8 +63,8 @@ public class ForumController {
 
     @Operation(summary = "Get all posts for given thread")
     @GetMapping(value = "/{threadId}/posts")
-    public List<ForumPost> getPostsFromThread(@PathVariable int threadId) {
-        return forumService.getPostsFromThread(threadId);
+    public List<ForumPostUserIncluded> getPostsFromThread(@PathVariable int threadId) { // todo fix
+        return forumService.getPostsFromThread(threadId).stream().map(ForumMapper::mapForumPostToForumPostUserIncluded).collect(Collectors.toList());
     }
 
     @Operation(summary = "Edit post")
