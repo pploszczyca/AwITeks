@@ -2,8 +2,8 @@ import React, {useRef, useState} from 'react';
 import {Col, Row} from "react-bootstrap";
 import {ForumHeader, ForumCol, ForumTile, ForumRow, OpenButton, Star, ForumContainer, SearchBoxContainerModified, SearchBoxModified, AddThreadBtn} from "./ForumStyles";
 import {faMagnifyingGlass, faStar as faStarSolid} from '@fortawesome/free-solid-svg-icons';
-import { ForumThread } from "../../api";
-import {getMockThread} from "./mockData";
+import {ForumThreadSummaryResponseBody} from "../../api/models/forum-thread-summary-response-body";
+import {getThreadsList} from "./mockData";
 import FilterChips from "./FilterChips/FilterChips";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {useNavigate} from "react-router-dom";
@@ -12,14 +12,14 @@ import {AddThreadForm} from "../AddThreadForm/AddThreadForm";
 
 
 const Forum: React.FC<{}> = () => {
-    let mockData = Array.from(Array(10).keys()).map(idx => getMockThread(idx));
-    const [isFavourite, setFavourite] = useState(mockData.map(elem => true)); //todo: elem => elem.isFavourite  waiting for backend
+    let mockData = getThreadsList(10);
+    const [isFavourite, setFavourite] = useState(mockData.map(elem => elem.isFollowed));
     const searchInputRef: React.MutableRefObject<HTMLInputElement | null> = useRef(null);
     const navigate = useNavigate();
     const [showAddThreadForm, setShowAddThreadForm] = useState(false);
 
     function toggleFavourite(idx: number){
-        // mockData[idx].isFavourite = !mockData[idx].isFavourite; //todo: uncomment later
+        mockData[idx].isFollowed = !mockData[idx].isFollowed;
         setFavourite(isFavourite.map((element, currIdx) => currIdx===idx ? !element : element));
     }
 
@@ -35,7 +35,7 @@ const Forum: React.FC<{}> = () => {
         )
     }
 
-    function getThread(thread: ForumThread, idx: number){
+    function getThread(thread: ForumThreadSummaryResponseBody, idx: number){
         return(
             <ForumRow key={thread.id} className="m-0">
                 {content(thread).map((column, colId) => {
@@ -45,7 +45,18 @@ const Forum: React.FC<{}> = () => {
                                 {colId === content(thread).length - 1 ? (
                                     <>
                                         {/*TODO: navigation system - demo below*/}
-                                        <OpenButton onClick={() => navigate(PageRoutes.FORUM_THREAD + '/1')}>Otwórz</OpenButton>
+                                        <OpenButton onClick={
+                                            () => navigate(PageRoutes.FORUM_THREAD,
+                                                {state: {
+                                                        id: thread.id,
+                                                        title: thread.title,
+                                                        creator: thread.creatorName,
+                                                        creationDate: thread.creationDate
+                                                }})
+                                        }>
+                                            Otwórz
+                                        </OpenButton>
+
                                         <Star icon = {faStarSolid}
                                               className={isFavourite[idx] ? 'starred': 'unstarred'}
                                               onClick={() => toggleFavourite(idx)}

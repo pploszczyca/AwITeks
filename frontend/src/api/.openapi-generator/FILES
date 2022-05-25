@@ -3,6 +3,7 @@
 api.ts
 apis/activity-controller-api.ts
 apis/auth-controller-api.ts
+apis/forum-controller-api.ts
 apis/plant-controller-api.ts
 apis/species-controller-api.ts
 apis/user-controller-api.ts
@@ -14,10 +15,14 @@ index.ts
 models/activity.ts
 models/add-activity-request-body.ts
 models/add-plant-request-body.ts
+models/add-post-request-body.ts
 models/add-species-request-body.ts
+models/add-thread-request-body.ts
 models/auth-data.ts
 models/auth-response.ts
+models/forum-post-user-included.ts
 models/forum-post.ts
+models/forum-thread-summary-response-body.ts
 models/forum-thread.ts
 models/index.ts
 models/plant-summary.ts

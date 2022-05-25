@@ -13,43 +13,48 @@
  */
 
 
-import { ForumPost } from './forum-post';
 
 /**
  * 
  * @export
- * @interface ForumThread
+ * @interface ForumThreadSummaryResponseBody
  */
-export interface ForumThread {
+export interface ForumThreadSummaryResponseBody {
     /**
      * 
      * @type {number}
-     * @memberof ForumThread
+     * @memberof ForumThreadSummaryResponseBody
      */
     'id': number;
     /**
      * 
      * @type {string}
-     * @memberof ForumThread
+     * @memberof ForumThreadSummaryResponseBody
      */
     'title': string;
     /**
      * 
-     * @type {Array<ForumPost>}
-     * @memberof ForumThread
+     * @type {string}
+     * @memberof ForumThreadSummaryResponseBody
      */
-    'forumPosts': Array<ForumPost>;
+    'creatorName': string;
     /**
      * 
      * @type {string}
-     * @memberof ForumThread
+     * @memberof ForumThreadSummaryResponseBody
      */
-    'creationTime'?: string;
+    'creationDate': string;
     /**
      * 
      * @type {number}
-     * @memberof ForumThread
+     * @memberof ForumThreadSummaryResponseBody
      */
-    'postsCount'?: number;
+    'postsCount': number;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof ForumThreadSummaryResponseBody
+     */
+    'isFollowed': boolean;
 }
 

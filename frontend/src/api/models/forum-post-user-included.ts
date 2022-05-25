@@ -13,43 +13,36 @@
  */
 
 
-import { ForumPost } from './forum-post';
 
 /**
  * 
  * @export
- * @interface ForumThread
+ * @interface ForumPostUserIncluded
  */
-export interface ForumThread {
+export interface ForumPostUserIncluded {
     /**
      * 
      * @type {number}
-     * @memberof ForumThread
+     * @memberof ForumPostUserIncluded
      */
     'id': number;
     /**
      * 
      * @type {string}
-     * @memberof ForumThread
+     * @memberof ForumPostUserIncluded
      */
-    'title': string;
-    /**
-     * 
-     * @type {Array<ForumPost>}
-     * @memberof ForumThread
-     */
-    'forumPosts': Array<ForumPost>;
+    'content': string;
     /**
      * 
      * @type {string}
-     * @memberof ForumThread
+     * @memberof ForumPostUserIncluded
      */
-    'creationTime'?: string;
+    'userName': string;
     /**
      * 
-     * @type {number}
-     * @memberof ForumThread
+     * @type {string}
+     * @memberof ForumPostUserIncluded
      */
-    'postsCount'?: number;
+    'creationDate': string;
 }
 

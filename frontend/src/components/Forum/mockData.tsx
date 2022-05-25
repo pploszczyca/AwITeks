@@ -1,23 +1,23 @@
-import {ForumThread, User} from "../../api";
+import {ForumThreadSummaryResponseBody} from "../../api/models/forum-thread-summary-response-body";
 
-export function getMockThread(idx: number){
-    // let date: Date = new Date("2019-01-16");
-    let user: User = {
-        username: "username"+idx,
+function getThread(idx: number): ForumThreadSummaryResponseBody{
+    return {
         id: idx,
-        email: '',
-        userPlants: [],
-        forumPostList: [],
-        forumThreadList: []
-    };
-    let mockThread: ForumThread = {
-        id: idx,
-        title: "tytuł tematu " + idx,
-        creator: user,
-        // isFavourite: false,
-        // dateCreated: date,
-        forumPosts: []
-    };
-    return mockThread;
+        title: "Tytuł " + idx,
+        creatorName: "Janusz" + idx,
+        creationDate: new Date().toDateString(),
+        postsCount: 4,
+        isFollowed: false
+    }
+}
+
+export function getThreadsList(noThreads: number){
+    const threadList: ForumThreadSummaryResponseBody[] = []
+
+    for (let i = 0; i < noThreads; i++){
+        threadList.push(getThread(i));
+    }
+
+    return threadList;
 }
 
