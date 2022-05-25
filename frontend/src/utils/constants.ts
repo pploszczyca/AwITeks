@@ -1,5 +1,6 @@
 import {toast} from "react-toastify";
 import {ForumThreadSummaryResponseBody} from "../api/models/forum-thread-summary-response-body";
+
 export const errorMsg = () => toast.error("Kurza twarz! Coś poszło nie tak :/", {autoClose: 8000});
 
 export const base64Header = "data:image/jpeg;base64,";
