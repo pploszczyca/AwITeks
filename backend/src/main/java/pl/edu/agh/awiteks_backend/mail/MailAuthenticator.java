@@ -1,4 +1,5 @@
 package pl.edu.agh.awiteks_backend.mail;
+
 import javax.mail.Authenticator;
 import javax.mail.PasswordAuthentication;
 
