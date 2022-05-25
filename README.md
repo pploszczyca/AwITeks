@@ -85,6 +85,14 @@ Na ten moment zalecane jest uruchomienie bazy MySQL lokalnie na swoim komputerze
 $ docker run -p 3306:3306 -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:latest
 ```
 
+#### Zmienne środowiskowe do wysyłania maili
+Aby działało wysyłanie maili z powiadomieniami, trzeba ustawić odpowiednie zmienne środowiskowe.
+Trzeba umieścić je w pliku .env w katalogu /backend. Należy ustawić zmienne:
+```
+NOTIFICATION_EMAIL="jakisEmail@gmail.com"
+NOTIFICATION_PASSWD="hasloDoJakiegosMaila"
+```
+
 ### Testowanie endpointów poza frontem
 - wysyłamy requesta na `/auth/login` z danymi istniejącego użytkownika
 - zapisujemy zwrócony `accessToken`

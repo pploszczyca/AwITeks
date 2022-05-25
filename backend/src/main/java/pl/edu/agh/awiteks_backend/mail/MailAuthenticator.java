@@ -6,6 +6,8 @@ public class MailAuthenticator extends Authenticator {
 
     @Override
     protected PasswordAuthentication getPasswordAuthentication() {
-        return new PasswordAuthentication("PLACE-EMAIL-HERE", "PLACE-PASSWORD-HERE");
+        final var senderEmailAddr = System.getenv("NOTIFICATION_EMAIL");
+        final var senderEmailPassword = System.getenv("NOTIFICATION_PASSWD");
+        return new PasswordAuthentication(senderEmailAddr, senderEmailPassword);
     }
 }
