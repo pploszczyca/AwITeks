@@ -19,6 +19,7 @@ public class ForumMapper {
                 forumThread.getUser().isFollowing(forumThread)
         );
     }
+
     public static ForumPostUserIncluded mapForumPostToForumPostUserIncluded(ForumPost post){
         if(post == null) return null;
         return new ForumPostUserIncluded(

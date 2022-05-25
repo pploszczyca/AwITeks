@@ -21,9 +21,7 @@ import pl.edu.agh.awiteks_backend.models.ForumThread;
 import pl.edu.agh.awiteks_backend.security.jwt.JwtAccessToken;
 import pl.edu.agh.awiteks_backend.services.ForumService;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
-
 import static pl.edu.agh.awiteks_backend.configs.SwaggerConfig.JWT_AUTH;
 
 @RestController
@@ -63,7 +61,7 @@ public class ForumController {
 
     @Operation(summary = "Get all posts for given thread")
     @GetMapping(value = "/{threadId}/posts")
-    public List<ForumPostUserIncluded> getPostsFromThread(@PathVariable int threadId) { // todo fix
+    public List<ForumPostUserIncluded> getPostsFromThread(@PathVariable int threadId) {
         return forumService.getPostsFromThread(threadId).stream().map(ForumMapper::mapForumPostToForumPostUserIncluded).collect(Collectors.toList());
     }
 
