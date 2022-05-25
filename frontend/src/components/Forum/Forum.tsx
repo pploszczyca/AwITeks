@@ -1,13 +1,24 @@
 import React, {useRef, useState} from 'react';
 import {Col, Row} from "react-bootstrap";
-import {ForumHeader, ForumCol, ForumTile, ForumRow, OpenButton, Star, ForumContainer, SearchBoxContainerModified, SearchBoxModified, AddThreadBtn} from "./ForumStyles";
+import {
+    AddThreadBtn,
+    ForumCol,
+    ForumContainer,
+    ForumHeader,
+    ForumRow,
+    ForumTile,
+    OpenButton,
+    SearchBoxContainerModified,
+    SearchBoxModified,
+    Star
+} from "./ForumStyles";
 import {faMagnifyingGlass, faStar as faStarSolid} from '@fortawesome/free-solid-svg-icons';
 import {ForumThreadSummaryResponseBody} from "../../api/models/forum-thread-summary-response-body";
 import {getThreadsList} from "./mockData";
 import FilterChips from "./FilterChips/FilterChips";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {useNavigate} from "react-router-dom";
-import {PageRoutes, headers, classes, content} from "../../utils/constants";
+import {classes, content, headers, PageRoutes} from "../../utils/constants";
 import {AddThreadForm} from "../AddThreadForm/AddThreadForm";
 
 

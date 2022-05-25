@@ -1,17 +1,17 @@
-import React, { useState } from 'react'
-import { Card, Col, Row } from 'react-bootstrap';
-import { useNavigate, useParams } from 'react-router-dom'
+import React, {useState} from 'react'
+import {Card, Col, Row} from 'react-bootstrap';
+import {useNavigate, useParams} from 'react-router-dom'
 import Calendar from '../Calendar/Calendar';
-import { DetailsWrapper, InfoWrapper, TitleSeparator, RequirementsButton } from './PlantDetailsViewStyles';
-import { ContentContainer } from "../App/AppStyle";
-import { getApis } from "../../api/initializeApis";
-import { Notes } from "../Notes/Notes";
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import {DetailsWrapper, InfoWrapper, RequirementsButton, TitleSeparator} from './PlantDetailsViewStyles';
+import {ContentContainer} from "../App/AppStyle";
+import {getApis} from "../../api/initializeApis";
+import {Notes} from "../Notes/Notes";
+import {useMutation, useQuery, useQueryClient} from 'react-query';
 import Loader from '../Loader/Loader';
-import { EditPlantForm } from '../EditPlantForm/EditPlantForm';
-import { toast } from 'react-toastify';
-import { fertilizationToString, insolationToString } from '../../utils/util';
-import {base64Header, PageRoutes} from '../../utils/constants';
+import {EditPlantForm} from '../EditPlantForm/EditPlantForm';
+import {toast} from 'react-toastify';
+import {fertilizationToString, insolationToString} from '../../utils/util';
+import {base64Header, errorMsg, PageRoutes} from '../../utils/constants';
 
 
 const PlantDetailsView: React.FC<{}> = (props) => {
@@ -25,7 +25,12 @@ const PlantDetailsView: React.FC<{}> = (props) => {
         navigate(PageRoutes.MY_PLANTS)
     }
 
-    const { data: plantResp, isLoading } = useQuery(['plants', plantId], async () => getApis().plantsApi.getPlant(+plantId!))
+    const { data: plantResp, isLoading } = useQuery([
+        'plants', plantId],
+        async () => getApis().plantsApi.getPlant(+plantId!),
+        {onError: (error) => errorMsg()}
+    );
+
     const deletePlantMutation = useMutation(async () => {
         await getApis().plantsApi.removePlant(+plantId!);
         toast.success("Usunięto roślinę");
@@ -34,16 +39,18 @@ const PlantDetailsView: React.FC<{}> = (props) => {
         onSuccess: () => {
             queryClient.invalidateQueries(['plants', plantId]);
             queryClient.invalidateQueries(['plants-summary', plantId]);
-        }
+        },
+        onError: (error) => {errorMsg()}
     });
 
     if (isLoading || deletePlantMutation.isLoading) {
         return <Loader />;
     }
 
-    const plant = plantResp!.data;
-    if (plant == null) {
-        navigate(PageRoutes.MY_PLANTS)
+    const plant = plantResp?.data;
+
+    if(plant == null){
+        return <strong>Kurza twarz! Coś poszło nie tak :/</strong>
     }
 
     return (

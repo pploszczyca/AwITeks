@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBell, faCircleUser as faUser } from '@fortawesome/free-solid-svg-icons'
-import { FixedContainer, PageTitle } from "./SiteTitleAndIconsStyle";
-import { useLocation } from "react-router-dom";
-import { PageRoutes } from '../../utils/constants';
+import React, {useEffect, useState} from 'react';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faBell, faCircleUser as faUser} from '@fortawesome/free-solid-svg-icons'
+import {FixedContainer, PageTitle} from "./SiteTitleAndIconsStyle";
+import {useLocation} from "react-router-dom";
+import {PageRoutes} from '../../utils/constants';
 
 const titlesMap: Map<string, string> = new Map<string, string>([
     [PageRoutes.DASHBOARD, "Witaj, XYZ"],

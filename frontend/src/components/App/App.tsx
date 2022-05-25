@@ -1,21 +1,21 @@
 import './App.css';
 import 'react-toastify/dist/ReactToastify.css';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import {BrowserRouter as Router, Route, Routes} from 'react-router-dom'
 import Dashboard from "../Dashboard/Dashboard";
 import NotFound from "../NotFound/NotFound";
 import PlantsView from "../PlantsView/PlantsView";
 import Sidebar from "../Sidebar/Sidebar";
-import { Col, Container, Row } from "react-bootstrap";
+import {Col, Container, Row} from "react-bootstrap";
 import SiteTitleAndIcons from "../SiteTitleAndIcons/SiteTitleAndIcons";
 import Calendar from "../Calendar/Calendar";
 import PlantDetailsView from '../PlantDetailsView/PlantDetailsView';
-import { QueryClientProvider } from 'react-query';
-import { ToastContainer } from 'react-toastify';
+import {QueryClientProvider} from 'react-query';
+import {ToastContainer} from 'react-toastify';
 import LoginAndRegistrationPage from "../LoginAndRegistrationPage/LoginAndRegistrationPage";
-import { PageGuard } from '../PageGuard/PageGuard';
-import { Role } from '../../utils/roles';
-import { PageRoutes } from '../../utils/constants';
-import { queryClient } from '../../Store/store';
+import {PageGuard} from '../PageGuard/PageGuard';
+import {Role} from '../../utils/roles';
+import {PageRoutes} from '../../utils/constants';
+import {queryClient} from '../../Store/store';
 import ForumThreadPage from "../ForumThread/ForumThreadPage";
 import Forum from "../Forum/Forum"
 

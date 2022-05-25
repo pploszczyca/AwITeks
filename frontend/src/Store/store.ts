@@ -1,6 +1,6 @@
-import { configureStore } from '@reduxjs/toolkit'
-import { QueryClient } from 'react-query';
-import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
+import {configureStore} from '@reduxjs/toolkit'
+import {QueryClient} from 'react-query';
+import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux';
 import authReducer from './features/auth/authSlice';
 import loaderReducer from './features/loader/loaderSlice';
 

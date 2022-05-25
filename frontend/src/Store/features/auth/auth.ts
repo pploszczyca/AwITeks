@@ -1,5 +1,5 @@
-import { store } from "../../store";
-import { isTokenExpired, logout } from "./authSlice";
+import {store} from "../../store";
+import {isTokenExpired, logout} from "./authSlice";
 
 
 export async function getAccessToken(): Promise<string> {

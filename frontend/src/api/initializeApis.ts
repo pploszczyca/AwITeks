@@ -1,8 +1,8 @@
-import { getAccessToken } from "../Store/features/auth/auth";
-import { ActivityControllerApi, SpeciesControllerApi, UserControllerApi } from "./api";
-import { AuthControllerApi } from "./apis/auth-controller-api";
-import { PlantControllerApi } from "./apis/plant-controller-api";
-import { Configuration } from "./configuration";
+import {getAccessToken} from "../Store/features/auth/auth";
+import {ActivityControllerApi, SpeciesControllerApi, UserControllerApi} from "./api";
+import {AuthControllerApi} from "./apis/auth-controller-api";
+import {PlantControllerApi} from "./apis/plant-controller-api";
+import {Configuration} from "./configuration";
 
 
 type Apis = {

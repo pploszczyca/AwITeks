@@ -1,6 +1,11 @@
+import {toast} from "react-toastify";
 import {ForumThreadSummaryResponseBody} from "../api/models/forum-thread-summary-response-body";
 
+export const errorMsg = () => toast.error("Kurza twarz! Coś poszło nie tak :/", {autoClose: 8000});
+
 export const base64Header = "data:image/jpeg;base64,";
+
+export const  GENERIC_ERROR_MESSAGE = "Błąd serwera. Brak danych";
 
 export const PageRoutes = {
     LOGIN: '/home',

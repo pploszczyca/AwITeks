@@ -1,7 +1,7 @@
-import { faDroplet, faLeaf } from "@fortawesome/free-solid-svg-icons";
+import {faDroplet, faLeaf} from "@fortawesome/free-solid-svg-icons";
 import Moment from 'moment';
-import { ActivityActivityTypeEnum, Plant } from '../../../api';
-import { NotificationItem, NotificationSeverity } from '../utils';
+import {ActivityActivityTypeEnum, Plant} from '../../../api';
+import {NotificationItem, NotificationSeverity} from '../utils';
 
 export type NewActivityOption = {
     activityType: ActivityActivityTypeEnum,

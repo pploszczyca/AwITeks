@@ -1,11 +1,11 @@
-import { useNavigate } from "react-router-dom";
-import { faHeart as faHeartSolid } from '@fortawesome/free-solid-svg-icons';
-import { faHeart as faHeartRegular } from '@fortawesome/free-regular-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {useNavigate} from "react-router-dom";
+import {faHeart as faHeartSolid} from '@fortawesome/free-solid-svg-icons';
+import {faHeart as faHeartRegular} from '@fortawesome/free-regular-svg-icons';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import React from 'react';
-import { Card, Button } from 'react-bootstrap';
-import { FavoriteIcon, StyledCard } from './PlantSummaryCardStyles';
-import { PlantSummary } from "../../api/models/plant-summary";
+import {Button, Card} from 'react-bootstrap';
+import {FavoriteIcon, StyledCard} from './PlantSummaryCardStyles';
+import {PlantSummary} from "../../api/models/plant-summary";
 import {base64Header, PageRoutes} from "../../utils/constants";
 
 interface PlantSummaryProps {

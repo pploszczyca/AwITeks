@@ -1,15 +1,15 @@
-import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {faCircleExclamation} from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import Moment from 'moment';
-import React, { useState } from 'react';
-import { Button, Modal } from 'react-bootstrap';
-import { ActivityActivityTypeEnum, Plant } from '../../../api';
-import { NotificationItem, ToggleActivityArgs } from '../utils';
-import { Day, NotificationsWrapper, TileItemsWrapper } from './CalendarDayStyles';
-import { NewActivityForm } from './NewActivityForm';
-import { NotificationsContainer } from './NotificationsContainer';
-import { NotificationsSection } from './NotificationsSection';
-import { getInvalidNewActivityOptions, getMaxSeverity, getSeverityColor, isToday } from './utils';
+import React, {useState} from 'react';
+import {Button, Modal} from 'react-bootstrap';
+import {ActivityActivityTypeEnum, Plant} from '../../../api';
+import {NotificationItem, ToggleActivityArgs} from '../utils';
+import {Day, NotificationsWrapper, TileItemsWrapper} from './CalendarDayStyles';
+import {NewActivityForm} from './NewActivityForm';
+import {NotificationsContainer} from './NotificationsContainer';
+import {NotificationsSection} from './NotificationsSection';
+import {getInvalidNewActivityOptions, getMaxSeverity, getSeverityColor, isToday} from './utils';
 
 
 type CalendarDayProps = {

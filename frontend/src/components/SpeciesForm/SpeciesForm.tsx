@@ -1,11 +1,12 @@
 import React from 'react';
-import { Button, Col, Container, Modal, Row } from "react-bootstrap";
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { AddSpeciesRequestBody, Species } from "../../api";
-import { getApis } from "../../api/initializeApis";
-import { useMutation, useQueryClient } from 'react-query';
-import { toast } from 'react-toastify';
-import { fertilizationToString, insolationToString } from '../../utils/util';
+import {Button, Col, Container, Modal, Row} from "react-bootstrap";
+import {ErrorMessage, Field, Form, Formik} from 'formik';
+import {AddSpeciesRequestBody, Species} from "../../api";
+import {getApis} from "../../api/initializeApis";
+import {useMutation, useQueryClient} from 'react-query';
+import {toast} from 'react-toastify';
+import {fertilizationToString, insolationToString} from '../../utils/util';
+import {errorMsg} from "../../utils/constants";
 
 
 type SpeciesFormProps = {
@@ -21,6 +22,9 @@ export const SpeciesForm: React.FC<SpeciesFormProps> = ({ show, hide }) => {
                 queryClient.setQueryData(['species', species.data?.creatorId], species.data);
                 queryClient.setQueryData('species',
                     (oldSpecies: Species[] | undefined) => oldSpecies ? [...oldSpecies, species?.data] : [species?.data]);
+            },
+            onError: (error) => {
+                errorMsg()
             }
         });
 
@@ -148,6 +152,5 @@ export const SpeciesForm: React.FC<SpeciesFormProps> = ({ show, hide }) => {
                 </Formik>
             </Modal.Body>
         </Modal>
-
     )
 }

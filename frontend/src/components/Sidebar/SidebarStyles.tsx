@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Navbar } from "react-bootstrap";
+import {Navbar} from "react-bootstrap";
 
 export const NavbarEdit = styled(Navbar)`
   height: 100vh;

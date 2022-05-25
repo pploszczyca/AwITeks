@@ -1,20 +1,37 @@
-import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import {faArrowLeft, faArrowRight} from '@fortawesome/free-solid-svg-icons';
 import Moment from 'moment';
-import React, { useState } from 'react';
-import { Row } from "react-bootstrap";
+import React, {useState} from 'react';
+import {Row} from "react-bootstrap";
 import Card from "react-bootstrap/Card";
-import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { getApis } from "../../api/initializeApis";
-import { AddActivityRequestBody } from '../../api/models/add-activity-request-body';
-import { DATE_FORMAT } from '../../utils/constants';
-import { ContentContainer } from "../App/AppStyle";
-import { CalendarDay } from './CalendarDay/CalendarDay';
-import { isToday } from './CalendarDay/utils';
-import { Arrow, CalendarCol, CalendarService, CalendarServiceBottom, DayHeader, DayWrapperCard, ExportButton } from './CalendarStyles';
+import {useMutation, useQuery, useQueryClient} from 'react-query';
+import {getApis} from "../../api/initializeApis";
+import {AddActivityRequestBody} from '../../api/models/add-activity-request-body';
+import {DATE_FORMAT, errorMsg} from '../../utils/constants';
+import {ContentContainer} from "../App/AppStyle";
+import {CalendarDay} from './CalendarDay/CalendarDay';
+import {isToday} from './CalendarDay/utils';
 import {
-    DAYS, getDoneMonthNotifications, getOverdueNotifications, getPeriodicPlantActivities, getTileDate,
-    getUndoneMonthNotifications, MONTHS, nextMonth, prevMonth, WEEKS
+    Arrow,
+    CalendarCol,
+    CalendarService,
+    CalendarServiceBottom,
+    DayHeader,
+    DayWrapperCard,
+    ExportButton
+} from './CalendarStyles';
+import {
+    DAYS,
+    getDoneMonthNotifications,
+    getOverdueNotifications,
+    getPeriodicPlantActivities,
+    getTileDate,
+    getUndoneMonthNotifications,
+    MONTHS,
+    nextMonth,
+    prevMonth,
+    WEEKS
 } from './utils';
+import {Activity} from "../../api";
 
 
 type CalendarProps = {
@@ -31,7 +48,6 @@ const Calendar: React.FC<CalendarProps> = ({ plantId, variant = 'big' }) => {
     const [displayedDate, setDisplayedDate] = useState(new Date());
     const queryClient = useQueryClient();
 
-    // TODO error handling
     const addActivity = useMutation((activity: AddActivityRequestBody) => (
         getApis().activityApi.addActivity(activity)
         ),
@@ -40,12 +56,19 @@ const Calendar: React.FC<CalendarProps> = ({ plantId, variant = 'big' }) => {
                 // TODO this probably could be done without total invalidation
                 queryClient.invalidateQueries(['activities']);
                 queryClient.invalidateQueries(['plants']);
+            },
+            onError: (error) => {
+                errorMsg()
             }
         }
     );
 
     let { data: plants, isLoading: arePlantsLoading } =
-        useQuery(['plants'], () => getApis().plantsApi.getAllPlants().then(resp => resp.data));
+        useQuery(
+            ['plants'],
+            () => getApis().plantsApi.getAllPlants().then(resp => resp.data),
+            {onError: (error) => errorMsg()}
+        );
 
     let { data: activities, isLoading: areActivitiesLoading } =
         useQuery(['activities',
@@ -55,8 +78,9 @@ const Calendar: React.FC<CalendarProps> = ({ plantId, variant = 'big' }) => {
                 () => getApis().activityApi.getActivities(
                         displayedDate.getFullYear(),
                         displayedDate.getMonth() + 1
-                 ).then(resp => resp.data)
-            );
+                 ).then(resp => resp.data),
+            {onError: (error) => errorMsg()}
+        );
 
     if (arePlantsLoading || areActivitiesLoading) {
         plants = [];
@@ -72,16 +96,16 @@ const Calendar: React.FC<CalendarProps> = ({ plantId, variant = 'big' }) => {
     console.log(plants);
 
 
-    const plantActivites = getPeriodicPlantActivities(plants!);
+    const plantActivities: Activity[] | null = getPeriodicPlantActivities(plants!);
 
     const doneNotifications = getDoneMonthNotifications(displayedDate, activities!);
-    const undoneNotifications = getUndoneMonthNotifications(displayedDate, plantActivites);
-    const overdueNotifications = getOverdueNotifications(plantActivites);
+    const undoneNotifications = plantActivities ? getUndoneMonthNotifications(displayedDate, plantActivities) : null;
+    const overdueNotifications = plantActivities ? getOverdueNotifications(plantActivities) : [];
 
     function buildCalendarDay(weekNr: number, day: number) {
         const tileDate = getTileDate(weekNr * 7 + day + 1, displayedDate);
         const done = doneNotifications.get(tileDate.getDate()) ?? [];
-        const undone = undoneNotifications.get(tileDate.getDate()) ?? [];
+        const undone = undoneNotifications ? undoneNotifications.get(tileDate.getDate()) ?? [] : [];
 
         return <CalendarDay
             displayedDate={displayedDate}

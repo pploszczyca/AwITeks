@@ -1,6 +1,6 @@
-import { Plant, Activity } from "../../api";
+import {Activity, Plant} from "../../api";
 import Moment from 'moment';
-import { DATE_FORMAT } from "../../utils/constants";
+import {DATE_FORMAT} from "../../utils/constants";
 
 
 export enum NotificationSeverity {
@@ -88,9 +88,9 @@ function calculateSeverity(activity: Activity): NotificationSeverity {
 }
 
 
-export function getPeriodicPlantActivities(plants: Plant[]): Activity[] {
+export function getPeriodicPlantActivities(plants: Plant[]): Activity[] | null {
 
-    return plants.flatMap(plant => ([
+    return plants ? plants.flatMap(plant => ([
         {
             activityType: 'WATERING',
             date: Moment(plant.lastWateringDate).add(plant.species.waterRoutine, 'days').format(DATE_FORMAT),
@@ -101,30 +101,32 @@ export function getPeriodicPlantActivities(plants: Plant[]): Activity[] {
             date: Moment(plant.lastFertilizationDate).add(plant.species.fertilizationRoutine, 'days').format(DATE_FORMAT),
             plant,
         }
-    ]));
+    ])) : null;
 }
 
 const addNotifications = (displayedDate: Date, calendarNotifications: Map<number, NotificationItem[]>,
     activities: Activity[], severityFn: (a: Activity) => NotificationSeverity) => {
 
-    activities
-        .filter(activity => Moment(displayedDate).isSame(Moment(activity.date), 'month'))
-        .forEach(activity => {
-            const activityDay = new Date(activity.date).getDate();
-            const notificationItem = {
-                activity,
-                severity: severityFn(activity)
-            };
+    if(activities){
+        activities
+            .filter(activity => Moment(displayedDate).isSame(Moment(activity.date), 'month'))
+            .forEach(activity => {
+                const activityDay = new Date(activity.date).getDate();
+                const notificationItem = {
+                    activity,
+                    severity: severityFn(activity)
+                };
 
-            const dayNotifications = calendarNotifications.get(activityDay);
+                const dayNotifications = calendarNotifications.get(activityDay);
 
-            if (dayNotifications != null) {
-                dayNotifications.push(notificationItem);
-            }
-            else {
-                calendarNotifications.set(activityDay, [notificationItem]);
-            }
-        });
+                if (dayNotifications != null) {
+                    dayNotifications.push(notificationItem);
+                }
+                else {
+                    calendarNotifications.set(activityDay, [notificationItem]);
+                }
+            });
+    }
 }
 
 

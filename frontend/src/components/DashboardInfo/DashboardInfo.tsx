@@ -1,6 +1,6 @@
 import React from 'react';
-import { Col } from "react-bootstrap";
-import { MobileRow, InfoElement } from "./DashboardInfoStyle";
+import {Col} from "react-bootstrap";
+import {InfoElement, MobileRow} from "./DashboardInfoStyle";
 
 
 const DashboardInfo: React.FC<{}> = () => {

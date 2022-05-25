@@ -1,10 +1,10 @@
 import React from "react";
-import { ErrorMessage, Formik, Field } from "formik";
-import { Button, Col, Form, Row, Spinner } from "react-bootstrap";
-import { FormContainer } from "../styles/FormStyle";
-import { validateEmail } from "../validators";
-import { useAppDispatch, useAppSelector } from "../../../Store/store";
-import { login } from "../../../Store/features/auth/authSlice";
+import {ErrorMessage, Field, Formik} from "formik";
+import {Button, Col, Form, Row, Spinner} from "react-bootstrap";
+import {FormContainer} from "../styles/FormStyle";
+import {validateEmail} from "../validators";
+import {useAppDispatch, useAppSelector} from "../../../Store/store";
+import {login} from "../../../Store/features/auth/authSlice";
 
 const LoginPage: React.FC<{}> = () => {
     const dispatch = useAppDispatch();

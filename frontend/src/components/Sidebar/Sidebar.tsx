@@ -1,12 +1,12 @@
 import React from 'react';
-import { Button, Container, Nav } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
-import { NavbarEdit, MobileNavbar } from './SidebarStyles';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faHouse, faCalendarDays, faSeedling, faComments, faGear } from '@fortawesome/free-solid-svg-icons'
-import { PageRoutes } from '../../utils/constants';
-import { selectIsLoggedIn, useAppDispatch, useAppSelector } from '../../Store/store';
-import { logout } from '../../Store/features/auth/authSlice';
+import {Button, Container, Nav} from "react-bootstrap";
+import {Link, useNavigate} from "react-router-dom";
+import {MobileNavbar, NavbarEdit} from './SidebarStyles';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faCalendarDays, faComments, faGear, faHouse, faSeedling} from '@fortawesome/free-solid-svg-icons'
+import {PageRoutes} from '../../utils/constants';
+import {selectIsLoggedIn, useAppDispatch, useAppSelector} from '../../Store/store';
+import {logout} from '../../Store/features/auth/authSlice';
 
 
 function buildNavLink(to: string, mobile: boolean, content: any) {
