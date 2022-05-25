@@ -1,17 +1,12 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useEffect, useRef} from "react";
 import {ContentContainer} from "../App/AppStyle";
 import {ChatWindow, PostContent, PostDetails, SendButton, SenderArea, ThreadInfo} from "./ForumThreadStyle";
-import {useNavigate, useParams} from "react-router-dom";
-import {PageRoutes} from "../../utils/constants";
-import {Threads} from "./threadExample";
-import {ForumThread} from "../../api";
+import {useLocation, useNavigate} from "react-router-dom";
+import {PageRoutes, ThreadDetails} from "../../utils/constants";
 import Loader from "../Loader/Loader";
 import {Col, Row} from "react-bootstrap";
-
-
-function getThread(id: number){
-    return Threads[id];
-}
+import {posts} from "./threadExample";
+import {ForumPost} from "../../api";
 
 
 function fitAreaToContent(text: HTMLTextAreaElement, row: HTMLDivElement){
@@ -28,37 +23,47 @@ function fitAreaToContent(text: HTMLTextAreaElement, row: HTMLDivElement){
     }
 }
 
+function getPosts(){
+    // return posts.map(post =>
+    //     new Map()
+    //         .set("author", "Janusz")
+    //         .set("date", post.date)
+    //         .set("id", post.id)
+    //         .set("content", post.content)
+    // )
+    []
+}
+
 const ForumThreadPage: React.FC<{}> = () => {
     const navigate = useNavigate();
-    const { threadId } = useParams();
-    const [thread, setThread] = useState<ForumThread>();
+    const location = useLocation(); // bo nie chcę żeby mój nickname, data, tytuł i id były przekazywane w paramsach urla
+    const threadInfo = location.state as ThreadDetails;
     const textFieldRef: React.RefObject<HTMLTextAreaElement> = useRef(null);
     const sendRow: React.RefObject<HTMLDivElement> = useRef(null);
+    const posts: ForumPost[] = getPosts(); // todo
 
     useEffect(() => {
-        if (threadId == null) {
+        if (!threadInfo) {
             navigate(PageRoutes.FORUM)
-        } else{
-            setThread(getThread(+threadId))
         }
-    }, [navigate, threadId])
+    }, [navigate, threadInfo])
 
     return(
      <ContentContainer>
-         {thread === undefined ? (
+         {!posts ? (
              <Loader/>
          ) : (
              <>
                  <ThreadInfo className="mt-3">
-                     <p>{thread.title}</p>
-                     <p>Autor: {thread.creator.username}</p>
-                     <p>Data założenia tematu: {thread.forumPosts[0].date}</p>
+                     <p>{threadInfo.title}</p>
+                     <p>Autor: {threadInfo.creator}</p>
+                     <p>Data założenia tematu: {threadInfo.creationDate}</p>
                  </ThreadInfo>
 
                  <ChatWindow className="mt-2">
-                     {thread.forumPosts.map(post => (
+                     {posts.map(post => (
                          <div key={post.id} className="mt-3">
-                             <PostDetails>{post.author.username}, {post.date}</PostDetails>
+                             <PostDetails>{post.author.username}, {post.date || new Date().toDateString()}</PostDetails>
                              <PostContent>{post.content}</PostContent>
                          </div>
                      ))}
