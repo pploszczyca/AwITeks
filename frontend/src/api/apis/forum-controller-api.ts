@@ -64,6 +64,10 @@ export const ForumControllerApiAxiosParamCreator = function (configuration?: Con
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            // authentication JWT_AUTH required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
@@ -99,6 +103,10 @@ export const ForumControllerApiAxiosParamCreator = function (configuration?: Con
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication JWT_AUTH required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
     
@@ -143,6 +151,10 @@ export const ForumControllerApiAxiosParamCreator = function (configuration?: Con
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication JWT_AUTH required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
     
@@ -199,9 +211,9 @@ export const ForumControllerApiAxiosParamCreator = function (configuration?: Con
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getPostsFromThread: async (threadId: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getPostsUserIncludedFromThread: async (threadId: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'threadId' is not null or undefined
-            assertParamExists('getPostsFromThread', 'threadId', threadId)
+            assertParamExists('getPostsUserIncludedFromThread', 'threadId', threadId)
             const localVarPath = `/forum/{threadId}/posts`
                 .replace(`{${"threadId"}}`, encodeURIComponent(String(threadId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -214,6 +226,10 @@ export const ForumControllerApiAxiosParamCreator = function (configuration?: Con
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication JWT_AUTH required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
     
@@ -245,6 +261,10 @@ export const ForumControllerApiAxiosParamCreator = function (configuration?: Con
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication JWT_AUTH required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
             if (searchKey !== undefined) {
                 localVarQueryParameter['searchKey'] = searchKey;
@@ -324,8 +344,8 @@ export const ForumControllerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getPostsFromThread(threadId: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ForumPostUserIncluded>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getPostsFromThread(threadId, options);
+        async getPostsUserIncludedFromThread(threadId: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ForumPostUserIncluded>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getPostsUserIncludedFromThread(threadId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -398,8 +418,8 @@ export const ForumControllerApiFactory = function (configuration?: Configuration
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getPostsFromThread(threadId: number, options?: any): AxiosPromise<Array<ForumPostUserIncluded>> {
-            return localVarFp.getPostsFromThread(threadId, options).then((request) => request(axios, basePath));
+        getPostsUserIncludedFromThread(threadId: number, options?: any): AxiosPromise<Array<ForumPostUserIncluded>> {
+            return localVarFp.getPostsUserIncludedFromThread(threadId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -479,8 +499,8 @@ export class ForumControllerApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ForumControllerApi
      */
-    public getPostsFromThread(threadId: number, options?: AxiosRequestConfig) {
-        return ForumControllerApiFp(this.configuration).getPostsFromThread(threadId, options).then((request) => request(this.axios, this.basePath));
+    public getPostsUserIncludedFromThread(threadId: number, options?: AxiosRequestConfig) {
+        return ForumControllerApiFp(this.configuration).getPostsUserIncludedFromThread(threadId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
