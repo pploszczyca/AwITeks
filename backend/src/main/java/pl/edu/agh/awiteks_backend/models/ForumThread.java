@@ -43,7 +43,7 @@ public class ForumThread {
     private List<User> followingUsers;
 
     @Schema(required = false)
-    private final LocalDateTime creationTime = LocalDateTime.now();
+    private LocalDateTime creationTime = LocalDateTime.now();
 
     public ForumThread(String name, User user) {
         this.title = name;
@@ -102,6 +102,10 @@ public class ForumThread {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public void setDate(LocalDateTime dateTime){
+        this.creationTime = dateTime;
     }
 
 }

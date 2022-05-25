@@ -1,4 +1,5 @@
 ## password is just "password"
+use db;
 INSERT INTO user (email, password, username)
 VALUES ('test1@test.pl', '$2a$10$FKyI3VHkkTEMCHk2exDdmu5kcMiHRtEjAR0pdm.Y5xJtfFOe09jU2', 'konrad');
 INSERT INTO user (email, password, username)
@@ -156,7 +157,7 @@ VALUES (1, '2022-04-10' , 10);
 
 ## forum threads and posts
 INSERT INTO forum_thread (title, user_id, creation_time)
-VALUES ('Kaktus nie tanczy', 1, '2019-12-12');
+VALUES ('Kaktus nie tanczy', 1, '2021-12-12');
 
 INSERT INTO forum_post(content, date, user_id, forum_thread_id)
 VALUES ('Moj kaktus nie tanczy, HELP!!!oneone11', '2022-05-12',1, 1);
@@ -168,8 +169,8 @@ INSERT INTO forum_post(content, date, user_id, forum_thread_id)
 VALUES ('Koniecznie Cypisa, utwor: Gdzie jest bialy wegorz. Moj tanczy tak: https://youtu.be/hHm6lgzyU0o?t=16 ', '2022-05-12',2, 1);
 
 
-INSERT INTO forum_thread (title, user_id)
-VALUES ('Paprotka ma problem z doniczka.', 2);
+INSERT INTO forum_thread (title, user_id, creation_time)
+VALUES ('Paprotka ma problem z doniczka.', 2, '2022-05-12');
 
 INSERT INTO forum_post(content, date, user_id, forum_thread_id)
 VALUES ('Moja paprotka wyszla z doniczki.','2022-05-12',2, 2);
