@@ -156,7 +156,7 @@ VALUES (1, '2022-04-10' , 10);
 
 ## forum threads and posts
 INSERT INTO forum_thread (title, user_id, creation_time)
-VALUES ('Kaktus nie tanczy', 1, 2019-12-12);
+VALUES ('Kaktus nie tanczy', 1, '2019-12-12');
 
 INSERT INTO forum_post(content, date, user_id, forum_thread_id)
 VALUES ('Moj kaktus nie tanczy, HELP!!!oneone11', '2022-05-12',1, 1);

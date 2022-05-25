@@ -41,7 +41,7 @@ function App() {
                                 <Route path={PageRoutes.FORUM} element={<PageGuard role={Role.LOGGED_IN}><Forum/></PageGuard>} />
                                 
                                 {/*TODO: add PageGuard*/}
-                                <Route path={`${PageRoutes.FORUM_THREAD}/:threadId`} element={<ForumThreadPage />} />
+                                <Route path={`${PageRoutes.FORUM_THREAD}`} element={<ForumThreadPage />} />
 
                                 <Route path="*" element={<NotFound />} />
                             </Routes>

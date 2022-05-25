@@ -1,6 +1,5 @@
-import {ForumThread} from "../api";
 import {toast} from "react-toastify";
-
+import {ForumThreadSummaryResponseBody} from "../api/models/forum-thread-summary-response-body";
 export const errorMsg = () => toast.error("Kurza twarz! Coś poszło nie tak :/", {autoClose: 8000});
 
 export const base64Header = "data:image/jpeg;base64,";
@@ -22,21 +21,21 @@ export const DATE_FORMAT = "yyyy-MM-DD";
 const headers = ['Tytuł tematu', 'Liczba odpowiedzi', 'Założyciel', 'Data założenia', 'Akcje'];
 const classes = ['title', 'num', 'username', 'date', 'action'];
 
-const date = (thread: ForumThread) => {
-   return new Date(thread.forumPosts[0].date)
+const date = (thread: ForumThreadSummaryResponseBody) => {
+   return new Date(thread.creationDate)
 }
-const content = (thread: ForumThread) => [
+const content = (thread: ForumThreadSummaryResponseBody) => [
     {
         outsideClass: classes[0],
         content: thread.title
     },
     {
         outsideClass: classes[1],
-        content: thread.forumPosts.length
+        content: thread.postsCount
     },
     {
         outsideClass: classes[2],
-        content: thread.creator.username
+        content: thread.creatorName
     },
     {
         outsideClass: classes[3],
@@ -47,5 +46,12 @@ const content = (thread: ForumThread) => [
         content: null
     }
 ]
+
+export interface ThreadDetails {
+    id: number;
+    title: string;
+    creator: string;
+    creationDate: string;
+}
 
 export { headers, classes, content }
