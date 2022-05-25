@@ -37,7 +37,9 @@ const Forum: React.FC<{}> = () => {
     );
 
     useEffect(() => {
-        if(threadsList) setFavourite(threadsList.map(elem => elem.isFollowed))
+        if(threadsList) {
+            setFavourite(threadsList.map(elem => elem.isFollowed));
+        }
     }, [threadsList]);
 
 

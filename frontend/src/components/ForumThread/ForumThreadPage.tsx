@@ -5,8 +5,12 @@ import {useLocation, useNavigate} from "react-router-dom";
 import {errorMsg, PageRoutes, ThreadDetails} from "../../utils/constants";
 import Loader from "../Loader/Loader";
 import {Col, Row} from "react-bootstrap";
-import {useQuery} from "react-query";
+import {useMutation, useQuery} from "react-query";
 import {getApis} from "../../api/initializeApis";
+import moment from "moment";
+import {AddPostRequestBody, AddThreadRequestBody, ForumPost, ForumPostUserIncluded, ForumThread} from "../../api";
+import {queryClient} from "../../Store/store";
+import {toast} from "react-toastify";
 
 
 function fitAreaToContent(text: HTMLTextAreaElement, row: HTMLDivElement){
@@ -32,14 +36,35 @@ const ForumThreadPage: React.FC<{}> = () => {
 
     const {data: posts, isLoading: postsLoading, isError: postsError} = useQuery(
         ['forum', threadInfo.id, 'posts'],
-        () => getApis().forumApi.getPostsFromThread(threadInfo.id).then(resp => resp.data),
+        () => getApis().forumApi.getPostsUserIncludedFromThread(threadInfo.id).then(resp => resp.data),
         {onError: (error) => errorMsg()}
     );
+
+    const addPostMutation = useMutation((post: AddPostRequestBody) => getApis().forumApi.addPostToThread(threadInfo.id, post), {
+        onSuccess: (post) => {
+            queryClient.setQueryData(['forum', threadInfo.id, post.data?.id], post.data);
+            queryClient.setQueryData(['forum', threadInfo.id, "posts"], (oldPosts: ForumPost[] | undefined) =>
+                oldPosts ? [...oldPosts, post.data] : [post.data]);
+            queryClient.invalidateQueries(['forum', threadInfo.id, "posts"]);
+        },
+        onError: (error) => {
+            errorMsg()
+        }
+    });
+
+    const addPost = async () => {
+        if (textFieldRef.current) {
+            const msg = textFieldRef.current.value;
+            await addPostMutation.mutateAsync({content: msg});
+            textFieldRef.current.value = "";
+        }
+    }
 
     useEffect(() => {
         if (!threadInfo) {
             navigate(PageRoutes.FORUM)
         }
+        console.log(threadInfo)
     }, [navigate, threadInfo])
 
     if(postsLoading || postsError) return <Loader/>;
@@ -49,13 +74,13 @@ const ForumThreadPage: React.FC<{}> = () => {
          <ThreadInfo className="mt-3">
              <p>{threadInfo.title}</p>
              <p>Autor: {threadInfo.creator}</p>
-             <p>Data założenia tematu: {threadInfo.creationDate}</p>
+             <p>Data założenia tematu: {moment(threadInfo.creationDate).calendar()}</p>
          </ThreadInfo>
 
          <ChatWindow className="mt-2">
              {posts?.map(post => (
                  <div key={post.id} className="mt-3">
-                     <PostDetails>{post.userName}, {post.creationDate || new Date().toDateString()}</PostDetails>
+                     <PostDetails>{post.userName}, {moment(post.creationDate).calendar()}</PostDetails>
                      <PostContent>{post.content}</PostContent>
                  </div>
              ))}
@@ -67,7 +92,7 @@ const ForumThreadPage: React.FC<{}> = () => {
                              onInput={() => fitAreaToContent(textFieldRef.current!, sendRow.current!)}/>
              </Col>
              <Col lg={2} className="mt-2">
-                 <SendButton>Wyślij</SendButton>
+                 <SendButton onClick={() => addPost()}>Wyślij</SendButton>
              </Col>
          </Row>
      </ContentContainer>
