@@ -108,15 +108,6 @@ public class ForumThread {
         this.creationTime = dateTime;
     }
 
-    public void toggleFollowingUser(User user){
-        final int userId = this.followingUsers.indexOf(user);
-
-        if (userId == -1){
-            this.followingUsers.add(user);
-        } else {
-            this.followingUsers.remove(user);
-        }
-    }
 
     public List<User> getFollowingUsers() {
         return followingUsers;

@@ -150,6 +150,9 @@ public class ForumService {
             thread.getFollowingUsers().add(follower);
             follower.getFollowedThreads().add(thread);
         }
+        forumRepository.save(thread);
+        userRepository.save(follower);
+
         return thread;
     }
 }
