@@ -14,6 +14,7 @@
 
 
 import { ForumPost } from './forum-post';
+import { User } from './user';
 
 /**
  * 
@@ -39,6 +40,12 @@ export interface ForumThread {
      * @memberof ForumThread
      */
     'forumPosts': Array<ForumPost>;
+    /**
+     * 
+     * @type {Array<User>}
+     * @memberof ForumThread
+     */
+    'followingUsers': Array<User>;
     /**
      * 
      * @type {string}

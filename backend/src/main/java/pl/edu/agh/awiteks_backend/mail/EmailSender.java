@@ -1,0 +1,18 @@
+package pl.edu.agh.awiteks_backend.mail;
+
+import javax.mail.Transport;
+import javax.mail.internet.MimeMessage;
+
+public class EmailSender {
+
+    public static void sendEmail(String recipient, String subject, String content) {
+
+        try{
+            final MimeMessage message = MailMessagePreparer.prepareTextMessageObject(recipient, subject, content);
+            Transport.send(message);
+        } catch (Exception e){
+            throw new RuntimeException(e.getMessage());
+        }
+
+    }
+}
