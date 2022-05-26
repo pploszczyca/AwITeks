@@ -13,7 +13,7 @@
  */
 
 
-import {Species} from './species';
+import { Species } from './species';
 
 /**
  * 

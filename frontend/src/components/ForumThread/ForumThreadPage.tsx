@@ -2,11 +2,14 @@ import React, {useEffect, useRef} from "react";
 import {ContentContainer} from "../App/AppStyle";
 import {ChatWindow, PostContent, PostDetails, SendButton, SenderArea, ThreadInfo} from "./ForumThreadStyle";
 import {useLocation, useNavigate} from "react-router-dom";
-import {PageRoutes, ThreadDetails} from "../../utils/constants";
+import {errorMsg, PageRoutes, ThreadDetails} from "../../utils/constants";
 import Loader from "../Loader/Loader";
 import {Col, Row} from "react-bootstrap";
-import {posts} from "./threadExample";
-import {ForumPostUserIncluded} from "../../api/models/forum-post-user-included";
+import {useMutation, useQuery} from "react-query";
+import {getApis} from "../../api/initializeApis";
+import moment from "moment";
+import {AddPostRequestBody, ForumPost} from "../../api";
+import {queryClient} from "../../Store/store";
 
 
 function fitAreaToContent(text: HTMLTextAreaElement, row: HTMLDivElement){
@@ -23,56 +26,74 @@ function fitAreaToContent(text: HTMLTextAreaElement, row: HTMLDivElement){
     }
 }
 
-function getPosts(){
-    return posts;
-}
-
 const ForumThreadPage: React.FC<{}> = () => {
     const navigate = useNavigate();
     const location = useLocation(); // bo nie chcę żeby mój nickname, data, tytuł i id były przekazywane w paramsach urla
     const threadInfo = location.state as ThreadDetails;
     const textFieldRef: React.RefObject<HTMLTextAreaElement> = useRef(null);
     const sendRow: React.RefObject<HTMLDivElement> = useRef(null);
-    const posts: ForumPostUserIncluded[] = getPosts(); // todo
+
+    const {data: posts, isLoading: postsLoading, isError: postsError} = useQuery(
+        ['forum', threadInfo.id, 'posts'],
+        () => getApis().forumApi.getPostsUserIncludedFromThread(threadInfo.id).then(resp => resp.data),
+        {onError: (error) => errorMsg()}
+    );
+
+    const addPostMutation = useMutation((post: AddPostRequestBody) => getApis().forumApi.addPostToThread(threadInfo.id, post), {
+        onSuccess: (post) => {
+            queryClient.setQueryData(['forum', threadInfo.id, post.data?.id], post.data);
+            queryClient.setQueryData(['forum', threadInfo.id, "posts"], (oldPosts: ForumPost[] | undefined) =>
+                oldPosts ? [...oldPosts, post.data] : [post.data]);
+            queryClient.invalidateQueries(['forum', threadInfo.id, "posts"]);
+        },
+        onError: (error) => {
+            errorMsg()
+        }
+    });
+
+    const addPost = async () => {
+        if (textFieldRef.current) {
+            const msg = textFieldRef.current.value;
+            await addPostMutation.mutateAsync({content: msg});
+            textFieldRef.current.value = "";
+        }
+    }
 
     useEffect(() => {
         if (!threadInfo) {
             navigate(PageRoutes.FORUM)
         }
+        console.log(threadInfo)
     }, [navigate, threadInfo])
+
+    if(postsLoading || postsError) return <Loader/>;
 
     return(
      <ContentContainer>
-         {!posts ? (
-             <Loader/>
-         ) : (
-             <>
-                 <ThreadInfo className="mt-3">
-                     <p>{threadInfo.title}</p>
-                     <p>Autor: {threadInfo.creator}</p>
-                     <p>Data założenia tematu: {threadInfo.creationDate}</p>
-                 </ThreadInfo>
+         <ThreadInfo className="mt-3">
+             <p>{threadInfo.title}</p>
+             <p>Autor: {threadInfo.creator}</p>
+             <p>Data założenia tematu: {moment(threadInfo.creationDate).calendar()}</p>
+         </ThreadInfo>
 
-                 <ChatWindow className="mt-2">
-                     {posts.map(post => (
-                         <div key={post.id} className="mt-3">
-                             <PostDetails>{post.userName}, {post.creationDate || new Date().toDateString()}</PostDetails>
-                             <PostContent>{post.content}</PostContent>
-                         </div>
-                     ))}
-                 </ChatWindow>
+         <ChatWindow className="mt-2">
+             {posts?.map(post => (
+                 <div key={post.id} className="mt-3">
+                     <PostDetails>{post.userName}, {moment(post.creationDate).calendar()}</PostDetails>
+                     <PostContent>{post.content}</PostContent>
+                 </div>
+             ))}
+         </ChatWindow>
 
-                 <Row ref={sendRow} style={{height: 45}}>
-                     <Col lg={10} className="h-100 mt-2">
-                        <SenderArea ref={textFieldRef}
-                                    onInput={() => fitAreaToContent(textFieldRef.current!, sendRow.current!)}/>
-                     </Col>
-                     <Col lg={2} className="mt-2">
-                        <SendButton>Wyślij</SendButton>
-                     </Col>
-             </Row>
-             </>
-         )}
+         <Row ref={sendRow} style={{height: 45}}>
+             <Col lg={10} className="h-100 mt-2">
+                 <SenderArea ref={textFieldRef}
+                             onInput={() => fitAreaToContent(textFieldRef.current!, sendRow.current!)}/>
+             </Col>
+             <Col lg={2} className="mt-2">
+                 <SendButton onClick={() => addPost()}>Wyślij</SendButton>
+             </Col>
+         </Row>
      </ContentContainer>
     )
 }

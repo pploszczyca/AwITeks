@@ -152,6 +152,14 @@ public class User {
         return forumThreadList;
     }
 
+    public List<ForumThread> getFollowedThreads() {
+        return followedThreads;
+    }
+
+    public void setFollowedThreads(List<ForumThread> followedThreads) {
+        this.followedThreads = followedThreads;
+    }
+
     public void setForumThreadList(List<ForumThread> forumThreadList) {
         this.forumThreadList = forumThreadList;
     }
