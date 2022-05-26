@@ -26,15 +26,38 @@ import {ChipsButton} from "./FilterChips/ChipsStyle";
 
 const Forum: React.FC<{}> = () => {
     const [isFavourite, setFavourite] = useState<boolean[]>([]);
-    const [mockData, setData] = useState(getThreadsList(10));
-    const [isFavourite, setFavourite] = useState(mockData.map(elem=>elem.isFollowed));
-    const [filteredData, setFilteredData] = useState(mockData);
+    const [filteredData, setFilteredData] = useState<ForumThreadSummaryResponseBody[]>([]);
     const [filters, setFilters] = useState(["",'',''])
     const [chipsActive, setChipsActive] = useState([false,false,false]);
-    const UserName = "Janusz0";
     const searchInputRef: React.MutableRefObject<HTMLInputElement | null> = useRef(null);
     const navigate = useNavigate();
     const [showAddThreadForm, setShowAddThreadForm] = useState(false);
+
+    const { data: threadsList, isLoading: threadsLoading } = useQuery(
+        'forum',
+        () => getApis().forumApi.getAllThreads().then(resp => resp.data),
+        {onError: (error) => errorMsg()}
+    );
+
+    const  {data: me} = useQuery(
+        ['users', 'me'],
+        () => getApis().userApi.getMe().then(resp => resp.data),
+        {onError: (error) => errorMsg()}
+    );
+
+    const toggleFavouriteMutation = useMutation((idx: number) => getApis().forumApi.toggleThreadFollowing(idx), {
+        onError: (error) => {
+            errorMsg()
+        }
+    });
+
+    useEffect(() => {
+        if(threadsList) {
+            setFavourite(threadsList.map(elem => elem.isFollowed));
+            setFilteredData(threadsList);
+        }
+    }, [threadsList]);
+
 
     const filterSearchBar = (e: { target: { value: string; }; }) => {
         const keyword = e.target.value;
@@ -57,9 +80,9 @@ const Forum: React.FC<{}> = () => {
     };
 
     const filterData = () => {
-        let result = mockData;
+        let result = threadsList!;
         if(filters[1]!==''){
-            result = result.filter((elem: ForumThreadSummaryResponseBody) => elem.isFollowed===true);
+            result = result.filter((elem: ForumThreadSummaryResponseBody) => elem.isFollowed);
         }
         if(filters[2]!==''){
             result = result.filter((elem: ForumThreadSummaryResponseBody) => elem.creatorName===me!.username);
@@ -71,7 +94,6 @@ const Forum: React.FC<{}> = () => {
             });
         }
         setFilteredData(result);
-
     };
 
     const FilterChips: React.FC<{text: string, id: number}> = ({text, id}) => {
@@ -85,33 +107,6 @@ const Forum: React.FC<{}> = () => {
             </ChipsButton>
         )
     }
-
-    function toggleFavourite(idx: number, id: number){
-        for(var i=0; i<mockData.length;i++){
-            if(mockData[i].id === id){
-                mockData[i].isFollowed = !mockData[i].isFollowed;
-                break;
-            }
-        }
-        setData(mockData);
-        setFavourite(mockData.map(elem=>elem.isFollowed));
-    const { data: threadsList, isLoading: threadsLoading } = useQuery(
-        'forum',
-        () => getApis().forumApi.getAllThreads().then(resp => resp.data),
-        {onError: (error) => errorMsg()}
-    );
-
-    const toggleFavouriteMutation = useMutation((idx: number) => getApis().forumApi.toggleThreadFollowing(idx), {
-        onError: (error) => {
-            errorMsg()
-        }
-    });
-
-    useEffect(() => {
-        if(threadsList) {
-            setFavourite(threadsList.map(elem => elem.isFollowed));
-        }
-    }, [threadsList]);
 
 
     async function toggleFavourite(idx: number) {
@@ -154,8 +149,8 @@ const Forum: React.FC<{}> = () => {
                                         </OpenButton>
 
                                         <Star icon = {faStarSolid}
-                                                onClick={() => toggleFavourite(idx, thread.id)}
-                                                className={isFavourite[thread.id] ? 'starred': 'unstarred'}
+                                                className={isFavourite[idx] ? 'starred': 'unstarred'}
+                                                onClick={() => toggleFavourite(idx)}
                                         />
                                     </>
                                 ) : (
@@ -196,8 +191,7 @@ const Forum: React.FC<{}> = () => {
                 </Row>
                 <Row className="mt-5">
                     {getHeaderRow()}
-                    {filteredData.map((thread,idx) => getThread(thread, idx))}
-                    {threadsList!.map((thread, idx) => getThread(thread, idx))}
+                    {filteredData!.map((thread,idx) => getThread(thread, idx))}
                 </Row>
             </ForumContainer>
             <AddThreadForm show={showAddThreadForm} setShowThreadForm={setShowAddThreadForm}/>
