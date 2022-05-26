@@ -138,4 +138,19 @@ public class ForumService {
         this.postRepository.save(post);
         return post;
     }
+
+    public ForumThread toggleThreadFollowing(Integer threadId, Integer userId){
+        final ForumThread thread = this.forumRepository.findById(threadId).orElseThrow();
+        final User creator = this.userRepository.findById(userId).orElseThrow();
+
+        if(!(thread.getUser() == creator)){
+            throw new IllegalCallerException();
+        }
+
+        creator.getForumThreadList().remove(thread);
+        thread.toggleFollowingUser(creator);
+        creator.getForumThreadList().add(thread);
+        this.forumRepository.save(thread);
+        return thread;
+    }
 }

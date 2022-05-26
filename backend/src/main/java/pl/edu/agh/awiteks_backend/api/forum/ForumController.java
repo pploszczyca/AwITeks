@@ -83,4 +83,16 @@ public class ForumController {
             return new ForumPost();
         }
     }
+
+    @Operation(summary="Follow thread", security = @SecurityRequirement(name = JWT_AUTH))
+    @PostMapping(value="/follow/{threadId}")
+    public ForumThread toggleThreadFollowing(@PathVariable int threadId,
+                                             JwtAccessToken jwtAccessToken){
+        try{
+            return forumService.toggleThreadFollowing(threadId, jwtAccessToken.getUserId());
+        } catch (IllegalCallerException e) {
+            System.out.println("Something goes wrong: " + e);
+            return new ForumThread();
+        }
+    }
 }

@@ -179,3 +179,9 @@ VALUES ('Temat poruszany na forum wiele razy. Uzyj szukajki, bo jest.', '2022-05
 INSERT INTO forum_post(content, date, user_id, forum_thread_id)
 VALUES ('Google milczy na temat maszerujaych paprotek :(','2022-05-12',2, 2);
 
+ALTER TABLE db.activities CONVERT TO CHARACTER SET utf8;
+ALTER TABLE db.forum_post CONVERT TO CHARACTER SET utf8;
+ALTER TABLE db.forum_thread CONVERT TO CHARACTER SET utf8;
+ALTER TABLE db.plants CONVERT TO CHARACTER SET utf8;
+ALTER TABLE db.species CONVERT TO CHARACTER SET utf8;
+ALTER TABLE db.user CONVERT TO CHARACTER SET utf8;
