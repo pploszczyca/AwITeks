@@ -4,6 +4,8 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import pl.edu.agh.awiteks_backend.models.ActivityType;
 import pl.edu.agh.awiteks_backend.models.Plant;
 import pl.edu.agh.awiteks_backend.models.User;
@@ -21,6 +23,8 @@ public class EmailService {
 
     private static final long DAY_TIME = 24 * 60 * 60 * 1000;
 
+    private static final long INITIAL_DELAY = 5000;
+
     private final UserRepository userRepository;
 
     private final SimpleDateFormat simpleDateFormat;
@@ -28,10 +32,11 @@ public class EmailService {
     @Autowired
     public EmailService(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.simpleDateFormat = new SimpleDateFormat(this.DATE_FORMAT);
+        this.simpleDateFormat = new SimpleDateFormat(DATE_FORMAT);
     }
 
-    @Scheduled(fixedRateString = "PT24H")
+    @Scheduled(fixedRateString = "PT24H", initialDelay = INITIAL_DELAY)
+    @Transactional(propagation= Propagation.REQUIRED, readOnly=true, noRollbackFor=Exception.class)
     public void sendEmails() {
         userRepository
                 .findAll()
@@ -47,7 +52,7 @@ public class EmailService {
     }
 
     private void sendNotificationEmail(User user, List<Pair<Plant, List<ActivityType>>> plantsToNotify) {
-        final String messageHeader = "Dear " + user.getUsername() + "!\nWe regret to inform you that your plants may be dying really soon. To prevent that, you need to take the following actions:";
+        final String messageHeader = "Dear " + user.getUsername() + "!\nWe regret to inform you that your plants may be dying really soon. To prevent that, you need to take the following actions:\n";
         final String message = plantsToNotify.stream().map(this::makeLineForPlant).reduce("", (result, element) -> result + element);
 
         final String messageFooter = "Kind regards,\nTeam AwITeks.";
