@@ -34,16 +34,18 @@ public class ForumController {
 
     @Operation(summary = "Get all forum threads", security = @SecurityRequirement(name = JWT_AUTH))
     @GetMapping(produces = "application/json")
-    public List<ForumThreadSummaryResponseBody> getAllThreads() {
-        return forumService.getAllThreads();
+    public List<ForumThreadSummaryResponseBody> getAllThreads(JwtAccessToken jwtAccessToken) {
+        return forumService.getAllThreads(jwtAccessToken.getUserId());
     }
 
     @Operation(summary = "Get all threads with matching names", security = @SecurityRequirement(name = JWT_AUTH))
     @GetMapping(value = "/search", produces = "application/json")
     public List<ForumThreadSummaryResponseBody> getThreadsWithMatchingName(
             @RequestParam(name = "searchKey", defaultValue = "")
-            String searchKey) {
-        return forumService.getThreadsWithMatchingName(searchKey);
+            String searchKey,
+            JwtAccessToken jwtAccessToken) {
+        return forumService.getThreadsWithMatchingName(searchKey,
+                jwtAccessToken.getUserId());
     }
 
     @Operation(summary = "Add new thread with initial post", security = @SecurityRequirement(name = JWT_AUTH))
@@ -76,23 +78,14 @@ public class ForumController {
                               @PathVariable int threadId,
                               @PathVariable int postId,
                               JwtAccessToken jwtAccessToken) {
-        try {
-            return forumService.editPost(threadId, postId, postRequestBody,
-                    jwtAccessToken.getUserId());
-        } catch (IllegalCallerException e) {
-            return new ForumPost();
-        }
+        return forumService.editPost(threadId, postId, postRequestBody,
+                jwtAccessToken.getUserId());
     }
 
     @Operation(summary="Follow thread", security = @SecurityRequirement(name = JWT_AUTH))
     @PostMapping(value="/follow/{threadId}")
     public ForumThread toggleThreadFollowing(@PathVariable int threadId,
                                              JwtAccessToken jwtAccessToken){
-        try{
-            return forumService.toggleThreadFollowing(threadId, jwtAccessToken.getUserId());
-        } catch (IllegalCallerException e) {
-            System.out.println("Something goes wrong: " + e);
-            return new ForumThread();
-        }
+        return forumService.toggleThreadFollowing(threadId, jwtAccessToken.getUserId());
     }
 }

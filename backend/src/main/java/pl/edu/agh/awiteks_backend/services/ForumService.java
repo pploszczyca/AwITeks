@@ -11,6 +11,7 @@ import pl.edu.agh.awiteks_backend.api.forum.body_models.AddThreadRequestBody;
 import pl.edu.agh.awiteks_backend.api.forum.body_models.ForumPostUserIncluded;
 import pl.edu.agh.awiteks_backend.api.forum.body_models.ForumThreadSummaryResponseBody;
 import pl.edu.agh.awiteks_backend.mappers.ForumMapper;
+import static pl.edu.agh.awiteks_backend.mappers.ForumMapper.mapForumThreadToForumThreadSummary;
 import pl.edu.agh.awiteks_backend.models.ForumPost;
 import pl.edu.agh.awiteks_backend.models.ForumThread;
 import pl.edu.agh.awiteks_backend.models.User;
@@ -60,9 +61,11 @@ public class ForumService {
         return forumThread;
     }
 
-    public List<ForumThreadSummaryResponseBody> getAllThreads() {
+    public List<ForumThreadSummaryResponseBody> getAllThreads(int userId) {
+        final var user = userRepository.findById(userId).orElseThrow();
+
         return this.streamUtilities.asStream(forumRepository.findAll())
-                .map(ForumMapper::mapForumThreadToForumThreadSummary).toList();
+                .map(forumThread -> mapForumThreadToForumThreadSummary(forumThread, user)).toList();
     }
 
     public Optional<ForumThread> get(int id) {
@@ -87,8 +90,8 @@ public class ForumService {
     }
 
     public List<ForumThreadSummaryResponseBody> getThreadsWithMatchingName(
-            String searchKey) {
-        return this.getAllThreads().stream()
+            String searchKey, int userId) {
+        return this.getAllThreads(userId).stream()
                 .filter(thread -> thread.title().toLowerCase(Locale.ROOT)
                         .contains(searchKey.toLowerCase(Locale.ROOT))).toList();
     }
