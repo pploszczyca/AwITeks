@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -73,7 +74,7 @@ public class ForumController {
     }
 
     @Operation(summary = "Edit post", security = @SecurityRequirement(name = JWT_AUTH))
-    @PostMapping(value = "/{threadId}/{postId}/edit")
+    @PutMapping(value = "/{threadId}/{postId}/edit")
     public ForumPost editPost(@RequestBody AddPostRequestBody postRequestBody,
                               @PathVariable int threadId,
                               @PathVariable int postId,
@@ -83,7 +84,7 @@ public class ForumController {
     }
 
     @Operation(summary="Follow thread", security = @SecurityRequirement(name = JWT_AUTH))
-    @PostMapping(value="/follow/{threadId}")
+    @PutMapping(value="/follow/{threadId}")
     public ForumThread toggleThreadFollowing(@PathVariable int threadId,
                                              JwtAccessToken jwtAccessToken){
         return forumService.toggleThreadFollowing(threadId, jwtAccessToken.getUserId());
