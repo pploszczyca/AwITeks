@@ -5,12 +5,15 @@ import javax.mail.internet.MimeMessage;
 
 public class EmailSender {
 
-    public static void sendEmail(String recipient, String subject, String content) {
+    public static void sendEmail(String recipient, String subject,
+                                 String content) {
 
-        try{
-            final MimeMessage message = MailMessagePreparer.prepareTextMessageObject(recipient, subject, content);
+        try {
+            final MimeMessage message =
+                    MailMessagePreparer.prepareTextMessageObject(recipient,
+                            subject, content);
             Transport.send(message);
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
 

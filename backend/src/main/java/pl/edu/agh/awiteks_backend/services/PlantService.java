@@ -18,6 +18,7 @@ import pl.edu.agh.awiteks_backend.repositories.PlantRepository;
 import pl.edu.agh.awiteks_backend.repositories.SpeciesRepository;
 import pl.edu.agh.awiteks_backend.repositories.UserRepository;
 import pl.edu.agh.awiteks_backend.utilities.ListUtilities;
+import pl.edu.agh.awiteks_backend.utilities.PlantUtilities;
 import pl.edu.agh.awiteks_backend.utilities.PlantValidator;
 
 @Service
@@ -32,18 +33,21 @@ public class PlantService {
 
     private final PlantValidator plantValidator;
 
+    private final PlantUtilities plantUtilities;
+
     @Autowired
     public PlantService(PlantRepository modelRepository,
                         UserRepository userRepository,
                         SpeciesRepository speciesRepository,
                         PlantValidator plantValidator,
-                        ListUtilities listUtilities
-    ) {
+                        ListUtilities listUtilities,
+                        PlantUtilities plantUtilities) {
         this.plantRepository = modelRepository;
         this.userRepository = userRepository;
         this.speciesRepository = speciesRepository;
         this.plantValidator = plantValidator;
         this.listUtilities = listUtilities;
+        this.plantUtilities = plantUtilities;
     }
 
     public Plant addPlant(AddPlantRequestBody addPlantRequestBody, int userId) {
@@ -117,13 +121,13 @@ public class PlantService {
     }
 
     public PlantsStats getPlantsStats(int userId) {
-        // TODO move frontend logic to compute these stats here
-        // TODO we can either aggregate this or compute every time
-        final List<Plant> userPlants = getUsersPlants(userId);
-        final var neglectedPlants = 5;
-        final var wellGroomedPlants = 5;
+        final var user = userRepository.findById(userId).orElseThrow();
+        final var plantsNumber = user.getUserPlants().size();
+        final var neglectedPlants =
+                plantUtilities.getNumberOfNeglectedPlants(user);
+        final var wellGroomedPlants = plantsNumber - neglectedPlants;
 
-        return new PlantsStats(userPlants.size(), neglectedPlants,
+        return new PlantsStats(plantsNumber, neglectedPlants,
                 wellGroomedPlants);
     }
 

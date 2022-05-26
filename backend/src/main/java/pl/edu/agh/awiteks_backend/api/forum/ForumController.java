@@ -35,7 +35,8 @@ public class ForumController {
 
     @Operation(summary = "Get all forum threads", security = @SecurityRequirement(name = JWT_AUTH))
     @GetMapping(produces = "application/json")
-    public List<ForumThreadSummaryResponseBody> getAllThreads(JwtAccessToken jwtAccessToken) {
+    public List<ForumThreadSummaryResponseBody> getAllThreads(
+            JwtAccessToken jwtAccessToken) {
         return forumService.getAllThreads(jwtAccessToken.getUserId());
     }
 
@@ -83,10 +84,11 @@ public class ForumController {
                 jwtAccessToken.getUserId());
     }
 
-    @Operation(summary="Follow thread", security = @SecurityRequirement(name = JWT_AUTH))
-    @PutMapping(value="/follow/{threadId}")
+    @Operation(summary = "Follow thread", security = @SecurityRequirement(name = JWT_AUTH))
+    @PutMapping(value = "/follow/{threadId}")
     public ForumThread toggleThreadFollowing(@PathVariable int threadId,
-                                             JwtAccessToken jwtAccessToken){
-        return forumService.toggleThreadFollowing(threadId, jwtAccessToken.getUserId());
+                                             JwtAccessToken jwtAccessToken) {
+        return forumService.toggleThreadFollowing(threadId,
+                jwtAccessToken.getUserId());
     }
 }

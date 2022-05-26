@@ -7,8 +7,9 @@ import pl.edu.agh.awiteks_backend.models.ForumThread;
 import pl.edu.agh.awiteks_backend.models.User;
 
 public class ForumMapper {
-    public static ForumThreadSummaryResponseBody mapForumThreadToForumThreadSummary(ForumThread forumThread, User user){
-        if(forumThread == null){
+    public static ForumThreadSummaryResponseBody mapForumThreadToForumThreadSummary(
+            ForumThread forumThread, User user) {
+        if (forumThread == null) {
             return null;
         }
         return new ForumThreadSummaryResponseBody(
@@ -21,8 +22,11 @@ public class ForumMapper {
         );
     }
 
-    public static ForumPostUserIncluded mapForumPostToForumPostUserIncluded(ForumPost post){
-        if(post == null) return null;
+    public static ForumPostUserIncluded mapForumPostToForumPostUserIncluded(
+            ForumPost post) {
+        if (post == null) {
+            return null;
+        }
         return new ForumPostUserIncluded(
                 post.getId(),
                 post.getContent(),
