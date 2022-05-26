@@ -141,16 +141,15 @@ public class ForumService {
 
     public ForumThread toggleThreadFollowing(Integer threadId, Integer userId){
         final ForumThread thread = this.forumRepository.findById(threadId).orElseThrow();
-        final User creator = this.userRepository.findById(userId).orElseThrow();
+        final User follower = this.userRepository.findById(userId).orElseThrow();
 
-        if(!(thread.getUser() == creator)){
-            throw new IllegalCallerException();
+        if(follower.isFollowing(thread)){
+            thread.getFollowingUsers().remove(follower);
+            follower.getFollowedThreads().remove(thread);
+        }else{
+            thread.getFollowingUsers().add(follower);
+            follower.getFollowedThreads().add(thread);
         }
-
-        creator.getForumThreadList().remove(thread);
-        thread.toggleFollowingUser(creator);
-        creator.getForumThreadList().add(thread);
-        this.forumRepository.save(thread);
         return thread;
     }
 }

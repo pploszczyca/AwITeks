@@ -117,4 +117,16 @@ public class ForumThread {
             this.followingUsers.remove(user);
         }
     }
+
+    public List<User> getFollowingUsers() {
+        return followingUsers;
+    }
+
+    public void setFollowingUsers(List<User> followingUsers) {
+        this.followingUsers = followingUsers;
+    }
+
+    public void setCreationTime(LocalDateTime creationTime) {
+        this.creationTime = creationTime;
+    }
 }
