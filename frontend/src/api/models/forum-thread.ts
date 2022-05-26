@@ -47,6 +47,12 @@ export interface ForumThread {
     'creationTime'?: string;
     /**
      * 
+     * @type {string}
+     * @memberof ForumThread
+     */
+    'date'?: string;
+    /**
+     * 
      * @type {number}
      * @memberof ForumThread
      */

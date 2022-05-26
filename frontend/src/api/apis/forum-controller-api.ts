@@ -281,6 +281,44 @@ export const ForumControllerApiAxiosParamCreator = function (configuration?: Con
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @summary Follow thread
+         * @param {number} threadId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        toggleThreadFollowing: async (threadId: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'threadId' is not null or undefined
+            assertParamExists('toggleThreadFollowing', 'threadId', threadId)
+            const localVarPath = `/forum/follow/{threadId}`
+                .replace(`{${"threadId"}}`, encodeURIComponent(String(threadId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication JWT_AUTH required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -359,6 +397,17 @@ export const ForumControllerApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getThreadsWithMatchingName(searchKey, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
+        /**
+         * 
+         * @summary Follow thread
+         * @param {number} threadId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async toggleThreadFollowing(threadId: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ForumThread>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.toggleThreadFollowing(threadId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
     }
 };
 
@@ -430,6 +479,16 @@ export const ForumControllerApiFactory = function (configuration?: Configuration
          */
         getThreadsWithMatchingName(searchKey?: string, options?: any): AxiosPromise<Array<ForumThreadSummaryResponseBody>> {
             return localVarFp.getThreadsWithMatchingName(searchKey, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Follow thread
+         * @param {number} threadId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        toggleThreadFollowing(threadId: number, options?: any): AxiosPromise<ForumThread> {
+            return localVarFp.toggleThreadFollowing(threadId, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -513,5 +572,17 @@ export class ForumControllerApi extends BaseAPI {
      */
     public getThreadsWithMatchingName(searchKey?: string, options?: AxiosRequestConfig) {
         return ForumControllerApiFp(this.configuration).getThreadsWithMatchingName(searchKey, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Follow thread
+     * @param {number} threadId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ForumControllerApi
+     */
+    public toggleThreadFollowing(threadId: number, options?: AxiosRequestConfig) {
+        return ForumControllerApiFp(this.configuration).toggleThreadFollowing(threadId, options).then((request) => request(this.axios, this.basePath));
     }
 }
