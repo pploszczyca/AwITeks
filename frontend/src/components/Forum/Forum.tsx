@@ -15,7 +15,6 @@ import {
 import {faMagnifyingGlass, faStar as faStarSolid} from '@fortawesome/free-solid-svg-icons';
 import {ForumThreadSummaryResponseBody} from "../../api/models/forum-thread-summary-response-body";
 import {getThreadsList} from "./mockData";
-import FilterChips from "./FilterChips/FilterChips";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {useNavigate} from "react-router-dom";
 import {classes, content, headers, PageRoutes} from "../../utils/constants";
@@ -23,12 +22,12 @@ import {AddThreadForm} from "../AddThreadForm/AddThreadForm";
 import {ChipsButton} from "./FilterChips/ChipsStyle";
 
 const Forum: React.FC<{}> = () => {
-    let mockData = getThreadsList(10);
-    const [isFavourite, setFavourite] = useState(mockData.map(elem => elem.isFollowed));
+    const [mockData, setData] = useState(getThreadsList(10));
+    const [isFavourite, setFavourite] = useState(mockData.map(elem=>elem.isFollowed));
     const [filteredData, setFilteredData] = useState(mockData);
     const [filters, setFilters] = useState(["",'',''])
     const [chipsActive, setChipsActive] = useState([false,false,false]);
-    const UserName = "username0";
+    const UserName = "Janusz0";
     const searchInputRef: React.MutableRefObject<HTMLInputElement | null> = useRef(null);
     const navigate = useNavigate();
     const [showAddThreadForm, setShowAddThreadForm] = useState(false);
@@ -84,14 +83,14 @@ const Forum: React.FC<{}> = () => {
     }
 
     function toggleFavourite(idx: number, id: number){
-        filteredData[idx].isFollowed = !filteredData[idx].isFollowed;//how much of that is really necessary?
         for(var i=0; i<mockData.length;i++){
             if(mockData[i].id === id){
                 mockData[i].isFollowed = !mockData[i].isFollowed;
                 break;
             }
         }
-        setFavourite(isFavourite.map((element, currIdx) => mockData[currIdx].id===id ? !element : element));
+        setData(mockData);
+        setFavourite(mockData.map(elem=>elem.isFollowed));
     }
 
     function getHeaderRow(){
@@ -129,8 +128,8 @@ const Forum: React.FC<{}> = () => {
                                         </OpenButton>
 
                                         <Star icon = {faStarSolid}
-                                              className={isFavourite[thread.id] ? 'starred': 'unstarred'}
-                                              onClick={() => toggleFavourite(idx, thread.id)}
+                                                onClick={() => toggleFavourite(idx, thread.id)}
+                                                className={isFavourite[thread.id] ? 'starred': 'unstarred'}
                                         />
                                     </>
                                 ) : (
