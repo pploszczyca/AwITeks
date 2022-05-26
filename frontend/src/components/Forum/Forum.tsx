@@ -50,7 +50,6 @@ const Forum: React.FC<{}> = () => {
 
 
     async function toggleFavourite(idx: number) {
-        console.log(idx+1)
         setFavourite(isFavourite.map((element, currIdx) => currIdx === idx ? !element : element));
         await toggleFavouriteMutation.mutateAsync(idx + 1);
     }
