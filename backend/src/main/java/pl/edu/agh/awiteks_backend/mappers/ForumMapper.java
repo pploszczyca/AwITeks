@@ -4,9 +4,10 @@ import pl.edu.agh.awiteks_backend.api.forum.body_models.ForumPostUserIncluded;
 import pl.edu.agh.awiteks_backend.api.forum.body_models.ForumThreadSummaryResponseBody;
 import pl.edu.agh.awiteks_backend.models.ForumPost;
 import pl.edu.agh.awiteks_backend.models.ForumThread;
+import pl.edu.agh.awiteks_backend.models.User;
 
 public class ForumMapper {
-    public static ForumThreadSummaryResponseBody mapForumThreadToForumThreadSummary(ForumThread forumThread){
+    public static ForumThreadSummaryResponseBody mapForumThreadToForumThreadSummary(ForumThread forumThread, User user){
         if(forumThread == null){
             return null;
         }
@@ -16,7 +17,7 @@ public class ForumMapper {
                 forumThread.getUser().getUsername(),
                 forumThread.getCreationTime(),
                 forumThread.getPostsCount(),
-                forumThread.getUser().isFollowing(forumThread)
+                user.isFollowing(forumThread)
         );
     }
 
