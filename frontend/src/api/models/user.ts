@@ -59,5 +59,11 @@ export interface User {
      * @memberof User
      */
     'forumThreadList': Array<ForumThread>;
+    /**
+     * 
+     * @type {Array<ForumThread>}
+     * @memberof User
+     */
+    'followedThreads': Array<ForumThread>;
 }
 

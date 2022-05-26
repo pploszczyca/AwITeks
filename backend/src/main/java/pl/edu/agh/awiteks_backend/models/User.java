@@ -53,9 +53,9 @@ public class User {
     //TODO: Test this
     @ManyToMany
     @JoinTable(
-            name="follow_threads",
-            joinColumns = @JoinColumn(name="user_id"),
-            inverseJoinColumns = @JoinColumn(name="forum_thread_id")
+            name = "follow_threads",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "forum_thread_id")
     )
     @Schema(required = true)
     private List<ForumThread> followedThreads;
@@ -88,7 +88,7 @@ public class User {
         userPlants.add(plant);
     }
 
-    public void addThread(ForumThread thread){
+    public void addThread(ForumThread thread) {
         this.forumThreadList.add(thread);
     }
 
@@ -96,7 +96,7 @@ public class User {
         userPlants.remove(plant);
     }
 
-    public void removeThread(ForumThread forumThread){
+    public void removeThread(ForumThread forumThread) {
         forumThreadList.remove(forumThread);
     }
 
@@ -150,6 +150,14 @@ public class User {
 
     public List<ForumThread> getForumThreadList() {
         return forumThreadList;
+    }
+
+    public List<ForumThread> getFollowedThreads() {
+        return followedThreads;
+    }
+
+    public void setFollowedThreads(List<ForumThread> followedThreads) {
+        this.followedThreads = followedThreads;
     }
 
     public void setForumThreadList(List<ForumThread> forumThreadList) {

@@ -2,6 +2,10 @@ import React from "react";
 import {Button, Col, Container, Modal, Row, Spinner} from "react-bootstrap";
 import {ErrorMessage, Field, Form, Formik} from "formik";
 import {toast} from "react-toastify";
+import {useMutation, useQueryClient} from "react-query";
+import {AddThreadRequestBody, ForumThread} from "../../api";
+import {getApis} from "../../api/initializeApis";
+import {errorMsg} from "../../utils/constants";
 
 
 type AddThreadFormProps = {
@@ -11,6 +15,19 @@ type AddThreadFormProps = {
 
 
 export const AddThreadForm: React.FC<AddThreadFormProps> = ({ show, setShowThreadForm }) => {
+    const queryClient = useQueryClient();
+    const addThread = useMutation((thread: AddThreadRequestBody) => getApis().forumApi.addThread(thread), {
+        onSuccess: (thread) => {
+            queryClient.setQueryData(['forum', thread.data?.id], thread.data);
+            queryClient.setQueryData(['forum'], (oldThreads: ForumThread[] | undefined) =>
+                oldThreads ? [...oldThreads, thread.data] : [thread.data]);
+            queryClient.invalidateQueries(['forum']);
+        },
+        onError: (error) => {
+            errorMsg()
+        }
+    });
+
     return (
         <Modal show={show} onHide={() => setShowThreadForm(false)} animation={false} size="xl">
             <Modal.Header>
@@ -20,33 +37,16 @@ export const AddThreadForm: React.FC<AddThreadFormProps> = ({ show, setShowThrea
             </Modal.Header>
             <Modal.Body>
                 <Formik
-                    initialValues={{threadTitle: '', firstMsg: ''}}
+                    initialValues={{name: '', content: '', isFavourite: false}}
                     validate={values => {
                         const errors: any = {};
-                        if (!values.threadTitle) errors.threadTitle = 'Wymagane';
-                        if (!values.firstMsg) errors.firstMsg = 'Wymagane';
+                        if (!values.name) errors.name = 'Wymagane';
+                        if (!values.content) errors.content = 'Wymagane';
                         return errors;
                     }}
                     onSubmit={async (values, { setSubmitting }) => {
                         try {
-                            // todo: add thread using endpoint - optional thread obj template below
-                            // const user: User = null; // todo
-                            // const date: Date = new Date(); // for sure that date is the same in forumPost and dateCreated
-                            // const thread: ForumThread = {
-                            //     id: Math.floor(Math.random() * 100),
-                            //     title: values.threadTitle,
-                            //     creator: user,
-                            //     forumPosts: [
-                            //         {
-                            //             id: Math.floor(Math.random() * 100),
-                            //             content: values.firstMsg,
-                            //             author: user,
-                            //             date: date.toDateString()
-                            //         }
-                            //     ],
-                            //     isFavourite: true, // if logged user is the author we can checked this thread as favourite
-                            //     dateCreated: date
-                            // }
+                            await addThread.mutateAsync(values);
                             toast.success("Nowy temat dodany pomyślnie!");
                             setShowThreadForm(false);
                         } catch (err) {
@@ -64,18 +64,25 @@ export const AddThreadForm: React.FC<AddThreadFormProps> = ({ show, setShowThrea
                                 <Row>
                                     <Col className="form-group mt-3" xl={12}>
                                         <label>Tytuł tematu:</label><br />
-                                        <Field className="form-control" type="text" name="threadTitle" />
-                                        <ErrorMessage name="threadTitle" component="div">
+                                        <Field className="form-control" type="text" name="name" />
+                                        <ErrorMessage name="name" component="div">
                                             {msg => <div style={{ color: 'red' }}>{msg}</div>}
                                         </ErrorMessage>
                                     </Col>
 
                                     <Col className="form-group mt-3" xl={12}>
                                         <label>Twoja wiadomość:</label>
-                                        <Field className="form-control" as="textarea" name="firstMsg" />
-                                        <ErrorMessage name="firstMsg" component="div">
+                                        <Field className="form-control" as="textarea" name="content" />
+                                        <ErrorMessage name="content" component="div">
                                             {msg => <div style={{ color: 'red' }}>{msg}</div>}
                                         </ErrorMessage>
+                                    </Col>
+
+                                    <Col className="form-group mt-3" xl={12}>
+                                        <label>
+                                            Czy chcesz od razu zaobserwować ten temat?
+                                            <Field type="checkbox" name="isFavourite" className="mx-3" />
+                                        </label>
                                     </Col>
                                 </Row>
 

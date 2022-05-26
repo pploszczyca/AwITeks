@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Col, Row} from "react-bootstrap";
 import {
     AddThreadBtn,
@@ -14,14 +14,18 @@ import {
 } from "./ForumStyles";
 import {faMagnifyingGlass, faStar as faStarSolid} from '@fortawesome/free-solid-svg-icons';
 import {ForumThreadSummaryResponseBody} from "../../api/models/forum-thread-summary-response-body";
-import {getThreadsList} from "./mockData";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {useNavigate} from "react-router-dom";
-import {classes, content, headers, PageRoutes} from "../../utils/constants";
+import {classes, content, errorMsg, headers, PageRoutes} from "../../utils/constants";
 import {AddThreadForm} from "../AddThreadForm/AddThreadForm";
+import {useMutation, useQuery} from "react-query";
+import {getApis} from "../../api/initializeApis";
+import Loader from "../Loader/Loader";
+
 import {ChipsButton} from "./FilterChips/ChipsStyle";
 
 const Forum: React.FC<{}> = () => {
+    const [isFavourite, setFavourite] = useState<boolean[]>([]);
     const [mockData, setData] = useState(getThreadsList(10));
     const [isFavourite, setFavourite] = useState(mockData.map(elem=>elem.isFollowed));
     const [filteredData, setFilteredData] = useState(mockData);
@@ -67,16 +71,16 @@ const Forum: React.FC<{}> = () => {
             });
         }
         setFilteredData(result);
-        
+
     };
 
     const FilterChips: React.FC<{text: string, id: number}> = ({text, id}) => {
         const filterThreads = () => {
             filterChip(id);
         }
-    
+
         return (
-            <ChipsButton onClick={filterThreads} className={chipsActive[id] ? 'active': ''}> 
+            <ChipsButton onClick={filterThreads} className={chipsActive[id] ? 'active': ''}>
                 {text}
             </ChipsButton>
         )
@@ -91,6 +95,28 @@ const Forum: React.FC<{}> = () => {
         }
         setData(mockData);
         setFavourite(mockData.map(elem=>elem.isFollowed));
+    const { data: threadsList, isLoading: threadsLoading } = useQuery(
+        'forum',
+        () => getApis().forumApi.getAllThreads().then(resp => resp.data),
+        {onError: (error) => errorMsg()}
+    );
+
+    const toggleFavouriteMutation = useMutation((idx: number) => getApis().forumApi.toggleThreadFollowing(idx), {
+        onError: (error) => {
+            errorMsg()
+        }
+    });
+
+    useEffect(() => {
+        if(threadsList) {
+            setFavourite(threadsList.map(elem => elem.isFollowed));
+        }
+    }, [threadsList]);
+
+
+    async function toggleFavourite(idx: number) {
+        setFavourite(isFavourite.map((element, currIdx) => currIdx === idx ? !element : element));
+        await toggleFavouriteMutation.mutateAsync(idx + 1);
     }
 
     function getHeaderRow(){
@@ -143,6 +169,10 @@ const Forum: React.FC<{}> = () => {
         )
     }
 
+    if (threadsLoading){
+        return <Loader/>;
+    }
+
     return (
         <>
             <ForumContainer>
@@ -167,12 +197,12 @@ const Forum: React.FC<{}> = () => {
                 <Row className="mt-5">
                     {getHeaderRow()}
                     {filteredData.map((thread,idx) => getThread(thread, idx))}
+                    {threadsList!.map((thread, idx) => getThread(thread, idx))}
                 </Row>
             </ForumContainer>
             <AddThreadForm show={showAddThreadForm} setShowThreadForm={setShowAddThreadForm}/>
         </>
     )
 };
-
 
 export default Forum;

@@ -1,5 +1,5 @@
 import {getAccessToken} from "../Store/features/auth/auth";
-import {ActivityControllerApi, SpeciesControllerApi, UserControllerApi} from "./api";
+import {ActivityControllerApi, ForumControllerApi, SpeciesControllerApi, UserControllerApi} from "./api";
 import {AuthControllerApi} from "./apis/auth-controller-api";
 import {PlantControllerApi} from "./apis/plant-controller-api";
 import {Configuration} from "./configuration";
@@ -10,7 +10,8 @@ type Apis = {
     plantsApi: PlantControllerApi,
     speciesApi: SpeciesControllerApi,
     activityApi: ActivityControllerApi,
-    userApi: UserControllerApi
+    userApi: UserControllerApi,
+    forumApi: ForumControllerApi
 };
 
 
@@ -28,7 +29,8 @@ export const initializeApis = () => {
         plantsApi: new PlantControllerApi(configuration),
         speciesApi: new SpeciesControllerApi(configuration),
         activityApi: new ActivityControllerApi(configuration),
-        userApi: new UserControllerApi(configuration)
+        userApi: new UserControllerApi(configuration),
+        forumApi: new ForumControllerApi(configuration)
     };
 };
 

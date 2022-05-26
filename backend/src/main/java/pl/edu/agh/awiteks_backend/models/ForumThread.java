@@ -2,6 +2,9 @@ package pl.edu.agh.awiteks_backend.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,9 +16,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "forum_thread")
@@ -43,7 +43,7 @@ public class ForumThread {
     private List<User> followingUsers;
 
     @Schema(required = false)
-    private final LocalDateTime creationTime = LocalDateTime.now();
+    private LocalDateTime creationTime = LocalDateTime.now();
 
     public ForumThread(String name, User user) {
         this.title = name;
@@ -104,4 +104,20 @@ public class ForumThread {
         this.title = title;
     }
 
+    public void setDate(LocalDateTime dateTime) {
+        this.creationTime = dateTime;
+    }
+
+
+    public List<User> getFollowingUsers() {
+        return followingUsers;
+    }
+
+    public void setFollowingUsers(List<User> followingUsers) {
+        this.followingUsers = followingUsers;
+    }
+
+    public void setCreationTime(LocalDateTime creationTime) {
+        this.creationTime = creationTime;
+    }
 }
