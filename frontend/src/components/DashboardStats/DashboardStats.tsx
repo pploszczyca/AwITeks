@@ -36,7 +36,7 @@ const DashboardStats: React.FC<{}> = () => {
                 <StatsCard>
                     <p className="card-title">Liczba zadbanych roślin</p>
                     {plantsStats ? (
-                        <p className="stat">{plantsStats.neglectedPlants}</p>
+                        <p className="stat">{plantsStats.wellGroomedPlants}</p>
                     ) : (
                         <strong>{GENERIC_ERROR_MESSAGE}</strong>
                     )}
@@ -47,7 +47,7 @@ const DashboardStats: React.FC<{}> = () => {
                 <StatsCard>
                     <p className="card-title">Liczba zaniedbanych roślin</p>
                     {plantsStats ? (
-                        <p className="stat">{plantsStats.wellGroomedPlants}</p>
+                        <p className="stat">{plantsStats.neglectedPlants}</p>
                     ) : (
                         <strong>{GENERIC_ERROR_MESSAGE}</strong>
                     )}

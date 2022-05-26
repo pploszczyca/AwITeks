@@ -65,7 +65,8 @@ public class ForumService {
         final var user = userRepository.findById(userId).orElseThrow();
 
         return this.streamUtilities.asStream(forumRepository.findAll())
-                .map(forumThread -> mapForumThreadToForumThreadSummary(forumThread, user)).toList();
+                .map(forumThread -> mapForumThreadToForumThreadSummary(
+                        forumThread, user)).toList();
     }
 
     public Optional<ForumThread> get(int id) {
@@ -142,14 +143,16 @@ public class ForumService {
         return post;
     }
 
-    public ForumThread toggleThreadFollowing(Integer threadId, Integer userId){
-        final ForumThread thread = this.forumRepository.findById(threadId).orElseThrow();
-        final User follower = this.userRepository.findById(userId).orElseThrow();
+    public ForumThread toggleThreadFollowing(Integer threadId, Integer userId) {
+        final ForumThread thread =
+                this.forumRepository.findById(threadId).orElseThrow();
+        final User follower =
+                this.userRepository.findById(userId).orElseThrow();
 
-        if(follower.isFollowing(thread)){
+        if (follower.isFollowing(thread)) {
             thread.getFollowingUsers().remove(follower);
             follower.getFollowedThreads().remove(thread);
-        }else{
+        } else {
             thread.getFollowingUsers().add(follower);
             follower.getFollowedThreads().add(thread);
         }
