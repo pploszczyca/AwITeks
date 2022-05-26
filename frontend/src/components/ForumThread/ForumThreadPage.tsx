@@ -79,7 +79,7 @@ const ForumThreadPage: React.FC<{}> = () => {
          <ChatWindow className="mt-2">
              {posts?.map(post => (
                  <div key={post.id} className="mt-3">
-                     <PostDetails>{post.userName}, {moment(post.creationDate).calendar()}</PostDetails>
+                     <PostDetails>{post.userName}, {moment(post.creationDate).add(2, 'hours').calendar()}</PostDetails>
                      <PostContent>{post.content}</PostContent>
                  </div>
              ))}
