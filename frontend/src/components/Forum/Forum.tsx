@@ -62,7 +62,7 @@ const Forum: React.FC<{}> = () => {
             result = result.filter((elem: ForumThreadSummaryResponseBody) => elem.isFollowed===true);
         }
         if(filters[2]!==''){
-            result = result.filter((elem: ForumThreadSummaryResponseBody) => elem.creatorName===UserName);
+            result = result.filter((elem: ForumThreadSummaryResponseBody) => elem.creatorName===me!.username);
         }
         if(filters[0]!==''){
             const keyword: string = filters[0];
