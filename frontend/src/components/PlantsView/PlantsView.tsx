@@ -1,4 +1,4 @@
-import React, {useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faMagnifyingGlass} from '@fortawesome/free-solid-svg-icons';
 import {Col, Form, Row} from "react-bootstrap";
@@ -28,7 +28,10 @@ const PlantsView: React.FC<{}> = () => {
     const [isAddPlantFormVisible, setAddPlantFormVisible] = useState(false);
     const queryClient = useQueryClient();
     const searchInputRef: React.MutableRefObject<HTMLInputElement | null> = useRef(null);
-    const [sortByType, setSortByType] = useState(SortByTypes.SORT_BY_NAME)
+    const checkedInput: React.MutableRefObject<HTMLInputElement | null> = useRef(null);
+    const [sortByType, setSortByType] = useState(SortByTypes.SORT_BY_NAME);
+    const [filteredList, setFilteredList] = useState<PlantSummary[]>([]);
+    const [filteredSpecies, setFilteredSpecies] = useState<string[]>([]);
 
     const { data: speciesList, isLoading: speciesLoading } = useQuery(
         'species',
@@ -54,10 +57,48 @@ const PlantsView: React.FC<{}> = () => {
         }
     });
 
+    useEffect(() => {
+        if(plantSummaryList){
+            setFilteredList(plantSummaryList);
+        }
+    }, [plantSummaryList]);
+
+
+    // Filter by species
+    useEffect(() => {
+        if (filteredSpecies.length > 0){
+            setFilteredList(plantSummaryList!.filter(plant => filteredSpecies.includes(plant.speciesName)));
+        } else{
+            setFilteredList(plantSummaryList!);
+        }
+    }, [filteredSpecies, plantSummaryList]);
+
+    function filterBySpecies(event: any){
+        if(!filteredSpecies.includes(event.target.name)){
+            setFilteredSpecies([...filteredSpecies, event.target.name]);
+        }
+        else {
+            setFilteredSpecies(filteredSpecies.filter(species => species !== event.target.name));
+        }
+    }
+    // end of Filter of species
+
+    function filterByFavourites(){
+        const filtered = checkedInput.current?.checked ? plantSummaryList!.filter(plant => plant.isFavourite): plantSummaryList!;
+        setFilteredList(filtered);
+        return filtered;
+    }
+
+    function filterByName(){
+        const inputValue = searchInputRef.current?.value.toLowerCase();
+        const filtered = filterByFavourites().filter(plant => plant.name.toLowerCase().includes(inputValue!));
+        setFilteredList(filtered);
+        return filtered;
+    }
+
     if (speciesLoading || plantsLoading) {
         return <Loader />;
     }
-
 
     return (
         <ContentContainer className="mt-5">
@@ -67,7 +108,7 @@ const PlantsView: React.FC<{}> = () => {
                         <Col lg={7} sm={12} className="mt-3">
                             <SearchBoxContainer onClick={() => searchInputRef.current?.focus()}>
                                 <FontAwesomeIcon icon={faMagnifyingGlass} fontSize={20} />
-                                <SearchBox ref={searchInputRef} type="text" placeholder="wyszukaj roślinę..." />
+                                <SearchBox onInput={() => filterByName()} ref={searchInputRef} type="text" placeholder="wyszukaj roślinę..." />
                             </SearchBoxContainer>
                         </Col>
                         <Col lg={5} className="mt-3">
@@ -77,14 +118,14 @@ const PlantsView: React.FC<{}> = () => {
 
                     <Row>
                         <Col lg={7} sm={12} className="mt-3">
-                            <Row as={PlantTypesContainer}>
+                            <Row as={PlantTypesContainer} onChange={filterBySpecies}>
                                 {speciesList ? (
                                     speciesList!.map(species => (
                                         <Col xl={4} lg={6} key={species.id}>
                                             < Form.Check
                                                 inline
                                                 label={species.name}
-                                                name="plantTypes"
+                                                name={species.name}
                                                 type="checkbox"
                                                 id={`plantTypeCheckbox_${species.id}`}
                                             />
@@ -97,8 +138,9 @@ const PlantsView: React.FC<{}> = () => {
                         </Col>
 
                         <Col lg={5} className="mt-3">
-                            <Row className="px-3">
+                            <Row className="px-3" onChange={() => filterByFavourites()}>
                                 < Form.Check
+                                    ref={checkedInput}
                                     label="Tylko ulubione"
                                     name="onlyFavourites"
                                     type="checkbox"
@@ -128,7 +170,7 @@ const PlantsView: React.FC<{}> = () => {
 
 
             <Row as={ListContainer}>
-                {sortBy(plantSummaryList, sortByType)?.map(plant => (
+                {sortBy(filteredList, sortByType)?.map(plant => (
                     <Col
                         key={plant.id}
                         xxl={3} xl={4} md={6} sm={12}

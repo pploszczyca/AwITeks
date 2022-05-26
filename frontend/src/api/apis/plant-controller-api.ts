@@ -13,21 +13,30 @@
  */
 
 
-import globalAxios, { AxiosPromise, AxiosInstance, AxiosRequestConfig } from 'axios';
-import { Configuration } from '../configuration';
+import globalAxios, {AxiosInstance, AxiosPromise, AxiosRequestConfig} from 'axios';
+import {Configuration} from '../configuration';
 // Some imports not used depending on template conditions
 // @ts-ignore
-import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObject, setBearerAuthToObject, setOAuthToObject, setSearchParams, serializeDataIfNeeded, toPathString, createRequestFunction } from '../common';
+import {
+    assertParamExists,
+    createRequestFunction,
+    DUMMY_BASE_URL,
+    serializeDataIfNeeded,
+    setApiKeyToObject,
+    setBasicAuthToObject,
+    setBearerAuthToObject,
+    setOAuthToObject,
+    setSearchParams,
+    toPathString
+} from '../common';
 // @ts-ignore
-import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from '../base';
+import {BASE_PATH, BaseAPI, COLLECTION_FORMATS, RequestArgs, RequiredError} from '../base';
 // @ts-ignore
-import { AddPlantRequestBody } from '../models';
 // @ts-ignore
-import { Plant } from '../models';
 // @ts-ignore
-import { PlantSummary } from '../models';
 // @ts-ignore
-import { PlantsStats } from '../models';
+import {AddPlantRequestBody, Plant, PlantsStats, PlantSummary} from '../models';
+
 /**
  * PlantControllerApi - axios parameter creator
  * @export

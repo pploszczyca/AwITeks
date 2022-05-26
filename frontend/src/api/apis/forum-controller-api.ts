@@ -13,25 +13,39 @@
  */
 
 
-import globalAxios, { AxiosPromise, AxiosInstance, AxiosRequestConfig } from 'axios';
-import { Configuration } from '../configuration';
+import globalAxios, {AxiosInstance, AxiosPromise, AxiosRequestConfig} from 'axios';
+import {Configuration} from '../configuration';
 // Some imports not used depending on template conditions
 // @ts-ignore
-import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObject, setBearerAuthToObject, setOAuthToObject, setSearchParams, serializeDataIfNeeded, toPathString, createRequestFunction } from '../common';
+import {
+    assertParamExists,
+    createRequestFunction,
+    DUMMY_BASE_URL,
+    serializeDataIfNeeded,
+    setApiKeyToObject,
+    setBasicAuthToObject,
+    setBearerAuthToObject,
+    setOAuthToObject,
+    setSearchParams,
+    toPathString
+} from '../common';
 // @ts-ignore
-import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from '../base';
+import {BASE_PATH, BaseAPI, COLLECTION_FORMATS, RequestArgs, RequiredError} from '../base';
 // @ts-ignore
-import { AddPostRequestBody } from '../models';
 // @ts-ignore
-import { AddThreadRequestBody } from '../models';
 // @ts-ignore
-import { ForumPost } from '../models';
 // @ts-ignore
-import { ForumPostUserIncluded } from '../models';
 // @ts-ignore
-import { ForumThread } from '../models';
 // @ts-ignore
-import { ForumThreadSummaryResponseBody } from '../models';
+import {
+    AddPostRequestBody,
+    AddThreadRequestBody,
+    ForumPost,
+    ForumPostUserIncluded,
+    ForumThread,
+    ForumThreadSummaryResponseBody
+} from '../models';
+
 /**
  * ForumControllerApi - axios parameter creator
  * @export
@@ -148,7 +162,7 @@ export const ForumControllerApiAxiosParamCreator = function (configuration?: Con
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -300,7 +314,7 @@ export const ForumControllerApiAxiosParamCreator = function (configuration?: Con
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
