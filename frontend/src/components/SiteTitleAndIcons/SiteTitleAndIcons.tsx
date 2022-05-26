@@ -6,7 +6,6 @@ import {useLocation} from "react-router-dom";
 import {errorMsg, PageRoutes} from '../../utils/constants';
 import {useQuery} from "react-query";
 import {getApis} from "../../api/initializeApis";
-import Loader from "../Loader/Loader";
 
 const titlesMap: Map<string, string> = new Map<string, string>([
     [PageRoutes.DASHBOARD, "Witaj, XYZ"],

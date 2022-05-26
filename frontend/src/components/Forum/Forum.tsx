@@ -22,8 +22,6 @@ import {AddThreadForm} from "../AddThreadForm/AddThreadForm";
 import {useMutation, useQuery} from "react-query";
 import {getApis} from "../../api/initializeApis";
 import Loader from "../Loader/Loader";
-import {AddPostRequestBody, ForumPost} from "../../api";
-import {queryClient} from "../../Store/store";
 
 
 const Forum: React.FC<{}> = () => {

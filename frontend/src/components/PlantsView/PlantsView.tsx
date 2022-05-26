@@ -71,7 +71,7 @@ const PlantsView: React.FC<{}> = () => {
         } else{
             setFilteredList(plantSummaryList!);
         }
-    }, [filteredSpecies]);
+    }, [filteredSpecies, plantSummaryList]);
 
     function filterBySpecies(event: any){
         if(!filteredSpecies.includes(event.target.name)){
