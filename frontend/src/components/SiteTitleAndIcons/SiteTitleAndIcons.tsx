@@ -3,7 +3,10 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faBell, faCircleUser as faUser} from '@fortawesome/free-solid-svg-icons'
 import {FixedContainer, PageTitle} from "./SiteTitleAndIconsStyle";
 import {useLocation} from "react-router-dom";
-import {PageRoutes} from '../../utils/constants';
+import {errorMsg, PageRoutes} from '../../utils/constants';
+import {useQuery} from "react-query";
+import {getApis} from "../../api/initializeApis";
+import Loader from "../Loader/Loader";
 
 const titlesMap: Map<string, string> = new Map<string, string>([
     [PageRoutes.DASHBOARD, "Witaj, XYZ"],
@@ -28,11 +31,19 @@ function getTitle(path: string) {
 function SiteTitleAndIcons() {
     const location = useLocation();
     let [title, setTitle] = useState(getTitle(location.pathname));
-    // const { data: me } = useQuery('me', () => getApis().userApi.getMe().then(resp => resp.data));
+
+    const  {data: me} = useQuery(
+        ['users', 'me'],
+        () => getApis().userApi.getMe().then(resp => resp.data),
+        {onError: (error) => errorMsg()}
+    );
+
 
     useEffect(() => {
+        if(me) titlesMap.set(PageRoutes.DASHBOARD, "Witaj, " + me.username);
         setTitle(getTitle(location.pathname));
-    }, [location]);
+    }, [location, me]);
+
 
     return (
         <FixedContainer className="mt-5 d-flex" style={{ display: window.location.pathname === '/home' ? 'none' : 'flex' }}>

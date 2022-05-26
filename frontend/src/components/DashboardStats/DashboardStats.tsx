@@ -10,7 +10,8 @@ const DashboardStats: React.FC<{}> = () => {
     const { data: plantsStatsResp, isLoading } = useQuery(
         ['plants-summary', 'stats'],
         () => getApis().plantsApi.getPlantsStats(),
-        {onError: (error) => errorMsg()});
+        {onError: (error) => errorMsg()}
+    );
 
     if (isLoading) {
         return <Loader />;

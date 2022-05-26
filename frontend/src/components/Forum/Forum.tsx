@@ -19,9 +19,11 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {useNavigate} from "react-router-dom";
 import {classes, content, errorMsg, headers, PageRoutes} from "../../utils/constants";
 import {AddThreadForm} from "../AddThreadForm/AddThreadForm";
-import {useQuery} from "react-query";
+import {useMutation, useQuery} from "react-query";
 import {getApis} from "../../api/initializeApis";
 import Loader from "../Loader/Loader";
+import {AddPostRequestBody, ForumPost} from "../../api";
+import {queryClient} from "../../Store/store";
 
 
 const Forum: React.FC<{}> = () => {
@@ -36,6 +38,12 @@ const Forum: React.FC<{}> = () => {
         {onError: (error) => errorMsg()}
     );
 
+    const toggleFavouriteMutation = useMutation((idx: number) => getApis().forumApi.toggleThreadFollowing(idx), {
+        onError: (error) => {
+            errorMsg()
+        }
+    });
+
     useEffect(() => {
         if(threadsList) {
             setFavourite(threadsList.map(elem => elem.isFollowed));
@@ -43,9 +51,10 @@ const Forum: React.FC<{}> = () => {
     }, [threadsList]);
 
 
-    function toggleFavourite(idx: number){
-        // mockData[idx].isFollowed = !mockData[idx].isFollowed;  // TODO: next sprint
-        setFavourite(isFavourite.map((element, currIdx) => currIdx===idx ? !element : element));
+    async function toggleFavourite(idx: number) {
+        console.log(idx+1)
+        setFavourite(isFavourite.map((element, currIdx) => currIdx === idx ? !element : element));
+        await toggleFavouriteMutation.mutateAsync(idx + 1);
     }
 
     function getHeaderRow(){

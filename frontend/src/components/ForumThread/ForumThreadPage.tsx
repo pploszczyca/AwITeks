@@ -8,6 +8,7 @@ import {Col, Row} from "react-bootstrap";
 import {useMutation, useQuery} from "react-query";
 import {getApis} from "../../api/initializeApis";
 import moment from "moment";
+import 'moment/locale/pl';
 import {AddPostRequestBody, ForumPost} from "../../api";
 import {queryClient} from "../../Store/store";
 
@@ -63,7 +64,6 @@ const ForumThreadPage: React.FC<{}> = () => {
         if (!threadInfo) {
             navigate(PageRoutes.FORUM)
         }
-        console.log(threadInfo)
     }, [navigate, threadInfo])
 
     if(postsLoading || postsError) return <Loader/>;
