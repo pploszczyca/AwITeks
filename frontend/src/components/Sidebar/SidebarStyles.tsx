@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Navbar } from "react-bootstrap";
+import {Navbar} from "react-bootstrap";
 
 export const NavbarEdit = styled(Navbar)`
   height: 100vh;
@@ -64,4 +64,4 @@ export const MobileNavbar = styled.div`
   left: 0;
   transform: translateY(-50%);
   z-index: 3;
-`
+`;

@@ -13,6 +13,7 @@
  */
 
 
+import {Plant} from './plant';
 
 /**
  * 
@@ -22,10 +23,10 @@
 export interface Activity {
     /**
      * 
-     * @type {number}
+     * @type {Plant}
      * @memberof Activity
      */
-    'id'?: number;
+    'plant': Plant;
     /**
      * 
      * @type {string}

@@ -1,23 +1,29 @@
 import React, {useEffect, useState} from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBell, faCircleUser as faUser } from '@fortawesome/free-solid-svg-icons'
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faBell, faCircleUser as faUser} from '@fortawesome/free-solid-svg-icons'
 import {FixedContainer, PageTitle} from "./SiteTitleAndIconsStyle";
 import {useLocation} from "react-router-dom";
+import {errorMsg, PageRoutes} from '../../utils/constants';
+import {useQuery} from "react-query";
+import {getApis} from "../../api/initializeApis";
 
 const titlesMap: Map<string, string> = new Map<string, string>([
-    ["/", "Witaj, XYZ"],
-    ["/my_plants", "Lista roślin"],
-    ["/calendar", "Kalendarz"],
-    ["/forum", "Forum"],
-    ["/settings", "Ustawienia"],
+    [PageRoutes.DASHBOARD, "Witaj, XYZ"],
+    [PageRoutes.MY_PLANTS, "Lista roślin"],
+    [PageRoutes.CALENDAR, "Kalendarz"],
+    [PageRoutes.FORUM, "Forum"],
+    [PageRoutes.SETTINGS, "Ustawienia"],
 ])
 
-function getTitle(path: string){
-    if(titlesMap.has(path)){
+function getTitle(path: string) {
+    if (titlesMap.has(path)) {
         return titlesMap.get(path)
     }
-    else if(path.startsWith("/my_plants/")){
+    else if (path.startsWith("/my-plants/")) {
         return "Szczegóły rośliny";
+    }
+    else if(path.startsWith("forum/thread/")){
+        return "Dyskusja";
     }
 }
 
@@ -25,14 +31,23 @@ function SiteTitleAndIcons() {
     const location = useLocation();
     let [title, setTitle] = useState(getTitle(location.pathname));
 
+    const  {data: me} = useQuery(
+        ['users', 'me'],
+        () => getApis().userApi.getMe().then(resp => resp.data),
+        {onError: (error) => errorMsg()}
+    );
+
+
     useEffect(() => {
-        setTitle(getTitle(location.pathname))
-    }, [location]);
+        if(me) titlesMap.set(PageRoutes.DASHBOARD, "Witaj, " + me.username);
+        setTitle(getTitle(location.pathname));
+    }, [location, me]);
+
 
     return (
-        <FixedContainer className="mt-5">
+        <FixedContainer className="mt-5 d-flex" style={{ display: window.location.pathname === '/home' ? 'none' : 'flex' }}>
             <PageTitle>{title}</PageTitle>
-            <div className="icons d-flex gap-4">
+            <div className="icons gap-4" style={{ display: window.location.pathname === '/home' ? 'none' : 'flex' }}>
                 <FontAwesomeIcon icon={faBell} fontSize={32} className="icon" />
                 <FontAwesomeIcon icon={faUser} fontSize={32} className="icon" />
             </div>

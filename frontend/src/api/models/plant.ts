@@ -13,8 +13,7 @@
  */
 
 
-import { Activity } from './activity';
-import { Species } from './species';
+import {Species} from './species';
 
 /**
  * 
@@ -27,7 +26,7 @@ export interface Plant {
      * @type {number}
      * @memberof Plant
      */
-    'id'?: number;
+    'id': number;
     /**
      * 
      * @type {string}
@@ -39,7 +38,7 @@ export interface Plant {
      * @type {Species}
      * @memberof Plant
      */
-    'spiece'?: Species;
+    'species': Species;
     /**
      * 
      * @type {string}
@@ -54,10 +53,28 @@ export interface Plant {
     'actualInsolation': PlantActualInsolationEnum;
     /**
      * 
-     * @type {Array<Activity>}
+     * @type {boolean}
      * @memberof Plant
      */
-    'plantActivities': Array<Activity>;
+    'favourite': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof Plant
+     */
+    'photo': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Plant
+     */
+    'lastWateringDate': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Plant
+     */
+    'lastFertilizationDate': string;
 }
 
 export const PlantActualInsolationEnum = {

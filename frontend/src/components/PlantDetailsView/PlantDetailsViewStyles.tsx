@@ -1,4 +1,4 @@
-import { Button } from "react-bootstrap";
+import {Button} from "react-bootstrap";
 import styled from "styled-components";
 
 export const InfoWrapper = styled.div`

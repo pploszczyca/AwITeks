@@ -13,15 +13,30 @@
  */
 
 
-import globalAxios, { AxiosPromise, AxiosInstance, AxiosRequestConfig } from 'axios';
-import { Configuration } from '../configuration';
+import globalAxios, {AxiosInstance, AxiosPromise, AxiosRequestConfig} from 'axios';
+import {Configuration} from '../configuration';
 // Some imports not used depending on template conditions
 // @ts-ignore
-import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObject, setBearerAuthToObject, setOAuthToObject, setSearchParams, serializeDataIfNeeded, toPathString, createRequestFunction } from '../common';
+import {
+    assertParamExists,
+    createRequestFunction,
+    DUMMY_BASE_URL,
+    serializeDataIfNeeded,
+    setApiKeyToObject,
+    setBasicAuthToObject,
+    setBearerAuthToObject,
+    setOAuthToObject,
+    setSearchParams,
+    toPathString
+} from '../common';
 // @ts-ignore
-import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from '../base';
+import {BASE_PATH, BaseAPI, COLLECTION_FORMATS, RequestArgs, RequiredError} from '../base';
 // @ts-ignore
-import { Plant } from '../models';
+// @ts-ignore
+// @ts-ignore
+// @ts-ignore
+import {AddPlantRequestBody, Plant, PlantsStats, PlantSummary} from '../models';
+
 /**
  * PlantControllerApi - axios parameter creator
  * @export
@@ -31,22 +46,14 @@ export const PlantControllerApiAxiosParamCreator = function (configuration?: Con
         /**
          * 
          * @summary Add new plant, assign it to specifier user and specie
-         * @param {number} userId 
-         * @param {number} speciesId 
-         * @param {Plant} plant 
+         * @param {AddPlantRequestBody} addPlantRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        addPlant: async (userId: number, speciesId: number, plant: Plant, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'userId' is not null or undefined
-            assertParamExists('addPlant', 'userId', userId)
-            // verify required parameter 'speciesId' is not null or undefined
-            assertParamExists('addPlant', 'speciesId', speciesId)
-            // verify required parameter 'plant' is not null or undefined
-            assertParamExists('addPlant', 'plant', plant)
-            const localVarPath = `/plants/{userId}/{speciesId}`
-                .replace(`{${"userId"}}`, encodeURIComponent(String(userId)))
-                .replace(`{${"speciesId"}}`, encodeURIComponent(String(speciesId)));
+        addPlant: async (addPlantRequestBody: AddPlantRequestBody, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'addPlantRequestBody' is not null or undefined
+            assertParamExists('addPlant', 'addPlantRequestBody', addPlantRequestBody)
+            const localVarPath = `/plants`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -58,6 +65,10 @@ export const PlantControllerApiAxiosParamCreator = function (configuration?: Con
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            // authentication JWT_AUTH required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
@@ -65,7 +76,51 @@ export const PlantControllerApiAxiosParamCreator = function (configuration?: Con
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(plant, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(addPlantRequestBody, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Set plant photo
+         * @param {number} id 
+         * @param {string} body 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        addPlantPhoto: async (id: number, body: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('addPlantPhoto', 'id', id)
+            // verify required parameter 'body' is not null or undefined
+            assertParamExists('addPlantPhoto', 'body', body)
+            const localVarPath = `/plants/{id}/photo`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication JWT_AUTH required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(body, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -90,6 +145,44 @@ export const PlantControllerApiAxiosParamCreator = function (configuration?: Con
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication JWT_AUTH required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Get all plants summary
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAllPlantsSummary: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/plants/summary`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication JWT_AUTH required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
     
@@ -125,6 +218,82 @@ export const PlantControllerApiAxiosParamCreator = function (configuration?: Con
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            // authentication JWT_AUTH required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Get plant photo
+         * @param {number} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getPlantPhoto: async (id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('getPlantPhoto', 'id', id)
+            const localVarPath = `/plants/{id}/photo`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication JWT_AUTH required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Get plant stats
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getPlantsStats: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/plants/stats`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication JWT_AUTH required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
 
     
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -159,6 +328,48 @@ export const PlantControllerApiAxiosParamCreator = function (configuration?: Con
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            // authentication JWT_AUTH required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Changing Favourite flag in plant
+         * @param {number} plantId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        togglePlantFavourite: async (plantId: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'plantId' is not null or undefined
+            assertParamExists('togglePlantFavourite', 'plantId', plantId)
+            const localVarPath = `/plants/{plantId}/toggle-favourite`
+                .replace(`{${"plantId"}}`, encodeURIComponent(String(plantId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication JWT_AUTH required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
 
     
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -173,14 +384,18 @@ export const PlantControllerApiAxiosParamCreator = function (configuration?: Con
         /**
          * 
          * @summary Update plant
-         * @param {Plant} plant 
+         * @param {number} plantId 
+         * @param {AddPlantRequestBody} addPlantRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updatePlant: async (plant: Plant, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'plant' is not null or undefined
-            assertParamExists('updatePlant', 'plant', plant)
-            const localVarPath = `/plants`;
+        updatePlant: async (plantId: number, addPlantRequestBody: AddPlantRequestBody, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'plantId' is not null or undefined
+            assertParamExists('updatePlant', 'plantId', plantId)
+            // verify required parameter 'addPlantRequestBody' is not null or undefined
+            assertParamExists('updatePlant', 'addPlantRequestBody', addPlantRequestBody)
+            const localVarPath = `/plants/{plantId}`
+                .replace(`{${"plantId"}}`, encodeURIComponent(String(plantId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -192,6 +407,10 @@ export const PlantControllerApiAxiosParamCreator = function (configuration?: Con
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            // authentication JWT_AUTH required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
@@ -199,7 +418,7 @@ export const PlantControllerApiAxiosParamCreator = function (configuration?: Con
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(plant, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(addPlantRequestBody, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -219,14 +438,24 @@ export const PlantControllerApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Add new plant, assign it to specifier user and specie
-         * @param {number} userId 
-         * @param {number} speciesId 
-         * @param {Plant} plant 
+         * @param {AddPlantRequestBody} addPlantRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async addPlant(userId: number, speciesId: number, plant: Plant, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.addPlant(userId, speciesId, plant, options);
+        async addPlant(addPlantRequestBody: AddPlantRequestBody, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Plant>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.addPlant(addPlantRequestBody, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Set plant photo
+         * @param {number} id 
+         * @param {string} body 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async addPlantPhoto(id: number, body: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Plant>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.addPlantPhoto(id, body, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -237,6 +466,16 @@ export const PlantControllerApiFp = function(configuration?: Configuration) {
          */
         async getAllPlants(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Plant>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getAllPlants(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Get all plants summary
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getAllPlantsSummary(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<PlantSummary>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getAllPlantsSummary(options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -252,6 +491,27 @@ export const PlantControllerApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary Get plant photo
+         * @param {number} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getPlantPhoto(id: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getPlantPhoto(id, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Get plant stats
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getPlantsStats(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PlantsStats>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getPlantsStats(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @summary Delete plant by id
          * @param {number} id 
          * @param {*} [options] Override http request option.
@@ -263,13 +523,25 @@ export const PlantControllerApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Update plant
-         * @param {Plant} plant 
+         * @summary Changing Favourite flag in plant
+         * @param {number} plantId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updatePlant(plant: Plant, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.updatePlant(plant, options);
+        async togglePlantFavourite(plantId: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.togglePlantFavourite(plantId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Update plant
+         * @param {number} plantId 
+         * @param {AddPlantRequestBody} addPlantRequestBody 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async updatePlant(plantId: number, addPlantRequestBody: AddPlantRequestBody, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Plant>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updatePlant(plantId, addPlantRequestBody, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -285,14 +557,23 @@ export const PlantControllerApiFactory = function (configuration?: Configuration
         /**
          * 
          * @summary Add new plant, assign it to specifier user and specie
-         * @param {number} userId 
-         * @param {number} speciesId 
-         * @param {Plant} plant 
+         * @param {AddPlantRequestBody} addPlantRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        addPlant(userId: number, speciesId: number, plant: Plant, options?: any): AxiosPromise<string> {
-            return localVarFp.addPlant(userId, speciesId, plant, options).then((request) => request(axios, basePath));
+        addPlant(addPlantRequestBody: AddPlantRequestBody, options?: any): AxiosPromise<Plant> {
+            return localVarFp.addPlant(addPlantRequestBody, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Set plant photo
+         * @param {number} id 
+         * @param {string} body 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        addPlantPhoto(id: number, body: string, options?: any): AxiosPromise<Plant> {
+            return localVarFp.addPlantPhoto(id, body, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -302,6 +583,15 @@ export const PlantControllerApiFactory = function (configuration?: Configuration
          */
         getAllPlants(options?: any): AxiosPromise<Array<Plant>> {
             return localVarFp.getAllPlants(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Get all plants summary
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAllPlantsSummary(options?: any): AxiosPromise<Array<PlantSummary>> {
+            return localVarFp.getAllPlantsSummary(options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -315,6 +605,25 @@ export const PlantControllerApiFactory = function (configuration?: Configuration
         },
         /**
          * 
+         * @summary Get plant photo
+         * @param {number} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getPlantPhoto(id: number, options?: any): AxiosPromise<string> {
+            return localVarFp.getPlantPhoto(id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Get plant stats
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getPlantsStats(options?: any): AxiosPromise<PlantsStats> {
+            return localVarFp.getPlantsStats(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary Delete plant by id
          * @param {number} id 
          * @param {*} [options] Override http request option.
@@ -325,13 +634,24 @@ export const PlantControllerApiFactory = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Update plant
-         * @param {Plant} plant 
+         * @summary Changing Favourite flag in plant
+         * @param {number} plantId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updatePlant(plant: Plant, options?: any): AxiosPromise<void> {
-            return localVarFp.updatePlant(plant, options).then((request) => request(axios, basePath));
+        togglePlantFavourite(plantId: number, options?: any): AxiosPromise<void> {
+            return localVarFp.togglePlantFavourite(plantId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Update plant
+         * @param {number} plantId 
+         * @param {AddPlantRequestBody} addPlantRequestBody 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updatePlant(plantId: number, addPlantRequestBody: AddPlantRequestBody, options?: any): AxiosPromise<Plant> {
+            return localVarFp.updatePlant(plantId, addPlantRequestBody, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -346,15 +666,26 @@ export class PlantControllerApi extends BaseAPI {
     /**
      * 
      * @summary Add new plant, assign it to specifier user and specie
-     * @param {number} userId 
-     * @param {number} speciesId 
-     * @param {Plant} plant 
+     * @param {AddPlantRequestBody} addPlantRequestBody 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof PlantControllerApi
      */
-    public addPlant(userId: number, speciesId: number, plant: Plant, options?: AxiosRequestConfig) {
-        return PlantControllerApiFp(this.configuration).addPlant(userId, speciesId, plant, options).then((request) => request(this.axios, this.basePath));
+    public addPlant(addPlantRequestBody: AddPlantRequestBody, options?: AxiosRequestConfig) {
+        return PlantControllerApiFp(this.configuration).addPlant(addPlantRequestBody, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Set plant photo
+     * @param {number} id 
+     * @param {string} body 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof PlantControllerApi
+     */
+    public addPlantPhoto(id: number, body: string, options?: AxiosRequestConfig) {
+        return PlantControllerApiFp(this.configuration).addPlantPhoto(id, body, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -366,6 +697,17 @@ export class PlantControllerApi extends BaseAPI {
      */
     public getAllPlants(options?: AxiosRequestConfig) {
         return PlantControllerApiFp(this.configuration).getAllPlants(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get all plants summary
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof PlantControllerApi
+     */
+    public getAllPlantsSummary(options?: AxiosRequestConfig) {
+        return PlantControllerApiFp(this.configuration).getAllPlantsSummary(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -382,6 +724,29 @@ export class PlantControllerApi extends BaseAPI {
 
     /**
      * 
+     * @summary Get plant photo
+     * @param {number} id 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof PlantControllerApi
+     */
+    public getPlantPhoto(id: number, options?: AxiosRequestConfig) {
+        return PlantControllerApiFp(this.configuration).getPlantPhoto(id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get plant stats
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof PlantControllerApi
+     */
+    public getPlantsStats(options?: AxiosRequestConfig) {
+        return PlantControllerApiFp(this.configuration).getPlantsStats(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
      * @summary Delete plant by id
      * @param {number} id 
      * @param {*} [options] Override http request option.
@@ -394,13 +759,26 @@ export class PlantControllerApi extends BaseAPI {
 
     /**
      * 
-     * @summary Update plant
-     * @param {Plant} plant 
+     * @summary Changing Favourite flag in plant
+     * @param {number} plantId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof PlantControllerApi
      */
-    public updatePlant(plant: Plant, options?: AxiosRequestConfig) {
-        return PlantControllerApiFp(this.configuration).updatePlant(plant, options).then((request) => request(this.axios, this.basePath));
+    public togglePlantFavourite(plantId: number, options?: AxiosRequestConfig) {
+        return PlantControllerApiFp(this.configuration).togglePlantFavourite(plantId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Update plant
+     * @param {number} plantId 
+     * @param {AddPlantRequestBody} addPlantRequestBody 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof PlantControllerApi
+     */
+    public updatePlant(plantId: number, addPlantRequestBody: AddPlantRequestBody, options?: AxiosRequestConfig) {
+        return PlantControllerApiFp(this.configuration).updatePlant(plantId, addPlantRequestBody, options).then((request) => request(this.axios, this.basePath));
     }
 }

@@ -1,9 +1,9 @@
 import React from 'react';
 import {Col} from "react-bootstrap";
-import {MobileRow, InfoElement} from "./DashboardInfoStyle";
+import {InfoElement, MobileRow} from "./DashboardInfoStyle";
 
 
-function DashboardInfo() {
+const DashboardInfo: React.FC<{}> = () => {
     return (
         <MobileRow className="d-flex justify-content-center mt-3">
             <Col xxl={4} sm={6} xs={12} className="mt-2">

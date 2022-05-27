@@ -5,13 +5,13 @@ import {Plant} from "../../api";
 
 type NotesFormProps = {
     showNoteForm: boolean
-    showNoteFormSetter: any
+    hide: () => void,
     plant: Plant
 };
 
-export const Notes: React.FC<NotesFormProps> = ({showNoteForm, showNoteFormSetter, plant}) => {
-    return(
-        <Modal show={showNoteForm} onHide={() => showNoteFormSetter(false)} animation={false} size="xl">
+export const Notes: React.FC<NotesFormProps> = ({ showNoteForm, hide, plant }) => {
+    return (
+        <Modal show={showNoteForm} onHide={hide} animation={false} size="xl">
             <Modal.Header>
                 <Modal.Title>
                     Twoje notatki dla rośliny: {plant.name}
@@ -22,12 +22,12 @@ export const Notes: React.FC<NotesFormProps> = ({showNoteForm, showNoteFormSette
                     <Row>
                         Notatka:
                     </Row>
-                    <Row style={{border: "solid 1px black", padding: 15}}>
+                    <Row style={{ border: "solid 1px black", padding: 15 }}>
                         {plant.note}
                     </Row>
                     <Row className="mt-4 d-flex justify-content-center">
                         <Col sm={12} className="d-flex justify-content-center">
-                            <Button onClick={() => showNoteFormSetter(false)}>
+                            <Button onClick={hide}>
                                 Powrót
                             </Button>
                         </Col>

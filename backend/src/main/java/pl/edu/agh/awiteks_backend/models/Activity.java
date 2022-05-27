@@ -1,26 +1,36 @@
 package pl.edu.agh.awiteks_backend.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Objects;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
-@JsonIgnoreProperties({"plant"})
+@Entity
+@Table(name = "activities")
 public class Activity {
-    @Schema(required = true)
-    private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Schema(hidden = true)
+    private Integer id;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "plant_id", nullable = false)
     @Schema(required = true)
     private Plant plant;
+
     @Schema(required = true)
     private ActivityType activityType;
+
     @Schema(required = true)
     private String date;
 
-
-    public Activity(int id, Plant plant, ActivityType activityType, String date) {
-        this.id = id;
+    public Activity(Plant plant, ActivityType activityType, String date) {
         this.plant = plant;
         this.activityType = activityType;
         this.date = date;
@@ -46,19 +56,11 @@ public class Activity {
         this.date = date;
     }
 
-    public Activity copy() {
-        return new Activity(
-                id,
-                plant,
-                activityType,
-                date);
-    }
-
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -72,10 +74,14 @@ public class Activity {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Activity activity = (Activity) o;
-        return id == activity.id;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        final Activity activity = (Activity) o;
+        return Objects.equals(id, activity.id);
     }
 
     @Override

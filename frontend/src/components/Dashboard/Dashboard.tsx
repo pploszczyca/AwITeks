@@ -1,4 +1,3 @@
-import React from "react";
 import DashboardStats from "../DashboardStats/DashboardStats";
 import DashboardInfo from "../DashboardInfo/DashboardInfo";
 import {ContentContainer} from "../App/AppStyle"

@@ -13,15 +13,28 @@
  */
 
 
-import globalAxios, { AxiosPromise, AxiosInstance, AxiosRequestConfig } from 'axios';
-import { Configuration } from '../configuration';
+import globalAxios, {AxiosInstance, AxiosPromise, AxiosRequestConfig} from 'axios';
+import {Configuration} from '../configuration';
 // Some imports not used depending on template conditions
 // @ts-ignore
-import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObject, setBearerAuthToObject, setOAuthToObject, setSearchParams, serializeDataIfNeeded, toPathString, createRequestFunction } from '../common';
+import {
+    assertParamExists,
+    createRequestFunction,
+    DUMMY_BASE_URL,
+    serializeDataIfNeeded,
+    setApiKeyToObject,
+    setBasicAuthToObject,
+    setBearerAuthToObject,
+    setOAuthToObject,
+    setSearchParams,
+    toPathString
+} from '../common';
 // @ts-ignore
-import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from '../base';
+import {BASE_PATH, BaseAPI, COLLECTION_FORMATS, RequestArgs, RequiredError} from '../base';
 // @ts-ignore
-import { Species } from '../models';
+// @ts-ignore
+import {AddSpeciesRequestBody, Species} from '../models';
+
 /**
  * SpeciesControllerApi - axios parameter creator
  * @export
@@ -30,14 +43,14 @@ export const SpeciesControllerApiAxiosParamCreator = function (configuration?: C
     return {
         /**
          * 
-         * @summary Add new specie
-         * @param {Species} species 
+         * @summary Add new species
+         * @param {AddSpeciesRequestBody} addSpeciesRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        addSpecie: async (species: Species, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'species' is not null or undefined
-            assertParamExists('addSpecie', 'species', species)
+        addSpecies: async (addSpeciesRequestBody: AddSpeciesRequestBody, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'addSpeciesRequestBody' is not null or undefined
+            assertParamExists('addSpecies', 'addSpeciesRequestBody', addSpeciesRequestBody)
             const localVarPath = `/species`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -50,6 +63,10 @@ export const SpeciesControllerApiAxiosParamCreator = function (configuration?: C
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            // authentication JWT_AUTH required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
@@ -57,7 +74,7 @@ export const SpeciesControllerApiAxiosParamCreator = function (configuration?: C
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(species, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(addSpeciesRequestBody, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -83,6 +100,10 @@ export const SpeciesControllerApiAxiosParamCreator = function (configuration?: C
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            // authentication JWT_AUTH required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
 
     
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -101,9 +122,9 @@ export const SpeciesControllerApiAxiosParamCreator = function (configuration?: C
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getSpecie: async (id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getSpecies: async (id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('getSpecie', 'id', id)
+            assertParamExists('getSpecies', 'id', id)
             const localVarPath = `/species/{id}`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -116,6 +137,10 @@ export const SpeciesControllerApiAxiosParamCreator = function (configuration?: C
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication JWT_AUTH required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
     
@@ -135,9 +160,9 @@ export const SpeciesControllerApiAxiosParamCreator = function (configuration?: C
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        removeSpecie: async (id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        removeSpecies: async (id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('removeSpecie', 'id', id)
+            assertParamExists('removeSpecies', 'id', id)
             const localVarPath = `/species/{id}`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -150,6 +175,10 @@ export const SpeciesControllerApiAxiosParamCreator = function (configuration?: C
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication JWT_AUTH required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
     
@@ -169,9 +198,9 @@ export const SpeciesControllerApiAxiosParamCreator = function (configuration?: C
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateSpecie: async (species: Species, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        updateSpecies: async (species: Species, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'species' is not null or undefined
-            assertParamExists('updateSpecie', 'species', species)
+            assertParamExists('updateSpecies', 'species', species)
             const localVarPath = `/species`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -183,6 +212,10 @@ export const SpeciesControllerApiAxiosParamCreator = function (configuration?: C
             const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication JWT_AUTH required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
     
@@ -210,13 +243,13 @@ export const SpeciesControllerApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
-         * @summary Add new specie
-         * @param {Species} species 
+         * @summary Add new species
+         * @param {AddSpeciesRequestBody} addSpeciesRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async addSpecie(species: Species, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.addSpecie(species, options);
+        async addSpecies(addSpeciesRequestBody: AddSpeciesRequestBody, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Species>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.addSpecies(addSpeciesRequestBody, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -225,7 +258,7 @@ export const SpeciesControllerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getAllSpecies(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<object>>> {
+        async getAllSpecies(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Species>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getAllSpecies(options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -236,8 +269,8 @@ export const SpeciesControllerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getSpecie(id: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getSpecie(id, options);
+        async getSpecies(id: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Species>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getSpecies(id, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -247,8 +280,8 @@ export const SpeciesControllerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async removeSpecie(id: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.removeSpecie(id, options);
+        async removeSpecies(id: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.removeSpecies(id, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -258,8 +291,8 @@ export const SpeciesControllerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateSpecie(species: Species, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.updateSpecie(species, options);
+        async updateSpecies(species: Species, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateSpecies(species, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -274,13 +307,13 @@ export const SpeciesControllerApiFactory = function (configuration?: Configurati
     return {
         /**
          * 
-         * @summary Add new specie
-         * @param {Species} species 
+         * @summary Add new species
+         * @param {AddSpeciesRequestBody} addSpeciesRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        addSpecie(species: Species, options?: any): AxiosPromise<string> {
-            return localVarFp.addSpecie(species, options).then((request) => request(axios, basePath));
+        addSpecies(addSpeciesRequestBody: AddSpeciesRequestBody, options?: any): AxiosPromise<Species> {
+            return localVarFp.addSpecies(addSpeciesRequestBody, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -288,7 +321,7 @@ export const SpeciesControllerApiFactory = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAllSpecies(options?: any): AxiosPromise<Array<object>> {
+        getAllSpecies(options?: any): AxiosPromise<Array<Species>> {
             return localVarFp.getAllSpecies(options).then((request) => request(axios, basePath));
         },
         /**
@@ -298,8 +331,8 @@ export const SpeciesControllerApiFactory = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getSpecie(id: number, options?: any): AxiosPromise<void> {
-            return localVarFp.getSpecie(id, options).then((request) => request(axios, basePath));
+        getSpecies(id: number, options?: any): AxiosPromise<Species> {
+            return localVarFp.getSpecies(id, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -308,8 +341,8 @@ export const SpeciesControllerApiFactory = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        removeSpecie(id: number, options?: any): AxiosPromise<void> {
-            return localVarFp.removeSpecie(id, options).then((request) => request(axios, basePath));
+        removeSpecies(id: number, options?: any): AxiosPromise<void> {
+            return localVarFp.removeSpecies(id, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -318,8 +351,8 @@ export const SpeciesControllerApiFactory = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateSpecie(species: Species, options?: any): AxiosPromise<void> {
-            return localVarFp.updateSpecie(species, options).then((request) => request(axios, basePath));
+        updateSpecies(species: Species, options?: any): AxiosPromise<void> {
+            return localVarFp.updateSpecies(species, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -333,14 +366,14 @@ export const SpeciesControllerApiFactory = function (configuration?: Configurati
 export class SpeciesControllerApi extends BaseAPI {
     /**
      * 
-     * @summary Add new specie
-     * @param {Species} species 
+     * @summary Add new species
+     * @param {AddSpeciesRequestBody} addSpeciesRequestBody 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof SpeciesControllerApi
      */
-    public addSpecie(species: Species, options?: AxiosRequestConfig) {
-        return SpeciesControllerApiFp(this.configuration).addSpecie(species, options).then((request) => request(this.axios, this.basePath));
+    public addSpecies(addSpeciesRequestBody: AddSpeciesRequestBody, options?: AxiosRequestConfig) {
+        return SpeciesControllerApiFp(this.configuration).addSpecies(addSpeciesRequestBody, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -362,8 +395,8 @@ export class SpeciesControllerApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof SpeciesControllerApi
      */
-    public getSpecie(id: number, options?: AxiosRequestConfig) {
-        return SpeciesControllerApiFp(this.configuration).getSpecie(id, options).then((request) => request(this.axios, this.basePath));
+    public getSpecies(id: number, options?: AxiosRequestConfig) {
+        return SpeciesControllerApiFp(this.configuration).getSpecies(id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -374,8 +407,8 @@ export class SpeciesControllerApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof SpeciesControllerApi
      */
-    public removeSpecie(id: number, options?: AxiosRequestConfig) {
-        return SpeciesControllerApiFp(this.configuration).removeSpecie(id, options).then((request) => request(this.axios, this.basePath));
+    public removeSpecies(id: number, options?: AxiosRequestConfig) {
+        return SpeciesControllerApiFp(this.configuration).removeSpecies(id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -386,7 +419,7 @@ export class SpeciesControllerApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof SpeciesControllerApi
      */
-    public updateSpecie(species: Species, options?: AxiosRequestConfig) {
-        return SpeciesControllerApiFp(this.configuration).updateSpecie(species, options).then((request) => request(this.axios, this.basePath));
+    public updateSpecies(species: Species, options?: AxiosRequestConfig) {
+        return SpeciesControllerApiFp(this.configuration).updateSpecies(species, options).then((request) => request(this.axios, this.basePath));
     }
 }
