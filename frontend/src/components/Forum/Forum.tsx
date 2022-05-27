@@ -25,7 +25,7 @@ import Loader from "../Loader/Loader";
 import {ChipsButton} from "./FilterChips/ChipsStyle";
 
 const Forum: React.FC<{}> = () => {
-    const [isFavourite, setFavourite] = useState<boolean[]>([]);
+    const [isFavourite, setFavourite] = useState<any>({});
     const [filteredData, setFilteredData] = useState<ForumThreadSummaryResponseBody[]>([]);
     const [filters, setFilters] = useState(["",'',''])
     const [chipsActive, setChipsActive] = useState([false,false,false]);
@@ -53,10 +53,16 @@ const Forum: React.FC<{}> = () => {
 
     useEffect(() => {
         if(threadsList) {
-            setFavourite(threadsList.map(elem => elem.isFollowed));
+            let newIsFavourite: any = {};
+            threadsList.forEach(elem => newIsFavourite[elem.id] = elem.isFollowed)
+            setFavourite(newIsFavourite);
             setFilteredData(threadsList);
         }
     }, [threadsList]);
+
+    useEffect(() => {
+        console.log(isFavourite);
+    }, [isFavourite])
 
 
     const filterSearchBar = (e: { target: { value: string; }; }) => {
@@ -110,8 +116,14 @@ const Forum: React.FC<{}> = () => {
 
 
     async function toggleFavourite(idx: number) {
-        setFavourite(isFavourite.map((element, currIdx) => currIdx === idx ? !element : element));
-        await toggleFavouriteMutation.mutateAsync(idx + 1);
+        setFavourite((previous: any) => {
+            let newIsFavourite: any = {};
+            newIsFavourite[idx] = !previous[idx]
+            return {
+                ...previous,
+                ...newIsFavourite,
+        }})
+        await toggleFavouriteMutation.mutateAsync(idx);
     }
 
     function getHeaderRow(){
@@ -126,7 +138,7 @@ const Forum: React.FC<{}> = () => {
         )
     }
 
-    function getThread(thread: ForumThreadSummaryResponseBody, idx: number){
+    function getThread(thread: ForumThreadSummaryResponseBody){
         return(
             <ForumRow key={thread.id} className="m-0">
                 {content(thread).map((column, colId) => {
@@ -149,8 +161,8 @@ const Forum: React.FC<{}> = () => {
                                         </OpenButton>
 
                                         <Star icon = {faStarSolid}
-                                                className={isFavourite[idx] ? 'starred': 'unstarred'}
-                                                onClick={() => toggleFavourite(idx)}
+                                                className={isFavourite[thread.id] ? 'starred': 'unstarred'}
+                                                onClick={() => toggleFavourite(thread.id)}
                                         />
                                     </>
                                 ) : (
@@ -191,7 +203,7 @@ const Forum: React.FC<{}> = () => {
                 </Row>
                 <Row className="mt-5">
                     {getHeaderRow()}
-                    {filteredData!.map((thread,idx) => getThread(thread, idx))}
+                    {filteredData!.map((thread,idx) => getThread(thread))}
                 </Row>
             </ForumContainer>
             <AddThreadForm show={showAddThreadForm} setShowThreadForm={setShowAddThreadForm}/>
