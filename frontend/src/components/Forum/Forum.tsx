@@ -88,7 +88,7 @@ const Forum: React.FC<{}> = () => {
     const filterData = () => {
         let result = threadsList!;
         if(filters[1]!==''){
-            result = result.filter((elem: ForumThreadSummaryResponseBody) => elem.isFollowed);
+            result = result.filter((elem: ForumThreadSummaryResponseBody) => isFavourite[elem.id]);
         }
         if(filters[2]!==''){
             result = result.filter((elem: ForumThreadSummaryResponseBody) => elem.creatorName===me!.username);
