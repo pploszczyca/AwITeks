@@ -12,6 +12,7 @@
       - [Uruchomienie za pomocą dockera-compose](#uruchomienie-za-pomocą-dockera-compose)
       - [Uruchomienie za pomocą IntelliJ](#uruchomienie-za-pomocąintellij)
       - [Samodzielne uruchomienie bazy danych](#samodzielne-uruchomienie-bazy-danych)
+      - [Zmienne środowiskowe do wysyłania maili](#zmienne-środowiskowe-do-wysyłania-maili)
     - [Testowanie endpointów poza frontem](#testowanie-endpointów-poza-frontem)
     - [Uruchomienie frontendu](#uruchomienie-frontendu)
   - [Dodawanie prefiksu branch'a do commita](#dodawanie-prefiksu-brancha-do-commita)
@@ -27,6 +28,10 @@
       - [Co wyszło dobrze](#co-wyszło-dobrze)
       - [Co wyszło źle](#co-wyszło-źle)
       - [Wnioski](#wnioski)
+    - [Sprint 2](#sprint-2)
+      - [Co wyszło dobrze](#co-wyszło-dobrze-1)
+      - [Co wyszło źle](#co-wyszło-źle-1)
+      - [Wnioski](#wnioski-1)
 ## Technologie
 ### Backend
 * Java 17
@@ -199,3 +204,23 @@ Zadaniem Scrum Mastera jest, aby wykres był uzupełniany co tydzień według lo
 * Trzeba lepiej zorganizować podział pracy,
 * Wyznaczyć terminy na taski,
 * Większa otwartość w proszeniu o pomoc.
+
+### Sprint 2
+#### Co wyszło dobrze
+* Podzielenie się w pary i pair coding,
+* Szybkość komunikacji pomiędzy członkami zespołu,
+* Jakościowe Code Review,
+* Scrum Master robi robotę,
+* Frontend mega robota,
+* Apka dobrze działa, zarówno na backedzie i froncie,
+* Nauka i zastosowanie nowych narzędzi.
+
+#### Co wyszło źle
+* Nie utrzymywanie terminów wykonania tasków, złe ustalenia deadlinów,
+* Brak zaagażowania pod koniec sprintu.
+  
+#### Wnioski
+* W porównaniu do poprzedniego sprintu:
+  * Praca była bardziej zorganizowana,
+  * Członkowie zespołu byli bardziej chętni prosić się wzajemnie o pomoc,
+* Trzeba popracować nad bardziej realnymi deklaracjami ukończenia zadania w terminie i strarać się ich trzymać.
