@@ -223,4 +223,4 @@ Zadaniem Scrum Mastera jest, aby wykres był uzupełniany co tydzień według lo
 * W porównaniu do poprzedniego sprintu:
   * Praca była bardziej zorganizowana,
   * Członkowie zespołu byli bardziej chętni prosić się wzajemnie o pomoc,
-* Trzeba popracować nad bardziej realnymi deklaracjami ukończenia zadania w terminie i strarać się ich trzymać.
+* Trzeba popracować nad bardziej realnymi deklaracjami ukończenia zadania w terminie i starać się ich trzymać.
