@@ -15,7 +15,7 @@ public interface SpeciesRepository extends CrudRepository<Species, Integer> {
 
     @Query("SELECT s " +
             "FROM Species AS s " +
-            "WHERE s.creatorId IN (?2, -1)")
+            "WHERE s.creatorId IN (?1, -1)")
     Iterable<Species> findAllByCreatorId(int creatorId);
 
     Boolean existsByIdAndCreatorId(int id, int creatorId);

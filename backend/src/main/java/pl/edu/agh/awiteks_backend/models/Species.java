@@ -11,10 +11,16 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "species")
 @JsonIgnoreProperties({"plantList"})
+@Getter
+@Setter
+@NoArgsConstructor
 public class Species {
     public static final int NO_CREATOR = -1;
 
@@ -64,89 +70,6 @@ public class Species {
         this.fertilizationRoutine = fertilizationRoutine;
         this.fertilizationDose = fertilizationDose;
         this.creatorId = creatorID;
-        this.plantList = plantList;
-    }
-
-    public Species() {
-    }
-
-    public int getMaxAge() {
-        return maxAge;
-    }
-
-    public Insolation getNeededInsolation() {
-        return neededInsolation;
-    }
-
-    public int getWaterDose() {
-        return waterDose;
-    }
-
-    public int getWaterRoutine() {
-        return waterRoutine;
-    }
-
-    public int getFertilizationRoutine() {
-        return fertilizationRoutine;
-    }
-
-    public Fertilization getFertilizationDose() {
-        return fertilizationDose;
-    }
-
-    public void setMaxAge(int maxAge) {
-        this.maxAge = maxAge;
-    }
-
-    public void setNeededInsolation(Insolation neededInsolation) {
-        this.neededInsolation = neededInsolation;
-    }
-
-    public void setWaterDose(int waterDose) {
-        this.waterDose = waterDose;
-    }
-
-    public void setWaterRoutine(int waterRoutine) {
-        this.waterRoutine = waterRoutine;
-    }
-
-    public void setFertilizationRoutine(int fertilizationRoutine) {
-        this.fertilizationRoutine = fertilizationRoutine;
-    }
-
-    public void setFertilizationDose(Fertilization fertilizationDose) {
-        this.fertilizationDose = fertilizationDose;
-    }
-
-    public int getCreatorId() {
-        return creatorId;
-    }
-
-    public void setCreatorId(int creatorId) {
-        this.creatorId = creatorId;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<Plant> getPlantList() {
-        return plantList;
-    }
-
-    public void setPlantList(List<Plant> plantList) {
         this.plantList = plantList;
     }
 }

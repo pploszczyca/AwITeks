@@ -18,10 +18,16 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "plants")
 @JsonIgnoreProperties({"user", "plantActivities"})
+@Getter
+@Setter
+@NoArgsConstructor
 public class Plant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -76,49 +82,6 @@ public class Plant {
                 favourite, photo);
     }
 
-    public Plant() {
-    }
-
-    public String getNote() {
-        return note;
-    }
-
-    public void setNote(String note) {
-        this.note = note;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public Species getSpecies() {
-        return species;
-    }
-
-    public Insolation getActualInsolation() {
-        return actualInsolation;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public void setSpecies(Species spiece) {
-        this.species = spiece;
-    }
-
-    public void setActualInsolation(Insolation actualInsolation) {
-        this.actualInsolation = actualInsolation;
-    }
-
-    public List<Activity> getPlantActivities() {
-        return plantActivities;
-    }
-
-    public void setPlantActivities(List<Activity> plantActivities) {
-        this.plantActivities = plantActivities;
-    }
-
     public void addActivity(Activity activity) {
         plantActivities.add(activity);
         activity.setPlant(this);
@@ -126,10 +89,6 @@ public class Plant {
 
     public boolean isFavourite() {
         return favourite;
-    }
-
-    public void setFavourite(boolean favourite) {
-        this.favourite = favourite;
     }
 
     public void removeActivity(Activity activity) {
@@ -142,30 +101,6 @@ public class Plant {
                 .filter(activity -> activity.getId() == activityId)
                 .findFirst()
                 .ifPresent(this::removeActivity);
-    }
-
-    public String getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(String photo) {
-        this.photo = photo;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     @JsonProperty
