@@ -14,7 +14,8 @@ public interface ForumMapper {
     @Mapping(target = "creatorName", expression = "java(forumThread.getUser().getUsername())")
     @Mapping(target = "creationDate", source = "forumThread.creationTime")
     @Mapping(target = "isFollowed", expression = "java(user.isFollowing(forumThread))")
-    ForumThreadSummaryResponseBody forumThreadToSummary(ForumThread forumThread, User user);
+    ForumThreadSummaryResponseBody forumThreadToSummary(ForumThread forumThread,
+                                                        User user);
 
     @Mapping(target = "userName", source = "forumPost.user.username")
     @Mapping(target = "creationDate", source = "forumPost.date")

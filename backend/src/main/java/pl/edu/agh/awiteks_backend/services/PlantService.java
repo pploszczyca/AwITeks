@@ -156,11 +156,8 @@ public class PlantService {
 
     private Plant makePlantFromRequestBody(
             AddPlantRequestBody addPlantRequestBody, int userId) {
-        final var newPlant = plantMapper.requestBodyToPlant(addPlantRequestBody, userId);
-
-        newPlant.setPlantActivities(new LinkedList<>());
-
-        return newPlant;
+        return plantMapper.requestBodyToPlant(addPlantRequestBody, userId,
+                new LinkedList<>());
     }
 
     private void fixPlantActivities(Plant plant,

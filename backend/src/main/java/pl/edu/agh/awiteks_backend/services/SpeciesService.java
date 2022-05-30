@@ -56,9 +56,9 @@ public class SpeciesService {
 
     public Species addSpecies(AddSpeciesRequestBody addSpeciesRequestBody,
                               int creatorId) {
-        final var species = speciesMapper.fromAddRequestBodyToSpecies(addSpeciesRequestBody);
-        species.setCreatorId(creatorId);
-        species.setPlantList(new ArrayList<>());
+        final var species =
+                speciesMapper.fromAddRequestBodyToSpecies(addSpeciesRequestBody,
+                        creatorId, new ArrayList<>());
 
         this.speciesRepository.save(species);
         return species;
