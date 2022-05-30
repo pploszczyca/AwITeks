@@ -65,12 +65,10 @@ public class ForumService {
     }
 
     public List<ForumThreadSummaryResponseBody> getAllThreads(int userId) {
-        final var user = userRepository.findById(userId).orElseThrow();
-
         return this.streamUtilities
                 .asStream(forumRepository.findAll())
                 .map(forumThread -> forumMapper.forumThreadToSummary(
-                        forumThread, user)).toList();
+                        forumThread, userId)).toList();
     }
 
     public Optional<ForumThread> get(int id) {
@@ -135,10 +133,8 @@ public class ForumService {
                 this.forumRepository.findById(threadId).orElseThrow();
         final User creator = userRepository.findById(userId).orElseThrow();
         final ForumPost post =
-                this.postRepository.findById(postId).orElseThrow();
-        if (!(post.getUser() == creator)) {
-            throw new IllegalCallerException();
-        }
+                this.postRepository.findByIdAndUserId(postId, userId)
+                        .orElseThrow();
         creator.getForumPostList().remove(post);
         post.setContent(postRequestBody.content());
         thread.addForumPost(post);
@@ -154,13 +150,10 @@ public class ForumService {
                 this.userRepository.findById(userId).orElseThrow();
 
         if (follower.isFollowing(thread)) {
-            thread.getFollowingUsers().remove(follower);
             follower.getFollowedThreads().remove(thread);
         } else {
-            thread.getFollowingUsers().add(follower);
             follower.getFollowedThreads().add(thread);
         }
-        forumRepository.save(thread);
         userRepository.save(follower);
 
         return thread;

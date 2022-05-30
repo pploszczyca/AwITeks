@@ -15,7 +15,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
-import org.springframework.context.annotation.Lazy;
 
 @Entity
 @Table(name = "user",
@@ -64,9 +63,9 @@ public class User {
             String username,
             String email,
             String password,
-            @Lazy List<Plant> userPlants,
-            @Lazy List<ForumPost> forumPostList,
-            @Lazy List<ForumThread> forumThreadList) {
+            List<Plant> userPlants,
+            List<ForumPost> forumPostList,
+            List<ForumThread> forumThreadList) {
         this.username = username;
         this.email = email;
         this.password = password;

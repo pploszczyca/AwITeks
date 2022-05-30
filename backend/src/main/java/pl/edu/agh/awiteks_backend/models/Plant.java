@@ -188,4 +188,8 @@ public class Plant {
                 .map(Activity::getDate)
                 .orElseThrow();
     }
+
+    public void changeIsFavourite() {
+        setFavourite(!isFavourite());
+    }
 }

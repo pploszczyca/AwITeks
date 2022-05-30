@@ -87,7 +87,7 @@ public class PlantService {
                 .findByIdAndUserId(plantId, userId)
                 .ifPresent(
                         plant -> {
-                            plant.setFavourite(!plant.isFavourite());
+                            plant.changeIsFavourite();
                             this.plantRepository.save(plant);
                         }
                 );
@@ -211,9 +211,11 @@ public class PlantService {
     }
 
     public Plant setPhoto(int plantId, int userId, String base64String) {
-        final Plant plant = plantRepository.findByIdAndUserId(plantId, userId)
+        final Plant plant = plantRepository
+                .findByIdAndUserId(plantId, userId)
                 .orElseThrow();
         plant.setPhoto(base64String);
+        plantRepository.save(plant);
         return plant;
     }
 }
