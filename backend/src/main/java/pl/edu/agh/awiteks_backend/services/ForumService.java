@@ -11,7 +11,6 @@ import pl.edu.agh.awiteks_backend.api.forum.body_models.AddThreadRequestBody;
 import pl.edu.agh.awiteks_backend.api.forum.body_models.ForumPostUserIncluded;
 import pl.edu.agh.awiteks_backend.api.forum.body_models.ForumThreadSummaryResponseBody;
 import pl.edu.agh.awiteks_backend.mappers.ForumMapper;
-import static pl.edu.agh.awiteks_backend.mappers.ForumMapper.mapForumThreadToForumThreadSummary;
 import pl.edu.agh.awiteks_backend.models.ForumPost;
 import pl.edu.agh.awiteks_backend.models.ForumThread;
 import pl.edu.agh.awiteks_backend.models.User;
@@ -30,15 +29,19 @@ public class ForumService {
 
     private final StreamUtilities streamUtilities;
 
+    private final ForumMapper forumMapper;
+
     @Autowired
     public ForumService(ForumRepository forumRepository,
                         UserRepository userRepository,
                         PostRepository postRepository,
-                        StreamUtilities streamUtilities) {
+                        StreamUtilities streamUtilities,
+                        ForumMapper forumMapper) {
         this.postRepository = postRepository;
         this.userRepository = userRepository;
         this.forumRepository = forumRepository;
         this.streamUtilities = streamUtilities;
+        this.forumMapper = forumMapper;
     }
 
     public ForumThread addThread(AddThreadRequestBody addThreadRequestBody,
@@ -64,8 +67,9 @@ public class ForumService {
     public List<ForumThreadSummaryResponseBody> getAllThreads(int userId) {
         final var user = userRepository.findById(userId).orElseThrow();
 
-        return this.streamUtilities.asStream(forumRepository.findAll())
-                .map(forumThread -> mapForumThreadToForumThreadSummary(
+        return this.streamUtilities
+                .asStream(forumRepository.findAll())
+                .map(forumThread -> forumMapper.forumThreadToSummary(
                         forumThread, user)).toList();
     }
 
@@ -114,7 +118,7 @@ public class ForumService {
     public List<ForumPostUserIncluded> getPostsUserIncludedFromThread(
             int threadId) {
         return getPostsFromThread(threadId).stream()
-                .map(ForumMapper::mapForumPostToForumPostUserIncluded).collect(
+                .map(forumMapper::forumPostToPostUserIncluded).collect(
                         Collectors.toList());
     }
 

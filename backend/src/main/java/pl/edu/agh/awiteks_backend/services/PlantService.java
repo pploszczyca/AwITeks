@@ -35,19 +35,23 @@ public class PlantService {
 
     private final PlantUtilities plantUtilities;
 
+    private final PlantMapper plantMapper;
+
     @Autowired
     public PlantService(PlantRepository modelRepository,
                         UserRepository userRepository,
                         SpeciesRepository speciesRepository,
                         PlantValidator plantValidator,
                         ListUtilities listUtilities,
-                        PlantUtilities plantUtilities) {
+                        PlantUtilities plantUtilities,
+                        PlantMapper plantMapper) {
         this.plantRepository = modelRepository;
         this.userRepository = userRepository;
         this.speciesRepository = speciesRepository;
         this.plantValidator = plantValidator;
         this.listUtilities = listUtilities;
         this.plantUtilities = plantUtilities;
+        this.plantMapper = plantMapper;
     }
 
     public Plant addPlant(AddPlantRequestBody addPlantRequestBody, int userId) {
@@ -116,7 +120,7 @@ public class PlantService {
 
     public List<PlantSummary> getPlantSummaries(int userId) {
         return getUsersPlants(userId).stream()
-                .map(PlantMapper::plantToPlantSummary)
+                .map(plantMapper::plantToSummary)
                 .collect(Collectors.toList());
     }
 
@@ -152,19 +156,11 @@ public class PlantService {
 
     private Plant makePlantFromRequestBody(
             AddPlantRequestBody addPlantRequestBody, int userId) {
-        final var species = speciesRepository.findByIdAndCreatorId(
-                addPlantRequestBody.speciesId(), userId).orElseThrow();
-        final var user = userRepository.findById(userId).orElseThrow();
+        final var newPlant = plantMapper.requestBodyToPlant(addPlantRequestBody, userId);
 
-        return new Plant(
-                addPlantRequestBody.name(),
-                user,
-                species,
-                addPlantRequestBody.note(),
-                addPlantRequestBody.insolation(),
-                new LinkedList<>(),
-                false,
-                addPlantRequestBody.photo());
+        newPlant.setPlantActivities(new LinkedList<>());
+
+        return newPlant;
     }
 
     private void fixPlantActivities(Plant plant,

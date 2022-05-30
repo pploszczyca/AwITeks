@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.edu.agh.awiteks_backend.api.species.body_models.AddSpeciesRequestBody;
+import pl.edu.agh.awiteks_backend.mappers.SpeciesMapper;
 import pl.edu.agh.awiteks_backend.models.Species;
 import pl.edu.agh.awiteks_backend.repositories.SpeciesRepository;
 import pl.edu.agh.awiteks_backend.utilities.StreamUtilities;
@@ -16,11 +17,15 @@ public class SpeciesService {
 
     private final StreamUtilities streamUtilities;
 
+    private final SpeciesMapper speciesMapper;
+
     @Autowired
     public SpeciesService(SpeciesRepository speciesRepository,
-                          StreamUtilities streamUtilities) {
+                          StreamUtilities streamUtilities,
+                          SpeciesMapper speciesMapper) {
         this.speciesRepository = speciesRepository;
         this.streamUtilities = streamUtilities;
+        this.speciesMapper = speciesMapper;
     }
 
     public List<Species> getAll(int creatorId) {
@@ -51,16 +56,9 @@ public class SpeciesService {
 
     public Species addSpecies(AddSpeciesRequestBody addSpeciesRequestBody,
                               int creatorId) {
-        final var species = new Species(
-                addSpeciesRequestBody.name(),
-                addSpeciesRequestBody.maxAge(),
-                addSpeciesRequestBody.neededInsolation(),
-                addSpeciesRequestBody.waterDose(),
-                addSpeciesRequestBody.waterRoutine(),
-                addSpeciesRequestBody.fertilizationRoutine(),
-                addSpeciesRequestBody.fertilizationDose(),
-                creatorId,
-                new ArrayList<>());
+        final var species = speciesMapper.fromAddRequestBodyToSpecies(addSpeciesRequestBody);
+        species.setCreatorId(creatorId);
+        species.setPlantList(new ArrayList<>());
 
         this.speciesRepository.save(species);
         return species;
