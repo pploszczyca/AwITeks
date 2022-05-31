@@ -29,6 +29,7 @@ public class ActivityService extends ModelService<Activity> {
         this.activityMapper = activityMapper;
     }
 
+    // TODO: Repair adding activity
     public void addActivity(AddActivityRequestBody activityRequestBody,
                             int userId) {
         plantRepository
