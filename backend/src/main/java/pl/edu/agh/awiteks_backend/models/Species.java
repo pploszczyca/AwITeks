@@ -56,20 +56,4 @@ public class Species {
     @OneToMany(mappedBy = "species", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @Schema(required = true)
     private List<Plant> plantList;
-
-    public Species(String name, int maxAge, Insolation neededInsolation,
-                   int waterDose,
-                   int waterRoutine, int fertilizationRoutine,
-                   Fertilization fertilizationDose, int creatorID,
-                   List<Plant> plantList) {
-        this.name = name;
-        this.maxAge = maxAge;
-        this.neededInsolation = neededInsolation;
-        this.waterDose = waterDose;
-        this.waterRoutine = waterRoutine;
-        this.fertilizationRoutine = fertilizationRoutine;
-        this.fertilizationDose = fertilizationDose;
-        this.creatorId = creatorID;
-        this.plantList = plantList;
-    }
 }

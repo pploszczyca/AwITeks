@@ -1,7 +1,6 @@
 package pl.edu.agh.awiteks_backend.models;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.util.LinkedList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -64,26 +63,6 @@ public class User {
     )
     @Schema(required = true)
     private List<ForumThread> followedThreads;
-
-    public User(
-            String username,
-            String email,
-            String password,
-            List<Plant> userPlants,
-            List<ForumPost> forumPostList,
-            List<ForumThread> forumThreadList) {
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.userPlants = userPlants;
-        this.forumPostList = forumPostList;
-        this.forumThreadList = forumThreadList;
-    }
-
-    public User(String username, String email, String password) {
-        this(username, email, password, new LinkedList<>(), new LinkedList<>(),
-                new LinkedList<>());
-    }
 
     public void addPlant(Plant plant) {
         userPlants.add(plant);

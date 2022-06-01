@@ -63,25 +63,6 @@ public class Plant {
     @Lob
     private String photo;
 
-    public Plant(String name, User user, Species species, String note,
-                 Insolation actualInsolation, List<Activity> plantActivities,
-                 boolean favourite, String photo) {
-        this.name = name;
-        this.user = user;
-        this.species = species;
-        this.note = note;
-        this.actualInsolation = actualInsolation;
-        this.plantActivities = plantActivities;
-        this.favourite = favourite;
-        this.photo = photo;
-    }
-
-    public Plant(String name, User user, Species species, String note,
-                 Insolation actualInsolation, boolean favourite, String photo) {
-        this(name, user, species, note, actualInsolation, new ArrayList<>(),
-                favourite, photo);
-    }
-
     public void addActivity(Activity activity) {
         plantActivities.add(activity);
         activity.setPlant(this);

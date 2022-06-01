@@ -57,12 +57,6 @@ public class ForumThread {
         this.forumPosts = new ArrayList<>();
     }
 
-    public ForumThread(String title, User user, List<ForumPost> forumPosts) {
-        this.title = title;
-        this.user = user;
-        this.forumPosts = forumPosts;
-    }
-
     public void addForumPost(ForumPost post) {
         this.forumPosts.add(post);
     }
