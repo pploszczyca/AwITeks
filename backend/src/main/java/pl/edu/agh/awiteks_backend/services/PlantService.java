@@ -94,7 +94,7 @@ public class PlantService {
                 .findByIdAndUserId(plantId, userId)
                 .ifPresent(
                         plant -> {
-                            plant.setSendReminders(!plant.isSendReminders());
+                            plant.toggleSendReminders();
                             this.plantRepository.save(plant);
                         }
                 );

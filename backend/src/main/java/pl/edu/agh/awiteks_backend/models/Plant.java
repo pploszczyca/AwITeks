@@ -143,6 +143,10 @@ public class Plant {
         this.sendReminders = sendReminders;
     }
 
+    public void toggleSendReminders(){
+        this.sendReminders = !this.sendReminders;
+    }
+
     public void removeActivity(Activity activity) {
         plantActivities.remove(activity);
     }
