@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Stream;
 import org.apache.commons.lang3.tuple.Pair;
 import pl.edu.agh.awiteks_backend.models.ActivityType;
 import pl.edu.agh.awiteks_backend.models.Plant;
@@ -20,10 +21,14 @@ public class PlantUtilities {
             new SimpleDateFormat(DATE_FORMAT);
 
     public int getNumberOfNeglectedPlants(User user) {
-        return findAllPlantsThatNeedActivitiesToday(user).size();
+        return findAllPlantsThatNeedActivitiesToday(user).toList().size();
     }
 
-    public List<Pair<Plant, List<ActivityType>>> findAllPlantsThatNeedActivitiesToday(
+    public List<Pair<Plant, List<ActivityType>>> findAllPlantsThatNeedNotifications(User user){
+        return findAllPlantsThatNeedActivitiesToday(user).filter(plantListPair -> plantListPair.getLeft().isSendReminders()).toList();
+    }
+
+    private Stream<Pair<Plant, List<ActivityType>>> findAllPlantsThatNeedActivitiesToday(
             User user) {
         return user.getUserPlants().stream().map(plant -> {
             List<ActivityType> actionsNeededToday;
@@ -34,7 +39,7 @@ public class PlantUtilities {
                 actionsNeededToday = new ArrayList<>();
             }
             return Pair.of(plant, actionsNeededToday);
-        }).filter(pair -> !pair.getRight().isEmpty()).toList();
+        }).filter(pair -> !pair.getRight().isEmpty());
     }
 
     private List<ActivityType> getActionsNeededForPlantToday(Plant plant)

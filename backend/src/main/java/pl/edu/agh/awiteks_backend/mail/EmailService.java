@@ -40,7 +40,7 @@ public class EmailService {
     private void sendEmailToUserIfNeeded(User user) {
         final List<Pair<Plant, List<ActivityType>>>
                 listOfPlantsWhichNeedNotification =
-                plantUtilities.findAllPlantsThatNeedActivitiesToday(user);
+                plantUtilities.findAllPlantsThatNeedNotifications(user);
 
         if (listOfPlantsWhichNeedNotification.size() > 0) {
             sendNotificationEmail(user, listOfPlantsWhichNeedNotification);
@@ -52,7 +52,7 @@ public class EmailService {
         final String messageHeader = "Dear " + user.getUsername() +
                 "!\nWe regret to inform you that your plants may be dying really soon. To prevent that, you need to take the following actions:\n";
         final String message =
-                plantsToNotify.stream().filter(plantListPair -> plantListPair.getLeft().isSendReminders()).map(this::makeLineForPlant)
+                plantsToNotify.stream().map(this::makeLineForPlant)
                         .reduce("", (result, element) -> result + element);
 
         final String messageFooter = "Kind regards,\nTeam AwITeks.";
