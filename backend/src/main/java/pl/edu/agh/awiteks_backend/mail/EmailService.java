@@ -52,7 +52,7 @@ public class EmailService {
         final String messageHeader = "Dear " + user.getUsername() +
                 "!\nWe regret to inform you that your plants may be dying really soon. To prevent that, you need to take the following actions:\n";
         final String message =
-                plantsToNotify.stream().map(this::makeLineForPlant)
+                plantsToNotify.stream().filter(plantListPair -> plantListPair.getLeft().isSendReminders()).map(this::makeLineForPlant)
                         .reduce("", (result, element) -> result + element);
 
         final String messageFooter = "Kind regards,\nTeam AwITeks.";
