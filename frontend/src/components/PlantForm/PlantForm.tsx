@@ -27,7 +27,6 @@ type PlantFormProps = {
 export const PlantForm: React.FC<PlantFormProps> =
     ({ initialValues, show, setShowPlantForm, formTitle, onSubmit, acceptBtnText, successToastText }) => {
         const [showSpeciesForm, setShowSpeciesForm] = useState(false);
-        const [photo, setPhoto] = useState<string>('');
         const { data: speciesList, isLoading } = useQuery(
             'species',
             () => getApis().speciesApi.getAllSpecies().then(resp => resp.data),
@@ -47,12 +46,12 @@ export const PlantForm: React.FC<PlantFormProps> =
             setShowSpeciesForm(false);
         };
 
-        const displayPhoto = (event: any) => {
+        const displayPhoto = (event: any, values: any) => {
             let input = event.target;
 
             toBase64(input).then(data => {
                 if(typeof(data) === "string"){
-                    setPhoto(data)
+                    values.photo = data;
                 }
             })
         };
@@ -76,7 +75,6 @@ export const PlantForm: React.FC<PlantFormProps> =
                             }}
                             onSubmit={async (values, { setSubmitting }) => {
                                 try {
-                                    values.photo = photo;
                                     await onSubmit(values);
                                     toast.success(successToastText);
                                     hide();
@@ -89,7 +87,7 @@ export const PlantForm: React.FC<PlantFormProps> =
                                 }
                             }}
                         >
-                            {({ isSubmitting }) => (
+                            {({ isSubmitting, values }) => (
                                 <Form>
                                     <Container>
                                         <Row>
@@ -104,12 +102,12 @@ export const PlantForm: React.FC<PlantFormProps> =
                                             <Col className="form-group mt-3" xl={4} md={12}>
                                                 <label>Zdjęcie:</label><br />
                                                 <div className="d-flex gap-1 align-items-center">
-                                                    {photo !== "" ? (
-                                                        <img id="plantPhoto" src={base64Header + photo} alt="" width={64} height={64}/>
+                                                    {values.photo !== "" ? (
+                                                        <img id="plantPhoto" src={base64Header + values.photo} alt="" width={64} height={64}/>
                                                     ) : (
                                                         <></>
                                                     )}
-                                                    <Field id="photoInput" className="form-control" type="file" name='edit-photo' accept="image/jpeg" onChange={displayPhoto}/>
+                                                    <Field id="photoInput" className="form-control" type="file" name='edit-photo' accept="image/jpeg" onChange={(e: any) => displayPhoto(e, values)}/>
                                                 </div>
                                             </Col>
 
