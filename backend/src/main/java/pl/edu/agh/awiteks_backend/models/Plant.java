@@ -75,19 +75,11 @@ public class Plant {
         return favourite;
     }
 
-    public void setFavourite(boolean favourite) {
-        this.favourite = favourite;
-    }
-
     public boolean isSendReminders() {
         return sendReminders;
     }
 
-    public void setSendReminders(boolean sendReminders) {
-        this.sendReminders = sendReminders;
-    }
-
-    public void toggleSendReminders(){
+    public void toggleSendReminders() {
         this.sendReminders = !this.sendReminders;
     }
 

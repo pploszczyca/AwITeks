@@ -24,8 +24,11 @@ public class PlantUtilities {
         return findAllPlantsThatNeedActivitiesToday(user).toList().size();
     }
 
-    public List<Pair<Plant, List<ActivityType>>> findAllPlantsThatNeedNotifications(User user){
-        return findAllPlantsThatNeedActivitiesToday(user).filter(plantListPair -> plantListPair.getLeft().isSendReminders()).toList();
+    public List<Pair<Plant, List<ActivityType>>> findAllPlantsThatNeedNotifications(
+            User user) {
+        return findAllPlantsThatNeedActivitiesToday(user).filter(
+                        plantListPair -> plantListPair.getLeft().isSendReminders())
+                .toList();
     }
 
     private Stream<Pair<Plant, List<ActivityType>>> findAllPlantsThatNeedActivitiesToday(
