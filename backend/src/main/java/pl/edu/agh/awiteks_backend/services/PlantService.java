@@ -89,6 +89,17 @@ public class PlantService {
                 );
     }
 
+    public void changeReminders(int plantId, int userId) {
+        this.plantRepository
+                .findByIdAndUserId(plantId, userId)
+                .ifPresent(
+                        plant -> {
+                            plant.toggleSendReminders();
+                            this.plantRepository.save(plant);
+                        }
+                );
+    }
+
     private void addPlantToUserList(Plant plant, int userId) {
         userRepository
                 .findById(userId)
