@@ -6,30 +6,32 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.edu.agh.awiteks_backend.api.species.body_models.AddSpeciesRequestBody;
+import pl.edu.agh.awiteks_backend.mappers.SpeciesMapper;
 import pl.edu.agh.awiteks_backend.models.Species;
 import pl.edu.agh.awiteks_backend.repositories.SpeciesRepository;
-import pl.edu.agh.awiteks_backend.utilities.StreamUtilities;
+import pl.edu.agh.awiteks_backend.utilities.ListUtilities;
 
 @Service
 public class SpeciesService {
     private final SpeciesRepository speciesRepository;
 
-    private final StreamUtilities streamUtilities;
+    private final SpeciesMapper speciesMapper;
+
+    private final ListUtilities listUtilities;
 
     @Autowired
     public SpeciesService(SpeciesRepository speciesRepository,
-                          StreamUtilities streamUtilities) {
+                          SpeciesMapper speciesMapper,
+                          ListUtilities listUtilities) {
         this.speciesRepository = speciesRepository;
-        this.streamUtilities = streamUtilities;
+        this.speciesMapper = speciesMapper;
+        this.listUtilities = listUtilities;
     }
 
     public List<Species> getAll(int creatorId) {
-        return streamUtilities
-                .asStream(speciesRepository.findAll())
-                .filter(species ->
-                        species.getCreatorId() == Species.NO_CREATOR ||
-                                species.getCreatorId() == creatorId)
-                .toList();
+        return listUtilities
+                .iterableToList(
+                        speciesRepository.findAllByCreatorId(creatorId));
     }
 
     public Optional<Species> get(int id, int creatorId) {
@@ -37,9 +39,7 @@ public class SpeciesService {
     }
 
     public void remove(int id, int creatorId) {
-        if (this.speciesRepository.existsByIdAndCreatorId(id, creatorId)) {
-            this.speciesRepository.deleteById(id);
-        }
+        this.speciesRepository.deleteByIdAndCreatorId(id, creatorId);
     }
 
     public void update(Species object, int creatorId) {
@@ -51,16 +51,9 @@ public class SpeciesService {
 
     public Species addSpecies(AddSpeciesRequestBody addSpeciesRequestBody,
                               int creatorId) {
-        final var species = new Species(
-                addSpeciesRequestBody.name(),
-                addSpeciesRequestBody.maxAge(),
-                addSpeciesRequestBody.neededInsolation(),
-                addSpeciesRequestBody.waterDose(),
-                addSpeciesRequestBody.waterRoutine(),
-                addSpeciesRequestBody.fertilizationRoutine(),
-                addSpeciesRequestBody.fertilizationDose(),
-                creatorId,
-                new ArrayList<>());
+        final var species =
+                speciesMapper.fromAddRequestBodyToSpecies(addSpeciesRequestBody,
+                        creatorId, new ArrayList<>());
 
         this.speciesRepository.save(species);
         return species;

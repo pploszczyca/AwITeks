@@ -1,37 +1,28 @@
 package pl.edu.agh.awiteks_backend.mappers;
 
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.springframework.beans.factory.annotation.Autowired;
 import pl.edu.agh.awiteks_backend.api.forum.body_models.ForumPostUserIncluded;
 import pl.edu.agh.awiteks_backend.api.forum.body_models.ForumThreadSummaryResponseBody;
 import pl.edu.agh.awiteks_backend.models.ForumPost;
 import pl.edu.agh.awiteks_backend.models.ForumThread;
-import pl.edu.agh.awiteks_backend.models.User;
+import pl.edu.agh.awiteks_backend.repositories.UserRepository;
 
-public class ForumMapper {
-    public static ForumThreadSummaryResponseBody mapForumThreadToForumThreadSummary(
-            ForumThread forumThread, User user) {
-        if (forumThread == null) {
-            return null;
-        }
-        return new ForumThreadSummaryResponseBody(
-                forumThread.getId(),
-                forumThread.getTitle(),
-                forumThread.getUser().getUsername(),
-                forumThread.getCreationTime(),
-                forumThread.getPostsCount(),
-                user.isFollowing(forumThread)
-        );
-    }
+@Mapper(componentModel = "spring")
+public abstract class ForumMapper {
 
-    public static ForumPostUserIncluded mapForumPostToForumPostUserIncluded(
-            ForumPost post) {
-        if (post == null) {
-            return null;
-        }
-        return new ForumPostUserIncluded(
-                post.getId(),
-                post.getContent(),
-                post.getUser().getUsername(),
-                post.getDate()
-        );
-    }
+    @Autowired
+    protected UserRepository userRepository;
+
+    @Mapping(target = "creatorName", source = "forumThread.user.username")
+    @Mapping(target = "creationDate", source = "forumThread.creationTime")
+    @Mapping(target = "isFollowed", expression = "java(userRepository.findById(userId).orElseThrow().isFollowing(forumThread))")
+    public abstract ForumThreadSummaryResponseBody forumThreadToSummary(
+            ForumThread forumThread, int userId);
+
+    @Mapping(target = "userName", source = "forumPost.user.username")
+    @Mapping(target = "creationDate", source = "forumPost.date")
+    public abstract ForumPostUserIncluded forumPostToPostUserIncluded(
+            ForumPost forumPost);
 }

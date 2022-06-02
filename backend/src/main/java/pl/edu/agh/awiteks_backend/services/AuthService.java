@@ -1,6 +1,5 @@
 package pl.edu.agh.awiteks_backend.services;
 
-import java.util.LinkedList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,6 +12,7 @@ import pl.edu.agh.awiteks_backend.api.auth.body_models.AuthData;
 import pl.edu.agh.awiteks_backend.api.auth.body_models.AuthResponse;
 import pl.edu.agh.awiteks_backend.api.auth.body_models.UserLoginRequestBody;
 import pl.edu.agh.awiteks_backend.api.auth.body_models.UserRegisterRequestBody;
+import pl.edu.agh.awiteks_backend.mappers.UserMapper;
 import pl.edu.agh.awiteks_backend.models.User;
 import pl.edu.agh.awiteks_backend.repositories.UserRepository;
 import pl.edu.agh.awiteks_backend.security.jwt.JwtAccessToken;
@@ -37,16 +37,20 @@ public class AuthService {
 
     private final UserDataValidationUtilities userDataValidationUtilities;
 
+    private final UserMapper userMapper;
+
     @Autowired
     public AuthService(TokenService tokenService, UserRepository userRepository,
                        AuthenticationManager authenticationManager,
                        PasswordEncoder passwordEncoder,
-                       UserDataValidationUtilities userDataValidationUtilities) {
+                       UserDataValidationUtilities userDataValidationUtilities,
+                       UserMapper userMapper) {
         this.tokenService = tokenService;
         this.userRepository = userRepository;
         this.authenticationManager = authenticationManager;
         this.passwordEncoder = passwordEncoder;
         this.userDataValidationUtilities = userDataValidationUtilities;
+        this.userMapper = userMapper;
     }
 
     public AuthResponse authenticateUser(
@@ -116,12 +120,6 @@ public class AuthService {
     }
 
     private User createNewUser(UserRegisterRequestBody registerRequestBody) {
-        return new User(
-                registerRequestBody.username(),
-                registerRequestBody.email(),
-                passwordEncoder.encode(registerRequestBody.password()),
-                new LinkedList<>(),
-                new LinkedList<>(),
-                new LinkedList<>());
+        return userMapper.registerRequestBodyToUser(registerRequestBody);
     }
 }
