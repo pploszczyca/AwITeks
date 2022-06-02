@@ -54,7 +54,6 @@ public class User {
     @Schema(required = true)
     private List<ForumThread> forumThreadList;
 
-    //TODO: Test this
     @ManyToMany
     @JoinTable(
             name = "follow_threads",

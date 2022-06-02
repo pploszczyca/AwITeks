@@ -44,7 +44,6 @@ public class UserService extends ModelService<User> {
     }
 
     public UserInfo getUserInfo(int userId) {
-        // TODO error handling
         final User user = get(userId).orElseThrow();
         return userMapper.userToInfo(user);
     }

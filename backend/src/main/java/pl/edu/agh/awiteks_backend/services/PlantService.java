@@ -124,7 +124,6 @@ public class PlantService {
     }
 
     private List<Plant> getUsersPlants(int userId) {
-        // TODO maybe create custom exception
         return listUtilities.iterableToList(
                 plantRepository.findAllByUserId(userId));
     }
