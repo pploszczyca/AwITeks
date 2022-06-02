@@ -158,6 +158,7 @@ public class PlantService {
         plant.setActualInsolation(addPlantRequestBody.insolation());
         plant.setNote(addPlantRequestBody.note());
         plant.setSpecies(species);
+        plant.setPhoto(addPlantRequestBody.photo());
         fixPlantActivities(plant, addPlantRequestBody);
         plantRepository.save(plant);
 
