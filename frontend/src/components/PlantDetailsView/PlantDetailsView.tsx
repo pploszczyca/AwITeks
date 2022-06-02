@@ -43,8 +43,17 @@ const PlantDetailsView: React.FC<{}> = (props) => {
         onError: (error) => {errorMsg()}
     });
 
-    const toggleReminder = (event: any) => {
-        console.log(event.target, event.target.checked)
+    const toggleReminderMutation = useMutation(async () => {
+        await getApis().plantsApi.togglePlantReminders(+plantId!);
+    }, {
+        onSuccess: () => {
+            queryClient.invalidateQueries(['plants', plantId]);
+        },
+        onError: (error) => {errorMsg()}
+    })
+
+    const toggleReminder = () => {
+        toggleReminderMutation.mutateAsync();
     }
 
     if (isLoading || deletePlantMutation.isLoading) {
@@ -83,7 +92,7 @@ const PlantDetailsView: React.FC<{}> = (props) => {
                         <Card as={InfoWrapper}>
                             <Card.Body className='d-flex justify-content-center align-items-center'>
                                 <h5 className='mb-0 mx-3'>Czy chcesz otrzymywać powiadomienia o tej roślinie?</h5>
-                                <input type='checkbox' onChange={toggleReminder}/>
+                                <input type='checkbox' checked={plant.sendReminders} onChange={toggleReminder}/>
                             </Card.Body>
                         </Card>
                         <Card as={InfoWrapper}>
