@@ -11,9 +11,15 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "forum_post")
+@Getter
+@Setter
+@NoArgsConstructor
 @JsonIgnoreProperties({"user", "thread"})
 public class ForumPost {
     @Id
@@ -41,44 +47,5 @@ public class ForumPost {
         this.user = author;
         this.thread = thread;
         this.content = content;
-    }
-
-    public ForumPost() {
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User newAuthor) {
-        this.user = newAuthor;
-    }
-
-    public ForumThread getThread() {
-        return thread;
-    }
-
-    public void setThread(ForumThread thread) {
-        this.thread = thread;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String newContent) {
-        this.content = newContent;
-    }
-
-    public LocalDateTime getDate() {
-        return date;
     }
 }
