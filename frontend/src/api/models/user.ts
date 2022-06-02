@@ -13,9 +13,9 @@
  */
 
 
-import {ForumPost} from './forum-post';
-import {ForumThread} from './forum-thread';
-import {Plant} from './plant';
+import { ForumPost } from './forum-post';
+import { ForumThread } from './forum-thread';
+import { Plant } from './plant';
 
 /**
  * 
