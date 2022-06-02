@@ -13,7 +13,7 @@
  */
 
 
-import {Species} from './species';
+import { Species } from './species';
 
 /**
  * 
@@ -57,6 +57,12 @@ export interface Plant {
      * @memberof Plant
      */
     'favourite': boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof Plant
+     */
+    'sendReminders': boolean;
     /**
      * 
      * @type {string}

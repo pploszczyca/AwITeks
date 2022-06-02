@@ -13,8 +13,8 @@
  */
 
 
-import {ForumPost} from './forum-post';
-import {User} from './user';
+import { ForumPost } from './forum-post';
+import { User } from './user';
 
 /**
  * 
@@ -52,12 +52,6 @@ export interface ForumThread {
      * @memberof ForumThread
      */
     'creationTime'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ForumThread
-     */
-    'date'?: string;
     /**
      * 
      * @type {number}

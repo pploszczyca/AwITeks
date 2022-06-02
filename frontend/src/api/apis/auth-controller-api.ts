@@ -13,29 +13,19 @@
  */
 
 
-import globalAxios, {AxiosInstance, AxiosPromise, AxiosRequestConfig} from 'axios';
-import {Configuration} from '../configuration';
+import globalAxios, { AxiosPromise, AxiosInstance, AxiosRequestConfig } from 'axios';
+import { Configuration } from '../configuration';
 // Some imports not used depending on template conditions
 // @ts-ignore
-import {
-    assertParamExists,
-    createRequestFunction,
-    DUMMY_BASE_URL,
-    serializeDataIfNeeded,
-    setApiKeyToObject,
-    setBasicAuthToObject,
-    setBearerAuthToObject,
-    setOAuthToObject,
-    setSearchParams,
-    toPathString
-} from '../common';
+import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObject, setBearerAuthToObject, setOAuthToObject, setSearchParams, serializeDataIfNeeded, toPathString, createRequestFunction } from '../common';
 // @ts-ignore
-import {BASE_PATH, BaseAPI, COLLECTION_FORMATS, RequestArgs, RequiredError} from '../base';
+import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from '../base';
 // @ts-ignore
+import { AuthResponse } from '../models';
 // @ts-ignore
+import { UserLoginRequestBody } from '../models';
 // @ts-ignore
-import {AuthResponse, UserLoginRequestBody, UserRegisterRequestBody} from '../models';
-
+import { UserRegisterRequestBody } from '../models';
 /**
  * AuthControllerApi - axios parameter creator
  * @export
