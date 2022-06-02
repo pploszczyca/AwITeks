@@ -60,6 +60,9 @@ public class Plant {
     private boolean favourite;
 
     @Schema(required = true)
+    private boolean sendReminders;
+
+    @Schema(required = true)
     @Lob
     private String photo;
 
@@ -70,6 +73,22 @@ public class Plant {
 
     public boolean isFavourite() {
         return favourite;
+    }
+
+    public void setFavourite(boolean favourite) {
+        this.favourite = favourite;
+    }
+
+    public boolean isSendReminders() {
+        return sendReminders;
+    }
+
+    public void setSendReminders(boolean sendReminders) {
+        this.sendReminders = sendReminders;
+    }
+
+    public void toggleSendReminders(){
+        this.sendReminders = !this.sendReminders;
     }
 
     public void removeActivity(Activity activity) {
