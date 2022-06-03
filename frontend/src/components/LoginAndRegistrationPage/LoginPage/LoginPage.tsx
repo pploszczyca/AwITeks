@@ -5,6 +5,7 @@ import {FormContainer} from "../styles/FormStyle";
 import {validateEmail} from "../validators";
 import {useAppDispatch, useAppSelector} from "../../../Store/store";
 import {login} from "../../../Store/features/auth/authSlice";
+import {REQUIRED} from "../../../utils/constants";
 
 const LoginPage: React.FC<{}> = () => {
     const dispatch = useAppDispatch();
@@ -16,7 +17,7 @@ const LoginPage: React.FC<{}> = () => {
             validate={values => {
                 const errors: any = {};
                 errors.email = validateEmail(values.email);
-                if (!values.password) errors.password = 'Wymagane';
+                if (!values.password) errors.password = REQUIRED;
                 return errors;
             }}
             onSubmit={(values, { setSubmitting }) => {
