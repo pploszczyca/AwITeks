@@ -5,7 +5,7 @@ import {getApis} from '../../api/initializeApis';
 import Loader from '../Loader/Loader';
 import {PlantForm} from '../PlantForm/PlantForm';
 import {AddPlantRequestBody, Plant} from '../../api';
-import {errorMsg} from "../../utils/constants";
+import {errorMsg, NO_SPECIES_ID} from "../../utils/constants";
 
 type addPlantFormProps = {
     show: boolean;
@@ -51,7 +51,7 @@ export const AddPlantForm: React.FC<addPlantFormProps> = ({ show, setShowPlantFo
                 lastWateringDate: Moment(new Date()).format("yyyy-MM-DD"),
                 name: "",
                 note: "",
-                speciesId: species![0] ? species![0]!.id : -1,
+                speciesId: species![0] ? species![0]!.id : NO_SPECIES_ID,
                 photo: ""
             }}
         />

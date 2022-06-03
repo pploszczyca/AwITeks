@@ -9,7 +9,7 @@ import {SpeciesForm} from '../SpeciesForm/SpeciesForm';
 import {toast} from 'react-toastify';
 import {insolationToString} from '../../utils/util';
 import {toBase64} from "./photoService";
-import {base64Header, errorMsg} from "../../utils/constants";
+import {base64Header, errorMsg, NO_SPECIES_ID, REQUIRED} from "../../utils/constants";
 
 
 type PlantFormProps = {
@@ -69,9 +69,8 @@ export const PlantForm: React.FC<PlantFormProps> =
                             initialValues={initialValues}
                             validate={values => {
                                 const errors: any = {};
-                                if (!values.name) errors.name = 'Wymagane';
-                                if(values.speciesId === -1) errors.speciesId = "Wymagane";
-                                // if (!values.) errors.photo = 'Wymagane';
+                                if (!values.name) errors.name = REQUIRED;
+                                if(values.speciesId === NO_SPECIES_ID) errors.speciesId = REQUIRED;
                                 return errors;
                             }}
                             onSubmit={async (values, { setSubmitting }) => {
