@@ -69,7 +69,8 @@ export const PlantForm: React.FC<PlantFormProps> =
                             initialValues={initialValues}
                             validate={values => {
                                 const errors: any = {};
-                                if (!values.name) errors.userPlantName = 'Wymagane';
+                                if (!values.name) errors.name = 'Wymagane';
+                                if(values.speciesId === -1) errors.speciesId = "Wymagane";
                                 // if (!values.) errors.photo = 'Wymagane';
                                 return errors;
                             }}
@@ -94,7 +95,7 @@ export const PlantForm: React.FC<PlantFormProps> =
                                             <Col className="form-group mt-3" xl={4} md={6} sm={12}>
                                                 <label>Twoja nazwa rośliny:</label><br />
                                                 <Field className="form-control" type="text" name="name" />
-                                                <ErrorMessage name="userPlantName" component="div">
+                                                <ErrorMessage name="name" component="div">
                                                     {msg => <div style={{ color: 'red' }}>{msg}</div>}
                                                 </ErrorMessage>
                                             </Col>
@@ -118,7 +119,7 @@ export const PlantForm: React.FC<PlantFormProps> =
                                                         <option key={specie.id} value={specie.id}>{specie.name}</option>
                                                     ))}
                                                 </Field>
-                                                <ErrorMessage name="species" component="div">
+                                                <ErrorMessage name="speciesId" component="div">
                                                     {msg => <div style={{ color: 'red' }}>{msg}</div>}
                                                 </ErrorMessage>
                                             </Col>
@@ -131,7 +132,7 @@ export const PlantForm: React.FC<PlantFormProps> =
                                             <Col className="form-group mt-3" xl={4} md={6} sm={12}>
                                                 <label>Ostatnie nawodnienie:</label>
                                                 <Field className="form-control" type="date" name="lastWateringDate" />
-                                                <ErrorMessage name="lastWatering" component="div">
+                                                <ErrorMessage name="lastWateringDate" component="div">
                                                     {msg => <div style={{ color: 'red' }}>{msg}</div>}
                                                 </ErrorMessage>
                                             </Col>
@@ -139,7 +140,7 @@ export const PlantForm: React.FC<PlantFormProps> =
                                             <Col className="form-group mt-3" xl={4} md={6} sm={12}>
                                                 <label>Ostatnie nawożenie:</label>
                                                 <Field className="form-control" type="date" name="lastFertilizationDate" />
-                                                <ErrorMessage name="lastFertilization" component="div">
+                                                <ErrorMessage name="lastFertilizationDate" component="div">
                                                     {msg => <div style={{ color: 'red' }}>{msg}</div>}
                                                 </ErrorMessage>
                                             </Col>
@@ -151,7 +152,7 @@ export const PlantForm: React.FC<PlantFormProps> =
                                                     <option value="MEDIUM">{insolationToString("MEDIUM")}</option>
                                                     <option value="HIGH">{insolationToString("HIGH")}</option>
                                                 </Field>
-                                                <ErrorMessage name="insolationLevel" component="div">
+                                                <ErrorMessage name="insolation" component="div">
                                                     {msg => <div style={{ color: 'red' }}>{msg}</div>}
                                                 </ErrorMessage>
                                             </Col>
