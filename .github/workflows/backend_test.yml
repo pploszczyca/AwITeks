@@ -10,9 +10,6 @@ jobs:
       run:
         working-directory: backend
 
-    env:
-      PORT: 5000
-
     services:
       mysql:
         image: mysql:5.7.38
