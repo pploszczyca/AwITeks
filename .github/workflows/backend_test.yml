@@ -11,7 +11,7 @@ jobs:
         working-directory: backend
 
     env:
-      port: 5000
+      PORT: 5000
 
     services:
       mysql:
