@@ -16,16 +16,10 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Table(name = "forum_thread")
 @JsonIgnoreProperties({"user"})
-@Getter
-@Setter
-@NoArgsConstructor
 public class ForumThread {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -57,11 +51,73 @@ public class ForumThread {
         this.forumPosts = new ArrayList<>();
     }
 
+    public ForumThread(String title, User user, List<ForumPost> forumPosts) {
+        this.title = title;
+        this.user = user;
+        this.forumPosts = forumPosts;
+    }
+
+    public ForumThread() {
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setForumPosts(List<ForumPost> posts) {
+        this.forumPosts = posts;
+    }
+
+    public List<ForumPost> getForumPosts() {
+        return this.forumPosts;
+    }
+
     public void addForumPost(ForumPost post) {
         this.forumPosts.add(post);
     }
 
+    public LocalDateTime getCreationTime() {
+        return creationTime;
+    }
+
     public Integer getPostsCount() {
         return forumPosts.size();
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setDate(LocalDateTime dateTime) {
+        this.creationTime = dateTime;
+    }
+
+
+    public List<User> getFollowingUsers() {
+        return followingUsers;
+    }
+
+    public void setFollowingUsers(List<User> followingUsers) {
+        this.followingUsers = followingUsers;
+    }
+
+    public void setCreationTime(LocalDateTime creationTime) {
+        this.creationTime = creationTime;
     }
 }

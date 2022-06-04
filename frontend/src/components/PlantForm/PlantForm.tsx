@@ -9,7 +9,7 @@ import {SpeciesForm} from '../SpeciesForm/SpeciesForm';
 import {toast} from 'react-toastify';
 import {insolationToString} from '../../utils/util';
 import {toBase64} from "./photoService";
-import {base64Header, errorMsg, NO_SPECIES_ID, REQUIRED} from "../../utils/constants";
+import {base64Header, errorMsg} from "../../utils/constants";
 
 
 type PlantFormProps = {
@@ -27,6 +27,7 @@ type PlantFormProps = {
 export const PlantForm: React.FC<PlantFormProps> =
     ({ initialValues, show, setShowPlantForm, formTitle, onSubmit, acceptBtnText, successToastText }) => {
         const [showSpeciesForm, setShowSpeciesForm] = useState(false);
+        const [photo, setPhoto] = useState<string>('');
         const { data: speciesList, isLoading } = useQuery(
             'species',
             () => getApis().speciesApi.getAllSpecies().then(resp => resp.data),
@@ -46,12 +47,12 @@ export const PlantForm: React.FC<PlantFormProps> =
             setShowSpeciesForm(false);
         };
 
-        const displayPhoto = (event: any, values: any) => {
+        const displayPhoto = (event: any) => {
             let input = event.target;
 
             toBase64(input).then(data => {
                 if(typeof(data) === "string"){
-                    values.photo = data;
+                    setPhoto(data)
                 }
             })
         };
@@ -69,12 +70,13 @@ export const PlantForm: React.FC<PlantFormProps> =
                             initialValues={initialValues}
                             validate={values => {
                                 const errors: any = {};
-                                if (!values.name) errors.name = REQUIRED;
-                                if(values.speciesId === NO_SPECIES_ID) errors.speciesId = REQUIRED;
+                                if (!values.name) errors.userPlantName = 'Wymagane';
+                                // if (!values.) errors.photo = 'Wymagane';
                                 return errors;
                             }}
                             onSubmit={async (values, { setSubmitting }) => {
                                 try {
+                                    values.photo = photo;
                                     await onSubmit(values);
                                     toast.success(successToastText);
                                     hide();
@@ -87,14 +89,14 @@ export const PlantForm: React.FC<PlantFormProps> =
                                 }
                             }}
                         >
-                            {({ isSubmitting, values }) => (
+                            {({ isSubmitting }) => (
                                 <Form>
                                     <Container>
                                         <Row>
                                             <Col className="form-group mt-3" xl={4} md={6} sm={12}>
                                                 <label>Twoja nazwa rośliny:</label><br />
                                                 <Field className="form-control" type="text" name="name" />
-                                                <ErrorMessage name="name" component="div">
+                                                <ErrorMessage name="userPlantName" component="div">
                                                     {msg => <div style={{ color: 'red' }}>{msg}</div>}
                                                 </ErrorMessage>
                                             </Col>
@@ -102,12 +104,12 @@ export const PlantForm: React.FC<PlantFormProps> =
                                             <Col className="form-group mt-3" xl={4} md={12}>
                                                 <label>Zdjęcie:</label><br />
                                                 <div className="d-flex gap-1 align-items-center">
-                                                    {values.photo !== "" ? (
-                                                        <img id="plantPhoto" src={base64Header + values.photo} alt="" width={64} height={64}/>
+                                                    {photo !== "" ? (
+                                                        <img id="plantPhoto" src={base64Header + photo} alt="" width={64} height={64}/>
                                                     ) : (
                                                         <></>
                                                     )}
-                                                    <Field id="photoInput" className="form-control" type="file" name='edit-photo' accept="image/jpeg" onChange={(e: any) => displayPhoto(e, values)}/>
+                                                    <Field id="photoInput" className="form-control" type="file" name='edit-photo' accept="image/jpeg" onChange={displayPhoto}/>
                                                 </div>
                                             </Col>
 
@@ -118,7 +120,7 @@ export const PlantForm: React.FC<PlantFormProps> =
                                                         <option key={specie.id} value={specie.id}>{specie.name}</option>
                                                     ))}
                                                 </Field>
-                                                <ErrorMessage name="speciesId" component="div">
+                                                <ErrorMessage name="species" component="div">
                                                     {msg => <div style={{ color: 'red' }}>{msg}</div>}
                                                 </ErrorMessage>
                                             </Col>
@@ -131,7 +133,7 @@ export const PlantForm: React.FC<PlantFormProps> =
                                             <Col className="form-group mt-3" xl={4} md={6} sm={12}>
                                                 <label>Ostatnie nawodnienie:</label>
                                                 <Field className="form-control" type="date" name="lastWateringDate" />
-                                                <ErrorMessage name="lastWateringDate" component="div">
+                                                <ErrorMessage name="lastWatering" component="div">
                                                     {msg => <div style={{ color: 'red' }}>{msg}</div>}
                                                 </ErrorMessage>
                                             </Col>
@@ -139,7 +141,7 @@ export const PlantForm: React.FC<PlantFormProps> =
                                             <Col className="form-group mt-3" xl={4} md={6} sm={12}>
                                                 <label>Ostatnie nawożenie:</label>
                                                 <Field className="form-control" type="date" name="lastFertilizationDate" />
-                                                <ErrorMessage name="lastFertilizationDate" component="div">
+                                                <ErrorMessage name="lastFertilization" component="div">
                                                     {msg => <div style={{ color: 'red' }}>{msg}</div>}
                                                 </ErrorMessage>
                                             </Col>
@@ -151,7 +153,7 @@ export const PlantForm: React.FC<PlantFormProps> =
                                                     <option value="MEDIUM">{insolationToString("MEDIUM")}</option>
                                                     <option value="HIGH">{insolationToString("HIGH")}</option>
                                                 </Field>
-                                                <ErrorMessage name="insolation" component="div">
+                                                <ErrorMessage name="insolationLevel" component="div">
                                                     {msg => <div style={{ color: 'red' }}>{msg}</div>}
                                                 </ErrorMessage>
                                             </Col>

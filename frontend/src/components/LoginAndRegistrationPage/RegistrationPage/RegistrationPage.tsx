@@ -3,11 +3,12 @@ import {ErrorMessage, Field, Formik} from "formik";
 import {Button, Col, Form, Row, Spinner} from "react-bootstrap";
 import {validateConfirmPassword, validateEmail, validatePassword, validateUsername} from "../validators";
 import {FormContainer} from "../styles/FormStyle";
-import {useAppDispatch} from "../../../Store/store";
+import {useAppDispatch, useAppSelector} from "../../../Store/store";
 import {register} from "../../../Store/features/auth/authSlice";
 
 const RegistrationPage: React.FC<{}> = () => {
     const dispatch = useAppDispatch();
+    const { isFetching } = useAppSelector(state => state.auth);
 
     return (
         <Formik
@@ -18,23 +19,13 @@ const RegistrationPage: React.FC<{}> = () => {
                 errors.email = validateEmail(values.email);
                 errors.password = validatePassword(values.password);
                 errors.repeatPassword = validateConfirmPassword(values.password, values.repeatPassword);
-
-                // without this, errors contains keys with empty string which should not be considered errors
-                Object.keys(errors).forEach(key => {
-                    if (!errors[key]) {
-                        delete errors[key];
-                    }
-                });
                 return errors;
             }}
-
-            onSubmit={(values, { setSubmitting }) => {
-                dispatch(register(values));
-                setSubmitting(false);
+            onSubmit={async (values, { setSubmitting }) => {
             }}
         >
-            {({ isSubmitting, values, errors, handleSubmit }) => (
-                <Form onSubmit={handleSubmit}>
+            {({ values }) => (
+                <Form>
                     <FormContainer className="mt-2 p-5">
                         <Row className='justify-content-center'>
                             <Col className="form-group mt-3" lg={6} sm={12}>
@@ -76,20 +67,22 @@ const RegistrationPage: React.FC<{}> = () => {
                         <Row className="mt-4 d-flex justify-content-center">
                             <Col sm={12} className="d-flex justify-content-center mb-2">
                                 <Button
-                                    type="submit"
-                                    disabled={isSubmitting}
+                                    disabled={isFetching}
                                     style={{ minWidth: 100, backgroundColor: '#023535', border: 'none' }}
+                                    onClick={() => {
+                                        dispatch(register(values));
+                                    }}
                                 >
-                                    {isSubmitting ? (
+                                    {isFetching ?
                                         <Spinner
                                             as="span"
                                             animation="border"
                                             size="sm"
                                             role="status"
                                         />
-                                    ) : (
+                                        :
                                         <span>Zarejestruj</span>
-                                    )}
+                                    }
                                 </Button>
                             </Col>
                         </Row>

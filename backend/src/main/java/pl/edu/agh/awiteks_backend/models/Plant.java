@@ -18,16 +18,10 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Table(name = "plants")
 @JsonIgnoreProperties({"user", "plantActivities"})
-@Getter
-@Setter
-@NoArgsConstructor
 public class Plant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -60,11 +54,70 @@ public class Plant {
     private boolean favourite;
 
     @Schema(required = true)
-    private boolean sendReminders;
-
-    @Schema(required = true)
     @Lob
     private String photo;
+
+    public Plant(String name, User user, Species species, String note,
+                 Insolation actualInsolation, List<Activity> plantActivities,
+                 boolean favourite, String photo) {
+        this.name = name;
+        this.user = user;
+        this.species = species;
+        this.note = note;
+        this.actualInsolation = actualInsolation;
+        this.plantActivities = plantActivities;
+        this.favourite = favourite;
+        this.photo = photo;
+    }
+
+    public Plant(String name, User user, Species species, String note,
+                 Insolation actualInsolation, boolean favourite, String photo) {
+        this(name, user, species, note, actualInsolation, new ArrayList<>(),
+                favourite, photo);
+    }
+
+    public Plant() {
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public Species getSpecies() {
+        return species;
+    }
+
+    public Insolation getActualInsolation() {
+        return actualInsolation;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setSpecies(Species spiece) {
+        this.species = spiece;
+    }
+
+    public void setActualInsolation(Insolation actualInsolation) {
+        this.actualInsolation = actualInsolation;
+    }
+
+    public List<Activity> getPlantActivities() {
+        return plantActivities;
+    }
+
+    public void setPlantActivities(List<Activity> plantActivities) {
+        this.plantActivities = plantActivities;
+    }
 
     public void addActivity(Activity activity) {
         plantActivities.add(activity);
@@ -75,12 +128,8 @@ public class Plant {
         return favourite;
     }
 
-    public boolean isSendReminders() {
-        return sendReminders;
-    }
-
-    public void toggleSendReminders() {
-        this.sendReminders = !this.sendReminders;
+    public void setFavourite(boolean favourite) {
+        this.favourite = favourite;
     }
 
     public void removeActivity(Activity activity) {
@@ -93,6 +142,30 @@ public class Plant {
                 .filter(activity -> activity.getId() == activityId)
                 .findFirst()
                 .ifPresent(this::removeActivity);
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @JsonProperty
@@ -114,9 +187,5 @@ public class Plant {
                 .max(Comparator.comparing(a -> LocalDate.parse(a.getDate())))
                 .map(Activity::getDate)
                 .orElseThrow();
-    }
-
-    public void changeIsFavourite() {
-        setFavourite(!isFavourite());
     }
 }

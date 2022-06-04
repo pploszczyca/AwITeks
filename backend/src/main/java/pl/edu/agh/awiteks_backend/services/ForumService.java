@@ -11,6 +11,7 @@ import pl.edu.agh.awiteks_backend.api.forum.body_models.AddThreadRequestBody;
 import pl.edu.agh.awiteks_backend.api.forum.body_models.ForumPostUserIncluded;
 import pl.edu.agh.awiteks_backend.api.forum.body_models.ForumThreadSummaryResponseBody;
 import pl.edu.agh.awiteks_backend.mappers.ForumMapper;
+import static pl.edu.agh.awiteks_backend.mappers.ForumMapper.mapForumThreadToForumThreadSummary;
 import pl.edu.agh.awiteks_backend.models.ForumPost;
 import pl.edu.agh.awiteks_backend.models.ForumThread;
 import pl.edu.agh.awiteks_backend.models.User;
@@ -29,19 +30,15 @@ public class ForumService {
 
     private final StreamUtilities streamUtilities;
 
-    private final ForumMapper forumMapper;
-
     @Autowired
     public ForumService(ForumRepository forumRepository,
                         UserRepository userRepository,
                         PostRepository postRepository,
-                        StreamUtilities streamUtilities,
-                        ForumMapper forumMapper) {
+                        StreamUtilities streamUtilities) {
         this.postRepository = postRepository;
         this.userRepository = userRepository;
         this.forumRepository = forumRepository;
         this.streamUtilities = streamUtilities;
-        this.forumMapper = forumMapper;
     }
 
     public ForumThread addThread(AddThreadRequestBody addThreadRequestBody,
@@ -65,10 +62,11 @@ public class ForumService {
     }
 
     public List<ForumThreadSummaryResponseBody> getAllThreads(int userId) {
-        return this.streamUtilities
-                .asStream(forumRepository.findAll())
-                .map(forumThread -> forumMapper.forumThreadToSummary(
-                        forumThread, userId)).toList();
+        final var user = userRepository.findById(userId).orElseThrow();
+
+        return this.streamUtilities.asStream(forumRepository.findAll())
+                .map(forumThread -> mapForumThreadToForumThreadSummary(
+                        forumThread, user)).toList();
     }
 
     public Optional<ForumThread> get(int id) {
@@ -116,7 +114,7 @@ public class ForumService {
     public List<ForumPostUserIncluded> getPostsUserIncludedFromThread(
             int threadId) {
         return getPostsFromThread(threadId).stream()
-                .map(forumMapper::forumPostToPostUserIncluded).collect(
+                .map(ForumMapper::mapForumPostToForumPostUserIncluded).collect(
                         Collectors.toList());
     }
 
@@ -133,8 +131,10 @@ public class ForumService {
                 this.forumRepository.findById(threadId).orElseThrow();
         final User creator = userRepository.findById(userId).orElseThrow();
         final ForumPost post =
-                this.postRepository.findByIdAndUserId(postId, userId)
-                        .orElseThrow();
+                this.postRepository.findById(postId).orElseThrow();
+        if (!(post.getUser() == creator)) {
+            throw new IllegalCallerException();
+        }
         creator.getForumPostList().remove(post);
         post.setContent(postRequestBody.content());
         thread.addForumPost(post);
@@ -150,10 +150,13 @@ public class ForumService {
                 this.userRepository.findById(userId).orElseThrow();
 
         if (follower.isFollowing(thread)) {
+            thread.getFollowingUsers().remove(follower);
             follower.getFollowedThreads().remove(thread);
         } else {
+            thread.getFollowingUsers().add(follower);
             follower.getFollowedThreads().add(thread);
         }
+        forumRepository.save(thread);
         userRepository.save(follower);
 
         return thread;
