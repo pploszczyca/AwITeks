@@ -4,6 +4,7 @@ import {Button, Col, Form, Row, Spinner} from "react-bootstrap";
 import {FormContainer} from "../styles/FormStyle";
 import {useAppDispatch} from "../../../Store/store";
 import {login} from "../../../Store/features/auth/authSlice";
+import {REQUIRED} from "../../../utils/constants";
 
 const LoginPage: React.FC<{}> = () => {
     const dispatch = useAppDispatch();
@@ -16,8 +17,8 @@ const LoginPage: React.FC<{}> = () => {
             }}
             validate={values => {
                 const errors: any = {};
-                if (!values.email) errors.email = 'Pole wymagane.';
-                if (!values.password) errors.password = 'Pole wymagane';
+                if (!values.email) errors.email = REQUIRED;
+                if (!values.password) errors.password = REQUIRED;
                 return errors;
             }}
             onSubmit={(values, { setSubmitting }) => {
