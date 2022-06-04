@@ -62,14 +62,6 @@ public class PlantController {
         plantService.changeFavourite(plantId, jwtAccessToken.getUserId());
     }
 
-    @Operation(summary = "Change sendReminders flag in plant", security = @SecurityRequirement(name = JWT_AUTH))
-    @PutMapping(path = "/{plantId}/toggle-reminders")
-    @ResponseBody
-    public void togglePlantReminders(JwtAccessToken jwtAccessToken,
-                                     @PathVariable int plantId) {
-        plantService.changeReminders(plantId, jwtAccessToken.getUserId());
-    }
-
 
     @Operation(summary = "Update plant", security = @SecurityRequirement(name = JWT_AUTH))
     @PutMapping(path = "/{plantId}", consumes = "application/json")

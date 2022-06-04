@@ -35,23 +35,19 @@ public class PlantService {
 
     private final PlantUtilities plantUtilities;
 
-    private final PlantMapper plantMapper;
-
     @Autowired
     public PlantService(PlantRepository modelRepository,
                         UserRepository userRepository,
                         SpeciesRepository speciesRepository,
                         PlantValidator plantValidator,
                         ListUtilities listUtilities,
-                        PlantUtilities plantUtilities,
-                        PlantMapper plantMapper) {
+                        PlantUtilities plantUtilities) {
         this.plantRepository = modelRepository;
         this.userRepository = userRepository;
         this.speciesRepository = speciesRepository;
         this.plantValidator = plantValidator;
         this.listUtilities = listUtilities;
         this.plantUtilities = plantUtilities;
-        this.plantMapper = plantMapper;
     }
 
     public Plant addPlant(AddPlantRequestBody addPlantRequestBody, int userId) {
@@ -87,18 +83,7 @@ public class PlantService {
                 .findByIdAndUserId(plantId, userId)
                 .ifPresent(
                         plant -> {
-                            plant.changeIsFavourite();
-                            this.plantRepository.save(plant);
-                        }
-                );
-    }
-
-    public void changeReminders(int plantId, int userId) {
-        this.plantRepository
-                .findByIdAndUserId(plantId, userId)
-                .ifPresent(
-                        plant -> {
-                            plant.toggleSendReminders();
+                            plant.setFavourite(!plant.isFavourite());
                             this.plantRepository.save(plant);
                         }
                 );
@@ -124,13 +109,14 @@ public class PlantService {
     }
 
     private List<Plant> getUsersPlants(int userId) {
+        // TODO maybe create custom exception
         return listUtilities.iterableToList(
                 plantRepository.findAllByUserId(userId));
     }
 
     public List<PlantSummary> getPlantSummaries(int userId) {
         return getUsersPlants(userId).stream()
-                .map(plantMapper::plantToSummary)
+                .map(PlantMapper::plantToPlantSummary)
                 .collect(Collectors.toList());
     }
 
@@ -158,7 +144,6 @@ public class PlantService {
         plant.setActualInsolation(addPlantRequestBody.insolation());
         plant.setNote(addPlantRequestBody.note());
         plant.setSpecies(species);
-        plant.setPhoto(addPlantRequestBody.photo());
         fixPlantActivities(plant, addPlantRequestBody);
         plantRepository.save(plant);
 
@@ -167,8 +152,19 @@ public class PlantService {
 
     private Plant makePlantFromRequestBody(
             AddPlantRequestBody addPlantRequestBody, int userId) {
-        return plantMapper.requestBodyToPlant(addPlantRequestBody, userId,
-                new LinkedList<>());
+        final var species = speciesRepository.findByIdAndCreatorId(
+                addPlantRequestBody.speciesId(), userId).orElseThrow();
+        final var user = userRepository.findById(userId).orElseThrow();
+
+        return new Plant(
+                addPlantRequestBody.name(),
+                user,
+                species,
+                addPlantRequestBody.note(),
+                addPlantRequestBody.insolation(),
+                new LinkedList<>(),
+                false,
+                addPlantRequestBody.photo());
     }
 
     private void fixPlantActivities(Plant plant,
@@ -222,11 +218,9 @@ public class PlantService {
     }
 
     public Plant setPhoto(int plantId, int userId, String base64String) {
-        final Plant plant = plantRepository
-                .findByIdAndUserId(plantId, userId)
+        final Plant plant = plantRepository.findByIdAndUserId(plantId, userId)
                 .orElseThrow();
         plant.setPhoto(base64String);
-        plantRepository.save(plant);
         return plant;
     }
 }

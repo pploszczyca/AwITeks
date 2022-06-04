@@ -40,7 +40,7 @@ public class EmailService {
     private void sendEmailToUserIfNeeded(User user) {
         final List<Pair<Plant, List<ActivityType>>>
                 listOfPlantsWhichNeedNotification =
-                plantUtilities.findAllPlantsThatNeedNotifications(user);
+                plantUtilities.findAllPlantsThatNeedActivitiesToday(user);
 
         if (listOfPlantsWhichNeedNotification.size() > 0) {
             sendNotificationEmail(user, listOfPlantsWhichNeedNotification);

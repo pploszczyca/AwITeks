@@ -15,21 +15,18 @@ import LoginAndRegistrationPage from "../LoginAndRegistrationPage/LoginAndRegist
 import {PageGuard} from '../PageGuard/PageGuard';
 import {Role} from '../../utils/roles';
 import {PageRoutes} from '../../utils/constants';
-import {queryClient, useAppSelector} from '../../Store/store';
+import {queryClient} from '../../Store/store';
 import ForumThreadPage from "../ForumThread/ForumThreadPage";
 import Forum from "../Forum/Forum"
 
 
 function App() {
-    const {isLoggedIn} = useAppSelector(state => state.auth);
     return (
         <QueryClientProvider client={queryClient}>
             <Container fluid>
                 <Row>
                     <Router>
-                        {isLoggedIn &&
-                            <SiteTitleAndIcons/>
-                        }
+                        <SiteTitleAndIcons />
                         <Col xs={2}>
                             <Sidebar />
                         </Col>

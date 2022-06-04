@@ -3,7 +3,6 @@ package pl.edu.agh.awiteks_backend.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.edu.agh.awiteks_backend.api.users.body_models.UserInfo;
-import pl.edu.agh.awiteks_backend.mappers.UserMapper;
 import pl.edu.agh.awiteks_backend.models.User;
 import pl.edu.agh.awiteks_backend.repositories.PlantRepository;
 import pl.edu.agh.awiteks_backend.repositories.SpeciesRepository;
@@ -20,20 +19,16 @@ public class UserService extends ModelService<User> {
 
     private final StreamUtilities streamUtilities;
 
-    private final UserMapper userMapper;
-
     @Autowired
     public UserService(UserRepository modelRepository,
                        SpeciesRepository speciesRepository,
                        PlantRepository plantRepository,
                        ListUtilities listUtilities,
-                       StreamUtilities streamUtilities,
-                       UserMapper userMapper) {
+                       StreamUtilities streamUtilities) {
         super(modelRepository, listUtilities);
         this.speciesRepository = speciesRepository;
         this.plantRepository = plantRepository;
         this.streamUtilities = streamUtilities;
-        this.userMapper = userMapper;
     }
 
     @Override
@@ -44,8 +39,9 @@ public class UserService extends ModelService<User> {
     }
 
     public UserInfo getUserInfo(int userId) {
+        // TODO error handling
         final User user = get(userId).orElseThrow();
-        return userMapper.userToInfo(user);
+        return new UserInfo(user.getEmail(), user.getUsername());
     }
 
     private void removeAllUserPlants(int id) {

@@ -5,7 +5,7 @@ import {toast} from "react-toastify";
 import {useMutation, useQueryClient} from "react-query";
 import {AddThreadRequestBody, ForumThread} from "../../api";
 import {getApis} from "../../api/initializeApis";
-import {errorMsg, REQUIRED} from "../../utils/constants";
+import {errorMsg} from "../../utils/constants";
 
 
 type AddThreadFormProps = {
@@ -40,8 +40,8 @@ export const AddThreadForm: React.FC<AddThreadFormProps> = ({ show, setShowThrea
                     initialValues={{name: '', content: '', isFavourite: false}}
                     validate={values => {
                         const errors: any = {};
-                        if (!values.name) errors.name = REQUIRED;
-                        if (!values.content) errors.content = REQUIRED;
+                        if (!values.name) errors.name = 'Wymagane';
+                        if (!values.content) errors.content = 'Wymagane';
                         return errors;
                     }}
                     onSubmit={async (values, { setSubmitting }) => {

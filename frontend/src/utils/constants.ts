@@ -7,9 +7,6 @@ export const base64Header = "data:image/jpeg;base64,";
 
 export const  GENERIC_ERROR_MESSAGE = "Błąd serwera. Brak danych";
 
-export const NO_SPECIES_ID = -1;
-export const REQUIRED = "Wymagane";
-
 export const PageRoutes = {
     LOGIN: '/home',
     DASHBOARD: '/dashboard',

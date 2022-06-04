@@ -29,21 +29,21 @@ public class FilterExceptionHandler extends OncePerRequestFilter {
                                     FilterChain filterChain) {
         try {
             filterChain.doFilter(request, response);
-        } catch (UnauthorizedException unauthorizedException) {
-            printExceptionAndSetResponsesHeadersAndStatus(unauthorizedException, response, HttpServletResponse.SC_UNAUTHORIZED);
-        } catch (Exception exception) {
-            printExceptionAndSetResponsesHeadersAndStatus(exception, response, HttpServletResponse.SC_FORBIDDEN);
+        } catch (UnauthorizedException ex) {
+            ex.printStackTrace(); // TODO consider using logger
+
+            response.setHeader(HttpHeaders.CONTENT_TYPE,
+                    MediaType.APPLICATION_JSON_VALUE);
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+
+            response.setHeader(HttpHeaders.CONTENT_TYPE,
+                    MediaType.APPLICATION_JSON_VALUE);
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         } finally {
             addCorsHeaders(request, response);
         }
-    }
-
-    private void printExceptionAndSetResponsesHeadersAndStatus(Exception exception, HttpServletResponse response, int httpStatus) {
-        exception.printStackTrace();
-
-        response.setHeader(HttpHeaders.CONTENT_TYPE,
-                MediaType.APPLICATION_JSON_VALUE);
-        response.setStatus(httpStatus);
     }
 
     private void addCorsHeaders(HttpServletRequest request,
