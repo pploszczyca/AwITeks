@@ -6,7 +6,7 @@ import {getApis} from "../../api/initializeApis";
 import {useMutation, useQueryClient} from 'react-query';
 import {toast} from 'react-toastify';
 import {fertilizationToString, insolationToString} from '../../utils/util';
-import {errorMsg} from "../../utils/constants";
+import {errorMsg, REQUIRED} from "../../utils/constants";
 
 
 type SpeciesFormProps = {
@@ -50,7 +50,7 @@ export const SpeciesForm: React.FC<SpeciesFormProps> = ({ show, hide }) => {
                     initialValues={emptySpecies}
                     validate={values => {
                         const errors: any = {};
-                        if (!values.name) errors.name = 'Wymagane';
+                        if (!values.name) errors.name = REQUIRED;
                         if (values.maxAge === 0) errors.maxAge = 'Wartość powinna być dodatnia';
                         return errors;
                     }}

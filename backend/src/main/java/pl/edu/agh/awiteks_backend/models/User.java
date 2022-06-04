@@ -1,7 +1,6 @@
 package pl.edu.agh.awiteks_backend.models;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.util.LinkedList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -15,7 +14,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
-import org.springframework.context.annotation.Lazy;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "user",
@@ -23,6 +24,9 @@ import org.springframework.context.annotation.Lazy;
                 @UniqueConstraint(columnNames = "username"),
                 @UniqueConstraint(columnNames = "email")
         })
+@Getter
+@Setter
+@NoArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,7 +54,6 @@ public class User {
     @Schema(required = true)
     private List<ForumThread> forumThreadList;
 
-    //TODO: Test this
     @ManyToMany
     @JoinTable(
             name = "follow_threads",
@@ -59,30 +62,6 @@ public class User {
     )
     @Schema(required = true)
     private List<ForumThread> followedThreads;
-
-    public User(
-            String username,
-            String email,
-            String password,
-            @Lazy List<Plant> userPlants,
-            @Lazy List<ForumPost> forumPostList,
-            @Lazy List<ForumThread> forumThreadList) {
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.userPlants = userPlants;
-        this.forumPostList = forumPostList;
-        this.forumThreadList = forumThreadList;
-    }
-
-    public User(String username, String email, String password) {
-        this(username, email, password, new LinkedList<>(), new LinkedList<>(),
-                new LinkedList<>());
-    }
-
-    public User() {
-
-    }
 
     public void addPlant(Plant plant) {
         userPlants.add(plant);
@@ -98,70 +77,6 @@ public class User {
 
     public void removeThread(ForumThread forumThread) {
         forumThreadList.remove(forumThread);
-    }
-
-    public List<Plant> getUserPlants() {
-        return userPlants;
-    }
-
-    public void setUserPlants(List<Plant> userPlants) {
-        this.userPlants = userPlants;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public List<ForumPost> getForumPostList() {
-        return forumPostList;
-    }
-
-    public void setForumPostList(List<ForumPost> forumPostList) {
-        this.forumPostList = forumPostList;
-    }
-
-    public List<ForumThread> getForumThreadList() {
-        return forumThreadList;
-    }
-
-    public List<ForumThread> getFollowedThreads() {
-        return followedThreads;
-    }
-
-    public void setFollowedThreads(List<ForumThread> followedThreads) {
-        this.followedThreads = followedThreads;
-    }
-
-    public void setForumThreadList(List<ForumThread> forumThreadList) {
-        this.forumThreadList = forumThreadList;
     }
 
     public boolean isFollowing(ForumThread thread) {
