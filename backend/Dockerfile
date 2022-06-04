@@ -5,8 +5,6 @@ RUN gradle build --no-daemon -x test
 
 FROM openjdk:17
 
-ENV PORT=5000
-
 EXPOSE 5000
 
 RUN mkdir /app
