@@ -1,16 +1,16 @@
-version: '3.8'
+version: "3"
 
 services:
   awit-frontend:
-    image: 'awit-frontend-main'
+    image: "awit-frontend-main"
     build:
       context: frontend/.
     ports:
-     - "3000:3000"
+      - "80:80"
     container_name: awit-frontend-main
 
   awit-backend:
-    image: 'awit-backend-main'
+    image: "awit-backend-main"
     build:
       context: backend/.
     ports:
@@ -29,6 +29,7 @@ services:
 
   mysql:
     image: mysql:5.7.38
+    build: backend/.
     ports:
       - "3306:3306"
     restart: always

@@ -17,6 +17,7 @@ public class WebMVCConfiguration implements WebMvcConfigurer {
                 .allowedMethods("*")
                 .allowedHeaders("*")
                 .allowCredentials(true)
-                .allowedOrigins(reactDevServerUrl);
+                .allowedOrigins(reactDevServerUrl)
+                .allowedOrigins("http://localhost");
     }
 }
