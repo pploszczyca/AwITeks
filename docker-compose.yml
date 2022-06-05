@@ -2,9 +2,7 @@ version: "3"
 
 services:
   awit-frontend:
-    image: "awit-frontend-main"
-    build:
-      context: frontend/.
+    image: flok3n/awit-front:latest
     ports:
       - "80:80"
     container_name: awit-frontend-main
@@ -29,7 +27,6 @@ services:
 
   mysql:
     image: mysql:5.7.38
-    build: backend/.
     ports:
       - "3306:3306"
     restart: always
