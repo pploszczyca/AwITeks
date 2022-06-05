@@ -1,18 +1,14 @@
-version: "3.8"
+version: "3"
 
 services:
   awit-frontend:
-    image: "awit-frontend-main"
-    build:
-      context: frontend/.
+    image: flok3n/awit-front:latest
     ports:
       - "80:80"
     container_name: awit-frontend-main
 
   awit-backend:
-    image: "awit-backend-main"
-    build:
-      context: backend/.
+    image: flok3n/awit-back:latest
     ports:
       - "5000:5000"
     container_name: awit-backend-main
