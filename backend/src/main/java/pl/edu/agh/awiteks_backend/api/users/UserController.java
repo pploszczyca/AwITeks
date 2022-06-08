@@ -3,6 +3,7 @@ package pl.edu.agh.awiteks_backend.api.users;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,6 +29,12 @@ public class UserController {
         // in every request, it should be more efficient (and flexible) to leave an endpoint so that
         // browser can get and cache this info on reload, we don't need entire User data tho
         return userService.getUserInfo(jwtAccessToken.getUserId());
+    }
+
+    @Operation(summary = "Get user plants calendar", security = @SecurityRequirement(name = JWT_AUTH))
+    @GetMapping("/calendar")
+    public ResponseEntity getUserPlantsCalendar(JwtAccessToken jwtAccessToken) {
+        return userService.getUserPlantsCalendar(jwtAccessToken.getUserId());
     }
 
 }

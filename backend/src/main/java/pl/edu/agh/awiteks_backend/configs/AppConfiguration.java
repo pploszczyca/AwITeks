@@ -3,6 +3,7 @@ package pl.edu.agh.awiteks_backend.configs;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
+import pl.edu.agh.awiteks_backend.utilities.CalendarUtilities;
 import pl.edu.agh.awiteks_backend.utilities.ListUtilities;
 import pl.edu.agh.awiteks_backend.utilities.PlantUtilities;
 import pl.edu.agh.awiteks_backend.utilities.StreamUtilities;
@@ -33,5 +34,11 @@ public class AppConfiguration {
     @Scope("singleton")
     public PlantUtilities getPlantUtilities() {
         return new PlantUtilities();
+    }
+
+    @Bean
+    @Scope("singleton")
+    public CalendarUtilities getCalendarUtilities() {
+        return new CalendarUtilities();
     }
 }
