@@ -1,0 +1,10 @@
+version: '3.7'
+
+services:
+  awit-frontend:
+    image: 'awit-frontend'
+    build:
+      context: .
+    ports:
+     - "3000:3000"
+    container_name: awit-frontend
