@@ -7,18 +7,17 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Stream;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.tuple.Pair;
 import pl.edu.agh.awiteks_backend.models.ActivityType;
 import pl.edu.agh.awiteks_backend.models.Plant;
 import pl.edu.agh.awiteks_backend.models.User;
 
+@RequiredArgsConstructor
 public class PlantUtilities {
-    private static final String DATE_FORMAT = "yyyy-MM-dd";
-
     private static final long DAY_TIME = 24 * 60 * 60 * 1000;
 
-    private final SimpleDateFormat simpleDateFormat =
-            new SimpleDateFormat(DATE_FORMAT);
+    private final SimpleDateFormat simpleDateFormat;
 
     public int getNumberOfNeglectedPlants(User user) {
         return findAllPlantsThatNeedActivitiesToday(user).toList().size();

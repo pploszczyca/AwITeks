@@ -30,15 +30,18 @@ public class FilterExceptionHandler extends OncePerRequestFilter {
         try {
             filterChain.doFilter(request, response);
         } catch (UnauthorizedException unauthorizedException) {
-            printExceptionAndSetResponsesHeadersAndStatus(unauthorizedException, response, HttpServletResponse.SC_UNAUTHORIZED);
+            printExceptionAndSetResponsesHeadersAndStatus(unauthorizedException,
+                    response, HttpServletResponse.SC_UNAUTHORIZED);
         } catch (Exception exception) {
-            printExceptionAndSetResponsesHeadersAndStatus(exception, response, HttpServletResponse.SC_FORBIDDEN);
+            printExceptionAndSetResponsesHeadersAndStatus(exception, response,
+                    HttpServletResponse.SC_FORBIDDEN);
         } finally {
             addCorsHeaders(request, response);
         }
     }
 
-    private void printExceptionAndSetResponsesHeadersAndStatus(Exception exception, HttpServletResponse response, int httpStatus) {
+    private void printExceptionAndSetResponsesHeadersAndStatus(
+            Exception exception, HttpServletResponse response, int httpStatus) {
         exception.printStackTrace();
 
         response.setHeader(HttpHeaders.CONTENT_TYPE,

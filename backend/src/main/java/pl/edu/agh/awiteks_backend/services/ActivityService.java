@@ -8,7 +8,6 @@ import pl.edu.agh.awiteks_backend.mappers.ActivityMapper;
 import pl.edu.agh.awiteks_backend.models.Activity;
 import pl.edu.agh.awiteks_backend.repositories.ActivityRepository;
 import pl.edu.agh.awiteks_backend.repositories.PlantRepository;
-import pl.edu.agh.awiteks_backend.utilities.ListUtilities;
 
 @Service
 public class ActivityService extends ModelService<Activity> {
@@ -21,9 +20,8 @@ public class ActivityService extends ModelService<Activity> {
     @Autowired
     public ActivityService(ActivityRepository activityRepository,
                            PlantRepository plantRepository,
-                           ListUtilities listUtilities,
                            ActivityMapper activityMapper) {
-        super(activityRepository, listUtilities);
+        super(activityRepository);
         this.activityRepository = activityRepository;
         this.plantRepository = plantRepository;
         this.activityMapper = activityMapper;

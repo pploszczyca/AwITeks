@@ -3,6 +3,7 @@ package pl.edu.agh.awiteks_backend.utilities;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import net.fortuna.ical4j.model.Calendar;
@@ -22,10 +23,7 @@ import pl.edu.agh.awiteks_backend.models.User;
 @RequiredArgsConstructor
 public class CalendarUtilities {
 
-    private static final String DATE_FORMAT = "yyyy-MM-dd";
-
-    private final SimpleDateFormat simpleDateFormat =
-            new SimpleDateFormat(DATE_FORMAT);
+    private final SimpleDateFormat simpleDateFormat;
 
     private final UidGenerator uidGenerator = new RandomUidGenerator();
 
@@ -36,29 +34,50 @@ public class CalendarUtilities {
         calendar.getProperties().add(Version.VERSION_2_0);
         calendar.getProperties().add(CalScale.GREGORIAN);
 
-        makePlantsVEvents(user.getUserPlants()).forEach(
-                vEvent -> calendar.getComponents().add(vEvent));
+        makePlantsVEvents(user.getUserPlants())
+                .forEach(vEvent -> calendar.getComponents().add(vEvent));
 
         return calendar;
     }
 
     private List<VEvent> makePlantsVEvents(List<Plant> plants) {
-        return plants.stream().flatMap(
-                plant -> {
-                    final var lastWateringDate = plant.getLastWateringDate();
-                    final var lastFertilizationDate = plant.getLastFertilizationDate();
+        return plants
+                .stream()
+                .flatMap(this::getPlantEventsStream)
+                .toList();
+    }
 
-                    return plant.getPlantActivities().stream().map(activity -> {
-                        final var event = makeEvent(activity, plant);
-                        event.getProperties().add(uidGenerator.generateUid());
+    private Stream<VEvent> getPlantEventsStream(Plant plant) {
+        final var lastWateringDate = plant.getLastWateringDate();
+        final var lastFertilizationDate =
+                plant.getLastFertilizationDate();
 
-                        if(isRecurrenceBeApplied(activity, lastWateringDate, lastFertilizationDate)) {
-                            addRecurrence(event, activity);
-                        }
+        return plant
+                .getPlantActivities()
+                .stream()
+                .map(activity -> {
+                    final var event = makeEvent(activity, plant);
+                    event.getProperties().add(uidGenerator.generateUid());
 
-                        return event;
-                    });
-                }).toList();
+                    if (isRecurrenceBeApplied(activity, lastWateringDate,
+                            lastFertilizationDate)) {
+                        addRecurrence(event, activity);
+                    }
+
+                    return event;
+                });
+    }
+
+    private boolean isRecurrenceBeApplied(Activity activity,
+                                          String lastWateringDate,
+                                          String lastFertilizationDate) {
+        final var activityType = activity.getActivityType();
+        final var activityDate = activity.getDate();
+
+        return (activityType == ActivityType.WATERING &&
+                activityDate.equals(lastWateringDate)) ||
+                (activityType == ActivityType.FERTILISATION &&
+                        activityDate.equals(lastFertilizationDate));
     }
 
     private VEvent makeEvent(Activity activity, Plant plant) {
@@ -74,13 +93,6 @@ public class CalendarUtilities {
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    private boolean isRecurrenceBeApplied(Activity activity, String lastWateringDate, String lastFertilizationDate) {
-        final var activityType = activity.getActivityType();
-        final var activityDate = activity.getDate();
-
-        return (activityType == ActivityType.WATERING && activityDate.equals(lastWateringDate)) || (activityType == ActivityType.FERTILISATION && activityDate.equals(lastFertilizationDate));
     }
 
     private int getDuration(Activity activity) {

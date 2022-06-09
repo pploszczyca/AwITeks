@@ -1,5 +1,6 @@
 package pl.edu.agh.awiteks_backend.configs;
 
+import java.text.SimpleDateFormat;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
@@ -11,6 +12,14 @@ import pl.edu.agh.awiteks_backend.utilities.UserDataValidationUtilities;
 
 @Configuration
 public class AppConfiguration {
+
+    private static final String DATE_FORMAT = "yyyy-MM-dd";
+
+    @Bean
+    @Scope("singleton")
+    public SimpleDateFormat getSimpleDateFormat() {
+        return new SimpleDateFormat(DATE_FORMAT);
+    }
 
     @Bean
     @Scope("singleton")
@@ -32,13 +41,14 @@ public class AppConfiguration {
 
     @Bean
     @Scope("singleton")
-    public PlantUtilities getPlantUtilities() {
-        return new PlantUtilities();
+    public PlantUtilities getPlantUtilities(SimpleDateFormat simpleDateFormat) {
+        return new PlantUtilities(simpleDateFormat);
     }
 
     @Bean
     @Scope("singleton")
-    public CalendarUtilities getCalendarUtilities() {
-        return new CalendarUtilities();
+    public CalendarUtilities getCalendarUtilities(
+            SimpleDateFormat simpleDateFormat) {
+        return new CalendarUtilities(simpleDateFormat);
     }
 }

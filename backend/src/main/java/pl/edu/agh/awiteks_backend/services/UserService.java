@@ -23,7 +23,6 @@ public class UserService {
 
     private final CalendarUtilities calendarUtilities;
 
-
     public UserInfo getUserInfo(int userId) {
         final User user = userRepository.findById(userId).orElseThrow();
         return userMapper.userToInfo(user);
@@ -33,19 +32,20 @@ public class UserService {
         final var user = userRepository.findById(userId).orElseThrow();
         final var calendar = calendarUtilities.makeUserCalendar(user);
 
-        System.out.println(calendar.toString());
-
         final byte[] calendarByte = calendar.toString().getBytes();
         final Resource resource = new ByteArrayResource(calendarByte);
 
         final HttpHeaders header = new HttpHeaders();
-        header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=my_plant_calendar.ics");
+        header.add(HttpHeaders.CONTENT_DISPOSITION,
+                "attachment; filename=my_plant_calendar.ics");
         header.add("Cache-Control", "no-cache, no-store, must-revalidate");
         header.add("Pragma", "no-cache");
         header.add("Expires", "0");
 
-        return ResponseEntity.ok().headers(header).contentType(MediaType.
-                        APPLICATION_OCTET_STREAM)
+        return ResponseEntity
+                .ok()
+                .headers(header)
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
                 .body(resource);
     }
 }

@@ -3,7 +3,7 @@ package pl.edu.agh.awiteks_backend.api.forum;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,13 +25,9 @@ import pl.edu.agh.awiteks_backend.services.ForumService;
 
 @RestController
 @RequestMapping("/forum")
+@RequiredArgsConstructor
 public class ForumController {
     private final ForumService forumService;
-
-    @Autowired
-    public ForumController(ForumService forumService) {
-        this.forumService = forumService;
-    }
 
     @Operation(summary = "Get all forum threads", security = @SecurityRequirement(name = JWT_AUTH))
     @GetMapping(produces = "application/json")
