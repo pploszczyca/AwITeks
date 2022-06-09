@@ -1,7 +1,9 @@
+import {BASE_PATH} from "../api/base";
+
 export async function downloadFile(){
     const token = JSON.parse(localStorage.getItem('JWT')!).accessToken;
 
-    return fetch('http://localhost:5000/users/calendar', {
+    return fetch(BASE_PATH + "/users/calendar", {
         method: 'GET',
         headers: {
             'Content-Type': 'application/blob',
