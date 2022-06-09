@@ -1,64 +1,51 @@
 package pl.edu.agh.awiteks_backend.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import pl.edu.agh.awiteks_backend.api.users.body_models.UserInfo;
 import pl.edu.agh.awiteks_backend.mappers.UserMapper;
 import pl.edu.agh.awiteks_backend.models.User;
-import pl.edu.agh.awiteks_backend.repositories.PlantRepository;
-import pl.edu.agh.awiteks_backend.repositories.SpeciesRepository;
 import pl.edu.agh.awiteks_backend.repositories.UserRepository;
-import pl.edu.agh.awiteks_backend.utilities.ListUtilities;
-import pl.edu.agh.awiteks_backend.utilities.StreamUtilities;
+import pl.edu.agh.awiteks_backend.utilities.CalendarUtilities;
 
 @Service
-public class UserService extends ModelService<User> {
+@RequiredArgsConstructor
+public class UserService {
 
-    private final SpeciesRepository speciesRepository;
-
-    private final PlantRepository plantRepository;
-
-    private final StreamUtilities streamUtilities;
+    private final UserRepository userRepository;
 
     private final UserMapper userMapper;
 
-    @Autowired
-    public UserService(UserRepository modelRepository,
-                       SpeciesRepository speciesRepository,
-                       PlantRepository plantRepository,
-                       ListUtilities listUtilities,
-                       StreamUtilities streamUtilities,
-                       UserMapper userMapper) {
-        super(modelRepository, listUtilities);
-        this.speciesRepository = speciesRepository;
-        this.plantRepository = plantRepository;
-        this.streamUtilities = streamUtilities;
-        this.userMapper = userMapper;
-    }
-
-    @Override
-    public void remove(int id) {
-        removeAllUserPlants(id);
-        removeAllUserSpecies(id);
-        super.remove(id);
-    }
+    private final CalendarUtilities calendarUtilities;
 
     public UserInfo getUserInfo(int userId) {
-        final User user = get(userId).orElseThrow();
+        final User user = userRepository.findById(userId).orElseThrow();
         return userMapper.userToInfo(user);
     }
 
-    private void removeAllUserPlants(int id) {
-        super.get(id)
-                .ifPresent(presentUser -> plantRepository.deleteAll(
-                        presentUser.getUserPlants()));
-    }
+    public ResponseEntity getUserPlantsCalendar(int userId) {
+        final var user = userRepository.findById(userId).orElseThrow();
+        final var calendar = calendarUtilities.makeUserCalendar(user);
 
-    private void removeAllUserSpecies(int id) {
-        streamUtilities
-                .asStream(speciesRepository.findAll())
-                .filter(species -> species.getCreatorId() == id)
-                .forEach(speciesRepository::delete);
-    }
+        final byte[] calendarByte = calendar.toString().getBytes();
+        final Resource resource = new ByteArrayResource(calendarByte);
 
+        final HttpHeaders header = new HttpHeaders();
+        header.add(HttpHeaders.CONTENT_DISPOSITION,
+                "attachment; filename=my_plant_calendar.ics");
+        header.add("Cache-Control", "no-cache, no-store, must-revalidate");
+        header.add("Pragma", "no-cache");
+        header.add("Expires", "0");
+
+        return ResponseEntity
+                .ok()
+                .headers(header)
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(resource);
+    }
 }

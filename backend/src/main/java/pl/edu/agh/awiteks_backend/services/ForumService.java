@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.edu.agh.awiteks_backend.api.forum.body_models.AddPostRequestBody;
 import pl.edu.agh.awiteks_backend.api.forum.body_models.AddThreadRequestBody;
@@ -20,6 +20,7 @@ import pl.edu.agh.awiteks_backend.repositories.UserRepository;
 import pl.edu.agh.awiteks_backend.utilities.StreamUtilities;
 
 @Service
+@RequiredArgsConstructor
 public class ForumService {
     private final UserRepository userRepository;
 
@@ -30,19 +31,6 @@ public class ForumService {
     private final StreamUtilities streamUtilities;
 
     private final ForumMapper forumMapper;
-
-    @Autowired
-    public ForumService(ForumRepository forumRepository,
-                        UserRepository userRepository,
-                        PostRepository postRepository,
-                        StreamUtilities streamUtilities,
-                        ForumMapper forumMapper) {
-        this.postRepository = postRepository;
-        this.userRepository = userRepository;
-        this.forumRepository = forumRepository;
-        this.streamUtilities = streamUtilities;
-        this.forumMapper = forumMapper;
-    }
 
     public ForumThread addThread(AddThreadRequestBody addThreadRequestBody,
                                  int userId) {

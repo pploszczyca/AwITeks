@@ -39,6 +39,8 @@ dependencies {
     implementation('org.mapstruct:mapstruct:1.4.2.Final')
     compileOnly('org.mapstruct:mapstruct-processor:1.4.2.Final')
     annotationProcessor('org.mapstruct:mapstruct-processor:1.4.2.Final')
+
+    implementation group: 'org.mnode.ical4j', name: 'ical4j', version: '2.2.0'
 }
 
 tasks.named('test') {

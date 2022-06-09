@@ -1,8 +1,8 @@
 package pl.edu.agh.awiteks_backend.mail;
 
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.tuple.Pair;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -14,6 +14,7 @@ import pl.edu.agh.awiteks_backend.repositories.UserRepository;
 import pl.edu.agh.awiteks_backend.utilities.PlantUtilities;
 
 @Service
+@RequiredArgsConstructor
 public class EmailService {
     private static final long INITIAL_DELAY = 5000;
 
@@ -21,13 +22,6 @@ public class EmailService {
 
     private final PlantUtilities plantUtilities;
 
-
-    @Autowired
-    public EmailService(UserRepository userRepository,
-                        PlantUtilities plantUtilities) {
-        this.userRepository = userRepository;
-        this.plantUtilities = plantUtilities;
-    }
 
     @Scheduled(fixedRateString = "PT24H", initialDelay = INITIAL_DELAY)
     @Transactional(propagation = Propagation.REQUIRED, readOnly = true, noRollbackFor = Exception.class)

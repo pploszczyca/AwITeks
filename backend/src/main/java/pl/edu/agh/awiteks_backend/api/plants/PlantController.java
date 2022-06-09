@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.util.List;
 import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,13 +24,9 @@ import pl.edu.agh.awiteks_backend.services.PlantService;
 
 @RestController
 @RequestMapping("/plants")
+@RequiredArgsConstructor
 public class PlantController {
     private final PlantService plantService;
-
-    @Autowired
-    public PlantController(PlantService plantService) {
-        this.plantService = plantService;
-    }
 
     @Operation(summary = "Get all plants", security = @SecurityRequirement(name = JWT_AUTH))
     @GetMapping(produces = "application/json")
