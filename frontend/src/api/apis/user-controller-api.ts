@@ -62,6 +62,40 @@ export const UserControllerApiAxiosParamCreator = function (configuration?: Conf
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @summary Get user plants calendar
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getUserPlantsCalendar: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/users/calendar`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication JWT_AUTH required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -80,6 +114,16 @@ export const UserControllerApiFp = function(configuration?: Configuration) {
          */
         async getMe(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserInfo>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getMe(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Get user plants calendar
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getUserPlantsCalendar(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getUserPlantsCalendar(options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -101,6 +145,15 @@ export const UserControllerApiFactory = function (configuration?: Configuration,
         getMe(options?: any): AxiosPromise<UserInfo> {
             return localVarFp.getMe(options).then((request) => request(axios, basePath));
         },
+        /**
+         * 
+         * @summary Get user plants calendar
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getUserPlantsCalendar(options?: any): AxiosPromise<string> {
+            return localVarFp.getUserPlantsCalendar(options).then((request) => request(axios, basePath));
+        },
     };
 };
 
@@ -120,5 +173,16 @@ export class UserControllerApi extends BaseAPI {
      */
     public getMe(options?: AxiosRequestConfig) {
         return UserControllerApiFp(this.configuration).getMe(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get user plants calendar
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserControllerApi
+     */
+    public getUserPlantsCalendar(options?: AxiosRequestConfig) {
+        return UserControllerApiFp(this.configuration).getUserPlantsCalendar(options).then((request) => request(this.axios, this.basePath));
     }
 }
