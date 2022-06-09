@@ -15,6 +15,7 @@ import net.fortuna.ical4j.model.property.Version;
 import net.fortuna.ical4j.util.RandomUidGenerator;
 import net.fortuna.ical4j.util.UidGenerator;
 import pl.edu.agh.awiteks_backend.models.Activity;
+import pl.edu.agh.awiteks_backend.models.ActivityType;
 import pl.edu.agh.awiteks_backend.models.Plant;
 import pl.edu.agh.awiteks_backend.models.User;
 
@@ -43,22 +44,43 @@ public class CalendarUtilities {
 
     private List<VEvent> makePlantsVEvents(List<Plant> plants) {
         return plants.stream().flatMap(
-                plant -> plant.getPlantActivities().stream().map(activity -> {
-                    final var event =
-                            new VEvent(stringToDate(activity.getDate()),
-                                    plant.getName() + ": " +
-                                            activity.getActivityType().name());
+                plant -> {
+                    final var lastWateringDate = plant.getLastWateringDate();
+                    final var lastFertilizationDate = plant.getLastFertilizationDate();
 
-                    event.getProperties().add(uidGenerator.generateUid());
-                    try {
-                        event.getProperties().add(new RRule(
-                                makeRecurrencePattern(getDuration(activity))));
-                    } catch (ParseException e) {
-                        throw new RuntimeException(e);
-                    }
+                    return plant.getPlantActivities().stream().map(activity -> {
+                        final var event = makeEvent(activity, plant);
+                        event.getProperties().add(uidGenerator.generateUid());
 
-                    return event;
-                })).toList();
+                        if(isRecurrenceBeApplied(activity, lastWateringDate, lastFertilizationDate)) {
+                            addRecurrence(event, activity);
+                        }
+
+                        return event;
+                    });
+                }).toList();
+    }
+
+    private VEvent makeEvent(Activity activity, Plant plant) {
+        return new VEvent(stringToDate(activity.getDate()),
+                plant.getName() + ": " +
+                        activity.getActivityType().name());
+    }
+
+    private void addRecurrence(VEvent event, Activity activity) {
+        try {
+            event.getProperties().add(new RRule(
+                    makeRecurrencePattern(getDuration(activity))));
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private boolean isRecurrenceBeApplied(Activity activity, String lastWateringDate, String lastFertilizationDate) {
+        final var activityType = activity.getActivityType();
+        final var activityDate = activity.getDate();
+
+        return (activityType == ActivityType.WATERING && activityDate.equals(lastWateringDate)) || (activityType == ActivityType.FERTILISATION && activityDate.equals(lastFertilizationDate));
     }
 
     private int getDuration(Activity activity) {
