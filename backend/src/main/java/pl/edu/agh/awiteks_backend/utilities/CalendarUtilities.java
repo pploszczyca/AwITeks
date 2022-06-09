@@ -72,7 +72,15 @@ public class CalendarUtilities {
 
     @SneakyThrows
     private Date stringToDate(String dateString) {
-        return new Date(simpleDateFormat.parse(dateString));
+        final var parsedDate = simpleDateFormat.parse(dateString);
+
+        // We need to add to date one day, because parsing is not correct.
+        // It's not the prettiest solution, but it works.
+        final var calendar = java.util.Calendar.getInstance();
+        calendar.setTime(parsedDate);
+        calendar.add(java.util.Calendar.DATE, 1);
+
+        return new Date(calendar.getTime());
     }
 
     private String makeRecurrencePattern(int days) {
