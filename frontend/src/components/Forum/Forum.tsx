@@ -85,37 +85,8 @@ const Forum: React.FC<{}> = () => {
         filterData();
     };
 
-    const mock = () => {
-        let v1: ForumThreadSummaryResponseBody = {
-            id: 0,
-            title: 'yelling at plants',
-            creatorName: 'Anthony',
-            creationDate: '',
-            postsCount: 0,
-            isFollowed: false
-        }
-        let v2: ForumThreadSummaryResponseBody = {
-            id: 1,
-            title: 'caring for 66 plants',
-            creatorName: 'Jon',
-            creationDate: '',
-            postsCount: 0,
-            isFollowed: false
-        }
-        let v3: ForumThreadSummaryResponseBody = {
-            id: 2,
-            title: 'Dog ate my apple tree',
-            creatorName: 'Adam',
-            creationDate: '',
-            postsCount: 0,
-            isFollowed: false
-        }
-        return [v1,v2,v3];
-    };
-
     const filterData = () => {
-        // let result = threadsList!;
-        let result = mock();
+        let result = threadsList!;
         if(filters[1]!==''){
             result = result.filter((elem: ForumThreadSummaryResponseBody) => isFavourite[elem.id]);
         }
@@ -126,8 +97,7 @@ const Forum: React.FC<{}> = () => {
             const keyword: string = filters[0];
             result = result.filter((thread) => {
                 let titleFilter = thread.title.toLowerCase().includes(keyword.toLowerCase())
-                // let tagFilter = thread.tag.toLowerCase().includes(keyword.toLowerCase())
-                let tagFilter = ("#666".includes(keyword.toLowerCase()) && thread.id===0) //temporary, for testing purposes
+                let tagFilter = thread.tag.toLowerCase().includes(keyword.toLowerCase())
                 return (titleFilter || tagFilter);
             });
         }
