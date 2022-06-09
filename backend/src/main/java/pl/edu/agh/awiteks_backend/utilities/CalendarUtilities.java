@@ -23,6 +23,8 @@ import pl.edu.agh.awiteks_backend.models.User;
 @RequiredArgsConstructor
 public class CalendarUtilities {
 
+    public static final String FREQ_DAILY_INTERVAL = "FREQ=DAILY;INTERVAL=";
+
     private final SimpleDateFormat simpleDateFormat;
 
     private final UidGenerator uidGenerator = new RandomUidGenerator();
@@ -118,6 +120,6 @@ public class CalendarUtilities {
     }
 
     private String makeRecurrencePattern(int days) {
-        return "FREQ=DAILY;INTERVAL=" + days;
+        return FREQ_DAILY_INTERVAL + days;
     }
 }
