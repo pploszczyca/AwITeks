@@ -41,7 +41,7 @@ function App() {
                                 <Route path={PageRoutes.MY_PLANTS} element={<PageGuard role={Role.LOGGED_IN}><PlantsView /></PageGuard>} />
                                 <Route path={PageRoutes.CALENDAR} element={<PageGuard role={Role.LOGGED_IN}><Calendar /></PageGuard>} />
                                 <Route path={`${PageRoutes.MY_PLANTS}/:plantId`} element={<PageGuard role={Role.LOGGED_IN}><PlantDetailsView /></PageGuard>} />
-                                <Route path={PageRoutes.FORUM} element={<PageGuard role={Role.LOGGED_IN}><Forum/></PageGuard>} />
+                                <Route path={PageRoutes.FORUM} element={<PageGuard role={Role.NOT_LOGGED_IN}><Forum/></PageGuard>} />
                                 
                                 {/*TODO: add PageGuard*/}
                                 <Route path={`${PageRoutes.FORUM_THREAD}`} element={<ForumThreadPage />} />
