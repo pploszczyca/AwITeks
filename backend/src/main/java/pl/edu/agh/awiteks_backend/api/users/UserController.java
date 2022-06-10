@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.edu.agh.awiteks_backend.api.users.body_models.UserInfo;
 import static pl.edu.agh.awiteks_backend.configs.SwaggerConfig.JWT_AUTH;
+import pl.edu.agh.awiteks_backend.api.users.body_models.UserMainSummary;
 import pl.edu.agh.awiteks_backend.security.jwt.JwtAccessToken;
 import pl.edu.agh.awiteks_backend.services.UserService;
 
@@ -31,6 +32,12 @@ public class UserController {
     @GetMapping("/calendar")
     public ResponseEntity getUserPlantsCalendar(JwtAccessToken jwtAccessToken) {
         return userService.getUserPlantsCalendar(jwtAccessToken.getUserId());
+    }
+
+    @Operation(summary = "Get user summary info", security = @SecurityRequirement(name = JWT_AUTH))
+    @GetMapping("/userMainSummary")
+    public UserMainSummary getUserMainSummary(JwtAccessToken jwtAccessToken){
+        return userService.getUserMainSummary(jwtAccessToken.getUserId());
     }
 
 }

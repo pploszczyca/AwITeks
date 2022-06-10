@@ -7,21 +7,32 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import pl.edu.agh.awiteks_backend.api.users.body_models.UserForumThreadsSummary;
 import pl.edu.agh.awiteks_backend.api.users.body_models.UserInfo;
+import pl.edu.agh.awiteks_backend.api.users.body_models.UserMainSummary;
+import pl.edu.agh.awiteks_backend.api.users.body_models.UserPlantSummary;
 import pl.edu.agh.awiteks_backend.mappers.UserMapper;
 import pl.edu.agh.awiteks_backend.models.User;
 import pl.edu.agh.awiteks_backend.repositories.UserRepository;
 import pl.edu.agh.awiteks_backend.utilities.CalendarUtilities;
+import pl.edu.agh.awiteks_backend.utilities.ForumUtilities;
+import pl.edu.agh.awiteks_backend.utilities.PlantUtilities;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
+    private static final int NUM_OF_MAIN_SUMMARY = 5;
 
     private final UserRepository userRepository;
 
     private final UserMapper userMapper;
 
     private final CalendarUtilities calendarUtilities;
+
+    private final PlantUtilities plantUtilities;
+
+    private final ForumUtilities forumUtilities;
 
     public UserInfo getUserInfo(int userId) {
         final User user = userRepository.findById(userId).orElseThrow();
@@ -47,5 +58,24 @@ public class UserService {
                 .headers(header)
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
                 .body(resource);
+    }
+
+
+    public UserMainSummary getUserMainSummary(int userId) {
+        final User user = userRepository.findById(userId).orElseThrow();
+
+        final List<UserPlantSummary> missedActivities = plantUtilities.getNeglectedPlants(user).stream()
+                .map((pair) ->
+                       new UserPlantSummary(pair.getLeft().getName(), pair.getRight())
+                )
+                .limit(NUM_OF_MAIN_SUMMARY).toList();
+
+        final List<UserPlantSummary> todayActivities =
+                plantUtilities.findAllPlantsThatNeedActivitiesToday(user).map((pair) ->
+                        new UserPlantSummary(pair.getLeft().getName(), pair.getRight())
+                ).limit(NUM_OF_MAIN_SUMMARY).toList();
+
+        final List<UserForumThreadsSummary> forumThreads = forumUtilities.getNewestForumPostsFromFollowedThreads(user);
+        return new UserMainSummary(missedActivities, todayActivities, forumThreads);
     }
 }

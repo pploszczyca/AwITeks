@@ -5,10 +5,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import pl.edu.agh.awiteks_backend.utilities.CalendarUtilities;
+import pl.edu.agh.awiteks_backend.utilities.ForumUtilities;
 import pl.edu.agh.awiteks_backend.utilities.ListUtilities;
 import pl.edu.agh.awiteks_backend.utilities.PlantUtilities;
 import pl.edu.agh.awiteks_backend.utilities.StreamUtilities;
 import pl.edu.agh.awiteks_backend.utilities.UserDataValidationUtilities;
+
 
 @Configuration
 public class AppConfiguration {
@@ -51,4 +53,12 @@ public class AppConfiguration {
             SimpleDateFormat simpleDateFormat) {
         return new CalendarUtilities(simpleDateFormat);
     }
+
+    @Bean
+    @Scope("singleton")
+    public ForumUtilities getForumUtilities() {
+        return new ForumUtilities();
+    }
+
+
 }

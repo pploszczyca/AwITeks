@@ -22,7 +22,6 @@ public class EmailService {
 
     private final PlantUtilities plantUtilities;
 
-
     @Scheduled(fixedRateString = "PT24H", initialDelay = INITIAL_DELAY)
     @Transactional(propagation = Propagation.REQUIRED, readOnly = true, noRollbackFor = Exception.class)
     public void sendEmails() {
