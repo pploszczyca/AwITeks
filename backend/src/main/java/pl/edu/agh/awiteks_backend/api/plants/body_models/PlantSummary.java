@@ -8,5 +8,6 @@ public record PlantSummary(
         @Schema(required = true) String speciesName,
         @Schema(required = true) Boolean isFavourite,
         @Schema(required = true) String photo
+
 ) {
 }

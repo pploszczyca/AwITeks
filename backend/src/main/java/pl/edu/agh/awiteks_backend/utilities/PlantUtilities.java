@@ -20,7 +20,11 @@ public class PlantUtilities {
     private final SimpleDateFormat simpleDateFormat;
 
     public int getNumberOfNeglectedPlants(User user) {
-        return findAllPlantsThatNeedActivitiesToday(user).toList().size();
+        return getNeglectedPlants(user).size();
+    }
+
+    public List<Pair<Plant, List<ActivityType>>> getNeglectedPlants(User user) {
+        return findAllPlantsThatNeedActivitiesToday(user).toList();
     }
 
     public List<Pair<Plant, List<ActivityType>>> findAllPlantsThatNeedNotifications(
@@ -30,7 +34,7 @@ public class PlantUtilities {
                 .toList();
     }
 
-    private Stream<Pair<Plant, List<ActivityType>>> findAllPlantsThatNeedActivitiesToday(
+    public Stream<Pair<Plant, List<ActivityType>>> findAllPlantsThatNeedActivitiesToday(
             User user) {
         return user.getUserPlants().stream().map(plant -> {
             List<ActivityType> actionsNeededToday;
