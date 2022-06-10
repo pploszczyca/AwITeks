@@ -22,6 +22,8 @@ import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObj
 import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from '../base';
 // @ts-ignore
 import { UserInfo } from '../models';
+// @ts-ignore
+import { UserMainSummary } from '../models';
 /**
  * UserControllerApi - axios parameter creator
  * @export
@@ -36,6 +38,40 @@ export const UserControllerApiAxiosParamCreator = function (configuration?: Conf
          */
         getMe: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/users/me`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication JWT_AUTH required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Get user summary info
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getUserMainSummary: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/users/userMainSummary`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -118,6 +154,16 @@ export const UserControllerApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary Get user summary info
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getUserMainSummary(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserMainSummary>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getUserMainSummary(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @summary Get user plants calendar
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -147,6 +193,15 @@ export const UserControllerApiFactory = function (configuration?: Configuration,
         },
         /**
          * 
+         * @summary Get user summary info
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getUserMainSummary(options?: any): AxiosPromise<UserMainSummary> {
+            return localVarFp.getUserMainSummary(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary Get user plants calendar
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -173,6 +228,17 @@ export class UserControllerApi extends BaseAPI {
      */
     public getMe(options?: AxiosRequestConfig) {
         return UserControllerApiFp(this.configuration).getMe(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get user summary info
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserControllerApi
+     */
+    public getUserMainSummary(options?: AxiosRequestConfig) {
+        return UserControllerApiFp(this.configuration).getUserMainSummary(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
