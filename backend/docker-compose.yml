@@ -15,8 +15,6 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/db?createDatabaseIfNotExist=true
       SPRING_DATASOURCE_USERNAME: user
       SPRING_DATASOURCE_PASSWORD: my-secret-pw
-      NOTIFICATION_EMAIL: kwiatkinajavie@gmail.com
-      NOTIFICATION_PASSWD: Kwiatki123
 
     networks:
       - backend
