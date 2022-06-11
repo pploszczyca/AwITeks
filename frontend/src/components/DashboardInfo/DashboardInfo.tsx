@@ -9,7 +9,7 @@ import {activitiesOrganizer, forumThreadsOrganizer} from "./statsDataOrganizer";
 
 
 const DashboardInfo: React.FC<{}> = () => {
-    let { data: summaryLists, isLoading: summaryListsLoading } =
+    let { data: summaryLists } =
         useQuery(
             ['users', 'userMainSummary'],
             () => getApis().userApi.getUserMainSummary().then(resp => resp.data),

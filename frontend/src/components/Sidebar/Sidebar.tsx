@@ -3,7 +3,7 @@ import {Container, Nav} from "react-bootstrap";
 import {Link, useNavigate} from "react-router-dom";
 import {MobileNavbar, NavbarEdit} from './SidebarStyles';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faCalendarDays, faComments, faGear, faHouse, faSeedling} from '@fortawesome/free-solid-svg-icons'
+import {faCalendarDays, faComments, faHouse, faSeedling} from '@fortawesome/free-solid-svg-icons'
 import {PageRoutes} from '../../utils/constants';
 
 function buildNavLink(to: string, mobile: boolean, content: any) {
