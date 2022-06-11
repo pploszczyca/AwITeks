@@ -12,7 +12,7 @@ public class ForumUtilities {
     public List<UserForumThreadsSummary> getNewestForumPostsFromFollowedThreads(User user) {
         return user.getFollowedThreads().stream().limit(LIMIT).map(forumThread -> {
             forumThread.getForumPosts().sort(Comparator.comparing(ForumPost::getDate));
-            final var forumPost = forumThread.getForumPosts().stream().findFirst().orElseThrow();
+            final var forumPost = forumThread.getForumPosts().stream().reduce((first, second) -> second).orElseThrow();
             return new UserForumThreadsSummary(forumThread.getId(), forumThread.getTitle(),
                     forumPost.getContent(),
                    forumPost.getDate().toString());

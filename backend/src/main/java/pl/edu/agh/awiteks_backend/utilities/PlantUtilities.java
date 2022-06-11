@@ -74,6 +74,33 @@ public class PlantUtilities {
         return activities;
     }
 
+    public List<ActivityType> getActionsNeededForPlantInFuture(Plant plant)
+            throws ParseException {
+        final Date today = new Date();
+        final List<ActivityType> activities = new LinkedList<>();
+
+        final var lastWateringDay =
+                this.simpleDateFormat.parse(plant.getLastWateringDate());
+        final var nextWateringDate = makeNextDate(lastWateringDay,
+                plant.getSpecies().getWaterRoutine());
+
+        final var lastFertilizationDate =
+                this.simpleDateFormat.parse(plant.getLastFertilizationDate());
+        final var nextFertilizationDate = makeNextDate(lastFertilizationDate,
+                plant.getSpecies().getFertilizationRoutine());
+
+        if (nextWateringDate.after(today)) {
+            activities.add(ActivityType.WATERING);
+        }
+
+        if (nextFertilizationDate.after(today)) {
+            activities.add(ActivityType.FERTILISATION);
+        }
+
+        return activities;
+    }
+
+
     private Date makeNextDate(Date date, int days) {
         return new Date(date.getTime() + (days * DAY_TIME));
     }
