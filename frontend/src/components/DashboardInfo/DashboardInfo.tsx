@@ -16,26 +16,22 @@ const DashboardInfo: React.FC<{}> = () => {
             {onError: (error) => errorMsg()}
         );
 
+    const ColContent = (content: string, action: any) => {
+        return (
+            <Col xxl={4} sm={6} xs={12} className="mt-2">
+                <StatsCol>
+                    <InfoElement>{content}</InfoElement>
+                    <StatsList stats={action}/>
+                </StatsCol>
+            </Col>
+        )
+    }
+
     return (
         <MobileRow className="d-flex justify-content-center mt-3">
-            <Col xxl={4} sm={6} xs={12} className="mt-2">
-                <StatsCol>
-                    <InfoElement>Przegapione akcje</InfoElement>
-                    <StatsList stats={activitiesOrganizer(summaryLists?.missedActivities)}/>
-                </StatsCol>
-            </Col>
-            <Col xxl={4} sm={6} xs={12} className="mt-2">
-                <StatsCol>
-                    <InfoElement>Nadchodzące akcje</InfoElement>
-                    <StatsList stats={activitiesOrganizer(summaryLists?.incomingActivities)}/>
-                </StatsCol>
-            </Col>
-            <Col xxl={4} sm={6} xs={12} className="mt-2">
-                <StatsCol>
-                    <InfoElement>Wiadomości</InfoElement>
-                    <StatsList stats={forumThreadsOrganizer(summaryLists?.forumThreads)}/>
-                </StatsCol>
-            </Col>
+            {ColContent("Przegapione akcje", activitiesOrganizer(summaryLists?.missedActivities))}
+            {ColContent("Nadchodzące akcje", activitiesOrganizer(summaryLists?.incomingActivities))}
+            {ColContent("Wiadomości", forumThreadsOrganizer(summaryLists?.forumThreads))}
         </MobileRow>
     );
 }
