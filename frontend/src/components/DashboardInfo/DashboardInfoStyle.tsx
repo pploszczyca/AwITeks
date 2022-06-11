@@ -39,6 +39,7 @@ export const StatsRow = styled(Row)`
   border-radius: 10px;
   box-shadow: 4px 5px 15px -12px rgba(66, 68, 90, 1);
   background-color: white;
+  box-sizing: border-box;
 
   &:last-child {
     border: none;
@@ -57,6 +58,8 @@ export const StatsRow = styled(Row)`
     padding: 0 5px 0 5px;
     
     & p {
+      overflow: hidden;
+      text-overflow: ellipsis;
       max-height: 100%;
       width: 85%;
       z-index: 3;
@@ -85,7 +88,7 @@ export const StatsRow = styled(Row)`
 function createNumbers(){
     let styles = '';
 
-    for (let i = 0; i < 5; i++){
+    for (let i = 0; i <= 5; i++){
         styles += `
               &:nth-child(${i}) .col:first-child::before {
                 content: '${i}';

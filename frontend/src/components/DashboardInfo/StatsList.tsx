@@ -17,7 +17,7 @@ const StatsList: React.FC<{ stats: any }> = ({stats}) => {
                     ) : (
                         <Container style={{height: "100%"}} className='p-0'>
                             {stats.map((stat: any, idx: any) => (
-                                <StatsRow key={idx} style={{height: "20%"}}>
+                                <StatsRow key={idx} style={{height: "19%"}}>
                                     {Object.keys(stat).map((key, idx) => (
                                         <Col key={idx}>
                                             <p className='p-0 m-0'>{stat[key]}</p>
