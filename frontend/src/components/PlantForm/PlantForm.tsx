@@ -96,7 +96,7 @@ export const PlantForm: React.FC<PlantFormProps> =
                                         <Row>
                                             <Col className="form-group mt-3" xl={4} md={6} sm={12}>
                                                 <label>Twoja nazwa rośliny:</label><br />
-                                                <Field className="form-control" type="text" name="name" />
+                                                <Field className="form-control" type="text" name="name" maxLength={150}/>
                                                 <ErrorMessage name="name" component="div">
                                                     {msg => <div style={{ color: 'red' }}>{msg}</div>}
                                                 </ErrorMessage>

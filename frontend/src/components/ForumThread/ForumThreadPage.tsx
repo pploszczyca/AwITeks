@@ -53,7 +53,7 @@ const ForumThreadPage: React.FC<{}> = () => {
     });
 
     const addPost = async () => {
-        if (textFieldRef.current) {
+        if (textFieldRef.current && textFieldRef.current.textLength > 0) {
             const msg = textFieldRef.current.value;
             await addPostMutation.mutateAsync({content: msg});
             textFieldRef.current.value = "";
@@ -88,6 +88,7 @@ const ForumThreadPage: React.FC<{}> = () => {
          <Row ref={sendRow} style={{height: 45}}>
              <Col lg={10} className="h-100 mt-2">
                  <SenderArea ref={textFieldRef}
+                             maxLength={255}
                              onInput={() => fitAreaToContent(textFieldRef.current!, sendRow.current!)}/>
              </Col>
              <Col lg={2} className="mt-2">

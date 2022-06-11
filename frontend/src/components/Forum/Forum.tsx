@@ -60,9 +60,9 @@ const Forum: React.FC<{}> = () => {
         }
     }, [threadsList]);
 
-    useEffect(() => {
-        console.log(isFavourite);
-    }, [isFavourite])
+    // useEffect(() => {
+    //     console.log(isFavourite);
+    // }, [isFavourite])
 
 
     const filterSearchBar = (e: { target: { value: string; }; }) => {

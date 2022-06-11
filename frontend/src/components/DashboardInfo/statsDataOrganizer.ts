@@ -14,7 +14,7 @@ export function activitiesOrganizer(activities: any){
                 plantName: activity.plantName,
                 activityTypes: translateTypes.join(', '),
             }
-        })
+        }).slice(0, 5);
     }
     return activities;
 }
@@ -27,6 +27,6 @@ export function forumThreadsOrganizer(forumThreads: any){
                 content: thread.content,
                 date: moment(thread.date).calendar()
             }
-        })
+        }).slice(0, 5);
     }
 }
