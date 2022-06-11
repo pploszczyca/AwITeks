@@ -1,29 +1,40 @@
 import React from 'react';
-import {Col} from "react-bootstrap";
-import {InfoElement, MobileRow} from "./DashboardInfoStyle";
 import {useQuery} from "react-query";
 import {getApis} from "../../api/initializeApis";
 import {errorMsg} from "../../utils/constants";
+import {InfoElement, MobileRow, StatsCol} from './DashboardInfoStyle';
+import StatsList from "./StatsList";
+import {Col} from "react-bootstrap";
+import {activitiesOrganizer} from "./statsDataOrganizer";
 
 
 const DashboardInfo: React.FC<{}> = () => {
     let { data: summaryLists, isLoading: summaryListsLoading } =
         useQuery(
             ['users', 'userMainSummary'],
-            () => getApis().userApi..then(resp => resp.data),
+            () => getApis().userApi.getUserMainSummary().then(resp => resp.data),
             {onError: (error) => errorMsg()}
         );
 
     return (
         <MobileRow className="d-flex justify-content-center mt-3">
             <Col xxl={4} sm={6} xs={12} className="mt-2">
-                <InfoElement>Przegapione akcje</InfoElement>
+                <StatsCol>
+                    <InfoElement>Przegapione akcje</InfoElement>
+                    <StatsList stats={activitiesOrganizer(summaryLists?.missedActivities)}/>
+                </StatsCol>
             </Col>
             <Col xxl={4} sm={6} xs={12} className="mt-2">
-                <InfoElement>Nadchodzące akcje</InfoElement>
+                <StatsCol>
+                    <InfoElement>Nadchodzące akcje</InfoElement>
+                    <StatsList stats={activitiesOrganizer(summaryLists?.incomingActivities)}/>
+                </StatsCol>
             </Col>
             <Col xxl={4} sm={6} xs={12} className="mt-2">
-                <InfoElement>Wiadomości</InfoElement>
+                <StatsCol>
+                    <InfoElement>Wiadomości</InfoElement>
+                    <StatsList stats={summaryLists?.forumThreads}/>
+                </StatsCol>
             </Col>
         </MobileRow>
     );
