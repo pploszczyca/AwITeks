@@ -1,5 +1,7 @@
-import {ACTIVITY_DESCRIPTION} from "../Calendar/CalendarDay/utils";
 import {UserPlantSummaryActivityTypesEnum} from "../../api";
+import {ACTIVITY_DESCRIPTION} from "../../utils/constants";
+import moment from "moment";
+import 'moment/locale/pl';
 
 export function activitiesOrganizer(activities: any){
     if (activities){
@@ -17,6 +19,14 @@ export function activitiesOrganizer(activities: any){
     return activities;
 }
 
-export function forumThreadsOrganizer(){
-
+export function forumThreadsOrganizer(forumThreads: any){
+    if(forumThreads){
+        return forumThreads.map((thread: any) => {
+            return {
+                title: thread.title,
+                content: thread.content,
+                date: moment(thread.date).calendar()
+            }
+        })
+    }
 }

@@ -1,23 +1,26 @@
 import React from 'react';
 import Loader from "../Loader/Loader";
-import {Col, Container, Row} from "react-bootstrap";
+import cactusDancing from "./resources/dance-dancing-cat.gif"
+import {Container, Col} from "react-bootstrap";
 import {StatsRow} from "./DashboardInfoStyle";
 
 const StatsList: React.FC<{ stats: any }> = ({stats}) => {
-    console.log(stats)
     return (
         <>
             {stats ? (
                 <>
                     {stats.length === 0 ? (
-                        <p>Na razie jest cicho...</p>
+                        <>
+                            <strong className='text-center pb-2'>Na razie jest cicho...</strong>
+                            <img src={cactusDancing} alt={'dancing cactus'}/>
+                        </>
                     ) : (
-                        <Container style={{height: "100%"}}>
+                        <Container style={{height: "100%"}} className='p-0'>
                             {stats.map((stat: any, idx: any) => (
                                 <StatsRow key={idx} style={{height: "20%"}}>
                                     {Object.keys(stat).map((key, idx) => (
                                         <Col key={idx}>
-                                            {stat[key]}
+                                            <p className='p-0 m-0'>{stat[key]}</p>
                                         </Col>
                                     ))}
                                 </StatsRow>

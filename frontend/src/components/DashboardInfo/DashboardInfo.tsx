@@ -5,7 +5,7 @@ import {errorMsg} from "../../utils/constants";
 import {InfoElement, MobileRow, StatsCol} from './DashboardInfoStyle';
 import StatsList from "./StatsList";
 import {Col} from "react-bootstrap";
-import {activitiesOrganizer} from "./statsDataOrganizer";
+import {activitiesOrganizer, forumThreadsOrganizer} from "./statsDataOrganizer";
 
 
 const DashboardInfo: React.FC<{}> = () => {
@@ -33,7 +33,7 @@ const DashboardInfo: React.FC<{}> = () => {
             <Col xxl={4} sm={6} xs={12} className="mt-2">
                 <StatsCol>
                     <InfoElement>Wiadomości</InfoElement>
-                    <StatsList stats={summaryLists?.forumThreads}/>
+                    <StatsList stats={forumThreadsOrganizer(summaryLists?.forumThreads)}/>
                 </StatsCol>
             </Col>
         </MobileRow>

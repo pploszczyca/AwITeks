@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 export const PageTitle = styled.h1`
   color: #0FC2C0;
@@ -28,5 +29,11 @@ export const FixedContainer = styled.div`
     width: 90vw!important;
     max-width: 90vw!important;
     margin: 0;
+  }
+`
+
+export const HoverIcon = styled(FontAwesomeIcon)`
+  &:hover{
+    cursor: pointer;
   }
 `

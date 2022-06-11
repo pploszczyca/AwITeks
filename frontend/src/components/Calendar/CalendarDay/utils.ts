@@ -22,11 +22,6 @@ export const ICON_STYLES = {
     },
 };
 
-export const ACTIVITY_DESCRIPTION = {
-    [ActivityActivityTypeEnum.Watering]: 'Podlanie',
-    [ActivityActivityTypeEnum.Fertilisation]: 'Nawiezienie'
-};
-
 export function getSupportedActivityTypes(): ActivityActivityTypeEnum[] {
     return [ActivityActivityTypeEnum.Watering, ActivityActivityTypeEnum.Fertilisation];
 }
