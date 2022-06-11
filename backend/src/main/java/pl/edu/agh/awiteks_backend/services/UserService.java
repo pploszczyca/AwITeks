@@ -12,11 +12,13 @@ import pl.edu.agh.awiteks_backend.api.users.body_models.UserInfo;
 import pl.edu.agh.awiteks_backend.api.users.body_models.UserMainSummary;
 import pl.edu.agh.awiteks_backend.api.users.body_models.UserPlantSummary;
 import pl.edu.agh.awiteks_backend.mappers.UserMapper;
+import pl.edu.agh.awiteks_backend.models.ActivityType;
 import pl.edu.agh.awiteks_backend.models.User;
 import pl.edu.agh.awiteks_backend.repositories.UserRepository;
 import pl.edu.agh.awiteks_backend.utilities.CalendarUtilities;
 import pl.edu.agh.awiteks_backend.utilities.ForumUtilities;
 import pl.edu.agh.awiteks_backend.utilities.PlantUtilities;
+import java.text.ParseException;
 import java.util.List;
 
 @Service
@@ -60,7 +62,6 @@ public class UserService {
                 .body(resource);
     }
 
-
     public UserMainSummary getUserMainSummary(int userId) {
         final User user = userRepository.findById(userId).orElseThrow();
 
@@ -70,12 +71,17 @@ public class UserService {
                 )
                 .limit(NUM_OF_MAIN_SUMMARY).toList();
 
-        final List<UserPlantSummary> todayActivities =
-                plantUtilities.findAllPlantsThatNeedActivitiesToday(user).map((pair) ->
-                        new UserPlantSummary(pair.getLeft().getName(), pair.getRight())
-                ).limit(NUM_OF_MAIN_SUMMARY).toList();
+        final List<UserPlantSummary> futureActivities = user.getUserPlants().stream().map((plant) ->{
+            try {
+                final List<ActivityType> activities = plantUtilities.getActionsNeededForPlantInFuture(plant);
+                return new UserPlantSummary(plant.getName(), activities);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }).toList();
 
         final List<UserForumThreadsSummary> forumThreads = forumUtilities.getNewestForumPostsFromFollowedThreads(user);
-        return new UserMainSummary(missedActivities, todayActivities, forumThreads);
+        return new UserMainSummary(missedActivities, futureActivities, forumThreads);
     }
 }
