@@ -48,7 +48,6 @@ public class FilterExceptionHandler extends OncePerRequestFilter {
                 MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(httpStatus);
     }
-
     private void addCorsHeaders(HttpServletRequest request,
                                 HttpServletResponse response) {
         try {

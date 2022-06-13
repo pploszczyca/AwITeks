@@ -94,6 +94,9 @@ const Calendar: React.FC<CalendarProps> = ({ plantId, variant = 'big' }) => {
         activities = activities!.filter(({ plant }) => plant.id === plantId);
     }
 
+    console.log(plants);
+
+
     const plantActivities: Activity[] | null = getPeriodicPlantActivities(plants!);
 
     const doneNotifications = getDoneMonthNotifications(displayedDate, activities!);

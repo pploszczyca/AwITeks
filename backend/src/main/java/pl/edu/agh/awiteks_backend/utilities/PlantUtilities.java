@@ -45,7 +45,7 @@ public class PlantUtilities {
                 actionsNeededToday = new ArrayList<>();
             }
             return Pair.of(plant, actionsNeededToday);
-        }).filter(pair -> !pair.getRight().isEmpty());
+        }).filter(pair -> !pair.getRight().isEmpty()).toList();
     }
 
     private List<ActivityType> getActionsNeededForPlantToday(Plant plant)

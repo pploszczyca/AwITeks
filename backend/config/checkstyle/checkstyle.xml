@@ -22,9 +22,7 @@
         <module name="InterfaceIsType"/>
         <module name="MutableException"/>
         <module name="OneTopLevelClass"/>
-        <module name="VisibilityModifier">
-            <property name="protectedAllowed" value="true"/>
-        </module>
+        <module name="VisibilityModifier"/>
 
         <!--Coding-->
         <module name="ArrayTrailingComma"/>
