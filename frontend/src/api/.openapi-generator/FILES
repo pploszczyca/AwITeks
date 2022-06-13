@@ -29,7 +29,10 @@ models/plant-summary.ts
 models/plant.ts
 models/plants-stats.ts
 models/species.ts
+models/user-forum-threads-summary.ts
 models/user-info.ts
 models/user-login-request-body.ts
+models/user-main-summary.ts
+models/user-plant-summary.ts
 models/user-register-request-body.ts
 models/user.ts

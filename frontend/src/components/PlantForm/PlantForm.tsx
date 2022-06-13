@@ -10,6 +10,7 @@ import {toast} from 'react-toastify';
 import {insolationToString} from '../../utils/util';
 import {toBase64} from "./photoService";
 import {base64Header, errorMsg, NO_SPECIES_ID, REQUIRED} from "../../utils/constants";
+import moment from "moment";
 
 
 type PlantFormProps = {
@@ -31,6 +32,8 @@ export const PlantForm: React.FC<PlantFormProps> =
             'species',
             () => getApis().speciesApi.getAllSpecies().then(resp => resp.data),
             {onError: (error) => errorMsg()});
+        const today = moment().format(moment.HTML5_FMT.DATE);
+        const minActivityDate = moment().subtract(1, 'year').format(moment.HTML5_FMT.DATE);
 
         if (isLoading) {
             return <Loader />;
@@ -93,7 +96,7 @@ export const PlantForm: React.FC<PlantFormProps> =
                                         <Row>
                                             <Col className="form-group mt-3" xl={4} md={6} sm={12}>
                                                 <label>Twoja nazwa rośliny:</label><br />
-                                                <Field className="form-control" type="text" name="name" />
+                                                <Field className="form-control" type="text" name="name" maxLength={150}/>
                                                 <ErrorMessage name="name" component="div">
                                                     {msg => <div style={{ color: 'red' }}>{msg}</div>}
                                                 </ErrorMessage>
@@ -130,7 +133,7 @@ export const PlantForm: React.FC<PlantFormProps> =
 
                                             <Col className="form-group mt-3" xl={4} md={6} sm={12}>
                                                 <label>Ostatnie nawodnienie:</label>
-                                                <Field className="form-control" type="date" name="lastWateringDate" />
+                                                <Field className="form-control" type="date" name="lastWateringDate" max={today} min={minActivityDate}/>
                                                 <ErrorMessage name="lastWateringDate" component="div">
                                                     {msg => <div style={{ color: 'red' }}>{msg}</div>}
                                                 </ErrorMessage>
@@ -138,7 +141,7 @@ export const PlantForm: React.FC<PlantFormProps> =
 
                                             <Col className="form-group mt-3" xl={4} md={6} sm={12}>
                                                 <label>Ostatnie nawożenie:</label>
-                                                <Field className="form-control" type="date" name="lastFertilizationDate" />
+                                                <Field className="form-control" type="date" name="lastFertilizationDate" max={today} min={minActivityDate}/>
                                                 <ErrorMessage name="lastFertilizationDate" component="div">
                                                     {msg => <div style={{ color: 'red' }}>{msg}</div>}
                                                 </ErrorMessage>
@@ -158,7 +161,7 @@ export const PlantForm: React.FC<PlantFormProps> =
 
                                             <Col className="form-group mt-3" xl={12}>
                                                 <label>Notatka (opcjonalnie):</label>
-                                                <Field className="form-control" as="textarea" name="note" />
+                                                <Field className="form-control" as="textarea" name="note" maxLength={255}/>
                                                 <ErrorMessage name="note" component="div">
                                                     {msg => <div style={{ color: 'red' }}>{msg}</div>}
                                                 </ErrorMessage>

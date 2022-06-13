@@ -7,21 +7,24 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Stream;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.tuple.Pair;
 import pl.edu.agh.awiteks_backend.models.ActivityType;
 import pl.edu.agh.awiteks_backend.models.Plant;
 import pl.edu.agh.awiteks_backend.models.User;
 
+@RequiredArgsConstructor
 public class PlantUtilities {
-    private static final String DATE_FORMAT = "yyyy-MM-dd";
-
     private static final long DAY_TIME = 24 * 60 * 60 * 1000;
 
-    private final SimpleDateFormat simpleDateFormat =
-            new SimpleDateFormat(DATE_FORMAT);
+    private final SimpleDateFormat simpleDateFormat;
 
     public int getNumberOfNeglectedPlants(User user) {
-        return findAllPlantsThatNeedActivitiesToday(user).toList().size();
+        return getNeglectedPlants(user).size();
+    }
+
+    public List<Pair<Plant, List<ActivityType>>> getNeglectedPlants(User user) {
+        return findAllPlantsThatNeedActivitiesToday(user).toList();
     }
 
     public List<Pair<Plant, List<ActivityType>>> findAllPlantsThatNeedNotifications(
@@ -31,7 +34,7 @@ public class PlantUtilities {
                 .toList();
     }
 
-    private Stream<Pair<Plant, List<ActivityType>>> findAllPlantsThatNeedActivitiesToday(
+    public Stream<Pair<Plant, List<ActivityType>>> findAllPlantsThatNeedActivitiesToday(
             User user) {
         return user.getUserPlants().stream().map(plant -> {
             List<ActivityType> actionsNeededToday;
@@ -70,6 +73,33 @@ public class PlantUtilities {
 
         return activities;
     }
+
+    public List<ActivityType> getActionsNeededForPlantInFuture(Plant plant)
+            throws ParseException {
+        final Date today = new Date();
+        final List<ActivityType> activities = new LinkedList<>();
+
+        final var lastWateringDay =
+                this.simpleDateFormat.parse(plant.getLastWateringDate());
+        final var nextWateringDate = makeNextDate(lastWateringDay,
+                plant.getSpecies().getWaterRoutine());
+
+        final var lastFertilizationDate =
+                this.simpleDateFormat.parse(plant.getLastFertilizationDate());
+        final var nextFertilizationDate = makeNextDate(lastFertilizationDate,
+                plant.getSpecies().getFertilizationRoutine());
+
+        if (nextWateringDate.after(today)) {
+            activities.add(ActivityType.WATERING);
+        }
+
+        if (nextFertilizationDate.after(today)) {
+            activities.add(ActivityType.FERTILISATION);
+        }
+
+        return activities;
+    }
+
 
     private Date makeNextDate(Date date, int days) {
         return new Date(date.getTime() + (days * DAY_TIME));

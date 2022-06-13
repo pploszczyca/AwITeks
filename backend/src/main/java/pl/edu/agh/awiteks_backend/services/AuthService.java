@@ -6,7 +6,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.edu.agh.awiteks_backend.api.auth.body_models.AuthData;
 import pl.edu.agh.awiteks_backend.api.auth.body_models.AuthResponse;
@@ -33,8 +32,6 @@ public class AuthService {
 
     private final AuthenticationManager authenticationManager;
 
-    private final PasswordEncoder passwordEncoder;
-
     private final UserDataValidationUtilities userDataValidationUtilities;
 
     private final UserMapper userMapper;
@@ -42,13 +39,11 @@ public class AuthService {
     @Autowired
     public AuthService(TokenService tokenService, UserRepository userRepository,
                        AuthenticationManager authenticationManager,
-                       PasswordEncoder passwordEncoder,
                        UserDataValidationUtilities userDataValidationUtilities,
                        UserMapper userMapper) {
         this.tokenService = tokenService;
         this.userRepository = userRepository;
         this.authenticationManager = authenticationManager;
-        this.passwordEncoder = passwordEncoder;
         this.userDataValidationUtilities = userDataValidationUtilities;
         this.userMapper = userMapper;
     }

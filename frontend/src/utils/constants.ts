@@ -1,5 +1,6 @@
 import {toast} from "react-toastify";
 import {ForumThreadSummaryResponseBody} from "../api/models/forum-thread-summary-response-body";
+import {ActivityActivityTypeEnum} from "../api";
 
 export const errorMsg = () => toast.error("Kurza twarz! Coś poszło nie tak :/", {autoClose: 8000});
 
@@ -16,7 +17,6 @@ export const PageRoutes = {
     MY_PLANTS: '/my-plants',
     CALENDAR: '/calendar',
     FORUM: '/forum',
-    SETTINGS: '/settings',
     FORUM_THREAD: '/forum/thread'
 };
 
@@ -59,3 +59,7 @@ export interface ThreadDetails {
 }
 
 export { headers, classes, content }
+export const ACTIVITY_DESCRIPTION = {
+    [ActivityActivityTypeEnum.Watering]: 'Podlanie',
+    [ActivityActivityTypeEnum.Fertilisation]: 'Nawiezienie'
+};

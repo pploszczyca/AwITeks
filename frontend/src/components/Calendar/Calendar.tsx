@@ -32,16 +32,12 @@ import {
     WEEKS
 } from './utils';
 import {Activity} from "../../api";
-
+import { saveAs } from 'file-saver';
+import {downloadFile} from "../../utils/api";
 
 type CalendarProps = {
     plantId?: number; // if undefined, all plants should be considered
     variant?: 'small' | 'big';
-};
-
-function exportCalendar() {
-    // TODO
-    console.log("export calendar requested");
 };
 
 const Calendar: React.FC<CalendarProps> = ({ plantId, variant = 'big' }) => {
@@ -81,6 +77,11 @@ const Calendar: React.FC<CalendarProps> = ({ plantId, variant = 'big' }) => {
                  ).then(resp => resp.data),
             {onError: (error) => errorMsg()}
         );
+
+
+    const downloadIcsFile = () => {
+        downloadFile().then(blob => saveAs(blob, 'my_plants_calendar.ics'))
+    }
 
     if (arePlantsLoading || areActivitiesLoading) {
         plants = [];
@@ -157,7 +158,7 @@ const Calendar: React.FC<CalendarProps> = ({ plantId, variant = 'big' }) => {
                             </div>
 
                             <div>
-                                <ExportButton onClick={exportCalendar}>
+                                <ExportButton onClick={() => downloadIcsFile()}>
                                     Export
                                 </ExportButton>
                             </div>

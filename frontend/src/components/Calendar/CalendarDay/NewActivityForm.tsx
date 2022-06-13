@@ -6,9 +6,9 @@ import styled from "styled-components";
 import {ActivityActivityTypeEnum} from "../../../api";
 import {getApis} from "../../../api/initializeApis";
 import {AddNewActivityArgs} from "./CalendarDay";
-import {ACTIVITY_DESCRIPTION, NewActivityOption} from "./utils";
+import {NewActivityOption} from "./utils";
 import React from "react";
-import {errorMsg} from "../../../utils/constants";
+import {ACTIVITY_DESCRIPTION, errorMsg} from "../../../utils/constants";
 
 
 type NewActivityFormProps = {

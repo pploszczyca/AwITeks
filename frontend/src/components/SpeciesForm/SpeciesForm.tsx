@@ -70,7 +70,7 @@ export const SpeciesForm: React.FC<SpeciesFormProps> = ({ show, hide }) => {
                                 <Row>
                                     <Col className="form-group mt-3" xl={6} sm={12}>
                                         <label>Nazwa gatunku:</label><br />
-                                        <Field className="form-control" type="text" name="name" />
+                                        <Field className="form-control" type="text" name="name" maxLength={150}/>
                                         <ErrorMessage name="name" component="div">
                                             {msg => <div style={{ color: 'red' }}>{msg}</div>}
                                         </ErrorMessage>
@@ -78,7 +78,7 @@ export const SpeciesForm: React.FC<SpeciesFormProps> = ({ show, hide }) => {
 
                                     <Col className="form-group mt-3" xl={6} sm={12}>
                                         <label>Max długość życia:</label><br />
-                                        <Field className="form-control" type="number" min={0} name="maxAge" />
+                                        <Field className="form-control" type="number" min={0} max={100} name="maxAge" />
                                         <ErrorMessage name="maxAge" component="div">
                                             {msg => <div style={{ color: 'red' }}>{msg}</div>}
                                         </ErrorMessage>
@@ -86,7 +86,7 @@ export const SpeciesForm: React.FC<SpeciesFormProps> = ({ show, hide }) => {
 
                                     <Col className="form-group mt-3" xl={6} md={12}>
                                         <label>Ilość wody w jednym podlaniu (ml):</label><br />
-                                        <Field className="form-control" type="number" min={0} name="waterDose" />
+                                        <Field className="form-control" type="number" min={0} max={1000} name="waterDose" />
                                         <ErrorMessage name="waterDose" component="div">
                                             {msg => <div style={{ color: 'red' }}>{msg}</div>}
                                         </ErrorMessage>
@@ -94,7 +94,7 @@ export const SpeciesForm: React.FC<SpeciesFormProps> = ({ show, hide }) => {
 
                                     <Col className="form-group mt-3" xl={6} md={12}>
                                         <label>Częstość podlewania (dni):</label><br />
-                                        <Field className="form-control" type="number" min={1} name="waterRoutine" />
+                                        <Field className="form-control" type="number" min={1} max={1000} name="waterRoutine" />
                                         <ErrorMessage name="waterRoutine" component="div">
                                             {msg => <div style={{ color: 'red' }}>{msg}</div>}
                                         </ErrorMessage>
@@ -114,7 +114,7 @@ export const SpeciesForm: React.FC<SpeciesFormProps> = ({ show, hide }) => {
 
                                     <Col className="form-group mt-3" xl={6} md={12}>
                                         <label>Częstość nawożenia (dni):</label><br />
-                                        <Field className="form-control" type="number" min={1} name="fertilizationRoutine" />
+                                        <Field className="form-control" type="number" min={1} max={1000} name="fertilizationRoutine" />
                                         <ErrorMessage name="fertilizationRoutine" component="div">
                                             {msg => <div style={{ color: 'red' }}>{msg}</div>}
                                         </ErrorMessage>

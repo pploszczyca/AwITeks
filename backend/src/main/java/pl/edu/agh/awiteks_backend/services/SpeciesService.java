@@ -3,7 +3,7 @@ package pl.edu.agh.awiteks_backend.services;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.edu.agh.awiteks_backend.api.species.body_models.AddSpeciesRequestBody;
 import pl.edu.agh.awiteks_backend.mappers.SpeciesMapper;
@@ -12,21 +12,13 @@ import pl.edu.agh.awiteks_backend.repositories.SpeciesRepository;
 import pl.edu.agh.awiteks_backend.utilities.ListUtilities;
 
 @Service
+@RequiredArgsConstructor
 public class SpeciesService {
     private final SpeciesRepository speciesRepository;
 
     private final SpeciesMapper speciesMapper;
 
     private final ListUtilities listUtilities;
-
-    @Autowired
-    public SpeciesService(SpeciesRepository speciesRepository,
-                          SpeciesMapper speciesMapper,
-                          ListUtilities listUtilities) {
-        this.speciesRepository = speciesRepository;
-        this.speciesMapper = speciesMapper;
-        this.listUtilities = listUtilities;
-    }
 
     public List<Species> getAll(int creatorId) {
         return listUtilities

@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.edu.agh.awiteks_backend.api.plants.body_models.AddPlantRequestBody;
 import pl.edu.agh.awiteks_backend.api.plants.body_models.PlantSummary;
@@ -22,6 +22,7 @@ import pl.edu.agh.awiteks_backend.utilities.PlantUtilities;
 import pl.edu.agh.awiteks_backend.utilities.PlantValidator;
 
 @Service
+@RequiredArgsConstructor
 public class PlantService {
     private final PlantRepository plantRepository;
 
@@ -36,23 +37,6 @@ public class PlantService {
     private final PlantUtilities plantUtilities;
 
     private final PlantMapper plantMapper;
-
-    @Autowired
-    public PlantService(PlantRepository modelRepository,
-                        UserRepository userRepository,
-                        SpeciesRepository speciesRepository,
-                        PlantValidator plantValidator,
-                        ListUtilities listUtilities,
-                        PlantUtilities plantUtilities,
-                        PlantMapper plantMapper) {
-        this.plantRepository = modelRepository;
-        this.userRepository = userRepository;
-        this.speciesRepository = speciesRepository;
-        this.plantValidator = plantValidator;
-        this.listUtilities = listUtilities;
-        this.plantUtilities = plantUtilities;
-        this.plantMapper = plantMapper;
-    }
 
     public Plant addPlant(AddPlantRequestBody addPlantRequestBody, int userId) {
         plantValidator.validateNewPlantRequest(addPlantRequestBody);
